@@ -185,7 +185,7 @@ var valinfovalidasiid = '';
 var valinfovalidasihapusid = '';
 
 jQuery(document).ready(function() {
-    var jsonurl= "json-data/info_data_json/jsondiklatteknis";
+    var jsonurl= "json-main/pegawai_json/json";
     ajaxserverselectsingle.init(infotableid, jsonurl, arrdata);
 
     var infoid= [];
