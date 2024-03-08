@@ -63,9 +63,9 @@ class pegawai_json extends CI_Controller {
 
 	function json()
 	{
-		$this->load->model("base-data/InfoData");
+		$this->load->model("base/Pegawai");
 
-		$set= new InfoData();
+		$set= new Pegawai();
 
 		if ( isset( $_REQUEST['columnsDef'] ) && is_array( $_REQUEST['columnsDef'] ) ) {
 			$columnsDefault = [];
@@ -83,15 +83,74 @@ class pegawai_json extends CI_Controller {
 		$userpegawaimode= $this->userpegawaimode;
 		$adminuserid= $this->adminuserid;
 
-		if(!empty($userpegawaimode) && !empty($adminuserid))
-		    $reqPegawaiId= $userpegawaimode;
-		else
-		    $reqPegawaiId= $this->pegawaiId;
 		
-		$statement= " AND A.PEGAWAI_ID = ".$reqPegawaiId;
+		if($userLogin->userSatkerId == "")//kondisi login sebagai admin
+		{
+			$statement='';
+		}
+		else // kondisi login sebagai SKPD
+		{
+			if($reqId == "")
+				$statement .= " AND A.SATKER_ID LIKE '".$userLogin->userSatkerId."%' ";
+			else
+				$statement .= " AND A.SATKER_ID LIKE '".$reqId."%' ";
+		}
+
+		if($reqSearch == "")
+			$reqSearch= " AND (STATUS_PEGAWAI = 1 OR STATUS_PEGAWAI = 2) ";
+
+		if($userLogin->userGroupId == 99)
+			$reqSearch.= " AND JUMLAH_HUKUMAN > 0 ";
+
+
+		if($reqStatusHukuman == ""){}
+		else
+		$reqSearch .= " AND CASE WHEN SYSDATE <= G.TANGGAL_AKHIR AND SYSDATE >= G.TANGGAL_MULAI THEN 1 ELSE 0 END = 1 ";
+
+		if($reqCari == ""){ // tanpa pencarian
+			if($reqId == "")
+				$statement .= "".$reqSearch;
+			else
+				$statement .= " AND A.SATKER_ID LIKE '".$reqId."%' ".$reqSearch;
+		}
+		else // kondisi pencarian
+		{
+			if($rdoState == "modul1")
+			{
+				$statement = " AND A.SATKER_ID LIKE '".$userLogin->userSatkerId."%' ".$reqSearch;
+			}
+			elseif($rdoState == "modul2")
+			{
+				$statement = " AND A.SATKER_ID LIKE '".$reqId."%' ".$reqSearch;
+			}
+			
+			if($reqNip)
+			{
+				$statement .= " AND NIP_LAMA LIKE '%".$reqNip."%'";
+			}
+		    if($reqNipBaru)
+			{
+				$statement .= " AND NIP_BARU LIKE '%".$reqNipBaru."%'";
+			}
+			if($reqNama)
+			{
+				$statement .= " AND UPPER(A.NAMA) LIKE '%".strtoupper($reqNama)."%'";
+			}
+			if($reqUmurAkhir > $reqUmurAwal)
+			{
+				$statement .= " AND USIA_TAHUN BETWEEN '".$reqUmurAwal."' AND '".$reqUmurAkhir."'";
+			}
+		}
+
+		if (!empty($reqId))
+		{
+			$sOrder = "ORDER BY C.ESELON_ID asc,A.TUGAS_TAMBAHAN_NEW asc,B.PANGKAT_ID  DESC,B.TMT_PANGKAT asc";
+		}
+
+
 		// $sOrder = "";
-		$set->selectbyparamsdiklatteknisdata(array(), $displaylength, $displaystart, $statement);
-		// echo $set->query;exit;
+		$set->selectByParamsMonitoring2(array(), $dsplyRange, $dsplyStart, $statement." AND (UPPER(B.GOL_RUANG) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(TEMPAT_LAHIR) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(E.NAMA) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(A.NAMA) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(A.NIP_LAMA) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(A.NIP_BARU) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(AMBIL_FORMAT_NIP_BARU(NIP_BARU)) LIKE '%".strtoupper($_GET['sSearch'])."%' ) ", $sOrder);
+		echo $set->query;exit;
 		while ($set->nextRow()) 
 		{
 			$reqRowId= $set->getField("RIWAYAT_PENDIDIKAN_ID");
