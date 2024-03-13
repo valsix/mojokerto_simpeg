@@ -10,10 +10,17 @@ else
 $formulaid= $this->input->get('formulaid');
 
 $arrtabledata= array(
-    array("label"=>"Nama", "field"=> "NAMA", "display"=>"",  "width"=>"")
-    , array("label"=>"Tanggal", "field"=> "TANGGAL_INFO", "display"=>"",  "width"=>"")
-    , array("label"=>"Penyelenggara", "field"=> "PENYELENGGARA", "display"=>"",  "width"=>"")
+    array("label"=>"NIP", "field"=> "NIP_LAMA", "display"=>"",  "width"=>"")
+    , array("label"=>"NIP Baru", "field"=> "NIP_BARU", "display"=>"",  "width"=>"")
+    , array("label"=>"Nama", "field"=> "NAMA", "display"=>"",  "width"=>"")
+    , array("label"=>"Tempat Lahir", "field"=> "TEMPAT_LAHIR", "display"=>"",  "width"=>"")
+    , array("label"=>"Tanggal Lahir", "field"=> "TANGGAL_LAHIR", "display"=>"",  "width"=>"")
+    , array("label"=>"L/P", "field"=> "JENIS_KELAMIN", "display"=>"",  "width"=>"")
+    , array("label"=>"Status", "field"=> "STATUS_PEGAWAI", "display"=>"",  "width"=>"")
+    , array("label"=>"Gol.Ruang", "field"=> "GOL_RUANG", "display"=>"",  "width"=>"")
+    // , array("label"=>"Eselon", "field"=> "ESELON_ID", "display"=>"",  "width"=>"")
 
+    , array("label"=>"Warna", "field"=> "WARNA", "display"=>"1",  "width"=>"")
     , array("label"=>"validasiid", "field"=> "TEMP_VALIDASI_HAPUS_ID", "display"=>"1", "width"=>"")
     , array("label"=>"validasihapusid", "field"=> "TEMP_VALIDASI_ID", "display"=>"1", "width"=>"")
     , array("label"=>"sorderdefault", "field"=> "SORDERDEFAULT", "display"=>"1", "width"=>"")
@@ -79,67 +86,89 @@ $arrtabledata= array(
                                     </a>
                                 </li>
                                 <li class="navi-item">
+                                    <a id="btnUbahData" class="navi-link">
+                                        <span class="navi-icon"><i class="la la-edit"></i></span>
+                                        <span class="navi-text">Log</span>
+                                    </a>
+                                </li>
+                                <li class="navi-item">
                                     <a  id="btnDelete" class="navi-link">
                                         <span class="navi-icon"><i class="la la-trash"></i></span>
                                         <span class="navi-text">Hapus</span>
+                                    </a>
+                                </li>
+                                <li class="navi-item">
+                                    <a id="btnUbahData" class="navi-link">
+                                        <span class="navi-icon"><i class="la la-edit"></i></span>
+                                        <span class="navi-text">Mutasi</span>
+                                    </a>
+                                </li>
+                                <li class="navi-item">
+                                    <a id="btnUbahData" class="navi-link">
+                                        <span class="navi-icon"><i class="la la-edit"></i></span>
+                                        <span class="navi-text">Cetak</span>
+                                    </a>
+                                </li>
+                                <li class="navi-item">
+                                    <a id="btnUbahData" class="navi-link">
+                                        <span class="navi-icon"><i class="la la-edit"></i></span>
+                                        <span class="navi-text">Cari</span>
                                     </a>
                                 </li>
                             </ul>
                         </div>
                     </div>
 
-                    <button class="btn btn-light-primary" onclick="myFunction()"><i class="fa fa-sitemap" aria-hidden="true"></i> Satker</button>
-
-                    <div id="myDIV" style="display: none; position: absolute; z-index: 1; top: 60px; right: 30px; background-color: #FFFFFF; border: 1px solid #ebedf3; padding: 15px; border-radius: 0.42rem; ">
-                        <label><i>Ketikkan nama satker...</i> </label>
-                        <div class="clearfix"></div>
-                        <select id="sel_1" style="width:16em" multiple>
-                        </select>
-                    </div> 
-                    <script type="text/javascript">
-                        function myFunction() {
-                          var x = document.getElementById("myDIV");
-
-                          if (x.style.display === "none") {
-                            x.style.display = "block";
-                          } else {
-                            x.style.display = "none";
-                          }
-                        } 
-                    </script>
-
-                    <!-- <div class="area-satker"> -->
-                        <!-- <label><i class="fa fa-sitemap" aria-hidden="true"></i> Satuan Kerja : </label> -->
-                        <!-- <select id="sel_1" style="width:16em" multiple>
-                        </select> -->
-                        <script>
-                            var mydata = [
-                               {id:1, text:"Sekretariat Daerah", inc:[
-                                    {id:11, text:"ASISTEN PEREKONOMIAN & PEMBANGUNAN"},
-                                    {id:12, text:"ASISTEN TATA PEMERINTAHAN & KESRA"},
-                                    {id:13, text:"ASISTEN ADMINISTRASI UMUM"},
-                                    {id:14, text:"STAF AHLI BID. HUKUM & POLITIK"},
-                                    {id:15, text:"STAF AHLI BID PEMBANGUNAN"},
-                                    {id:16, text:"STAF AHLI BID. KEMASYARAKATAN & SUMBER DAYA MANUSIA"}
-                               ]},
-                               {id:2, text:"Badan Lingkungan Hidup"},
-                               {id:3, text:"Badan Pelayanan Perizinan"},
-                               {id:3, text:"Badan Pelayanan Perizinan Test kalimat panjang sekali"}
-                            ];
-                            $("#sel_1").select2ToTree({
-                                treeData: {dataArr: mydata}, 
-                                maximumSelectionLength: 1,
-                                // placeholder: 'Select an option',
-                                placeholder: "Select a state",
-                                // allowClear: true
-                            });
-                        </script>
-                    <!-- </div> -->
-
+                    <!-- <button class="btn btn-light-primary" onclick="myFunction()"><i class="fa fa-sitemap" aria-hidden="true"></i> Satker</button> -->
                 </div>
             </div>
 
             <div class="card-body">
+                <div class="card-title">
+                    <h3 class="card-label">Filter</h3>
+                </div>
+                <div class="row">                        
+                    <div class="col-md-2">
+                        Satker
+                    </div>
+                    <div class="col-md-10">
+                        <!-- <select id="sel_1" style="width:100%" multiple></select> -->
+                    </div>
+                    <div class="col-md-2" style="margin-top:20px">
+                        Status Pegawai
+                    </div>
+                    <div class="col-md-4" style="margin-top:20px">
+                        <select id='filter'>
+                            <option value='AND STATUS_PEGAWAI = 0'>Usulan</option>
+                            <option value='AND (STATUS_PEGAWAI = 1 OR STATUS_PEGAWAI = 2)' selected='selected'>CPNS / PNS</option>
+                            <option value='AND STATUS_PEGAWAI = 1'>CPNS</option>
+                            <option value='AND STATUS_PEGAWAI = 2'>PNS</option>
+                            <option value='AND STATUS_PEGAWAI = 12'>PPPK</option>
+                            <option value='AND STATUS_PEGAWAI = 3'>Pensiun</option>
+                            <option value='AND STATUS_PEGAWAI = 4'>TNI</option>
+                            <option value='AND (STATUS_PEGAWAI = 5 OR STATUS_PEGAWAI = 6)'>Tewas / Wafat</option>
+                            <option value='AND STATUS_PEGAWAI = 7'>Pindah</option>
+                            <option value='AND STATUS_PEGAWAI = 8'>Diberhentikan dengan hormat</option>
+                            <option value='AND STATUS_PEGAWAI = 9'>Diberhentikan tidak dengan hormat</option>
+                            <option value='AND STATUS_PEGAWAI = 10'>Pensiun BUP</option>
+                            <option value='AND STATUS_PEGAWAI = 11'>Pensiun Dini</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2" style="margin-top:20px">
+                        Hukuman
+                    </div>
+                    <div class="col-md-4" style="margin-top:20px">
+                        <select id='reqStatusHukuman'>
+                            <option></option>
+                            <option value='1'>Masih Berlaku</option>
+                        </select>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <div class="card-title">
+                    <h3 class="card-label">Data Pegawai</h3>
+                </div>
                 <table class="table table-bordered table-hover table-checkable" id="kt_datatable" style="margin-top: 13px !important">
                     <thead>
                         <tr>
@@ -451,5 +480,39 @@ function btnDeleteFile (fileid,reqPegawaiId,reqRowId,reqMode) {
         });
     }
 }
+   var mydata = [
+       {id:1, text:"Sekretariat Daerah", inc:[
+            {id:11, text:"ASISTEN PEREKONOMIAN & PEMBANGUNAN", inc:[
+                {id:11, text:"ASISTEN PEREKONOMIAN & PEMBANGUNAN"},
+                {id:12, text:"ASISTEN TATA PEMERINTAHAN & KESRA"},
+                {id:13, text:"ASISTEN ADMINISTRASI UMUM"},
+                {id:14, text:"STAF AHLI BID. HUKUM & POLITIK"},
+                {id:15, text:"STAF AHLI BID PEMBANGUNAN"},
+                {id:16, text:"STAF AHLI BID. KEMASYARAKATAN & SUMBER DAYA MANUSIA"}
+            ]},
+            {id:12, text:"ASISTEN TATA PEMERINTAHAN & KESRA"},
+            {id:13, text:"ASISTEN ADMINISTRASI UMUM"},
+            {id:14, text:"STAF AHLI BID. HUKUM & POLITIK"},
+            {id:15, text:"STAF AHLI BID PEMBANGUNAN"},
+            {id:16, text:"STAF AHLI BID. KEMASYARAKATAN & SUMBER DAYA MANUSIA"}
+       ]},
+       {id:2, text:"Badan Lingkungan Hidup"},
+       {id:3, text:"Badan Pelayanan Perizinan"},
+       {id:3, text:"Badan Pelayanan Perizinan Test kalimat panjang sekali"}
+    ];
+    $("#sel_1").select2ToTree({
+        treeData: {dataArr: mydata}, 
+        maximumSelectionLength: 1,
+        // placeholder: 'Select an option',
+        placeholder: "pilih satker",
+        // allowClear: true
+    });
 
+    $("#filter,#reqStatusHukuman").change(function() { 
+
+        jsonurl= "json-main/pegawai_json/json?reqStatusHukuman=" + $("#reqStatusHukuman").val() + "&reqSearch=" + $("#filter").val() + "&reqId=<?=$reqId?>";
+        // jsonurl= "json-admin/export_json/jsonpegawaidiklat?reqBulan="+reqBulan+"&reqTahun="+reqTahun;
+        datanewtable.DataTable().ajax.url(jsonurl).load();
+    })
 </script>
+                

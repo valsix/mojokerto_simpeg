@@ -73,6 +73,12 @@ class pegawai_json extends CI_Controller {
 				$columnsDefault[ $field ] = "true";
 			}
 		}
+
+		$reqKeterangan = $this->input->get("reqKeterangan");
+		$reqId = $this->input->get("reqId");
+		$reqCari = $this->input->get("reqCari");
+		$reqSearch = $this->input->get("reqSearch");
+		$reqStatusHukuman= $this->input->get("reqStatusHukuman");
 		// print_r($columnsDefault);exit;
 
 		$displaystart= -1;
@@ -97,7 +103,7 @@ class pegawai_json extends CI_Controller {
 		}
 
 		if($reqSearch == "")
-			$reqSearch= " AND (STATUS_PEGAWAI = 1 OR STATUS_PEGAWAI = 2) ";
+			$reqSearch= " AND (STATUS_PEGAWAI = 1 OR STATUS_PEGAWAI = 2) and TANGGAL_LAHIR is not null";
 
 		if($userLogin->userGroupId == 99)
 			$reqSearch.= " AND JUMLAH_HUKUMAN > 0 ";
@@ -105,7 +111,7 @@ class pegawai_json extends CI_Controller {
 
 		if($reqStatusHukuman == ""){}
 		else
-		$reqSearch .= " AND CASE WHEN SYSDATE <= G.TANGGAL_AKHIR AND SYSDATE >= G.TANGGAL_MULAI THEN 1 ELSE 0 END = 1 ";
+		$reqSearch .= " AND CASE WHEN current_Date <= G.TANGGAL_AKHIR AND current_Date >= G.TANGGAL_MULAI THEN 1 ELSE 0 END = 1 ";
 
 		if($reqCari == ""){ // tanpa pencarian
 			if($reqId == "")
@@ -142,28 +148,23 @@ class pegawai_json extends CI_Controller {
 			}
 		}
 
-		if (!empty($reqId))
-		{
+		// if (!empty($reqId))
+		// {
 			$sOrder = "ORDER BY C.ESELON_ID asc,A.TUGAS_TAMBAHAN_NEW asc,B.PANGKAT_ID  DESC,B.TMT_PANGKAT asc";
-		}
+		// }
 
 
 		// $sOrder = "";
 		$set->selectByParamsMonitoring2(array(), $dsplyRange, $dsplyStart, $statement." AND (UPPER(B.GOL_RUANG) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(TEMPAT_LAHIR) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(E.NAMA) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(A.NAMA) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(A.NIP_LAMA) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(A.NIP_BARU) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(AMBIL_FORMAT_NIP_BARU(NIP_BARU)) LIKE '%".strtoupper($_GET['sSearch'])."%' ) ", $sOrder);
-		echo $set->query;exit;
+		// echo $set->query;exit;
 		while ($set->nextRow()) 
 		{
-			$reqRowId= $set->getField("RIWAYAT_PENDIDIKAN_ID");
 			$row= [];
 			foreach($columnsDefault as $valkey => $valitem) 
 			{
 				if ($valkey == "SORDERDEFAULT")
 				{
 					$row[$valkey]= "1";
-				}
-				else if ($valkey == "TANGGAL_INFO")
-				{
-					$row[$valkey]= dateToPageCheck($set->getField("TANGGAL_MULAI"))." s/d ".dateToPageCheck($set->getField("TANGGAL_AKHIR"));
 				}
 				else
 				{

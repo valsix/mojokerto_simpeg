@@ -164,7 +164,7 @@ var ajaxserverselectsingle = function() {
                     });
                 }
                 , "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-                    // console.log(aData);
+                    console.log(aData);
                     /*var valueStyle= loopIndex= "";
                     valueStyle= nRow % 2;
                     loopIndex= 6;
@@ -224,6 +224,8 @@ var ajaxserverselectsingle = function() {
                     });
                 }
                 , "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+                    // console.log(aData['WARNA']);
+
                     var valueStyle= loopIndex= maxLoop= "";
                     maxLoop= 11;
                     valueStyle= nRow % 2;
@@ -235,6 +237,10 @@ var ajaxserverselectsingle = function() {
 
                             $($(nRow).children()).attr('class', 'alertstyle');
                         }
+                    }
+
+                    if (aData['WARNA']!=null){
+                        $('td', nRow).css('background-color',aData['WARNA'] );
                     }
 
                     if(aktifwarna != "")
