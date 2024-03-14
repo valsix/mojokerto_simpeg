@@ -12,6 +12,41 @@ class Pegawai extends Entity{
 
 	function selectByParamsMonitoring2($paramsArray=array(),$limit=-1,$from=-1, $statement='', $orderby='order by C.ESELON_ID asc')
 	{
+		$str = "
+		SELECT
+		HUKUMAN_STATUS(cast (A.PEGAWAI_ID as numeric)) HUKUMAN_STATUS_TERAKHIR,
+		A.PEGAWAI_ID, NIP_LAMA, AMBIL_FORMAT_NIP_BARU(NIP_BARU) NIP_BARU, 
+		(CASE WHEN GELAR_DEPAN IS NULL THEN '' ELSE GELAR_DEPAN || '. ' END) || A.NAMA || (CASE WHEN GELAR_BELAKANG IS NULL THEN '' ELSE  ', ' || GELAR_BELAKANG END) NAMA, 
+		TEMPAT_LAHIR, JENIS_KELAMIN, 
+		TANGGAL_LAHIR, STATUS_PEGAWAI,
+		B.GOL_RUANG,
+		CASE 
+			WHEN substring(CAST(C.ESELON_ID AS VARCHAR), 1, 1) = '2' THEN '#fb5858'
+			WHEN substring(CAST(C.ESELON_ID AS VARCHAR), 1, 1) = '3' THEN '#778ff7'
+			WHEN substring(CAST(C.ESELON_ID AS VARCHAR), 1, 1) = '4' THEN '#5bdd73'
+			WHEN substring(CAST(C.ESELON_ID AS VARCHAR), 1, 1) = '5' THEN '#FF9'
+			WHEN hUKUMAN_STATUS(cast (A.PEGAWAI_ID as numeric)) IS NOT NULL AND HUKUMAN_STATUS(cast (A.PEGAWAI_ID as numeric)) != '0' THEN '#F00' 
+			WHEN TUGAS_TAMBAHAN_NEW IS NOT NULL THEN '#F00' 
+		END WARNA
+		FROM PEGAWAI A  
+		LEFT JOIN PANGKAT_TERAKHIR B ON A.PEGAWAI_ID = B.PEGAWAI_ID
+		LEFT JOIN JABATAN_TERAKHIR C ON cast (A.PEGAWAI_ID as varchar) = C.PEGAWAI_ID 				"; 
+		
+		while(list($key,$val) = each($paramsArray))
+		{
+			$str .= " AND $key = '$val' ";
+		}
+		
+		
+		$str .= $statement." ".$orderby;
+		$this->query = $str;
+		//echo $str;
+				
+		return $this->selectLimit($str,$limit,$from); 
+    }
+
+    function selectByParamsForm($paramsArray=array(),$limit=-1,$from=-1, $statement='', $orderby='order by C.ESELON_ID asc')
+	{
 		/*TO_CHAR(B.TMT_PANGKAT, 'DD MON YYYY') TMT_PANGKAT,
 		TO_CHAR(C.TMT_JABATAN, 'DD MON YYYY') TMT_JABATAN,
 		TO_CHAR(TANGGAL_LAHIR, 'DD MON YYYY') TANGGAL_LAHIR, */

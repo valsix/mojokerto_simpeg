@@ -25,7 +25,7 @@ $arrtabledata= array(
     , array("label"=>"validasiid", "field"=> "TEMP_VALIDASI_HAPUS_ID", "display"=>"1", "width"=>"")
     , array("label"=>"validasihapusid", "field"=> "TEMP_VALIDASI_ID", "display"=>"1", "width"=>"")
     , array("label"=>"sorderdefault", "field"=> "SORDERDEFAULT", "display"=>"1", "width"=>"")
-    , array("label"=>"fieldid", "field"=> "RIWAYAT_DIKLAT_TEKNIS_ID", "display"=>"1", "width"=>"")
+    , array("label"=>"fieldid", "field"=> "PEGAWAI_ID", "display"=>"1", "width"=>"")
 );
 ?>
 
@@ -355,7 +355,7 @@ jQuery(document).ready(function() {
             vpilihid= "";
 
         // varurl= "app/index/pegawai_diklat_teknis_add?formulaid=<?=$formulaid?>&reqRowId="+vpilihid;
-        varurl= "app/index/pegawai_data_fip?formulaid=<?=$formulaid?>&reqRowId="+vpilihid;
+        varurl= "app/index/pegawai_data_fip?reqId="+vpilihid;
         
         document.location.href = varurl;
     });

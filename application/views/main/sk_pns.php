@@ -67,7 +67,7 @@ $readonly = "readonly";
 						<a class="" href="app/index/pegawai">Data Pegawai</a>
 					</li>
 					<li class="breadcrumb-item text-muted">
-						<a class="text-muted">SK CPNS</a>
+						<a class="text-muted">SK PNS</a>
 					</li>
 				</ul>
 			</div>
@@ -85,80 +85,158 @@ $readonly = "readonly";
                     <span class="card-icon">
                         <i class="flaticon2-notepad text-primary"></i>
                     </span>
-                    <h3 class="card-label">SK CPNS</h3>
+                    <h3 class="card-label">SK PNS</h3>
                 </div>
             </div>
             <form class="form" id="ktloginform" method="POST" enctype="multipart/form-data">
 	        	<div class="card-body">
 	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">No. Nota BAKN</label>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+		        			Pejabat Penetapan
+		        		</label>
 	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" <?=$readonly?> style="background-color: #F3F6F9;" placeholder="Masukkan NIP baru" name="reqNipBaru" id="reqNipBaru" value="<?=$reqNipBaru?>" />
-	        			</div>
-	        		</div>
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Tanggal Nota BAKN</label>
-	        			<div class="col-lg-10 col-sm-12">
-	        				<div class="input-group date">
-		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTanggalLahir" placeholder="Select date" value="<?=$reqTanggalLahir?>" />
-		        				<div class="input-group-append">
-		        					<span class="input-group-text">
-		        						<i class="la la-calendar"></i>
-		        					</span>
-		        				</div>
-		        			</div>
-	        			</div>
-	        		</div>
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Nama Pejabat Penetap</label>
-	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" <?=$readonly?> style="background-color: #F3F6F9;" placeholder="Masukkan NIP baru" name="reqNipBaru" id="reqNipBaru" value="<?=$reqNipBaru?>" />
-	        			</div>
-	        		</div>
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">NIP Pejabat Penetap</label>
-	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" <?=$readonly?> style="background-color: #F3F6F9;" placeholder="Masukkan NIP baru" name="reqNipBaru" id="reqNipBaru" value="<?=$reqNipBaru?>" />
-	        			</div>
-	        		</div>
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">No. Surat Keputusan</label>
-	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" <?=$readonly?> style="background-color: #F3F6F9;" placeholder="Masukkan NIP baru" name="reqNipBaru" id="reqNipBaru" value="<?=$reqNipBaru?>" />
-	        			</div>
-	        		</div>
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Tanggal Surat Keputusan</label>
-	        			<div class="col-lg-4 col-sm-12">
-	        				<div class="input-group date">
-		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTanggalLahir" placeholder="Select date" value="<?=$reqTanggalLahir?>" />
-		        				<div class="input-group-append">
-		        					<span class="input-group-text">
-		        						<i class="la la-calendar"></i>
-		        					</span>
-		        				</div>
-		        			</div>
-	        			</div>
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Tanggal Surat Keputusan</label>
-	        			<div class="col-lg-4 col-sm-12">
-	        				<div class="input-group date">
-		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTanggalLahir" placeholder="Select date" value="<?=$reqTanggalLahir?>" />
-		        				<div class="input-group-append">
-		        					<span class="input-group-text">
-		        						<i class="la la-calendar"></i>
-		        					</span>
-		        				</div>
-		        			</div>
-	        			</div>
-	        		</div>
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Gol/Ruang</label>
-	        			<div class="col-lg-4 col-sm-12">
 	        				<select class="form-control">
 	        					<option></option>
 	        				</select>
 	        			</div>
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Gol/Ruang</label>
+	        		</div>
+	        		<div class="form-group row">
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+		        			Nama Pejabat Penetap
+		        		</label>
+	        			<div class="col-lg-10 col-sm-12">
+	        				<input type="text" class="form-control" <?=$readonly?> style="background-color: #F3F6F9;" placeholder="Masukkan NIP baru" name="reqNipBaru" id="reqNipBaru" value="<?=$reqNipBaru?>" />
+	        			</div>
+	        		</div>
+	        		<div class="form-group row">
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+		        			NIP Pejabat Penetap
+		        		</label>
+	        			<div class="col-lg-10 col-sm-12">
+	        				<input type="text" class="form-control" <?=$readonly?> style="background-color: #F3F6F9;" placeholder="Masukkan NIP baru" name="reqNipBaru" id="reqNipBaru" value="<?=$reqNipBaru?>" />
+	        			</div>
+	        		</div>
+	        		<div class="form-group row">
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+		        			No. Surat Keputusan
+		        		</label>
+	        			<div class="col-lg-4 col-sm-12">
+	        				<input type="text" class="form-control" <?=$readonly?> style="background-color: #F3F6F9;" placeholder="Masukkan NIP baru" name="reqNipBaru" id="reqNipBaru" value="<?=$reqNipBaru?>" />
+	        			</div>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+		        			Tanggal Surat Keputusan
+		        		</label>
+	        			<div class="col-lg-4 col-sm-12">
+	        				<div class="input-group date">
+		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTanggalLahir" placeholder="Select date" value="<?=$reqTanggalLahir?>" />
+		        				<div class="input-group-append">
+		        					<span class="input-group-text">
+		        						<i class="la la-calendar"></i>
+		        					</span>
+		        				</div>
+		        			</div>
+	        			</div>
+	        		</div>
+	        		<div class="form-group row">
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+		        			Terhitung Mulai Tanggal
+		        		</label>
+	        			<div class="col-lg-4 col-sm-12">
+	        				<div class="input-group date">
+		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTanggalLahir" placeholder="Select date" value="<?=$reqTanggalLahir?>" />
+		        				<div class="input-group-append">
+		        					<span class="input-group-text">
+		        						<i class="la la-calendar"></i>
+		        					</span>
+		        				</div>
+		        			</div>
+	        			</div>
+	        		</div>
+	        		<div class="form-group row">
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+		        			No. Berita Acara
+		        		</label>
+	        			<div class="col-lg-4 col-sm-12">
+	        				<input type="text" class="form-control" <?=$readonly?> style="background-color: #F3F6F9;" placeholder="Masukkan NIP baru" name="reqNipBaru" id="reqNipBaru" value="<?=$reqNipBaru?>" />
+	        			</div>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+		        			Tanggal Berita Acara
+		        		</label>
+	        			<div class="col-lg-4 col-sm-12">
+	        				<div class="input-group date">
+		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTanggalLahir" placeholder="Select date" value="<?=$reqTanggalLahir?>" />
+		        				<div class="input-group-append">
+		        					<span class="input-group-text">
+		        						<i class="la la-calendar"></i>
+		        					</span>
+		        				</div>
+		        			</div>
+	        			</div>
+	        		</div>
+	        		<div class="form-group row">
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+		        			No. Diklat Prajabatan
+		        		</label>
+	        			<div class="col-lg-4 col-sm-12">
+	        				<input type="text" class="form-control" <?=$readonly?> style="background-color: #F3F6F9;" placeholder="Masukkan NIP baru" name="reqNipBaru" id="reqNipBaru" value="<?=$reqNipBaru?>" />
+	        			</div>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+		        			Tanggal Diklat Prajabatan
+		        		</label>
+	        			<div class="col-lg-4 col-sm-12">
+	        				<div class="input-group date">
+		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTanggalLahir" placeholder="Select date" value="<?=$reqTanggalLahir?>" />
+		        				<div class="input-group-append">
+		        					<span class="input-group-text">
+		        						<i class="la la-calendar"></i>
+		        					</span>
+		        				</div>
+		        			</div>
+	        			</div>
+	        		</div>
+	        		<div class="form-group row">
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+		        			No. Surat Uji Kesehatan
+		        		</label>
+	        			<div class="col-lg-4 col-sm-12">
+	        				<input type="text" class="form-control" <?=$readonly?> style="background-color: #F3F6F9;" placeholder="Masukkan NIP baru" name="reqNipBaru" id="reqNipBaru" value="<?=$reqNipBaru?>" />
+	        			</div>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+		        			Tanggal Surat Uji Kesehatan
+		        		</label>
+	        			<div class="col-lg-4 col-sm-12">
+	        				<div class="input-group date">
+		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTanggalLahir" placeholder="Select date" value="<?=$reqTanggalLahir?>" />
+		        				<div class="input-group-append">
+		        					<span class="input-group-text">
+		        						<i class="la la-calendar"></i>
+		        					</span>
+		        				</div>
+		        			</div>
+	        			</div>
+	        		</div>
+	        		<div class="form-group row">
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+		        			Pengkat/Gol.Ruang
+		        		</label>
+	        			<div class="col-lg-8 col-sm-12">
+	        				<select class="form-control">
+	        					<option></option>
+	        				</select>
+	        			</div>
+	        		</div>
+	        		<div class="form-group row">
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+		        			Pengambilan Sumpah
+		        		</label>
+	        			<div class="col-lg-1 col-sm-12">
+	        				<input type="checkbox" class="form-control" <?=$readonly?> style="background-color: #F3F6F9;" placeholder="Masukkan NIP baru" name="reqNipBaru" id="reqNipBaru" value="<?=$reqNipBaru?>" />
+	        			</div>
+	        		</div>
+	        		<div class="form-group row">
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+		        			Latihan Pra Jabatan(LPJ)
+		        		</label>
 	        			<div class="col-lg-4 col-sm-12">
 	        				<input type="text" class="form-control" <?=$readonly?> style="background-color: #F3F6F9;" placeholder="Masukkan NIP baru" name="reqNipBaru" id="reqNipBaru" value="<?=$reqNipBaru?>" />
 	        			</div>
