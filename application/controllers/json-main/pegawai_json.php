@@ -63,6 +63,7 @@ class pegawai_json extends CI_Controller {
 
 	function json()
 	{
+		ini_set('memory_limit', '-1');
 		$this->load->model("base/Pegawai");
 
 		$set= new Pegawai();
@@ -102,8 +103,10 @@ class pegawai_json extends CI_Controller {
 				$statement .= " AND A.SATKER_ID LIKE '".$reqId."%' ";
 		}
 
+		$reqSearch= "and TANGGAL_LAHIR is not null";
+
 		if($reqSearch == "")
-			$reqSearch= " AND (STATUS_PEGAWAI = 1 OR STATUS_PEGAWAI = 2) and TANGGAL_LAHIR is not null";
+			$reqSearch.= " AND (STATUS_PEGAWAI = 1 OR STATUS_PEGAWAI = 2)";
 
 		if($userLogin->userGroupId == 99)
 			$reqSearch.= " AND JUMLAH_HUKUMAN > 0 ";

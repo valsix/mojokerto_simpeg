@@ -1,3 +1,4 @@
+
 <?php
 $userpegawaimode= $this->userpegawaimode;
 $adminuserid= $this->adminuserid;
@@ -133,6 +134,13 @@ $arrtabledata= array(
                     </div>
                     <div class="col-md-10">
                         <!-- <select id="sel_1" style="width:100%" multiple></select> -->
+                        <table id="tt" class="easyui-treegrid" style="width:100%; height:250px">
+                                    <thead>
+                                        <tr>
+                                            <th field="NAMA" width="90%">Nama</th>
+                                        </tr>
+                                    </thead>
+                                </table>
                     </div>
                     <div class="col-md-2" style="margin-top:20px">
                         Status Pegawai
@@ -168,6 +176,7 @@ $arrtabledata= array(
                 <br>
                 <div class="card-title">
                     <h3 class="card-label">Data Pegawai</h3>
+                    <h5 id='bagian'>Pemerintah Kabupaten Mojokerto</h5>
                 </div>
                 <table class="table table-bordered table-hover table-checkable" id="kt_datatable" style="margin-top: 13px !important">
                     <thead>
@@ -194,6 +203,7 @@ $arrtabledata= array(
         <input type="hidden" id="reqDetilId" name="reqDetilId" />
         <input type="hidden" id="reqPegawaiId" name="reqPegawaiId" />
         <input type="hidden" id="reqRowId" name="reqRowId" />
+        <input type="hidden" id="reqId" name="reqId" />
         <button type="submit" id="ktloginformsubmitbutton"  class="btn btn-primary font-weight-bold mr-2">Simpan</button>
     </form>
 </div>
@@ -213,9 +223,25 @@ var valinfoid = '';
 var valinfovalidasiid = '';
 var valinfovalidasihapusid = '';
 
+$(function(){
+    var tt = $('#tt').treegrid({
+        url: 'json-main/satuan_kerja_json/treepilih',
+        rownumbers: false,
+        pagination: false,
+        idField: 'ID',
+        treeField: 'NAMA',
+        onBeforeLoad: function(row,param){
+            if (!row) { // load top level rows
+            param.id = 0; // set id=0, indicate to load new page rows
+            }
+        }
+    });
+});
+
 jQuery(document).ready(function() {
     var jsonurl= "json-main/pegawai_json/json";
     ajaxserverselectsingle.init(infotableid, jsonurl, arrdata);
+        $('#vlsxloading').hide();
 
     var infoid= [];
     $('#'+infotableid+' tbody').on( 'click', 'tr', function () {
@@ -480,39 +506,151 @@ function btnDeleteFile (fileid,reqPegawaiId,reqRowId,reqMode) {
         });
     }
 }
-   var mydata = [
-       {id:1, text:"Sekretariat Daerah", inc:[
-            {id:11, text:"ASISTEN PEREKONOMIAN & PEMBANGUNAN", inc:[
-                {id:11, text:"ASISTEN PEREKONOMIAN & PEMBANGUNAN"},
-                {id:12, text:"ASISTEN TATA PEMERINTAHAN & KESRA"},
-                {id:13, text:"ASISTEN ADMINISTRASI UMUM"},
-                {id:14, text:"STAF AHLI BID. HUKUM & POLITIK"},
-                {id:15, text:"STAF AHLI BID PEMBANGUNAN"},
-                {id:16, text:"STAF AHLI BID. KEMASYARAKATAN & SUMBER DAYA MANUSIA"}
-            ]},
-            {id:12, text:"ASISTEN TATA PEMERINTAHAN & KESRA"},
-            {id:13, text:"ASISTEN ADMINISTRASI UMUM"},
-            {id:14, text:"STAF AHLI BID. HUKUM & POLITIK"},
-            {id:15, text:"STAF AHLI BID PEMBANGUNAN"},
-            {id:16, text:"STAF AHLI BID. KEMASYARAKATAN & SUMBER DAYA MANUSIA"}
-       ]},
-       {id:2, text:"Badan Lingkungan Hidup"},
-       {id:3, text:"Badan Pelayanan Perizinan"},
-       {id:3, text:"Badan Pelayanan Perizinan Test kalimat panjang sekali"}
-    ];
-    $("#sel_1").select2ToTree({
-        treeData: {dataArr: mydata}, 
-        maximumSelectionLength: 1,
-        // placeholder: 'Select an option',
-        placeholder: "pilih satker",
-        // allowClear: true
-    });
 
-    $("#filter,#reqStatusHukuman").change(function() { 
+$("#filter,#reqStatusHukuman").change(function() { 
+    setCariInfo()
+})
 
-        jsonurl= "json-main/pegawai_json/json?reqStatusHukuman=" + $("#reqStatusHukuman").val() + "&reqSearch=" + $("#filter").val() + "&reqId=<?=$reqId?>";
-        // jsonurl= "json-admin/export_json/jsonpegawaidiklat?reqBulan="+reqBulan+"&reqTahun="+reqTahun;
-        datanewtable.DataTable().ajax.url(jsonurl).load();
-    })
+function calltreeid(id, nama)
+{   
+    $("#reqId").val(id);
+    $("#bagian").text(nama);
+    setCariInfo()
+}
+function setCariInfo(){
+    $('#vlsxloading').show();
+     jsonurl= "json-main/pegawai_json/json?reqStatusHukuman=" + $("#reqStatusHukuman").val() + "&reqSearch=" + $("#filter").val() + "&reqId="+$("#reqId").val();
+    // jsonurl= "json-admin/export_json/jsonpegawaidiklat?reqBulan="+reqBulan+"&reqTahun="+reqTahun;
+    datanewtable.DataTable().ajax.url(jsonurl).load();
+    $('#vlsxloading').hide();
+}
+
+    
 </script>
                 
+
+<!-- loading -->
+<style type="text/css">
+    .loading {
+      position: fixed;
+      z-index: 999;
+      height: 2em;
+      width: 2em;
+      overflow: show;
+      margin: auto;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+    }
+
+    /* Transparent Overlay */
+    .loading:before {
+      content: '';
+      display: block;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(rgba(20, 20, 20,.8), rgba(0, 0, 0, .8));
+
+      background: -webkit-radial-gradient(rgba(20, 20, 20,.8), rgba(0, 0, 0,.8));
+    }
+
+    /* :not(:required) hides these rules from IE9 and below */
+    .loading:not(:required) {
+      /* hide "loading..." text */
+      font: 0/0 a;
+      color: transparent;
+      text-shadow: none;
+      background-color: transparent;
+      border: 0;
+    }
+
+    .loading:not(:required):after {
+      content: '';
+      display: block;
+      font-size: 10px;
+      width: 1em;
+      height: 1em;
+      margin-top: -0.5em;
+      -webkit-animation: spinner 150ms infinite linear;
+      -moz-animation: spinner 150ms infinite linear;
+      -ms-animation: spinner 150ms infinite linear;
+      -o-animation: spinner 150ms infinite linear;
+      animation: spinner 150ms infinite linear;
+      border-radius: 0.5em;
+      -webkit-box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1.1em 0 0, rgba(255,255,255, 0.75) 0 1.5em 0 0, rgba(255,255,255, 0.75) -1.1em 1.1em 0 0, rgba(255,255,255, 0.75) -1.5em 0 0 0, rgba(255,255,255, 0.75) -1.1em -1.1em 0 0, rgba(255,255,255, 0.75) 0 -1.5em 0 0, rgba(255,255,255, 0.75) 1.1em -1.1em 0 0;
+      box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1.1em 0 0, rgba(255,255,255, 0.75) 0 1.5em 0 0, rgba(255,255,255, 0.75) -1.1em 1.1em 0 0, rgba(255,255,255, 0.75) -1.5em 0 0 0, rgba(255,255,255, 0.75) -1.1em -1.1em 0 0, rgba(255,255,255, 0.75) 0 -1.5em 0 0, rgba(255,255,255, 0.75) 1.1em -1.1em 0 0;
+    }
+
+    /* Animation */
+
+    @-webkit-keyframes spinner {
+      0% {
+        -webkit-transform: rotate(0deg);
+        -moz-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        transform: rotate(0deg);
+      }
+      100% {
+        -webkit-transform: rotate(360deg);
+        -moz-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        transform: rotate(360deg);
+      }
+    }
+    @-moz-keyframes spinner {
+      0% {
+        -webkit-transform: rotate(0deg);
+        -moz-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        transform: rotate(0deg);
+      }
+      100% {
+        -webkit-transform: rotate(360deg);
+        -moz-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        transform: rotate(360deg);
+      }
+    }
+    @-o-keyframes spinner {
+      0% {
+        -webkit-transform: rotate(0deg);
+        -moz-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        transform: rotate(0deg);
+      }
+      100% {
+        -webkit-transform: rotate(360deg);
+        -moz-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        transform: rotate(360deg);
+      }
+    }
+    @keyframes spinner {
+      0% {
+        -webkit-transform: rotate(0deg);
+        -moz-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        transform: rotate(0deg);
+      }
+      100% {
+        -webkit-transform: rotate(360deg);
+        -moz-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+
+  <div class="loading" id='vlsxloading'>Loading&#8230;</div>

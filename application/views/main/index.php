@@ -69,6 +69,16 @@ $arrcarimenuparent= $vfpeg->cariparentmenu($arrparam);
         <script src="assets/plugins/custom/prismjs/prismjs.bundle.js"></script>
         <script src="assets/js/scripts.bundle.js"></script>
 
+        <!-- easy ui -->
+        <link rel="stylesheet" type="text/css" href="lib/easyui/themes/default/easyui.css">
+        <link rel="stylesheet" type="text/css" href="lib/easyui/themes/icon.css">
+        <link rel="stylesheet" type="text/css" href="lib/easyui/demo/demo.css">
+
+        <script type="text/javascript" src="lib/easyui/jquery-easyui-1.4.2/jquery.min.js"></script>
+        <script type="text/javascript" src="lib/easyui/jquery-easyui-1.4.2/jquery.easyui.min.js"></script>
+        <script type="text/javascript" src="lib/easyui/breadcrum.js"></script>
+        <!-- easy ui -->
+    
         <script src="assets/plugins/custom/datatables/datatables.bundle.js"></script>
         <script src="assets/js/valsix-serverside.js"></script>
         <script src="assets/plugins/custom/jstree/jstree.bundle.js"></script>
