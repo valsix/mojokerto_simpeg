@@ -80,6 +80,7 @@ class pegawai_json extends CI_Controller {
 		$reqCari = $this->input->get("reqCari");
 		$reqSearch = $this->input->get("reqSearch");
 		$reqStatusHukuman= $this->input->get("reqStatusHukuman");
+		$cekquery= $this->input->get("c");
 		// print_r($columnsDefault);exit;
 
 		$displaystart= -1;
@@ -159,7 +160,10 @@ class pegawai_json extends CI_Controller {
 
 		// $sOrder = "";
 		$set->selectByParamsMonitoring2(array(), $dsplyRange, $dsplyStart, $statement." AND (UPPER(B.GOL_RUANG) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(TEMPAT_LAHIR) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(NAMA) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(A.NAMA) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(A.NIP_LAMA) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(A.NIP_BARU) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(AMBIL_FORMAT_NIP_BARU(NIP_BARU)) LIKE '%".strtoupper($_GET['sSearch'])."%' ) ", $sOrder);
-		// echo $set->query;exit;
+		
+		if(!empty($cekquery)){
+			echo $set->query;exit;
+		}
 		while ($set->nextRow()) 
 		{
 			$row= [];
