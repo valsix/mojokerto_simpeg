@@ -14,22 +14,32 @@ else
 $reqId= $this->input->get('reqId');
 
 $set= new Pegawai();
-$set->selectByParamsForm(array("A.PEGAWAI_ID"=>$reqId),-1,-1);
-// echo $set->query;exit;
-$set->firstRow();
-$reqNipBaru= $set->getField('NIP_BARU');
-$reqNama= $set->getField('NAMA');
-$reqEmail= $set->getField('EMAIL');
-$reqAlamat= $set->getField('ALAMAT');
-$reqPangkatTerkahir= $set->getField('PANGKAT_KODE')." (".$set->getField('PANGKAT_NAMA').")";
-$reqTmtPangkat= datetimeTodatePageCheck($set->getField('LAST_TMT_PANGKAT'));
-$reqJabatanTerkahir= $set->getField('LAST_JABATAN');
-$reqSatker= $set->getField('SATKER_ID');
-$reqTmtJabatan= datetimeTodatePageCheck($set->getField('LAST_TMT_JABATAN'));
-$reqTanggalLahir= datetimeTodatePageCheck($set->getField('TGL_LAHIR'));
-$reqPendidikanTerkahir= $set->getField('PENDIDIKAN_NAMA');
-$reqJurusanTerkahir= $set->getField('LAST_DIK_JURUSAN');
-$reqTahunLulus= $set->getField('LAST_DIK_TAHUN');
+// $skpns->selectByParams(array("PEGAWAI_ID" => $reqPegawaiId), -1,-1,'');
+// $skpns->firstRow();
+			   
+// $reqPejabatPenetapan			= $skpns->getField('PEJABAT_PENETAP_ID');
+// $reqNamaPejabatPenetap			= $skpns->getField('NAMA_PENETAP');
+// $reqNIPPejabatPenetap			= $skpns->getField('NIP_PENETAP');
+// $reqNoSuratKeputusan			= $skpns->getField('NO_SK');
+// $reqTanggalSuratKeputusan		= dateToPageCheck($skpns->getField('TANGGAL_SK'));
+// $reqTerhitungMulaiTanggal		= dateToPageCheck($skpns->getField('TMT_PNS'));
+// $reqNoDiklatPrajabatan			= $skpns->getField('NO_PRAJAB');
+// $reqTanggalDiklatPrajabatan	= dateToPageCheck($skpns->getField('TANGGAL_PRAJAB'));
+// $reqNoSuratUjiKesehatan		= $skpns->getField('NO_UJI_KESEHATAN');
+// $reqTanggalSuratUjiKesehatan	= dateToPageCheck($skpns->getField('TANGGAL_UJI_KESEHATAN'));
+// $reqGolRuang					= $skpns->getField('PANGKAT_ID');
+// $reqPengambilanSumpah			= $skpns->getField('SUMPAH');
+// $reqSKPNSId					= (int)$skpns->getField('SK_PNS_ID');
+// $reqTanggalSumpah				= $skpns->getField('TANGGAL_SUMPAH');
+// $reqNoSuratjiKesehatan			= $skpns->getField('NO_UJI_KESEHATAN');
+// $reqNoDiklatPrajabatan			= $skpns->getField('NO_PRAJAB');
+// $reqTh 						= $skpns->getField('MASA_KERJA_TAHUN');
+// $reqBl 						= $skpns->getField('MASA_KERJA_BULAN');
+
+// $reqNoBeritaAcara				= $skpns->getField('NOMOR_BERITA_ACARA');
+// $reqTanggalBeritaAcara			= dateToPageCheck($skpns->getField('TANGGAL_BERITA_ACARA'));
+// $reqKeteranganLPJ				= $skpns->getField('KETERANGAN_LPJ');
+
 
 // echo $reqTmtJabatan;exit;
 $reqMode="update";
@@ -95,7 +105,7 @@ $readonly = "readonly";
 		        			Pejabat Penetapan
 		        		</label>
 	        			<div class="col-lg-10 col-sm-12">
-	        				<select class="form-control">
+	        				<select class="form-control" id="reqPejabatPenetapan" name="reqPejabatPenetapan">
 	        					<option></option>
 	        				</select>
 	        			</div>
@@ -105,7 +115,7 @@ $readonly = "readonly";
 		        			Nama Pejabat Penetap
 		        		</label>
 	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" <?=$readonly?> style="background-color: #F3F6F9;" placeholder="Masukkan NIP baru" name="reqNipBaru" id="reqNipBaru" value="<?=$reqNipBaru?>" />
+	        				<input type="text" class="form-control" name="reqNamaPejabatPenetap" id="reqNamaPejabatPenetap" value="<?=$reqNamaPejabatPenetap?>" />
 	        			</div>
 	        		</div>
 	        		<div class="form-group row">
@@ -113,7 +123,7 @@ $readonly = "readonly";
 		        			NIP Pejabat Penetap
 		        		</label>
 	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" <?=$readonly?> style="background-color: #F3F6F9;" placeholder="Masukkan NIP baru" name="reqNipBaru" id="reqNipBaru" value="<?=$reqNipBaru?>" />
+	        				<input type="text" class="form-control" name="reqNIPPejabatPenetap" id="reqNIPPejabatPenetap" value="<?=$reqNIPPejabatPenetap?>" />
 	        			</div>
 	        		</div>
 	        		<div class="form-group row">
@@ -121,14 +131,14 @@ $readonly = "readonly";
 		        			No. Surat Keputusan
 		        		</label>
 	        			<div class="col-lg-4 col-sm-12">
-	        				<input type="text" class="form-control" <?=$readonly?> style="background-color: #F3F6F9;" placeholder="Masukkan NIP baru" name="reqNipBaru" id="reqNipBaru" value="<?=$reqNipBaru?>" />
+	        				<input type="text" class="form-control" name="reqNoSuratKeputusan" id="reqNoSuratKeputusan" value="<?=$reqNoSuratKeputusan?>" />
 	        			</div>
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
 		        			Tanggal Surat Keputusan
 		        		</label>
 	        			<div class="col-lg-4 col-sm-12">
 	        				<div class="input-group date">
-		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTanggalLahir" placeholder="Select date" value="<?=$reqTanggalLahir?>" />
+		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTanggalSuratKeputusan" value="<?=$reqTanggalSuratKeputusan?>" />
 		        				<div class="input-group-append">
 		        					<span class="input-group-text">
 		        						<i class="la la-calendar"></i>
@@ -143,7 +153,7 @@ $readonly = "readonly";
 		        		</label>
 	        			<div class="col-lg-4 col-sm-12">
 	        				<div class="input-group date">
-		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTanggalLahir" placeholder="Select date" value="<?=$reqTanggalLahir?>" />
+		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTerhitungMulaiTanggal" value="<?=$reqTerhitungMulaiTanggal?>" />
 		        				<div class="input-group-append">
 		        					<span class="input-group-text">
 		        						<i class="la la-calendar"></i>
@@ -157,14 +167,14 @@ $readonly = "readonly";
 		        			No. Berita Acara
 		        		</label>
 	        			<div class="col-lg-4 col-sm-12">
-	        				<input type="text" class="form-control" <?=$readonly?> style="background-color: #F3F6F9;" placeholder="Masukkan NIP baru" name="reqNipBaru" id="reqNipBaru" value="<?=$reqNipBaru?>" />
+	        				<input type="text" class="form-control" name="reqNoBeritaAcara" id="reqNoBeritaAcara" value="<?=$reqNoBeritaAcara?>" />
 	        			</div>
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
 		        			Tanggal Berita Acara
 		        		</label>
 	        			<div class="col-lg-4 col-sm-12">
 	        				<div class="input-group date">
-		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTanggalLahir" placeholder="Select date" value="<?=$reqTanggalLahir?>" />
+		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTanggalBeritaAcara" value="<?=$reqTanggalBeritaAcara?>" />
 		        				<div class="input-group-append">
 		        					<span class="input-group-text">
 		        						<i class="la la-calendar"></i>
@@ -178,14 +188,14 @@ $readonly = "readonly";
 		        			No. Diklat Prajabatan
 		        		</label>
 	        			<div class="col-lg-4 col-sm-12">
-	        				<input type="text" class="form-control" <?=$readonly?> style="background-color: #F3F6F9;" placeholder="Masukkan NIP baru" name="reqNipBaru" id="reqNipBaru" value="<?=$reqNipBaru?>" />
+	        				<input type="text" class="form-control" name="reqNoDiklatPrajabatan" id="reqNoDiklatPrajabatan" value="<?=$reqNoDiklatPrajabatan?>" />
 	        			</div>
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
 		        			Tanggal Diklat Prajabatan
 		        		</label>
 	        			<div class="col-lg-4 col-sm-12">
 	        				<div class="input-group date">
-		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTanggalLahir" placeholder="Select date" value="<?=$reqTanggalLahir?>" />
+		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTanggalDiklatPrajabatan" value="<?=$reqTanggalDiklatPrajabatan?>" />
 		        				<div class="input-group-append">
 		        					<span class="input-group-text">
 		        						<i class="la la-calendar"></i>
@@ -199,14 +209,14 @@ $readonly = "readonly";
 		        			No. Surat Uji Kesehatan
 		        		</label>
 	        			<div class="col-lg-4 col-sm-12">
-	        				<input type="text" class="form-control" <?=$readonly?> style="background-color: #F3F6F9;" placeholder="Masukkan NIP baru" name="reqNipBaru" id="reqNipBaru" value="<?=$reqNipBaru?>" />
+	        				<input type="text" class="form-control" name="reqNoSuratUjiKesehatan" id="reqNoSuratUjiKesehatan" value="<?=$reqNoSuratUjiKesehatan?>" />
 	        			</div>
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
 		        			Tanggal Surat Uji Kesehatan
 		        		</label>
 	        			<div class="col-lg-4 col-sm-12">
 	        				<div class="input-group date">
-		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTanggalLahir" placeholder="Select date" value="<?=$reqTanggalLahir?>" />
+		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTanggalSuratUjiKesehatan" value="<?=$reqTanggalSuratUjiKesehatan?>" />
 		        				<div class="input-group-append">
 		        					<span class="input-group-text">
 		        						<i class="la la-calendar"></i>
@@ -220,7 +230,7 @@ $readonly = "readonly";
 		        			Pengkat/Gol.Ruang
 		        		</label>
 	        			<div class="col-lg-8 col-sm-12">
-	        				<select class="form-control">
+	        				<select class="form-control" id="reqGolRuang" name="reqGolRuang">
 	        					<option></option>
 	        				</select>
 	        			</div>
@@ -230,7 +240,7 @@ $readonly = "readonly";
 		        			Pengambilan Sumpah
 		        		</label>
 	        			<div class="col-lg-1 col-sm-12">
-	        				<input type="checkbox" class="form-control" <?=$readonly?> style="background-color: #F3F6F9;" placeholder="Masukkan NIP baru" name="reqNipBaru" id="reqNipBaru" value="<?=$reqNipBaru?>" />
+	        				<input type="checkbox" class="form-control" name="reqPengambilanSumpah" id="reqPengambilanSumpah" value="<?=$reqPengambilanSumpah?>" />
 	        			</div>
 	        		</div>
 	        		<div class="form-group row">
@@ -238,17 +248,17 @@ $readonly = "readonly";
 		        			Latihan Pra Jabatan(LPJ)
 		        		</label>
 	        			<div class="col-lg-4 col-sm-12">
-	        				<input type="text" class="form-control" <?=$readonly?> style="background-color: #F3F6F9;" placeholder="Masukkan NIP baru" name="reqNipBaru" id="reqNipBaru" value="<?=$reqNipBaru?>" />
+	        				<input type="text" class="form-control" name="reqKeteranganLPJ" id="reqKeteranganLPJ" value="<?=$reqKeteranganLPJ?>" />
 	        			</div>
 	        		</div>
 	        		<div class="form-group row">
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Masa Kerja </label>
 	        			<div class="col-lg-1 col-sm-12">
-	        				<input type="text" class="form-control" <?=$readonly?> style="background-color: #F3F6F9;" placeholder="Masukkan NIP baru" name="reqNipBaru" id="reqNipBaru" value="<?=$reqNipBaru?>" />
+	        				<input type="text" class="form-control" name="tempTh" id="tempTh" value="<?=$tempTh?>" />
 	        			</div>
 	        			<label class="col-form-label">Tahun </label>
 	        			<div class="col-lg-1 col-sm-12">
-	        				<input type="text" class="form-control" <?=$readonly?> style="background-color: #F3F6F9;" placeholder="Masukkan NIP baru" name="reqNipBaru" id="reqNipBaru" value="<?=$reqNipBaru?>" />
+	        				<input type="text" class="form-control" name="tempBl" id="tempBl" value="<?=$tempBl?>" />
 	        			</div>
 	        			<label class="col-form-label">Bulan</label>
 	        			

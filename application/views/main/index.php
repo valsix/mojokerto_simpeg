@@ -172,7 +172,7 @@ $arrcarimenuparent= $vfpeg->cariparentmenu($arrparam);
                         </button>
                     </div>
 
-                    <?if ($pg=='pegawai_data_fip' || $pg=='lokasi_kerja'|| $pg=='pengalaman_kerja'|| $pg=='sk_pns'|| $pg=='sk_cpns'){?>                    
+                    <?if ($pg=='pegawai_data_fip' || $pg=='lokasi_kerja'|| $pg=='pengalaman_kerja'|| $pg=='sk_pns'|| $pg=='sk_cpns'|| $pg=='riwayat_pangkat'|| $pg=='riwayat_jabatan'|| $pg=='riwayat_tugas_tambahan'|| $pg=='riwayat_gaji'|| $pg=='pendidikan_umum'|| $pg=='pelatihan_kepemimpinan'|| $pg=='pelatihan_fungsional'|| $pg=='diklat_lpj'|| $pg=='pelatihan_teknis'|| $pg=='seminar_workshop'|| $pg=='pelatihan_non_klasikal'|| $pg=='orang_tua'|| $pg=='mertua'|| $pg=='suami_istri'|| $pg=='anak'|| $pg=='saudara'|| $pg=='organisasi'|| $pg=='penghargaan'|| $pg=='penilaian_potensi_diri'|| $pg=='catatan_prestasi'|| $pg=='hukuman'|| $pg=='cuti'|| $pg=='tambah_masa_kerja'|| $pg=='ijin_belajar'|| $pg=='sertifikat_pendidikan'|| $pg=='sertifikat_prestasi'|| $pg=='pak'|| $pg=='skp'|| $pg=='kinerja'|| $pg=='komparasi_data'){?>                    
                         <div class="aside-menu-wrapper flex-column-fluid" id="kt_aside_menu_wrapper">
                             <!--begin::Menu Container-->
                             <div id="kt_aside_menu" class="aside-menu my-4" data-menu-vertical="1" data-menu-scroll="1" data-menu-dropdown-timeout="500" style="border: 0px solid red; margin-top: 0px !important; margin-bottom: 0px !important;">
@@ -208,15 +208,16 @@ $arrcarimenuparent= $vfpeg->cariparentmenu($arrparam);
                                             <i class="menu-arrow"></i>
                                         </a>
                                     </li>
-                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover" <?if($pg=='sk_pns'){?>style="background-color: #EE9D01;"<?}?>>
-                                        <a href="app/index/sk_pns?reqId=<?=$reqId?>" class="menu-link menu-toggle">
-                                            <span class="menu-text">SK PNS</span>
-                                            <i class="menu-arrow"></i>
-                                        </a>
-                                    </li>
+                                    
                                     <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover" <?if($pg=='sk_cpns'){?>style="background-color: #EE9D01;"<?}?>>
                                         <a href="app/index/sk_cpns?reqId=<?=$reqId?>" class="menu-link menu-toggle">
                                             <span class="menu-text">SK CPNS</span>
+                                            <i class="menu-arrow"></i>
+                                        </a>
+                                    </li>
+                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover" <?if($pg=='sk_pns'){?>style="background-color: #EE9D01;"<?}?>>
+                                        <a href="app/index/sk_pns?reqId=<?=$reqId?>" class="menu-link menu-toggle">
+                                            <span class="menu-text">SK PNS</span>
                                             <i class="menu-arrow"></i>
                                         </a>
                                     </li>
@@ -226,182 +227,182 @@ $arrcarimenuparent= $vfpeg->cariparentmenu($arrparam);
                                             <i class="menu-arrow"></i>
                                         </a>
                                     </li>
-                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover">
-                                        <a href="app/index/pegawai_dashboard" class="menu-link menu-toggle">
+                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover" <?if($pg=='riwayat_pangkat'){?>style="background-color: #EE9D01;"<?}?>>
+                                        <a href="app/index/riwayat_pangkat?reqId=<?=$reqId?>" class="menu-link menu-toggle">
                                             <span class="menu-text">Riwayat Pangkat</span>
                                             <i class="menu-arrow"></i>
                                         </a>
                                     </li>
-                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover">
-                                        <a href="app/index/pegawai_dashboard" class="menu-link menu-toggle">
+                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover" <?if($pg=='riwayat_jabatan'){?>style="background-color: #EE9D01;"<?}?>>
+                                        <a href="app/index/riwayat_jabatan?reqId=<?=$reqId?>" class="menu-link menu-toggle">
                                             <span class="menu-text">Riwayat Jabatan</span>
                                             <i class="menu-arrow"></i>
                                         </a>
                                     </li>
-                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover">
-                                        <a href="app/index/pegawai_dashboard" class="menu-link menu-toggle">
+                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover" <?if($pg=='riwayat_tugas_tambahan'){?>style="background-color: #EE9D01;"<?}?>>
+                                        <a href="app/index/riwayat_tugas_tambahan?reqId=<?=$reqId?>" class="menu-link menu-toggle">
                                             <span class="menu-text">Riwayat Tugas Tambahan</span>
                                             <i class="menu-arrow"></i>
                                         </a>
                                     </li>
-                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover">
-                                        <a href="app/index/pegawai_dashboard" class="menu-link menu-toggle">
+                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover" <?if($pg=='riwayat_gaji'){?>style="background-color: #EE9D01;"<?}?>>
+                                        <a href="app/index/riwayat_gaji?reqId=<?=$reqId?>" class="menu-link menu-toggle">
                                             <span class="menu-text">Riwayat Gaji</span>
                                             <i class="menu-arrow"></i>
                                         </a>
                                     </li>
-                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover">
-                                        <a href="app/index/pegawai_dashboard" class="menu-link menu-toggle">
+                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover" <?if($pg=='pendidikan_umum'){?>style="background-color: #EE9D01;"<?}?>>
+                                        <a href="app/index/pendidikan_umum?reqId=<?=$reqId?>" class="menu-link menu-toggle">
                                             <span class="menu-text">Pendidikan Umum</span>
                                             <i class="menu-arrow"></i>
                                         </a>
                                     </li>
-                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover">
-                                        <a href="app/index/pegawai_dashboard" class="menu-link menu-toggle">
+                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover" <?if($pg=='pelatihan_kepemimpinan'){?>style="background-color: #EE9D01;"<?}?>>
+                                        <a href="app/index/pelatihan_kepemimpinan?reqId=<?=$reqId?>" class="menu-link menu-toggle">
                                             <span class="menu-text">Pelatihan Kepemimpinan</span>
                                             <i class="menu-arrow"></i>
                                         </a>
                                     </li>
-                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover">
-                                        <a href="app/index/pegawai_dashboard" class="menu-link menu-toggle">
+                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover" <?if($pg=='pelatihan_fungsional'){?>style="background-color: #EE9D01;"<?}?>>
+                                        <a href="app/index/pelatihan_fungsional?reqId=<?=$reqId?>" class="menu-link menu-toggle">
                                             <span class="menu-text">Pelatihan Fungsional</span>
                                             <i class="menu-arrow"></i>
                                         </a>
                                     </li>
-                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover">
-                                        <a href="app/index/pegawai_dashboard" class="menu-link menu-toggle">
+                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover" <?if($pg=='diklat_lpj'){?>style="background-color: #EE9D01;"<?}?>>
+                                        <a href="app/index/diklat_lpj?reqId=<?=$reqId?>" class="menu-link menu-toggle">
                                             <span class="menu-text">Diklat Lpj</span>
                                             <i class="menu-arrow"></i>
                                         </a>
                                     </li>
-                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover">
-                                        <a href="app/index/pegawai_dashboard" class="menu-link menu-toggle">
+                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover" <?if($pg=='pelatihan_teknis'){?>style="background-color: #EE9D01;"<?}?>>
+                                        <a href="app/index/pelatihan_teknis?reqId=<?=$reqId?>" class="menu-link menu-toggle">
                                             <span class="menu-text">Pelatihan Teknis</span>
                                             <i class="menu-arrow"></i>
                                         </a>
                                     </li>
-                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover">
-                                        <a href="app/index/pegawai_dashboard" class="menu-link menu-toggle">
+                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover" <?if($pg=='seminar_workshop'){?>style="background-color: #EE9D01;"<?}?>>
+                                        <a href="app/index/seminar_workshop?reqId=<?=$reqId?>" class="menu-link menu-toggle">
                                             <span class="menu-text">Seminar/Workshop</span>
                                             <i class="menu-arrow"></i>
                                         </a>
                                     </li>
-                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover">
-                                        <a href="app/index/pegawai_dashboard" class="menu-link menu-toggle">
+                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover" <?if($pg=='pelatihan_non_klasikal'){?>style="background-color: #EE9D01;"<?}?>>
+                                        <a href="app/index/pelatihan_non_klasikal?reqId=<?=$reqId?>" class="menu-link menu-toggle">
                                             <span class="menu-text">Pelatihan Non Klasikal</span>
                                             <i class="menu-arrow"></i>
                                         </a>
                                     </li>
-                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover">
-                                        <a href="app/index/pegawai_dashboard" class="menu-link menu-toggle">
+                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover" <?if($pg=='orang_tua'){?>style="background-color: #EE9D01;"<?}?>>
+                                        <a href="app/index/orang_tua?reqId=<?=$reqId?>" class="menu-link menu-toggle">
                                             <span class="menu-text">Orang Tua</span>
                                             <i class="menu-arrow"></i>
                                         </a>
                                     </li>
-                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover">
-                                        <a href="app/index/pegawai_dashboard" class="menu-link menu-toggle">
+                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover" <?if($pg=='mertua'){?>style="background-color: #EE9D01;"<?}?>>
+                                        <a href="app/index/mertua?reqId=<?=$reqId?>" class="menu-link menu-toggle">
                                             <span class="menu-text">Mertua</span>
                                             <i class="menu-arrow"></i>
                                         </a>
                                     </li>
-                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover">
-                                        <a href="app/index/pegawai_dashboard" class="menu-link menu-toggle">
+                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover" <?if($pg=='suami_istri'){?>style="background-color: #EE9D01;"<?}?>>
+                                        <a href="app/index/suami_istri?reqId=<?=$reqId?>" class="menu-link menu-toggle">
                                             <span class="menu-text">Suami Istri</span>
                                             <i class="menu-arrow"></i>
                                         </a>
                                     </li>
-                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover">
-                                        <a href="app/index/pegawai_dashboard" class="menu-link menu-toggle">
+                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover" <?if($pg=='anak'){?>style="background-color: #EE9D01;"<?}?>>
+                                        <a href="app/index/anak?reqId=<?=$reqId?>" class="menu-link menu-toggle">
                                             <span class="menu-text">Anak</span>
                                             <i class="menu-arrow"></i>
                                         </a>
                                     </li>
-                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover">
-                                        <a href="app/index/pegawai_dashboard" class="menu-link menu-toggle">
+                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover" <?if($pg=='saudara'){?>style="background-color: #EE9D01;"<?}?>>
+                                        <a href="app/index/saudara?reqId=<?=$reqId?>" class="menu-link menu-toggle">
                                             <span class="menu-text">Saudara</span>
                                             <i class="menu-arrow"></i>
                                         </a>
                                     </li>
-                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover">
-                                        <a href="app/index/pegawai_dashboard" class="menu-link menu-toggle">
+                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover" <?if($pg=='organisasi'){?>style="background-color: #EE9D01;"<?}?>>
+                                        <a href="app/index/organisasi?reqId=<?=$reqId?>" class="menu-link menu-toggle">
                                             <span class="menu-text">Organisasi</span>
                                             <i class="menu-arrow"></i>
                                         </a>
                                     </li>
-                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover">
-                                        <a href="app/index/pegawai_dashboard" class="menu-link menu-toggle">
+                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover" <?if($pg=='penghargaan'){?>style="background-color: #EE9D01;"<?}?>>
+                                        <a href="app/index/penghargaan?reqId=<?=$reqId?>" class="menu-link menu-toggle">
                                             <span class="menu-text">Penghargaan</span>
                                             <i class="menu-arrow"></i>
                                         </a>
                                     </li>
-                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover">
-                                        <a href="app/index/pegawai_dashboard" class="menu-link menu-toggle">
+                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover" <?if($pg=='penilaian_potensi_diri'){?>style="background-color: #EE9D01;"<?}?>>
+                                        <a href="app/index/penilaian_potensi_diri?reqId=<?=$reqId?>" class="menu-link menu-toggle">
                                             <span class="menu-text">Penilaian Potensi Diri</span>
                                             <i class="menu-arrow"></i>
                                         </a>
                                     </li>
-                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover">
-                                        <a href="app/index/pegawai_dashboard" class="menu-link menu-toggle">
+                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover" <?if($pg=='catatan_prestasi'){?>style="background-color: #EE9D01;"<?}?>>
+                                        <a href="app/index/catatan_prestasi?reqId=<?=$reqId?>" class="menu-link menu-toggle">
                                             <span class="menu-text">Catatan Prestasi</span>
                                             <i class="menu-arrow"></i>
                                         </a>
                                     </li>
-                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover">
-                                        <a href="app/index/pegawai_dashboard" class="menu-link menu-toggle">
+                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover" <?if($pg=='hukuman'){?>style="background-color: #EE9D01;"<?}?>>
+                                        <a href="app/index/hukuman?reqId=<?=$reqId?>" class="menu-link menu-toggle">
                                             <span class="menu-text">Hukuman</span>
                                             <i class="menu-arrow"></i>
                                         </a>
                                     </li>
-                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover">
-                                        <a href="app/index/pegawai_dashboard" class="menu-link menu-toggle">
+                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover" <?if($pg=='cuti'){?>style="background-color: #EE9D01;"<?}?>>
+                                        <a href="app/index/cuti?reqId=<?=$reqId?>" class="menu-link menu-toggle">
                                             <span class="menu-text">Cuti</span>
                                             <i class="menu-arrow"></i>
                                         </a>
                                     </li>
-                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover">
-                                        <a href="app/index/pegawai_dashboard" class="menu-link menu-toggle">
+                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover" <?if($pg=='tambah_masa_kerja'){?>style="background-color: #EE9D01;"<?}?>>
+                                        <a href="app/index/tambah_masa_kerja?reqId=<?=$reqId?>" class="menu-link menu-toggle">
                                             <span class="menu-text">Tambahan Masa Kerja</span>
                                             <i class="menu-arrow"></i>
                                         </a>
                                     </li>
-                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover">
-                                        <a href="app/index/pegawai_dashboard" class="menu-link menu-toggle">
+                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover" <?if($pg=='ijin_belajar'){?>style="background-color: #EE9D01;"<?}?>>
+                                        <a href="app/index/ijin_belajar?reqId=<?=$reqId?>" class="menu-link menu-toggle">
                                             <span class="menu-text">Ijin Belajar</span>
                                             <i class="menu-arrow"></i>
                                         </a>
                                     </li>
-                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover">
-                                        <a href="app/index/pegawai_dashboard" class="menu-link menu-toggle">
+                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover" <?if($pg=='sertifikat_pendidikan'){?>style="background-color: #EE9D01;"<?}?>>
+                                        <a href="app/index/sertifikat_pendidikan?reqId=<?=$reqId?>" class="menu-link menu-toggle">
                                             <span class="menu-text">Sertifikat Pendidikan</span>
                                             <i class="menu-arrow"></i>
                                         </a>
                                     </li>
-                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover">
-                                        <a href="app/index/pegawai_dashboard" class="menu-link menu-toggle">
+                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover" <?if($pg=='sertifikat_prestasi'){?>style="background-color: #EE9D01;"<?}?>>
+                                        <a href="app/index/sertifikat_prestasi?reqId=<?=$reqId?>" class="menu-link menu-toggle">
                                             <span class="menu-text">Sertifikat Profesi</span>
                                             <i class="menu-arrow"></i>
                                         </a>
                                     </li>
-                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover">
-                                        <a href="app/index/pegawai_dashboard" class="menu-link menu-toggle">
+                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover" <?if($pg=='pak'){?>style="background-color: #EE9D01;"<?}?>>
+                                        <a href="app/index/pak?reqId=<?=$reqId?>" class="menu-link menu-toggle">
                                             <span class="menu-text">P.A.K</span>
                                             <i class="menu-arrow"></i>
                                         </a>
                                     </li>
-                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover">
-                                        <a href="app/index/pegawai_dashboard" class="menu-link menu-toggle">
+                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover" <?if($pg=='skp'){?>style="background-color: #EE9D01;"<?}?>>
+                                        <a href="app/index/skp?reqId=<?=$reqId?>" class="menu-link menu-toggle">
                                             <span class="menu-text">SKP</span>
                                             <i class="menu-arrow"></i>
                                         </a>
                                     </li>
-                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover">
-                                        <a href="app/index/pegawai_dashboard" class="menu-link menu-toggle">
+                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover" <?if($pg=='kinerja'){?>style="background-color: #EE9D01;"<?}?>>
+                                        <a href="app/index/kinerja?reqId=<?=$reqId?>" class="menu-link menu-toggle">
                                             <span class="menu-text">Kinerja</span>
                                             <i class="menu-arrow"></i>
                                         </a>
                                     </li>
-                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover">
-                                        <a href="app/index/pegawai_dashboard" class="menu-link menu-toggle">
+                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover" <?if($pg=='komparasi_data'){?>style="background-color: #EE9D01;"<?}?>>
+                                        <a href="app/index/komparasi_data?reqId=<?=$reqId?>" class="menu-link menu-toggle">
                                             <span class="menu-text">Komparasi Data SIMPEG & SIASN</span>
                                             <i class="menu-arrow"></i>
                                         </a>

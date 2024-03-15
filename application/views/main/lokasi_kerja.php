@@ -13,23 +13,20 @@ else
 
 $reqId= $this->input->get('reqId');
 
-$set= new Pegawai();
-$set->selectByParamsForm(array("A.PEGAWAI_ID"=>$reqId),-1,-1);
-// echo $set->query;exit;
-$set->firstRow();
-$reqNipBaru= $set->getField('NIP_BARU');
-$reqNama= $set->getField('NAMA');
-$reqEmail= $set->getField('EMAIL');
-$reqAlamat= $set->getField('ALAMAT');
-$reqPangkatTerkahir= $set->getField('PANGKAT_KODE')." (".$set->getField('PANGKAT_NAMA').")";
-$reqTmtPangkat= datetimeTodatePageCheck($set->getField('LAST_TMT_PANGKAT'));
-$reqJabatanTerkahir= $set->getField('LAST_JABATAN');
-$reqSatker= $set->getField('SATKER_ID');
-$reqTmtJabatan= datetimeTodatePageCheck($set->getField('LAST_TMT_JABATAN'));
-$reqTanggalLahir= datetimeTodatePageCheck($set->getField('TGL_LAHIR'));
-$reqPendidikanTerkahir= $set->getField('PENDIDIKAN_NAMA');
-$reqJurusanTerkahir= $set->getField('LAST_DIK_JURUSAN');
-$reqTahunLulus= $set->getField('LAST_DIK_TAHUN');
+$lokasi_kerja= new Pegawai();
+// $lokasi_kerja->selectByParamsEdit(array("B.PEGAWAI_ID" => $reqPegawaiId));
+// $lokasi_kerja->firstRow();
+// //echo $lokasi_kerja->query;
+				   
+// $reqPropinsi		= $lokasi_kerja->getField('NMPROPINSI');
+// $reqKabupaten		= $lokasi_kerja->getField('NMKABUPATEN');
+// $reqKecamatan		= $lokasi_kerja->getField('NMKECAMATAN');
+// $reqKelurahanDesa	= $lokasi_kerja->getField('NMKELURAHAN');
+// $reqNoFax			= $lokasi_kerja->getField('FAXIMILE');
+// $reqNoTelepon     	= $lokasi_kerja->getField('TELEPON');
+// $reqAlamat   		= $lokasi_kerja->getField('ALAMAT');
+// $reqSatuanKerja	= $lokasi_kerja->getField('SATKER_ID');
+// $reqNamaSatuanKerja	= $lokasi_kerja->getField('NMSATKERDETIL');
 
 // echo $reqTmtJabatan;exit;
 $reqMode="update";
@@ -93,49 +90,49 @@ $readonly = "readonly";
 	        		<div class="form-group row">
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Propinsi</label>
 	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" <?=$readonly?> style="background-color: #F3F6F9;" placeholder="Masukkan NIP baru" name="reqNipBaru" id="reqNipBaru" value="<?=$reqNipBaru?>" />
+	        				<input type="text" class="form-control" readonly style="background-color: #F3F6F9;"  name="reqPropinsi" id="reqPropinsi" value="<?=$reqPropinsi?>" />
 	        			</div>
 	        		</div>
 	        		<div class="form-group row">
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Kabupaten</label>
 	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" <?=$readonly?> style="background-color: #F3F6F9;" placeholder="Masukkan NIP baru" name="reqNipBaru" id="reqNipBaru" value="<?=$reqNipBaru?>" />
+	        				<input type="text" class="form-control" readonly style="background-color: #F3F6F9;"  name="reqKabupaten" id="reqKabupaten" value="<?=$reqKabupaten?>" />
 	        			</div>
 	        		</div>
 	        		<div class="form-group row">
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Kecamatan</label>
 	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" <?=$readonly?> style="background-color: #F3F6F9;" placeholder="Masukkan NIP baru" name="reqNipBaru" id="reqNipBaru" value="<?=$reqNipBaru?>" />
+	        				<input type="text" class="form-control" readonly style="background-color: #F3F6F9;"  name="reqKecamatan" id="reqKecamatan" value="<?=$reqKecamatan?>" />
 	        			</div>
 	        		</div>
 	        		<div class="form-group row">
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Kelurahan/Desa</label>
 	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" <?=$readonly?> style="background-color: #F3F6F9;" placeholder="Masukkan NIP baru" name="reqNipBaru" id="reqNipBaru" value="<?=$reqNipBaru?>" />
+	        				<input type="text" class="form-control" readonly style="background-color: #F3F6F9;"  name="reqKelurahanDesa" id="reqKelurahanDesa" value="<?=$reqKelurahanDesa?>" />
 	        			</div>
 	        		</div>
 	        		<div class="form-group row">
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">No Fax</label>
 	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" <?=$readonly?> style="background-color: #F3F6F9;" placeholder="Masukkan NIP baru" name="reqNipBaru" id="reqNipBaru" value="<?=$reqNipBaru?>" />
+	        				<input type="text" class="form-control" readonly style="background-color: #F3F6F9;"  name="reqNoFax" id="reqNoFax" value="<?=$reqNoFax?>" />
 	        			</div>
 	        		</div>
 	        		<div class="form-group row">
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">No Telepon</label>
 	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" <?=$readonly?> style="background-color: #F3F6F9;" placeholder="Masukkan NIP baru" name="reqNipBaru" id="reqNipBaru" value="<?=$reqNipBaru?>" />
+	        				<input type="text" class="form-control" readonly style="background-color: #F3F6F9;"  name="reqNoTelepon" id="reqNoTelepon" value="<?=$reqNoTelepon?>" />
 	        			</div>
 	        		</div>
 	        		<div class="form-group row">
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Alamat </label>
 	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" <?=$readonly?> style="background-color: #F3F6F9;" placeholder="Masukkan NIP baru" name="reqNipBaru" id="reqNipBaru" value="<?=$reqNipBaru?>" />
+	        				<input type="text" class="form-control" readonly style="background-color: #F3F6F9;"  name="reqAlamat" id="reqAlamat" value="<?=$reqAlamat?>" />
 	        			</div>
 	        		</div>
 	        		<div class="form-group row">
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Satuan Kerja</label>
 	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" <?=$readonly?> style="background-color: #F3F6F9;" placeholder="Masukkan NIP baru" name="reqNipBaru" id="reqNipBaru" value="<?=$reqNipBaru?>" />
+	        				<input type="text" class="form-control" readonly style="background-color: #F3F6F9;"  name="reqNamaSatuanKerja" id="reqNamaSatuanKerja" value="<?=$reqNamaSatuanKerja?>" />
 	        			</div>
 	        		</div>
 	        	</div>
