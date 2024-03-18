@@ -1,7 +1,8 @@
 <?
 include_once("functions/personal.func.php");
 
-$this->load->model("base/Pegawai");
+$this->load->model("base/SkCpns");
+$this->load->model("base/Core");
 
 $userpegawaimode= $this->userpegawaimode;
 $adminuserid= $this->adminuserid;
@@ -13,27 +14,28 @@ else
 
 $reqId= $this->input->get('reqId');
 
-$set= new Pegawai();
-// $skcpns->selectByParams(array("PEGAWAI_ID" => $reqPegawaiId));
-// $skcpns->firstRow();
-// //echo $skcpns->query;
+$skcpns= new SkCpns();
+$skcpns->selectByParams(array("PEGAWAI_ID" => $reqId));
+$skcpns->firstRow();
+// echo $skcpns->query; exit;
 
-// $reqNoNotaBAKN				= $skcpns->getField('NO_NOTA');
-// $reqTanggalNotaBAKN		= dateToPageCheck($skcpns->getField('TANGGAL_NOTA'));
-// $reqPejabatPenetapan		= $skcpns->getField('PEJABAT_PENETAP_ID');
-// $reqNamaPejabatPenetap		= $skcpns->getField('NAMA_PENETAP');
-// $reqNIPPejabatPenetap		= $skcpns->getField('NIP_PENETAP');
-// $reqNoSuratKeputusan		= $skcpns->getField('NO_SK');
-// $reqTanggalSuratKeputusan	= dateToPageCheck($skcpns->getField('TANGGAL_SK'));
-// $reqTerhitungMulaiTanggal	= dateToPageCheck($skcpns->getField('TMT_CPNS'));
-// $reqGolRuang				= $skcpns->getField('PANGKAT_ID');
-// $reqTanggalTugas			= dateToPageCheck($skcpns->getField('TANGGAL_TUGAS'));
-// $reqSkcpnsId				= (int)$skcpns->getField('SK_CPNS_ID');
-// $reqTh 					= $skcpns->getField('MASA_KERJA_TAHUN');
-// $reqBl 					= $skcpns->getField('MASA_KERJA_BULAN');
+$reqNoNotaBAKN				= $skcpns->getField('NO_NOTA');
+$reqTanggalNotaBAKN		= dateToPageCheck($skcpns->getField('TANGGAL_NOTA'));
+$reqPejabatPenetapan		= $skcpns->getField('PEJABAT_PENETAP_ID');
+$reqNamaPejabatPenetap		= $skcpns->getField('NAMA_PENETAP');
+$reqNIPPejabatPenetap		= $skcpns->getField('NIP_PENETAP');
+$reqNoSuratKeputusan		= $skcpns->getField('NO_SK');
+$reqTanggalSuratKeputusan	= dateToPageCheck($skcpns->getField('TANGGAL_SK'));
+$reqTerhitungMulaiTanggal	= dateToPageCheck($skcpns->getField('TMT_CPNS'));
+$reqGolRuang				= $skcpns->getField('PANGKAT_ID');
+$reqTanggalTugas			= dateToPageCheck($skcpns->getField('TANGGAL_TUGAS'));
+$reqSkcpnsId				= (int)$skcpns->getField('SK_CPNS_ID');
+$reqTh 					= $skcpns->getField('MASA_KERJA_TAHUN');
+$reqBl 					= $skcpns->getField('MASA_KERJA_BULAN');
 
-
-// echo $reqTmtJabatan;exit;
+$pangkat= new Core();
+$pangkat->selectByParamsPangkat(array());
+// echo $pangkat->query;exit;
 $reqMode="update";
 // $reqMode="insert";
 $readonly = "readonly";
@@ -158,6 +160,10 @@ $readonly = "readonly";
 	        			<div class="col-lg-4 col-sm-12">
 	        				<select class="form-control" id='reqGolRuang' name="reqGolRuang">
 	        					<option></option>
+	        					<? while ($pangkat->nextRow()){ ?>
+								<option value="<?=$pangkat->getField('PANGKAT_ID')?>"
+								<? if($pangkat->getField('PANGKAT_ID') == $reqGolRuang) echo 'selected'?>><?=$pangkat->getField('KODE')?></option>					
+								<? } ?>
 	        				</select>
 	        			</div>
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Tanggal Tugas</label>

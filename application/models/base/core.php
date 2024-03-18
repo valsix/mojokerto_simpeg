@@ -169,5 +169,39 @@ class Core extends Entity{
 				
 		return $this->selectLimit($str,$limit,$from); 
     }
+
+    function selectByParamsPangkat($paramsArray=array(),$limit=-1,$from=-1, $statement='')
+	{
+		// $str = "SELECT PANGKAT_ID, KODE, NAMA, SUBSTR(KODE, 1, INSTR(KODE, '/') - 1) GOL, SUBSTR(KODE, -1) RUANG
+		// 		FROM PANGKAT WHERE PANGKAT_ID IS NOT NULL"; 
+		$str = "SELECT PANGKAT_ID, KODE, NAMA, SUBSTR(KODE, -1) RUANG
+				FROM PANGKAT WHERE PANGKAT_ID IS NOT NULL"; 
+		
+		while(list($key,$val) = each($paramsArray))
+		{
+			$str .= " AND $key = '$val' ";
+		}
+		
+		$this->query = $str;
+		$str .= $statement." ORDER BY KODE ASC";
+				
+		return $this->selectLimit($str,$limit,$from); 
+    }
+
+    function selectByParamsPejabatPenetap($paramsArray=array(),$limit=-1,$from=-1, $statement='')
+	{
+		$str = "SELECT PEJABAT_PENETAP_ID, JABATAN, NIP, NAMA
+				FROM PEJABAT_PENETAP WHERE PEJABAT_PENETAP_ID IS NOT NULL"; 
+		
+		while(list($key,$val) = each($paramsArray))
+		{
+			$str .= " AND $key = '$val' ";
+		}
+		
+		$str .= $statement." ORDER BY NAMA ASC";
+		$this->query = $str;
+				
+		return $this->selectLimit($str,$limit,$from); 
+    }
 } 
 ?>

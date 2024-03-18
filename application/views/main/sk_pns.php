@@ -1,7 +1,8 @@
 <?
 include_once("functions/personal.func.php");
 
-$this->load->model("base/Pegawai");
+$this->load->model("base/SkPns");
+$this->load->model("base/Core");
 
 $userpegawaimode= $this->userpegawaimode;
 $adminuserid= $this->adminuserid;
@@ -13,35 +14,39 @@ else
 
 $reqId= $this->input->get('reqId');
 
-$set= new Pegawai();
-// $skpns->selectByParams(array("PEGAWAI_ID" => $reqPegawaiId), -1,-1,'');
-// $skpns->firstRow();
+$pejabat_penetap= new Core();
+$pejabat_penetap->selectByParamsPejabatPenetap();
+
+$pangkat= new Core();
+$pangkat->selectByParamsPangkat(array());
+
+$skpns= new SkPns();
+$skpns->selectByParams(array("PEGAWAI_ID" => $reqId), -1,-1,'');
+// echo $skpns->query;exit;
+$skpns->firstRow();
 			   
-// $reqPejabatPenetapan			= $skpns->getField('PEJABAT_PENETAP_ID');
-// $reqNamaPejabatPenetap			= $skpns->getField('NAMA_PENETAP');
-// $reqNIPPejabatPenetap			= $skpns->getField('NIP_PENETAP');
-// $reqNoSuratKeputusan			= $skpns->getField('NO_SK');
-// $reqTanggalSuratKeputusan		= dateToPageCheck($skpns->getField('TANGGAL_SK'));
-// $reqTerhitungMulaiTanggal		= dateToPageCheck($skpns->getField('TMT_PNS'));
-// $reqNoDiklatPrajabatan			= $skpns->getField('NO_PRAJAB');
-// $reqTanggalDiklatPrajabatan	= dateToPageCheck($skpns->getField('TANGGAL_PRAJAB'));
-// $reqNoSuratUjiKesehatan		= $skpns->getField('NO_UJI_KESEHATAN');
-// $reqTanggalSuratUjiKesehatan	= dateToPageCheck($skpns->getField('TANGGAL_UJI_KESEHATAN'));
-// $reqGolRuang					= $skpns->getField('PANGKAT_ID');
-// $reqPengambilanSumpah			= $skpns->getField('SUMPAH');
-// $reqSKPNSId					= (int)$skpns->getField('SK_PNS_ID');
-// $reqTanggalSumpah				= $skpns->getField('TANGGAL_SUMPAH');
-// $reqNoSuratjiKesehatan			= $skpns->getField('NO_UJI_KESEHATAN');
-// $reqNoDiklatPrajabatan			= $skpns->getField('NO_PRAJAB');
-// $reqTh 						= $skpns->getField('MASA_KERJA_TAHUN');
-// $reqBl 						= $skpns->getField('MASA_KERJA_BULAN');
+$reqPejabatPenetapan			= $skpns->getField('PEJABAT_PENETAP_ID');
+$reqNamaPejabatPenetap			= $skpns->getField('NAMA_PENETAP');
+$reqNIPPejabatPenetap			= $skpns->getField('NIP_PENETAP');
+$reqNoSuratKeputusan			= $skpns->getField('NO_SK');
+$reqTanggalSuratKeputusan		= dateToPageCheck($skpns->getField('TANGGAL_SK'));
+$reqTerhitungMulaiTanggal		= dateToPageCheck($skpns->getField('TMT_PNS'));
+$reqNoDiklatPrajabatan			= $skpns->getField('NO_PRAJAB');
+$reqTanggalDiklatPrajabatan	= dateToPageCheck($skpns->getField('TANGGAL_PRAJAB'));
+$reqNoSuratUjiKesehatan		= $skpns->getField('NO_UJI_KESEHATAN');
+$reqTanggalSuratUjiKesehatan	= dateToPageCheck($skpns->getField('TANGGAL_UJI_KESEHATAN'));
+$reqGolRuang					= $skpns->getField('PANGKAT_ID');
+$reqPengambilanSumpah			= $skpns->getField('SUMPAH');
+$reqSKPNSId					= (int)$skpns->getField('SK_PNS_ID');
+$reqTanggalSumpah				= $skpns->getField('TANGGAL_SUMPAH');
+$reqNoSuratjiKesehatan			= $skpns->getField('NO_UJI_KESEHATAN');
+$reqNoDiklatPrajabatan			= $skpns->getField('NO_PRAJAB');
+$reqTh 						= $skpns->getField('MASA_KERJA_TAHUN');
+$reqBl 						= $skpns->getField('MASA_KERJA_BULAN');
 
-// $reqNoBeritaAcara				= $skpns->getField('NOMOR_BERITA_ACARA');
-// $reqTanggalBeritaAcara			= dateToPageCheck($skpns->getField('TANGGAL_BERITA_ACARA'));
-// $reqKeteranganLPJ				= $skpns->getField('KETERANGAN_LPJ');
-
-
-// echo $reqTmtJabatan;exit;
+$reqNoBeritaAcara				= $skpns->getField('NOMOR_BERITA_ACARA');
+$reqTanggalBeritaAcara			= dateToPageCheck($skpns->getField('TANGGAL_BERITA_ACARA'));
+$reqKeteranganLPJ				= $skpns->getField('KETERANGAN_LPJ');
 $reqMode="update";
 // $reqMode="insert";
 $readonly = "readonly";
@@ -106,7 +111,11 @@ $readonly = "readonly";
 		        		</label>
 	        			<div class="col-lg-10 col-sm-12">
 	        				<select class="form-control" id="reqPejabatPenetapan" name="reqPejabatPenetapan">
-	        					<option></option>
+	        					<option <? if($reqPejabatPenetapan=='') echo 'selected'?> disabled>Pilih Pejabat Penetapan</option>					
+        						<? while($pejabat_penetap->nextRow()){?>
+			                        <option value="<?=$pejabat_penetap->getField('PEJABAT_PENETAP_ID')?>"
+			                        <? if ($pejabat_penetap->getField('PEJABAT_PENETAP_ID') == $tempPejabatPenetapan) echo 'selected'?>><?=$pejabat_penetap->getField('JABATAN')?></option>
+								<? }?>
 	        				</select>
 	        			</div>
 	        		</div>
@@ -231,7 +240,11 @@ $readonly = "readonly";
 		        		</label>
 	        			<div class="col-lg-8 col-sm-12">
 	        				<select class="form-control" id="reqGolRuang" name="reqGolRuang">
-	        					<option></option>
+	        					<option <? if($tempGolRuang=='') echo 'selected'?> disabled>Pilih Pengkat/Gol.Ruang</option>					
+	        					<? while ($pangkat->nextRow()){?>
+								<option value="<?=$pangkat->getField('PANGKAT_ID')?>"
+								<? if($pangkat->getField('PANGKAT_ID') == $tempGolRuang) echo 'selected'?>><?=$pangkat->getField('KODE')?></option>					
+								<? }?>		
 	        				</select>
 	        			</div>
 	        		</div>
