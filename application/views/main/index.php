@@ -359,6 +359,18 @@ $arrcarimenuparent= $vfpeg->cariparentmenu($arrparam);
                                             <i class="menu-arrow"></i>
                                         </a>
                                     </li>
+                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover" <?if($pg=='penguasaan_bahasa'){?>style="background-color: #EE9D01;"<?}?>>
+                                        <a href="app/index/penguasaan_bahasa?reqId=<?=$reqId?>" class="menu-link menu-toggle">
+                                            <span class="menu-text">Penguasaan Bahasa</span>
+                                            <i class="menu-arrow"></i>
+                                        </a>
+                                    </li>
+                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover" <?if($pg=='nikah'){?>style="background-color: #EE9D01;"<?}?>>
+                                        <a href="app/index/Nikah?reqId=<?=$reqId?>" class="menu-link menu-toggle">
+                                            <span class="menu-text">Nikah</span>
+                                            <i class="menu-arrow"></i>
+                                        </a>
+                                    </li>
                                     <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover" <?if($pg=='tambah_masa_kerja'){?>style="background-color: #EE9D01;"<?}?>>
                                         <a href="app/index/tambah_masa_kerja?reqId=<?=$reqId?>" class="menu-link menu-toggle">
                                             <span class="menu-text">Tambahan Masa Kerja</span>

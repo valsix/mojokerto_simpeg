@@ -14,32 +14,22 @@ else
 $reqId= $this->input->get('reqId');
 
 $set= new Pegawai();
-// $skpns->selectByParams(array("PEGAWAI_ID" => $reqPegawaiId), -1,-1,'');
-// $skpns->firstRow();
-			   
-// $reqPejabatPenetapan			= $skpns->getField('PEJABAT_PENETAP_ID');
-// $reqNamaPejabatPenetap			= $skpns->getField('NAMA_PENETAP');
-// $reqNIPPejabatPenetap			= $skpns->getField('NIP_PENETAP');
-// $reqNoSuratKeputusan			= $skpns->getField('NO_SK');
-// $reqTanggalSuratKeputusan		= dateToPageCheck($skpns->getField('TANGGAL_SK'));
-// $reqTerhitungMulaiTanggal		= dateToPageCheck($skpns->getField('TMT_PNS'));
-// $reqNoDiklatPrajabatan			= $skpns->getField('NO_PRAJAB');
-// $reqTanggalDiklatPrajabatan	= dateToPageCheck($skpns->getField('TANGGAL_PRAJAB'));
-// $reqNoSuratUjiKesehatan		= $skpns->getField('NO_UJI_KESEHATAN');
-// $reqTanggalSuratUjiKesehatan	= dateToPageCheck($skpns->getField('TANGGAL_UJI_KESEHATAN'));
-// $reqGolRuang					= $skpns->getField('PANGKAT_ID');
-// $reqPengambilanSumpah			= $skpns->getField('SUMPAH');
-// $reqSKPNSId					= (int)$skpns->getField('SK_PNS_ID');
-// $reqTanggalSumpah				= $skpns->getField('TANGGAL_SUMPAH');
-// $reqNoSuratjiKesehatan			= $skpns->getField('NO_UJI_KESEHATAN');
-// $reqNoDiklatPrajabatan			= $skpns->getField('NO_PRAJAB');
-// $reqTh 						= $skpns->getField('MASA_KERJA_TAHUN');
-// $reqBl 						= $skpns->getField('MASA_KERJA_BULAN');
-
-// $reqNoBeritaAcara				= $skpns->getField('NOMOR_BERITA_ACARA');
-// $reqTanggalBeritaAcara			= dateToPageCheck($skpns->getField('TANGGAL_BERITA_ACARA'));
-// $reqKeteranganLPJ				= $skpns->getField('KETERANGAN_LPJ');
-
+$set->selectByParamsForm(array("A.PEGAWAI_ID"=>$reqId),-1,-1);
+// echo $set->query;exit;
+$set->firstRow();
+$reqNipBaru= $set->getField('NIP_BARU');
+$reqNama= $set->getField('NAMA');
+$reqEmail= $set->getField('EMAIL');
+$reqAlamat= $set->getField('ALAMAT');
+$reqPangkatTerkahir= $set->getField('PANGKAT_KODE')." (".$set->getField('PANGKAT_NAMA').")";
+$reqTmtPangkat= datetimeTodatePageCheck($set->getField('LAST_TMT_PANGKAT'));
+$reqJabatanTerkahir= $set->getField('LAST_JABATAN');
+$reqSatker= $set->getField('SATKER_ID');
+$reqTmtJabatan= datetimeTodatePageCheck($set->getField('LAST_TMT_JABATAN'));
+$reqTanggalLahir= datetimeTodatePageCheck($set->getField('TGL_LAHIR'));
+$reqPendidikanTerkahir= $set->getField('PENDIDIKAN_NAMA');
+$reqJurusanTerkahir= $set->getField('LAST_DIK_JURUSAN');
+$reqTahunLulus= $set->getField('LAST_DIK_TAHUN');
 
 // echo $reqTmtJabatan;exit;
 $reqMode="update";
@@ -61,6 +51,25 @@ $readonly = "readonly";
         display: none;
     }
 
+	table {
+	  border-collapse: collapse;
+	  width: 100%;
+	}
+
+	th{
+		background-color: #BD1007;
+		text-align: center;
+		color: white;
+	}
+	td{
+		text-align: left;
+	}
+	th, td {
+	  padding: 8px;
+	  border-bottom: 1px solid #ddd;
+	}
+
+	tr:hover {background-color: #ee9d01;}
 </style>
 
 <!-- Bootstrap core CSS -->
@@ -77,7 +86,7 @@ $readonly = "readonly";
 						<a class="" href="app/index/pegawai">Data Pegawai</a>
 					</li>
 					<li class="breadcrumb-item text-muted">
-						<a class="text-muted">SK PNS</a>
+						<a class="text-muted">Pengalaman Kerja</a>
 					</li>
 				</ul>
 			</div>
@@ -95,173 +104,60 @@ $readonly = "readonly";
                     <span class="card-icon">
                         <i class="flaticon2-notepad text-primary"></i>
                     </span>
-                    <h3 class="card-label">SK PNS</h3>
+                    <h3 class="card-label">Pengalaman Kerja</h3>
                 </div>
             </div>
+            <table>
+            	<table style="width:100%; text-align:center;">
+            		<tr>
+            			<th>Tgl. Mulai Kerja</th>
+            			<th>Instansi</th>
+            			<th>Jabatan</th>
+            			<th>Masa Kerja(Th)</th>
+            			<th>Masa Kerja(Bl)</th>
+            			<th>Hapus</th>
+            		</tr>
+            		<tr onclick="apply(1)">
+            			<td id='t11'>a</td>
+            			<td id='t21'>b</td>
+            			<td id='t31'>c</td>
+            			<td id='t41'>d</td>
+            			<td id='t51'>e</td>
+            			<td><i class="fa fa-trash" aria-hidden="true" style="color:#BD1007;" ></td>
+            		</tr>
+            	</table>
+            </table>
             <form class="form" id="ktloginform" method="POST" enctype="multipart/form-data">
 	        	<div class="card-body">
 	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			Pejabat Penetapan
-		        		</label>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Tgl. Mulai Kerja</label>
 	        			<div class="col-lg-10 col-sm-12">
-	        				<select class="form-control" id="reqPejabatPenetapan" name="reqPejabatPenetapan">
-	        					<option></option>
-	        				</select>
+	        				<input type="text" class="form-control" name="reqTanggal" id="a1"/>
 	        			</div>
 	        		</div>
 	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			Nama Pejabat Penetap
-		        		</label>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Instansi</label>
 	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" name="reqNamaPejabatPenetap" id="reqNamaPejabatPenetap" value="<?=$reqNamaPejabatPenetap?>" />
+	        				<input type="text" class="form-control" name="reqInstansi" id="a2" />
 	        			</div>
 	        		</div>
 	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			NIP Pejabat Penetap
-		        		</label>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Jabatan</label>
 	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" name="reqNIPPejabatPenetap" id="reqNIPPejabatPenetap" value="<?=$reqNIPPejabatPenetap?>" />
+	        				<input type="text" class="form-control" name="reqJabatan" id="a3" />
 	        			</div>
 	        		</div>
 	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			No. Surat Keputusan
-		        		</label>
-	        			<div class="col-lg-4 col-sm-12">
-	        				<input type="text" class="form-control" name="reqNoSuratKeputusan" id="reqNoSuratKeputusan" value="<?=$reqNoSuratKeputusan?>" />
-	        			</div>
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			Tanggal Surat Keputusan
-		        		</label>
-	        			<div class="col-lg-4 col-sm-12">
-	        				<div class="input-group date">
-		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTanggalSuratKeputusan" value="<?=$reqTanggalSuratKeputusan?>" />
-		        				<div class="input-group-append">
-		        					<span class="input-group-text">
-		        						<i class="la la-calendar"></i>
-		        					</span>
-		        				</div>
-		        			</div>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Masa Kerja(Th)</label>
+	        			<div class="col-lg-10 col-sm-12">
+	        				<input type="text" class="form-control" name="reqMasaKerjaTahun" id="a4" />
 	        			</div>
 	        		</div>
 	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			Terhitung Mulai Tanggal
-		        		</label>
-	        			<div class="col-lg-4 col-sm-12">
-	        				<div class="input-group date">
-		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTerhitungMulaiTanggal" value="<?=$reqTerhitungMulaiTanggal?>" />
-		        				<div class="input-group-append">
-		        					<span class="input-group-text">
-		        						<i class="la la-calendar"></i>
-		        					</span>
-		        				</div>
-		        			</div>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Masa Kerja(Bl)</label>
+	        			<div class="col-lg-10 col-sm-12">
+	        				<input type="text" class="form-control" name="reqMasaKerjaBulan" id="a5" />
 	        			</div>
-	        		</div>
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			No. Berita Acara
-		        		</label>
-	        			<div class="col-lg-4 col-sm-12">
-	        				<input type="text" class="form-control" name="reqNoBeritaAcara" id="reqNoBeritaAcara" value="<?=$reqNoBeritaAcara?>" />
-	        			</div>
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			Tanggal Berita Acara
-		        		</label>
-	        			<div class="col-lg-4 col-sm-12">
-	        				<div class="input-group date">
-		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTanggalBeritaAcara" value="<?=$reqTanggalBeritaAcara?>" />
-		        				<div class="input-group-append">
-		        					<span class="input-group-text">
-		        						<i class="la la-calendar"></i>
-		        					</span>
-		        				</div>
-		        			</div>
-	        			</div>
-	        		</div>
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			No. Diklat Prajabatan
-		        		</label>
-	        			<div class="col-lg-4 col-sm-12">
-	        				<input type="text" class="form-control" name="reqNoDiklatPrajabatan" id="reqNoDiklatPrajabatan" value="<?=$reqNoDiklatPrajabatan?>" />
-	        			</div>
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			Tanggal Diklat Prajabatan
-		        		</label>
-	        			<div class="col-lg-4 col-sm-12">
-	        				<div class="input-group date">
-		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTanggalDiklatPrajabatan" value="<?=$reqTanggalDiklatPrajabatan?>" />
-		        				<div class="input-group-append">
-		        					<span class="input-group-text">
-		        						<i class="la la-calendar"></i>
-		        					</span>
-		        				</div>
-		        			</div>
-	        			</div>
-	        		</div>
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			No. Surat Uji Kesehatan
-		        		</label>
-	        			<div class="col-lg-4 col-sm-12">
-	        				<input type="text" class="form-control" name="reqNoSuratUjiKesehatan" id="reqNoSuratUjiKesehatan" value="<?=$reqNoSuratUjiKesehatan?>" />
-	        			</div>
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			Tanggal Surat Uji Kesehatan
-		        		</label>
-	        			<div class="col-lg-4 col-sm-12">
-	        				<div class="input-group date">
-		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTanggalSuratUjiKesehatan" value="<?=$reqTanggalSuratUjiKesehatan?>" />
-		        				<div class="input-group-append">
-		        					<span class="input-group-text">
-		        						<i class="la la-calendar"></i>
-		        					</span>
-		        				</div>
-		        			</div>
-	        			</div>
-	        		</div>
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			Pengkat/Gol.Ruang
-		        		</label>
-	        			<div class="col-lg-8 col-sm-12">
-	        				<select class="form-control" id="reqGolRuang" name="reqGolRuang">
-	        					<option></option>
-	        				</select>
-	        			</div>
-	        		</div>
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			Pengambilan Sumpah
-		        		</label>
-	        			<div class="col-lg-1 col-sm-12">
-	        				<input type="checkbox" class="form-control" name="reqPengambilanSumpah" id="reqPengambilanSumpah" value="<?=$reqPengambilanSumpah?>" />
-	        			</div>
-	        		</div>
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			Latihan Pra Jabatan(LPJ)
-		        		</label>
-	        			<div class="col-lg-4 col-sm-12">
-	        				<input type="text" class="form-control" name="reqKeteranganLPJ" id="reqKeteranganLPJ" value="<?=$reqKeteranganLPJ?>" />
-	        			</div>
-	        		</div>
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Masa Kerja </label>
-	        			<div class="col-lg-1 col-sm-12">
-	        				<input type="text" class="form-control" name="tempTh" id="tempTh" value="<?=$tempTh?>" />
-	        			</div>
-	        			<label class="col-form-label">Tahun </label>
-	        			<div class="col-lg-1 col-sm-12">
-	        				<input type="text" class="form-control" name="tempBl" id="tempBl" value="<?=$tempBl?>" />
-	        			</div>
-	        			<label class="col-form-label">Bulan</label>
-	        			
 	        		</div>
 	        	</div>
 	        	<div class="card-footer">
@@ -279,33 +175,6 @@ $readonly = "readonly";
 </div>
 
 <script type="text/javascript">
-
-	$(function () {
-		$("[rel=tooltip]").tooltip({ placement: 'right'});
-		// $('[data-toggle="tooltip"]').tooltip()
-	})
-
-	$('#ktagamaid').select2({
-		placeholder: "Pilih agama"
-	});
-
-	$('#ktsatuankerjad').select2({
-		placeholder: "Pilih Satuan Kerja"
-	});
-	
-	$('#ktjeniskelamin').select2({
-		placeholder: "Pilih jenis kelamin"
-	});
-
-	arrows= {leftArrow: '<i class="la la-angle-left"></i>', rightArrow: '<i class="la la-angle-right"></i>'};
-	$('#kttanggallahir').datepicker({
-		todayHighlight: true
-		, autoclose: true
-		, orientation: "bottom left"
-		, clearBtn: true
-		, format: 'dd-mm-yyyy'
-		, templates: arrows
-	});
 
 	var _buttonSpinnerClasses = 'spinner spinner-right spinner-white pr-15';
 	jQuery(document).ready(function() {
@@ -394,6 +263,15 @@ $readonly = "readonly";
 			});
 		});
 	});
+
+	function apply(x) {
+		$("#a1").val($("#t1"+x).html());
+		$("#a2").val($("#t2"+x).html());
+		$("#a3").val($("#t3"+x).html());
+		$("#a4").val($("#t4"+x).html());
+		$("#a5").val($("#t5"+x).html());
+		// body...
+	}
 
 </script>
 
