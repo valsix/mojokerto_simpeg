@@ -1,7 +1,7 @@
 <?
 include_once("functions/personal.func.php");
 
-$this->load->model("base/Pegawai");
+$this->load->model("base/LokasiKerja");
 
 $userpegawaimode= $this->userpegawaimode;
 $adminuserid= $this->adminuserid;
@@ -13,20 +13,20 @@ else
 
 $reqId= $this->input->get('reqId');
 
-$lokasi_kerja= new Pegawai();
-// $lokasi_kerja->selectByParamsEdit(array("B.PEGAWAI_ID" => $reqPegawaiId));
-// $lokasi_kerja->firstRow();
-// //echo $lokasi_kerja->query;
+$lokasi_kerja= new LokasiKerja();
+$lokasi_kerja->selectByParams(array("B.PEGAWAI_ID" => $reqId));
+$lokasi_kerja->firstRow();
+// echo $lokasi_kerja->query; exit;
 				   
-// $reqPropinsi		= $lokasi_kerja->getField('NMPROPINSI');
-// $reqKabupaten		= $lokasi_kerja->getField('NMKABUPATEN');
-// $reqKecamatan		= $lokasi_kerja->getField('NMKECAMATAN');
-// $reqKelurahanDesa	= $lokasi_kerja->getField('NMKELURAHAN');
-// $reqNoFax			= $lokasi_kerja->getField('FAXIMILE');
-// $reqNoTelepon     	= $lokasi_kerja->getField('TELEPON');
-// $reqAlamat   		= $lokasi_kerja->getField('ALAMAT');
-// $reqSatuanKerja	= $lokasi_kerja->getField('SATKER_ID');
-// $reqNamaSatuanKerja	= $lokasi_kerja->getField('NMSATKERDETIL');
+$reqPropinsi		= $lokasi_kerja->getField('NMPROPINSI');
+$reqKabupaten		= $lokasi_kerja->getField('NMKABUPATEN');
+$reqKecamatan		= $lokasi_kerja->getField('NMKECAMATAN');
+$reqKelurahanDesa	= $lokasi_kerja->getField('NMKELURAHAN');
+$reqNoFax			= $lokasi_kerja->getField('FAXIMILE');
+$reqNoTelepon     	= $lokasi_kerja->getField('TELEPON');
+$reqAlamat   		= $lokasi_kerja->getField('ALAMAT');
+$reqSatuanKerja	= $lokasi_kerja->getField('SATKER_ID');
+$reqNamaSatuanKerja	= $lokasi_kerja->getField('NMSATKERDETIL');
 
 // echo $reqTmtJabatan;exit;
 $reqMode="update";

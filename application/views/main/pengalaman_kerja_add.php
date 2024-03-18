@@ -1,8 +1,7 @@
 <?
 include_once("functions/personal.func.php");
 
-$this->load->model("base/Pegawai");
-$this->load->model("base/Core");
+$this->load->model("base/PengalamanKerja");
 
 $userpegawaimode= $this->userpegawaimode;
 $adminuserid= $this->adminuserid;
@@ -15,74 +14,15 @@ else
 $reqId= $this->input->get('reqId');
 $reqRowId= $this->input->get('reqRowId');
 
-$pegawai= new Pegawai();
-$pegawai->selectByParams(array("p.PEGAWAI_ID" => $reqId)); 
-$pegawai->firstRow();
-// echo $pegawai->query; exit;
-
-$reqNIP1				= $pegawai->getField('NIP_LAMA');
-$reqNIP2				= $pegawai->getField('NIP_BARU');
-$reqNama				= $pegawai->getField('NAMA');
-$reqTipePegawai		= $pegawai->getField('TIPE_PEGAWAI_ID');
-$reqGelarDepan			= $pegawai->getField('GELAR_DEPAN');
-$reqGelarBelakang		= $pegawai->getField('GELAR_BELAKANG');
-$reqStatusPegawai		= $pegawai->getField('STATUS_PEGAWAI');
-$reqTempatLahir		= $pegawai->getField('TEMPAT_LAHIR');
-$reqTanggalLahir		= dateToPageCheck($pegawai->getField('TANGGAL_LAHIR'));
-$reqTglPensiun			= dateToPageCheck($pegawai->getField('TANGGAL_PENSIUN'));
-$reqTglPindah			= dateToPageCheck($pegawai->getField('TANGGAL_PINDAH'));
-$reqKeteranganPindah	= $pegawai->getField('KETERANGAN_PINDAH');
-$reqJenisKelamin		= $pegawai->getField('JENIS_KELAMIN');
-$reqJenisPegawai		= $pegawai->getField('JENIS_PEGAWAI_ID');
-$reqKeterangan			= $pegawai->getField('KETERANGAN_PINDAH');
-$reqStatusPernikahan	= $pegawai->getField('STATUS_KAWIN');
-$reqKartuPegawai		= $pegawai->getField('KARTU_PEGAWAI');
-$reqSukuBangsa			= $pegawai->getField('SUKU_BANGSA');
-$reqGolDarah			= $pegawai->getField('GOLONGAN_DARAH');
-$reqAkses				= $pegawai->getField('ASKES');
-$reqTaspen				= $pegawai->getField('TASPEN');
-$reqAlamat				= $pegawai->getField('ALAMAT');
-$reqNPWP				= $pegawai->getField('NPWP');
-$reqNIK				= $pegawai->getField('NIK');
-$reqRT					= $pegawai->getField('RT');
-$reqRW					= $pegawai->getField('RW');
-$reqEmail				= $pegawai->getField('EMAIL');
-$reqPropinsi			= $pegawai->getField('PROPINSI_ID');
-$reqKabupaten			= $pegawai->getField('KABUPATEN_ID');
-$reqKecamatan			= $pegawai->getField('KECAMATAN_ID');
-$reqDesa				= $pegawai->getField('KELURAHAN_ID');
-$reqBank				= $pegawai->getField('BANK_ID');
-$reqNoRekening			= $pegawai->getField('NO_REKENING');
-$reqPangkatTerkahir	= $pegawai->getField('GOL_RUANG');
-$reqTMTPangkat			= $pegawai->getField('TMT_PANGKAT');
-$reqJabatanTerkahir	= $pegawai->getField('JABATAN');
-$reqTMTJabatan			= $pegawai->getField('TMT_JABATAN');
-$reqPendidikanTerakhir	= $pegawai->getField('PENDIDIKAN');
-$reqJurusanTerakhir	= $pegawai->getField('JURUSAN');
-$reqTahunLulus			= $pegawai->getField('TAHUN');
-$reqGambar				= $pegawai->getField('FOTO_BLOB');
-$reqAgamaId			= $pegawai->getField('AGAMA_ID');
-$reqTelepon			= $pegawai->getField('TELEPON');
-$reqKodePos			= $pegawai->getField('KODEPOS');
-$reqKedudukanId		= $pegawai->getField('KEDUDUKAN_ID');
-$reqSatkerId		= $pegawai->getField('SATKER_FULL');
-
-$reqNikPns				= $pegawai->getField('KTP_PNS');
-$reqDrh				= $pegawai->getField('DRH');
-$reqNomorKK				= $pegawai->getField('KK');
-$reqKtpPasangan				= $pegawai->getField('KTP_PASANGAN');
-$reqTugasTambahan			= $pegawai->getField('TUGAS_TAMBAHAN_NEW');
-$reqJenisMapelId			= $pegawai->getField('JENIS_MAPEL_ID');
-$data = $pegawai->getField('FOTO_BLOB');
-$data_karpeg= $pegawai->getField('DOSIR_KARPEG');
-$data_askes= $pegawai->getField('DOSIR_ASKES');
-$data_taspen= $pegawai->getField('DOSIR_TASPEN');
-$data_npwp= $pegawai->getField('DOSIR_NPWP');
-			
-$reqGambarTmp   		= $pegawai->getField('FOTO_BLOB');
-$reqGambarSetengah		= $pegawai->getField('FOTO_BLOB_OTHER');
-$reqGambarTmpSetengah	= $pegawai->getField('FOTO_BLOB_OTHER');
-
+$pengalaman= new PengalamanKerja();
+$pengalaman->selectByParams(array('PENGALAMAN_ID'=>$reqRowId));
+$pengalaman->firstRow();
+$reqPengalamanId = $pengalaman->getField('PENGALAMAN_ID');
+$reqInstansi 			= $pengalaman->getField('NAMA');
+$reqJabatan = $pengalaman->getField('JABATAN');
+$reqTglMulaiKerja = dateToPageCheck($pengalaman->getField('TANGGAL_KERJA'));
+$reqMasaKerjaTh = $pengalaman->getField('MASA_KERJA_TAHUN');
+$reqMasaKerjaBl = $pengalaman->getField('MASA_KERJA_BULAN');
 // echo $reqTmtJabatan;exit;
 $reqMode="update";
 // $reqMode="insert";
@@ -103,7 +43,7 @@ $readonly = "readonly";
 						<a class="" href="app/index/pegawai">Data Pegawai</a>
 					</li>
 					<li class="breadcrumb-item text-muted">
-						<a class="" href="app/index/pengalaman_kerja?reqId=<?=$reqRowId?>">Pengalaman Kerja</a>
+						<a class="" href="app/index/pengalaman_kerja?reqId=<?=$reqId?>">Pengalaman Kerja</a>
 					</li>
 					<li class="breadcrumb-item text-muted">
 						<a class="text-muted">Halaman Input</a>
@@ -131,11 +71,11 @@ $readonly = "readonly";
 	        	<div class="card-body">
 	        		<div class="form-group row">
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			Tanggal Lahir
+		        			Tanggal Mulai Kerja
 		        		</label>
 	        			<div class="col-lg-10 col-sm-12">
 	        				<div class="input-group date">
-		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTanggalLahir" value="<?=$reqTanggalLahir?>" />
+		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTglMulaiKerja" value="<?=$reqTglMulaiKerja?>" />
 		        				<div class="input-group-append">
 		        					<span class="input-group-text">
 		        						<i class="la la-calendar"></i>
@@ -147,25 +87,25 @@ $readonly = "readonly";
 	        		<div class="form-group row">
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Instansi</label>
 	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" name="reqKabupaten" id="reqKabupaten" value="<?=$reqKabupaten?>" />
+	        				<input type="text" class="form-control" name="reqInstansi" id="reqInstansi" value="<?=$reqInstansi?>" />
 	        			</div>
 	        		</div>
 	        		<div class="form-group row">
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Jabatan</label>
 	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" name="reqKecamatan" id="reqKecamatan" value="<?=$reqKecamatan?>" />
+	        				<input type="text" class="form-control" name="reqJabatan" id="reqJabatan" value="<?=$reqJabatan?>" />
 	        			</div>
 	        		</div>
 	        		<div class="form-group row">
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Masa Kerja (Th)</label>
 	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" name="reqKelurahanDesa" id="reqKelurahanDesa" value="<?=$reqKelurahanDesa?>" />
+	        				<input type="text" class="form-control" name="reqMasaKerjaTh" id="reqMasaKerjaTh" value="<?=$reqMasaKerjaTh?>" />
 	        			</div>
 	        		</div>
 	        		<div class="form-group row">
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Masa Kerja (Bln)</label>
 	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" name="reqNoFax" id="reqNoFax" value="<?=$reqNoFax?>" />
+	        				<input type="text" class="form-control" name="reqMasaKerjaBl" id="reqMasaKerjaBl" value="<?=$reqMasaKerjaBl?>" />
 	        			</div>
 	        		</div>
 	        		<div class="card-footer">
