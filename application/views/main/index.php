@@ -65,20 +65,19 @@ $arrcarimenuparent= $vfpeg->cariparentmenu($arrparam);
 
         <link rel="shortcut icon" href="assets/media/logos/favicon.png" />
         <link href="assets/css/new-style.css" rel="stylesheet" type="text/css" />
-
-        <script src="assets/plugins/global/plugins.bundle.js"></script>
-        <script src="assets/plugins/custom/prismjs/prismjs.bundle.js"></script>
-        <script src="assets/js/scripts.bundle.js"></script>
-
         <!-- easy ui -->
-        <link rel="stylesheet" type="text/css" href="lib/easyui/themes/default/easyui.css">
+        <!-- <link rel="stylesheet" type="text/css" href="lib/easyui/themes/default/easyui.css">
         <link rel="stylesheet" type="text/css" href="lib/easyui/themes/icon.css">
         <link rel="stylesheet" type="text/css" href="lib/easyui/demo/demo.css">
 
         <script type="text/javascript" src="lib/easyui/jquery-easyui-1.4.2/jquery.min.js"></script>
         <script type="text/javascript" src="lib/easyui/jquery-easyui-1.4.2/jquery.easyui.min.js"></script>
-        <script type="text/javascript" src="lib/easyui/breadcrum.js"></script>
+        <script type="text/javascript" src="lib/easyui/breadcrum.js"></script> -->
         <!-- easy ui -->
+        <script src="assets/plugins/global/plugins.bundle.js"></script>
+        <script src="assets/plugins/custom/prismjs/prismjs.bundle.js"></script>
+        <script src="assets/js/scripts.bundle.js"></script>
+
     
         <script src="assets/plugins/custom/datatables/datatables.bundle.js"></script>
         <script src="assets/js/valsix-serverside.js"></script>
@@ -109,6 +108,9 @@ $arrcarimenuparent= $vfpeg->cariparentmenu($arrparam);
         </style>
 
         <link rel="stylesheet" type="text/css" href="assets/css/gaya.css">
+
+
+        
         
     </head>
 
@@ -172,7 +174,7 @@ $arrcarimenuparent= $vfpeg->cariparentmenu($arrparam);
                         </button>
                     </div>
 
-                    <?if ($pg=='pegawai_data_fip' || $pg=='lokasi_kerja'|| $pg=='pengalaman_kerja'|| $pg=='sk_pns'|| $pg=='sk_cpns'|| $pg=='riwayat_pangkat'|| $pg=='riwayat_jabatan'|| $pg=='riwayat_tugas_tambahan'|| $pg=='riwayat_gaji'|| $pg=='pendidikan_umum'|| $pg=='pelatihan_kepemimpinan'|| $pg=='pelatihan_fungsional'|| $pg=='diklat_lpj'|| $pg=='pelatihan_teknis'|| $pg=='seminar_workshop'|| $pg=='pelatihan_non_klasikal'|| $pg=='orang_tua'|| $pg=='mertua'|| $pg=='suami_istri'|| $pg=='anak'|| $pg=='saudara'|| $pg=='organisasi'|| $pg=='penghargaan'|| $pg=='penilaian_potensi_diri'|| $pg=='catatan_prestasi'|| $pg=='hukuman'|| $pg=='cuti'|| $pg=='tambah_masa_kerja'|| $pg=='ijin_belajar'|| $pg=='sertifikat_pendidikan'|| $pg=='sertifikat_prestasi'|| $pg=='pak'|| $pg=='skp'|| $pg=='kinerja'|| $pg=='komparasi_data'){?>                    
+                    <?if ($pg=='pegawai_data_fip' || $pg=='lokasi_kerja'|| $pg=='pengalaman_kerja'|| $pg=='pengalaman_kerja_add'|| $pg=='sk_pns'|| $pg=='sk_cpns'|| $pg=='riwayat_pangkat'|| $pg=='riwayat_jabatan'|| $pg=='riwayat_tugas_tambahan'|| $pg=='riwayat_gaji'|| $pg=='pendidikan_umum'|| $pg=='pelatihan_kepemimpinan'|| $pg=='pelatihan_fungsional'|| $pg=='diklat_lpj'|| $pg=='pelatihan_teknis'|| $pg=='seminar_workshop'|| $pg=='pelatihan_non_klasikal'|| $pg=='orang_tua'|| $pg=='mertua'|| $pg=='suami_istri'|| $pg=='anak'|| $pg=='saudara'|| $pg=='organisasi'|| $pg=='penghargaan'|| $pg=='penilaian_potensi_diri'|| $pg=='catatan_prestasi'|| $pg=='hukuman'|| $pg=='cuti'|| $pg=='tambah_masa_kerja'|| $pg=='ijin_belajar'|| $pg=='sertifikat_pendidikan'|| $pg=='sertifikat_prestasi'|| $pg=='pak'|| $pg=='skp'|| $pg=='kinerja'|| $pg=='komparasi_data'){?>                    
                         <div class="aside-menu-wrapper flex-column-fluid" id="kt_aside_menu_wrapper">
                             <!--begin::Menu Container-->
                             <div id="kt_aside_menu" class="aside-menu my-4" data-menu-vertical="1" data-menu-scroll="1" data-menu-dropdown-timeout="500" style="border: 0px solid red; margin-top: 0px !important; margin-bottom: 0px !important;">
@@ -202,7 +204,7 @@ $arrcarimenuparent= $vfpeg->cariparentmenu($arrparam);
                                             <i class="menu-arrow"></i>
                                         </a>
                                     </li>
-                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover"<?if($pg=='pengalaman_kerja'){?>style="background-color: #EE9D01;"<?}?>>
+                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover"<?if($pg=='pengalaman_kerja'||$pg=='pengalaman_kerja_add'){?>style="background-color: #EE9D01;"<?}?>>
                                         <a href="app/index/pengalaman_kerja?reqId=<?=$reqId?>" class="menu-link menu-toggle">
                                             <span class="menu-text">Pengalaman Kerja</span>
                                             <i class="menu-arrow"></i>

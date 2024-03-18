@@ -828,15 +828,15 @@ $readonly = "readonly";
 	// 	placeholder: "Pilih jenis kelamin"
 	// });
 
-	// arrows= {leftArrow: '<i class="la la-angle-left"></i>', rightArrow: '<i class="la la-angle-right"></i>'};
-	// $('#kttanggallahir').datepicker({
-	// 	todayHighlight: true
-	// 	, autoclose: true
-	// 	, orientation: "bottom left"
-	// 	, clearBtn: true
-	// 	, format: 'dd-mm-yyyy'
-	// 	, templates: arrows
-	// });
+	arrows= {leftArrow: '<i class="la la-angle-left"></i>', rightArrow: '<i class="la la-angle-right"></i>'};
+	$('#kttanggallahir').datepicker({
+		todayHighlight: true
+		, autoclose: true
+		, orientation: "bottom left"
+		, clearBtn: true
+		, format: 'dd-mm-yyyy'
+		, templates: arrows
+	});
 
 	var _buttonSpinnerClasses = 'spinner spinner-right spinner-white pr-15';
 	jQuery(document).ready(function() {
