@@ -1,8 +1,5 @@
-<?
-include_once("functions/personal.func.php");
 
-$this->load->model("base/Pegawai");
-
+<?php
 $userpegawaimode= $this->userpegawaimode;
 $adminuserid= $this->adminuserid;
 
@@ -13,395 +10,597 @@ else
 
 $reqId= $this->input->get('reqId');
 
-$set= new Pegawai();
-// $skpns->selectByParams(array("PEGAWAI_ID" => $reqPegawaiId), -1,-1,'');
-// $skpns->firstRow();
-			   
-// $reqPejabatPenetapan			= $skpns->getField('PEJABAT_PENETAP_ID');
-// $reqNamaPejabatPenetap			= $skpns->getField('NAMA_PENETAP');
-// $reqNIPPejabatPenetap			= $skpns->getField('NIP_PENETAP');
-// $reqNoSuratKeputusan			= $skpns->getField('NO_SK');
-// $reqTanggalSuratKeputusan		= dateToPageCheck($skpns->getField('TANGGAL_SK'));
-// $reqTerhitungMulaiTanggal		= dateToPageCheck($skpns->getField('TMT_PNS'));
-// $reqNoDiklatPrajabatan			= $skpns->getField('NO_PRAJAB');
-// $reqTanggalDiklatPrajabatan	= dateToPageCheck($skpns->getField('TANGGAL_PRAJAB'));
-// $reqNoSuratUjiKesehatan		= $skpns->getField('NO_UJI_KESEHATAN');
-// $reqTanggalSuratUjiKesehatan	= dateToPageCheck($skpns->getField('TANGGAL_UJI_KESEHATAN'));
-// $reqGolRuang					= $skpns->getField('PANGKAT_ID');
-// $reqPengambilanSumpah			= $skpns->getField('SUMPAH');
-// $reqSKPNSId					= (int)$skpns->getField('SK_PNS_ID');
-// $reqTanggalSumpah				= $skpns->getField('TANGGAL_SUMPAH');
-// $reqNoSuratjiKesehatan			= $skpns->getField('NO_UJI_KESEHATAN');
-// $reqNoDiklatPrajabatan			= $skpns->getField('NO_PRAJAB');
-// $reqTh 						= $skpns->getField('MASA_KERJA_TAHUN');
-// $reqBl 						= $skpns->getField('MASA_KERJA_BULAN');
+$arrtabledata= array(
+    array("label"=>"Tanggal Mulai", "field"=> "TANGGAL_KERJA", "display"=>"",  "width"=>"")
+    , array("label"=>"Instansi", "field"=> "NAMA", "display"=>"",  "width"=>"")
+    , array("label"=>"Jabatan", "field"=> "JABATAN", "display"=>"",  "width"=>"")
+    , array("label"=>"Masa Kerja (Th)", "field"=> "MASA_KERJA_TAHUN", "display"=>"",  "width"=>"")
+    , array("label"=>"Masa Kerja (Bln)", "field"=> "MASA_KERJA_BULAN", "display"=>"",  "width"=>"")
 
-// $reqNoBeritaAcara				= $skpns->getField('NOMOR_BERITA_ACARA');
-// $reqTanggalBeritaAcara			= dateToPageCheck($skpns->getField('TANGGAL_BERITA_ACARA'));
-// $reqKeteranganLPJ				= $skpns->getField('KETERANGAN_LPJ');
-
-
-// echo $reqTmtJabatan;exit;
-$reqMode="update";
-// $reqMode="insert";
-$readonly = "readonly";
+    , array("label"=>"Warna", "field"=> "WARNA", "display"=>"1",  "width"=>"")
+    , array("label"=>"validasiid", "field"=> "TEMP_VALIDASI_HAPUS_ID", "display"=>"1", "width"=>"")
+    , array("label"=>"validasihapusid", "field"=> "TEMP_VALIDASI_ID", "display"=>"1", "width"=>"")
+    , array("label"=>"sorderdefault", "field"=> "SORDERDEFAULT", "display"=>"1", "width"=>"")
+    , array("label"=>"fieldid", "field"=> "PENGALAMAN_ID", "display"=>"1", "width"=>"")
+);
 ?>
-<style type="text/css">
-	   select[readonly].select2-hidden-accessible + .select2-container {
-        pointer-events: none;
-        touch-action: none;
-    }
 
-    select[readonly].select2-hidden-accessible + .select2-container .select2-selection {
-        background: #F3F6F9;
-        box-shadow: none;
-    }
-
-    select[readonly].select2-hidden-accessible + .select2-container .select2-selection__arrow, select[readonly].select2-hidden-accessible + .select2-container .select2-selection__clear {
-        display: none;
-    }
-
-</style>
-
-<!-- Bootstrap core CSS -->
-<!-- <link href="lib/bootstrap-3.3.7/dist/css/bootstrap.min.css" rel="stylesheet"> -->
-<link href="lib/bootstrap-3.3.7/docs/examples/navbar/navbar.css" rel="stylesheet">
-<!-- <script src="lib/bootstrap-3.3.7/dist/js/bootstrap.min.js"></script> -->
+<!-- SELECT2 -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet">
+<link href="lib/select2totreemaster/src/select2totree.css" rel="stylesheet">
+<!-- <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+<script src="lib/select2totreemaster/src/select2totree.js"></script>
 
 <div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
-	<div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
-		<div class="d-flex align-items-center flex-wrap mr-1">
-			<div class="d-flex align-items-baseline flex-wrap mr-5">
-				<ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
-					<li class="breadcrumb-item text-muted">
-						<a class="" href="app/index/pegawai">Data Pegawai</a>
-					</li>
-					<li class="breadcrumb-item text-muted">
-						<a class="text-muted">SK PNS</a>
-					</li>
-				</ul>
-			</div>
-		</div>
-	</div>
+    <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+        <div class="d-flex align-items-center flex-wrap mr-1">
+            <div class="d-flex align-items-baseline flex-wrap mr-5">
+                <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+                    <li class="breadcrumb-item text-muted">
+                        <a class="text-muted">Data Pegawai</a>
+                    </li>
+                    <li class="breadcrumb-item text-muted">
+                        <a class="text-muted">Nikah</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
 </div>
+
 <div class="d-flex flex-column-fluid">
     <div class="container">
-    	<!-- <div class="area-menu-fip">
-    		ffffj hai
-    	</div> -->
+
         <div class="card card-custom">
-        	<div class="card-header">
+            <div class="card-header">
                 <div class="card-title">
                     <span class="card-icon">
                         <i class="flaticon2-notepad text-primary"></i>
                     </span>
-                    <h3 class="card-label">SK PNS</h3>
+                    <h3 class="card-label">Nikah</h3>
+                </div>
+                <div class="card-toolbar">
+                    <!--begin::Dropdown-->
+                    <div class="dropdown dropdown-inline mr-2">
+                        <!-- <button type="button" class="btn btn-light-primary font-weight-bolder dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="svg-icon svg-icon-md"></span>Aksi
+                        </button>
+
+                        <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                            <ul class="navi flex-column navi-hover py-2">
+                                <li class="navi-item">
+                                    <a id="btnAdd" class="navi-link">
+                                        <span class="navi-icon"><i class="la la-plus"></i></span>
+                                        <span class="navi-text">Tambah</span>
+                                    </a>
+                                </li>
+                                <li class="navi-item">
+                                    <a id="btnUbahData" class="navi-link">
+                                        <span class="navi-icon"><i class="la la-edit"></i></span>
+                                        <span class="navi-text">Ubah</span>
+                                    </a>
+                                </li>
+                                <li class="navi-item">
+                                    <a id="btnUbahData" class="navi-link">
+                                        <span class="navi-icon"><i class="la la-edit"></i></span>
+                                        <span class="navi-text">Log</span>
+                                    </a>
+                                </li>
+                                <li class="navi-item">
+                                    <a  id="btnDelete" class="navi-link">
+                                        <span class="navi-icon"><i class="la la-trash"></i></span>
+                                        <span class="navi-text">Hapus</span>
+                                    </a>
+                                </li>
+                                <li class="navi-item">
+                                    <a id="btnUbahData" class="navi-link">
+                                        <span class="navi-icon"><i class="la la-edit"></i></span>
+                                        <span class="navi-text">Mutasi</span>
+                                    </a>
+                                </li>
+                                <li class="navi-item">
+                                    <a id="btnUbahData" class="navi-link">
+                                        <span class="navi-icon"><i class="la la-edit"></i></span>
+                                        <span class="navi-text">Cetak</span>
+                                    </a>
+                                </li>
+                                <li class="navi-item">
+                                    <a id="btnUbahData" class="navi-link">
+                                        <span class="navi-icon"><i class="la la-edit"></i></span>
+                                        <span class="navi-text">Cari</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div> -->
+
+                    	<button class="btn btn-light-primary" id="btnAdd"><i class="fa fa-plus" aria-hidden="true"></i> Tambah</button>
+	            		<button class="btn btn-light-warning" id="btnUbahData"><i class="fa fa-pen" aria-hidden="true"></i> Edit</button>
+	            		<button class="btn btn-light-danger" id="btnDelete"><i class="fa fa-trash" aria-hidden="true"></i> Hapus</button>
+	            		<!-- <button class="btn btn-light-success" id="btnAdd"><i class="fa fa-save" aria-hidden="true"></i> Simpan</button> -->
+	            		<!-- <button class="btn btn-light-danger" id="btnAdd"><i class="fa fa-undo" aria-hidden="true"></i> Batal</button> -->
+	            	
+                    </div>
+
+                    <!-- <button class="btn btn-light-primary" onclick="myFunction()"><i class="fa fa-sitemap" aria-hidden="true"></i> Satker</button> -->
                 </div>
             </div>
-            <form class="form" id="ktloginform" method="POST" enctype="multipart/form-data">
-	        	<div class="card-body">
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			Pejabat Penetapan
-		        		</label>
-	        			<div class="col-lg-10 col-sm-12">
-	        				<select class="form-control" id="reqPejabatPenetapan" name="reqPejabatPenetapan">
-	        					<option></option>
-	        				</select>
-	        			</div>
-	        		</div>
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			Nama Pejabat Penetap
-		        		</label>
-	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" name="reqNamaPejabatPenetap" id="reqNamaPejabatPenetap" value="<?=$reqNamaPejabatPenetap?>" />
-	        			</div>
-	        		</div>
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			NIP Pejabat Penetap
-		        		</label>
-	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" name="reqNIPPejabatPenetap" id="reqNIPPejabatPenetap" value="<?=$reqNIPPejabatPenetap?>" />
-	        			</div>
-	        		</div>
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			No. Surat Keputusan
-		        		</label>
-	        			<div class="col-lg-4 col-sm-12">
-	        				<input type="text" class="form-control" name="reqNoSuratKeputusan" id="reqNoSuratKeputusan" value="<?=$reqNoSuratKeputusan?>" />
-	        			</div>
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			Tanggal Surat Keputusan
-		        		</label>
-	        			<div class="col-lg-4 col-sm-12">
-	        				<div class="input-group date">
-		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTanggalSuratKeputusan" value="<?=$reqTanggalSuratKeputusan?>" />
-		        				<div class="input-group-append">
-		        					<span class="input-group-text">
-		        						<i class="la la-calendar"></i>
-		        					</span>
-		        				</div>
-		        			</div>
-	        			</div>
-	        		</div>
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			Terhitung Mulai Tanggal
-		        		</label>
-	        			<div class="col-lg-4 col-sm-12">
-	        				<div class="input-group date">
-		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTerhitungMulaiTanggal" value="<?=$reqTerhitungMulaiTanggal?>" />
-		        				<div class="input-group-append">
-		        					<span class="input-group-text">
-		        						<i class="la la-calendar"></i>
-		        					</span>
-		        				</div>
-		        			</div>
-	        			</div>
-	        		</div>
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			No. Berita Acara
-		        		</label>
-	        			<div class="col-lg-4 col-sm-12">
-	        				<input type="text" class="form-control" name="reqNoBeritaAcara" id="reqNoBeritaAcara" value="<?=$reqNoBeritaAcara?>" />
-	        			</div>
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			Tanggal Berita Acara
-		        		</label>
-	        			<div class="col-lg-4 col-sm-12">
-	        				<div class="input-group date">
-		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTanggalBeritaAcara" value="<?=$reqTanggalBeritaAcara?>" />
-		        				<div class="input-group-append">
-		        					<span class="input-group-text">
-		        						<i class="la la-calendar"></i>
-		        					</span>
-		        				</div>
-		        			</div>
-	        			</div>
-	        		</div>
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			No. Diklat Prajabatan
-		        		</label>
-	        			<div class="col-lg-4 col-sm-12">
-	        				<input type="text" class="form-control" name="reqNoDiklatPrajabatan" id="reqNoDiklatPrajabatan" value="<?=$reqNoDiklatPrajabatan?>" />
-	        			</div>
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			Tanggal Diklat Prajabatan
-		        		</label>
-	        			<div class="col-lg-4 col-sm-12">
-	        				<div class="input-group date">
-		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTanggalDiklatPrajabatan" value="<?=$reqTanggalDiklatPrajabatan?>" />
-		        				<div class="input-group-append">
-		        					<span class="input-group-text">
-		        						<i class="la la-calendar"></i>
-		        					</span>
-		        				</div>
-		        			</div>
-	        			</div>
-	        		</div>
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			No. Surat Uji Kesehatan
-		        		</label>
-	        			<div class="col-lg-4 col-sm-12">
-	        				<input type="text" class="form-control" name="reqNoSuratUjiKesehatan" id="reqNoSuratUjiKesehatan" value="<?=$reqNoSuratUjiKesehatan?>" />
-	        			</div>
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			Tanggal Surat Uji Kesehatan
-		        		</label>
-	        			<div class="col-lg-4 col-sm-12">
-	        				<div class="input-group date">
-		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTanggalSuratUjiKesehatan" value="<?=$reqTanggalSuratUjiKesehatan?>" />
-		        				<div class="input-group-append">
-		        					<span class="input-group-text">
-		        						<i class="la la-calendar"></i>
-		        					</span>
-		        				</div>
-		        			</div>
-	        			</div>
-	        		</div>
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			Pengkat/Gol.Ruang
-		        		</label>
-	        			<div class="col-lg-8 col-sm-12">
-	        				<select class="form-control" id="reqGolRuang" name="reqGolRuang">
-	        					<option></option>
-	        				</select>
-	        			</div>
-	        		</div>
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			Pengambilan Sumpah
-		        		</label>
-	        			<div class="col-lg-1 col-sm-12">
-	        				<input type="checkbox" class="form-control" name="reqPengambilanSumpah" id="reqPengambilanSumpah" value="<?=$reqPengambilanSumpah?>" />
-	        			</div>
-	        		</div>
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			Latihan Pra Jabatan(LPJ)
-		        		</label>
-	        			<div class="col-lg-4 col-sm-12">
-	        				<input type="text" class="form-control" name="reqKeteranganLPJ" id="reqKeteranganLPJ" value="<?=$reqKeteranganLPJ?>" />
-	        			</div>
-	        		</div>
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Masa Kerja </label>
-	        			<div class="col-lg-1 col-sm-12">
-	        				<input type="text" class="form-control" name="tempTh" id="tempTh" value="<?=$tempTh?>" />
-	        			</div>
-	        			<label class="col-form-label">Tahun </label>
-	        			<div class="col-lg-1 col-sm-12">
-	        				<input type="text" class="form-control" name="tempBl" id="tempBl" value="<?=$tempBl?>" />
-	        			</div>
-	        			<label class="col-form-label">Bulan</label>
-	        			
-	        		</div>
-	        	</div>
-	        	<div class="card-footer">
-	        		<div class="row">
-	        			<div class="col-lg-9">
-	        				<input type="hidden" name="reqMode" value="<?=$reqMode?>">
-	        				<input type="hidden" name="reqTempValidasiId" value="<?=$reqTempValidasiId?>">
-	        				<button type="submit" id="ktloginformsubmitbutton"  class="btn btn-primary font-weight-bold mr-2">Simpan</button>
-	        			</div>
-	        		</div>
-	        	</div>
-	        </form>
+
+            <div class="card-body">
+                <table class="table table-bordered table-hover table-checkable" id="kt_datatable" style="margin-top: 13px !important">
+                    <thead>
+                        <tr>
+                            <?php
+                            foreach($arrtabledata as $valkey => $valitem) 
+                            {
+                                echo "<th>".$valitem["label"]."</th>";
+                            }
+                            ?>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
         </div>
+
     </div>
 </div>
 
+<div style="height:0px;overflow:hidden">
+    <form id="ktloginform" method="POST" enctype="multipart/form-data" autocomplete="off">
+        <input type="file" id="reqLinkFileSk" name="reqLinkFileSk" accept=".pdf" onchange="submitForm();"/>
+        <input type="file" id="reqLinkFileStlud" name="reqLinkFileStlud" accept=".pdf" onchange="submitForm();"/>
+        <input type="hidden" id="reqDetilId" name="reqDetilId" />
+        <input type="hidden" id="reqPegawaiId" name="reqPegawaiId" />
+        <input type="hidden" id="reqRowId" name="reqRowId" />
+        <input type="hidden" id="reqId" name="reqId" />
+        <button type="submit" id="ktloginformsubmitbutton"  class="btn btn-primary font-weight-bold mr-2">Simpan</button>
+    </form>
+</div>
+
+
+<a href="#" id="triggercari" style="display:none" title="triggercari">triggercari</a>
 <script type="text/javascript">
+var datanewtable;
+var infotableid= "kt_datatable";
+var carijenis= "";
+var arrdata= <?php echo json_encode($arrtabledata); ?>;
+// console.log(arrdata);
+var indexfieldid= arrdata.length - 1;
+var indexvalidasiid= arrdata.length - 3;
+var indexvalidasihapusid= arrdata.length - 4;
+var valinfoid = '';
+var valinfovalidasiid = '';
+var valinfovalidasihapusid = '';
 
-	$(function () {
-		$("[rel=tooltip]").tooltip({ placement: 'right'});
-		// $('[data-toggle="tooltip"]').tooltip()
-	})
+$(function(){
+    var tt = $('#tt').treegrid({
+        url: 'json-main/satuan_kerja_json/treepilih',
+        rownumbers: false,
+        pagination: false,
+        idField: 'ID',
+        treeField: 'NAMA',
+        onBeforeLoad: function(row,param){
+            if (!row) { // load top level rows
+            param.id = 0; // set id=0, indicate to load new page rows
+            }
+        }
+    });
+});
 
-	$('#ktagamaid').select2({
-		placeholder: "Pilih agama"
-	});
+jQuery(document).ready(function() {
+    var jsonurl= "json-main/pengalaman_kerja_json/json?reqId=<?=$reqId?>";
+    ajaxserverselectsingle.init(infotableid, jsonurl, arrdata);
+        $('#vlsxloading').hide();
 
-	$('#ktsatuankerjad').select2({
-		placeholder: "Pilih Satuan Kerja"
-	});
-	
-	$('#ktjeniskelamin').select2({
-		placeholder: "Pilih jenis kelamin"
-	});
+    var infoid= [];
+    $('#'+infotableid+' tbody').on( 'click', 'tr', function () {
+        // untuk pilih satu data, kalau untuk multi comman saja
+        $('#'+infotableid+' tbody tr').removeClass('selected');
 
-	arrows= {leftArrow: '<i class="la la-angle-left"></i>', rightArrow: '<i class="la la-angle-right"></i>'};
-	$('#kttanggallahir').datepicker({
-		todayHighlight: true
-		, autoclose: true
-		, orientation: "bottom left"
-		, clearBtn: true
-		, format: 'dd-mm-yyyy'
-		, templates: arrows
-	});
+        var el= $(this);
+        el.addClass('selected');
 
-	var _buttonSpinnerClasses = 'spinner spinner-right spinner-white pr-15';
-	jQuery(document).ready(function() {
-		var form = KTUtil.getById('ktloginform');
-		var formSubmitUrl = "json-data/info_data_json/indentitaspegawai";
-		var formSubmitButton = KTUtil.getById('ktloginformsubmitbutton');
-		if (!form) {
-			return;
-		}
-		FormValidation
-		.formValidation(
-			form,
-			{
-				fields: {
-					/*reqEmail: {
-						validators: {
-							notEmpty: {
-								message: 'Email is required'
-							},
-							emailAddress: {
-								message: 'The value is not a valid email address'
-							}
-						}
-					},
-					reqSatuanKerjaNama: {
-						validators: {
-							notEmpty: {
-								message: 'Please select an option'
-							}
-						}
-					},*/
-				},
-				plugins: {
-					trigger: new FormValidation.plugins.Trigger(),
-					submitButton: new FormValidation.plugins.SubmitButton(),
-					bootstrap: new FormValidation.plugins.Bootstrap()
-				}
-			}
-			)
-		.on('core.form.valid', function() {
-				// Show loading state on button
-				KTUtil.btnWait(formSubmitButton, _buttonSpinnerClasses, "Please wait");
-				var formData = new FormData(document.querySelector('form'));
-				$.ajax({
-					url: formSubmitUrl,
-					data: formData,
-					processData: false,
-					contentType: false,
-					type: 'POST',
-					dataType: 'json',
-					success: function (response) {
-			        	// console.log(response); return false;
-			        	// Swal.fire("Good job!", "You clicked the button!", "success");
-			        	Swal.fire({
-			        		text: response.message,
-			        		icon: "success",
-			        		buttonsStyling: false,
-			        		confirmButtonText: "Ok",
-			        		customClass: {
-			        			confirmButton: "btn font-weight-bold btn-light-primary"
-			        		}
-			        	}).then(function() {
-			        		document.location.href = "app/index/pegawai_data";
-			        	});
-			        },
-			        error: function(xhr, status, error) {
-			        	var err = JSON.parse(xhr.responseText);
-			        	Swal.fire("Error", err.message, "error");
-			        },
-			        complete: function () {
-			        	KTUtil.btnRelease(formSubmitButton);
-			        }
-			    });
-			})
-		.on('core.form.invalid', function() {
-			Swal.fire({
-				text: "Sorry, looks like there are some errors detected, please try again.",
-				icon: "error",
-				buttonsStyling: false,
-				confirmButtonText: "Ok, got it!",
-				customClass: {
-					confirmButton: "btn font-weight-bold btn-light-primary"
-				}
-			}).then(function() {
-				KTUtil.scrollTop();
-			});
-		});
-	});
+        var dataselected= datanewtable.DataTable().row(this).data();
+        // console.log(dataselected);
+        // console.log(Object.keys(dataselected).length);
+        fieldinfoid= arrdata[indexfieldid]["field"]
+        fieldvalidasiid= arrdata[indexvalidasiid]["field"]
+        fieldvalidasihapusid= arrdata[indexvalidasihapusid]["field"]
+        valinfoid= dataselected[fieldinfoid];
+        valinfovalidasiid= dataselected[fieldvalidasiid];
+        valinfovalidasihapusid= dataselected[fieldvalidasihapusid];
+        if (valinfovalidasiid == null)
+        {
+            valinfovalidasiid = '';
+        }
+    });
 
-</script>
+    $('#btnDelete').on('click', function (e) {
+        if(valinfoid == "")
+        {
+            Swal.fire({
+                text: "Pilih salah satu data Riwayat terlebih dahulu.",
+                icon: "error",
+                buttonsStyling: false,
+                confirmButtonText: "Ok",
+                customClass: {
+                    confirmButton: "btn font-weight-bold btn-light-primary"
+                }
+            });
+        }
+        else
+        {
+            urlAjax= "json-data/info_data_json/jsondiklatteknisdelete?&reqDetilId="+valinfoid;
+            swal.fire({
+                title: 'Apakah anda yakin untuk hapus data?',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes'
+            }).then(function(result) { 
+                if (result.value) {
+                    $.ajax({
+                        url : urlAjax,
+                        type : 'DELETE',
+                        dataType:'json',
+                        beforeSend: function() {
+                            swal.fire({
+                                title: 'Please Wait..!',
+                                text: 'Is working..',
+                                onOpen: function() {
+                                    swal.showLoading()
+                                }
+                            })
+                        },
+                        success : function(data) { 
+                            swal.fire({
+                                position: 'top-right',
+                                icon: "success",
+                                type: 'success',
+                                title: data.message,
+                                showConfirmButton: false,
+                                timer: 2000
+                            }).then(function() {
+                                document.location.href = "app/index/pegawai_diklat_teknis?formulaid=<?=$formulaid?>";
+                            });
+                        },
+                        complete: function() {
+                            swal.hideLoading();
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            swal.hideLoading();
+                            var err = JSON.parse(jqXHR.responseText);
+                            Swal.fire("Error", err.message, "error");
+                        }
+                    });
+                }
+            });
+        }
+    });
 
-<!-- <button onclick="tes()">tesss</button>
-<script>
-    function tes() {
-        // pageUrl= "app/loadUrl/main/pegawai_data";
-        pageUrl= "iframe/index/pegawai_data";
-        openAdd(pageUrl);
+    $('#'+infotableid+' tbody').on( 'dblclick', 'tr', function () {
+      $("#btnUbahData").click();    
+    });
+
+    $("#btnAdd, #btnUbahData").on("click", function () {
+        btnid= $(this).attr('id');
+
+        if(valinfoid == "" && btnid == "btnUbahData")
+        {
+            Swal.fire({
+                text: "Pilih salah satu data Riwayat terlebih dahulu.",
+                icon: "error",
+                buttonsStyling: false,
+                confirmButtonText: "Ok",
+                customClass: {
+                    confirmButton: "btn font-weight-bold btn-light-primary"
+                }
+            });
+            return false;
+        }
+
+        if(btnid == "btnUbahData")
+            vpilihid= valinfoid;
+        else
+            vpilihid= "";
+
+        // varurl= "app/index/pegawai_diklat_teknis_add?formulaid=<?=$formulaid?>&reqRowId="+vpilihid;
+        varurl= "app/index/pengalaman_kerja_add?reqRowId="+vpilihid+"&reqId=<?=$reqId?>";
+        
+        document.location.href = varurl;
+    });
+
+    $("#buttoncaridetil").on("click", function () {
+        carijenis= "2";
+        calltriggercari();
+    });
+    $("#triggercari").on("click", function () {
+
+        if(carijenis == "1")
+        {
+            pencarian= $('#'+infotableid+'_filter input').val();
+            datanewtable.DataTable().search( pencarian ).draw();
+        }
+        else
+        {
+            
+        }
+    });
+
+});
+
+function calltriggercari()
+{
+    $(document).ready( function () {
+      $("#triggercari").click();      
+    });
+}
+
+function submitForm() {
+   $("#ktloginformsubmitbutton").click(); 
+}
+
+var _buttonSpinnerClasses = 'spinner spinner-right spinner-white pr-15';
+
+jQuery(document).ready(function(){
+    jQuery('#ktloginform').submit(function(event){ 
+        event.preventDefault();
+           var formData = new FormData(document.querySelector('form'));
+           var form = KTUtil.getById('ktloginform');
+           var formSubmitButton = KTUtil.getById('ktloginformsubmitbutton');
+                KTUtil.btnWait(formSubmitButton, _buttonSpinnerClasses, "Please wait");
+               $.ajax({
+                url: 'json-data/info_data_json/jsondiklatteknisupload', 
+                dataType: 'json', 
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: formData,                         
+                type: 'POST',
+                beforeSend: function() {
+                    swal.fire({
+                        title: 'Mohon tunggu sebentar..',
+                        text: 'File sedang dalam proses upload..',
+                        onOpen: function() {
+                            swal.showLoading()
+                        }
+                    })
+                },
+                success: function (response) {
+                // console.log(response); return false;
+                Swal.fire({
+                    text: response.message,
+                    icon: "success",
+                    buttonsStyling: false,
+                    confirmButtonText: "Ok",
+                    customClass: {
+                        confirmButton: "btn font-weight-bold btn-light-primary"
+                    }
+                    }).then(function() {
+                        location.reload();
+                    });
+                },
+                error: function(xhr, status, error) {
+                    var err = JSON.parse(xhr.responseText);
+                    Swal.fire("Error", err.message, "error");
+                   
+                },
+                complete: function () {
+                    KTUtil.btnRelease(formSubmitButton);
+                }
+            });   
+       }); 
+});
+
+function btnUploadSk(reqPegawaiId,reqRowId)
+{
+    $("#reqLinkFileSk").click();
+    $('#reqPegawaiId').val(reqPegawaiId);
+    $('#reqRowId').val(reqRowId);
+}
+
+function btnUploadStlud(reqPegawaiId,reqRowId)
+{
+    $("#reqLinkFileStlud").click();
+    $('#reqPegawaiId').val(reqPegawaiId);
+    $('#reqRowId').val(reqRowId);
+}
+
+
+function btnDeleteFile (fileid,reqPegawaiId,reqRowId,reqMode) {
+    if(fileid !== "")
+    {
+        urlAjax= "json-data/info_data_json/jsondiklatteknisdeletefile?reqFileId="+fileid+"&reqPegawaiId="+reqPegawaiId+"&reqRowId="+reqRowId+"&reqMode="+reqMode;
+        swal.fire({
+            title: 'Apakah anda yakin untuk hapus file?',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes'
+        }).then(function(result) { 
+            if (result.value) {
+                $.ajax({
+                    url : urlAjax,
+                    type : 'DELETE',
+                    dataType:'json',
+                    beforeSend: function() {
+                        swal.fire({
+                            title: 'Please Wait..!',
+                            text: 'Is working..',
+                            onOpen: function() {
+                                swal.showLoading()
+                            }
+                        })
+                    },
+                    success : function(data) { 
+                        swal.fire({
+                            position: 'center',
+                            icon: "success",
+                            type: 'success',
+                            title: data.message,
+                            showConfirmButton: false,
+                            timer: 2000
+                        }).then(function() {
+                            location.reload();
+                        });
+                    },
+                    complete: function() {
+                        swal.hideLoading();
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        swal.hideLoading();
+                        var err = JSON.parse(jqXHR.responseText);
+                        Swal.fire("Error", err.message, "error");
+                    }
+                });
+            }
+        });
     }
-</script> -->
+}
+
+$("#filter,#reqStatusHukuman").change(function() { 
+    setCariInfo()
+})
+
+function calltreeid(id, nama)
+{   
+    $("#reqId").val(id);
+    $("#bagian").text(nama);
+    setCariInfo()
+}
+function setCariInfo(){
+    $('#vlsxloading').show();
+     jsonurl= "json-main/pegawai_json/json?reqStatusHukuman=" + $("#reqStatusHukuman").val() + "&reqSearch=" + $("#filter").val() + "&reqId="+$("#reqId").val();
+    // jsonurl= "json-admin/export_json/jsonpegawaidiklat?reqBulan="+reqBulan+"&reqTahun="+reqTahun;
+    datanewtable.DataTable().ajax.url(jsonurl).load();
+    $('#vlsxloading').hide();
+}
+
+    
+</script>
+                
+
+<!-- loading -->
+<style type="text/css">
+    .loading {
+      position: fixed;
+      z-index: 999;
+      height: 2em;
+      width: 2em;
+      overflow: show;
+      margin: auto;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+    }
+
+    /* Transparent Overlay */
+    .loading:before {
+      content: '';
+      display: block;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(rgba(20, 20, 20,.8), rgba(0, 0, 0, .8));
+
+      background: -webkit-radial-gradient(rgba(20, 20, 20,.8), rgba(0, 0, 0,.8));
+    }
+
+    /* :not(:required) hides these rules from IE9 and below */
+    .loading:not(:required) {
+      /* hide "loading..." text */
+      font: 0/0 a;
+      color: transparent;
+      text-shadow: none;
+      background-color: transparent;
+      border: 0;
+    }
+
+    .loading:not(:required):after {
+      content: '';
+      display: block;
+      font-size: 10px;
+      width: 1em;
+      height: 1em;
+      margin-top: -0.5em;
+      -webkit-animation: spinner 150ms infinite linear;
+      -moz-animation: spinner 150ms infinite linear;
+      -ms-animation: spinner 150ms infinite linear;
+      -o-animation: spinner 150ms infinite linear;
+      animation: spinner 150ms infinite linear;
+      border-radius: 0.5em;
+      -webkit-box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1.1em 0 0, rgba(255,255,255, 0.75) 0 1.5em 0 0, rgba(255,255,255, 0.75) -1.1em 1.1em 0 0, rgba(255,255,255, 0.75) -1.5em 0 0 0, rgba(255,255,255, 0.75) -1.1em -1.1em 0 0, rgba(255,255,255, 0.75) 0 -1.5em 0 0, rgba(255,255,255, 0.75) 1.1em -1.1em 0 0;
+      box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1.1em 0 0, rgba(255,255,255, 0.75) 0 1.5em 0 0, rgba(255,255,255, 0.75) -1.1em 1.1em 0 0, rgba(255,255,255, 0.75) -1.5em 0 0 0, rgba(255,255,255, 0.75) -1.1em -1.1em 0 0, rgba(255,255,255, 0.75) 0 -1.5em 0 0, rgba(255,255,255, 0.75) 1.1em -1.1em 0 0;
+    }
+
+    /* Animation */
+
+    @-webkit-keyframes spinner {
+      0% {
+        -webkit-transform: rotate(0deg);
+        -moz-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        transform: rotate(0deg);
+      }
+      100% {
+        -webkit-transform: rotate(360deg);
+        -moz-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        transform: rotate(360deg);
+      }
+    }
+    @-moz-keyframes spinner {
+      0% {
+        -webkit-transform: rotate(0deg);
+        -moz-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        transform: rotate(0deg);
+      }
+      100% {
+        -webkit-transform: rotate(360deg);
+        -moz-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        transform: rotate(360deg);
+      }
+    }
+    @-o-keyframes spinner {
+      0% {
+        -webkit-transform: rotate(0deg);
+        -moz-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        transform: rotate(0deg);
+      }
+      100% {
+        -webkit-transform: rotate(360deg);
+        -moz-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        transform: rotate(360deg);
+      }
+    }
+    @keyframes spinner {
+      0% {
+        -webkit-transform: rotate(0deg);
+        -moz-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        transform: rotate(0deg);
+      }
+      100% {
+        -webkit-transform: rotate(360deg);
+        -moz-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+
+  <div class="loading" id='vlsxloading'>Loading&#8230;</div>
