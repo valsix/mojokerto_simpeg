@@ -226,7 +226,33 @@ var ajaxserverselectsingle = function() {
                 , "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
                     // console.log(aData['WARNA']);
 
-                    var valueStyle= loopIndex= maxLoop= "";
+                    if(typeof infocolormode == "undefined"){}
+                    else
+                    {
+                        // kondisikan sesuai kebutuhan mode
+                        if(infocolormode == "pegawai")
+                        {
+                            // getstatuseselon= aData[valarrdata[infocolor]["field"].toLowerCase()];
+                            getstatuseselon= aData[valarrdata[indexstatuseselon]["field"].toUpperCase()];
+                            gethukuman= aData[valarrdata[indexstatushukuman]["field"].toUpperCase()];
+                            gettugastambahan= aData[valarrdata[indextugastambahan]["field"].toUpperCase()];
+
+                            if (gethukuman == '1')
+                                $($(nRow).children()).attr('class', 'hukumanStyle');
+                            else if (getstatuseselon == '2')
+                                $($(nRow).children()).attr('class', 'EselonII');
+                            else if (getstatuseselon == '3')
+                                $($(nRow).children()).attr('class', 'EselonIII');
+                            else if (getstatuseselon == '4')
+                                $($(nRow).children()).attr('class', 'EselonIV');
+                            else if (getstatuseselon == '5')
+                                $($(nRow).children()).attr('class', 'EselonV');
+                            else if (gettugastambahan !== '')
+                                $($(nRow).children()).attr('class', 'tugastambahan');
+                        }
+                    }
+
+                    /*var valueStyle= loopIndex= maxLoop= "";
                     maxLoop= 11;
                     valueStyle= nRow % 2;
                     loopIndex= 6;
@@ -271,7 +297,7 @@ var ajaxserverselectsingle = function() {
                         {
                             $($(nRow).children()).attr('class', 'tidakWarna');
                         }
-                    }
+                    }*/
                 }
 
             });

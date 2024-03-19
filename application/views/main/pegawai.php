@@ -16,11 +16,25 @@ $arrtabledata= array(
     , array("label"=>"L/P", "field"=> "JENIS_KELAMIN", "display"=>"",  "width"=>"")
     , array("label"=>"Status", "field"=> "STATUS_PEGAWAI", "display"=>"",  "width"=>"")
     , array("label"=>"Gol.Ruang", "field"=> "GOL_RUANG", "display"=>"",  "width"=>"")
-    // , array("label"=>"Eselon", "field"=> "ESELON_ID", "display"=>"",  "width"=>"")
+    , array("label"=>"TMT Pangkat", "field"=> "TMT_PANGKAT", "display"=>"",  "width"=>"")
+    , array("label"=>"Eselon", "field"=> "ESELON", "display"=>"",  "width"=>"")
+    , array("label"=>"Jabatan", "field"=> "JABATAN", "display"=>"",  "width"=>"")
+    , array("label"=>"TMT Jabatan", "field"=> "TMT_JABATAN", "display"=>"",  "width"=>"")
+    , array("label"=>"Mata Pelajaran", "field"=> "JENIS_MAPEL", "display"=>"",  "width"=>"")
+    , array("label"=>"Agama", "field"=> "AGAMA", "display"=>"",  "width"=>"")
+    , array("label"=>"Jabatan Tambahan", "field"=> "JABATAN_TAMBAHAN_NAMA", "display"=>"",  "width"=>"")
+    , array("label"=>"TMT Jabatan Tambahan", "field"=> "TMT_JABATAN_AKHIR", "display"=>"",  "width"=>"")
+    , array("label"=>"Telepon", "field"=> "TELEPON", "display"=>"",  "width"=>"")
+    , array("label"=>"Alamat", "field"=> "ALAMAT", "display"=>"",  "width"=>"")
+    , array("label"=>"Satuan Kerja", "field"=> "SATKER", "display"=>"",  "width"=>"")
+    , array("label"=>"TMT Pensiun", "field"=> "TMT_PENSIUN", "display"=>"",  "width"=>"")
+    , array("label"=>"Pendidikan", "field"=> "PENDIDIKAN", "display"=>"",  "width"=>"")
+    , array("label"=>"Lulus", "field"=> "LULUS", "display"=>"",  "width"=>"")
 
-    , array("label"=>"Warna", "field"=> "WARNA", "display"=>"1",  "width"=>"")
-    , array("label"=>"validasiid", "field"=> "TEMP_VALIDASI_HAPUS_ID", "display"=>"1", "width"=>"")
-    , array("label"=>"validasihapusid", "field"=> "TEMP_VALIDASI_ID", "display"=>"1", "width"=>"")
+
+    , array("label"=>"tugas tambahan", "field"=> "TUGAS_TAMBAHAN_NEW", "display"=>"1",  "width"=>"")
+    , array("label"=>"hukuman status", "field"=> "HUKUMAN_STATUS_TERAKHIR", "display"=>"1",  "width"=>"")
+    , array("label"=>"status warna", "field"=> "STATUS_ESELON", "display"=>"1",  "width"=>"")
     , array("label"=>"sorderdefault", "field"=> "SORDERDEFAULT", "display"=>"1", "width"=>"")
     , array("label"=>"fieldid", "field"=> "PEGAWAI_ID", "display"=>"1", "width"=>"")
 );
@@ -28,6 +42,31 @@ $arrtabledata= array(
 $arrsatkertree= $this->sesstree;
 $arrsatkerdata= $this->sessdatatree;
 ?>
+
+<style type="text/css">
+/*untuk tambahan scroll*/
+.dataTables_wrapper{
+    *background:black;
+    *border:4px solid black;
+    height:calc(100% - 80px);
+    min-height:calc(100% - 80px);
+}
+.dataTables_scroll{
+    *background:pink;
+    *border:4px solid pink;
+    height:calc(100% - 80px);
+    min-height:calc(100% - 80px);
+}
+.dataTables_scrollBody{
+    *border:1px solid #C6F;
+    *height:400px !important;
+    
+    height:calc(100% - 40px);
+    min-height:calc(100% - 40px);
+    border:none !important;
+}
+</style>
+
 <!-- SELECT2 -->
 <!-- <link href="lib/select2/select2.min.css" rel="stylesheet"> -->
 <link href="lib/select2totreemaster/src/select2totree.css" rel="stylesheet">
@@ -171,11 +210,14 @@ var carijenis= "";
 var arrdata= <?php echo json_encode($arrtabledata); ?>;
 // console.log(arrdata);
 var indexfieldid= arrdata.length - 1;
-var indexvalidasiid= arrdata.length - 3;
-var indexvalidasihapusid= arrdata.length - 4;
 var valinfoid = '';
 var valinfovalidasiid = '';
-var valinfovalidasihapusid = '';
+
+var datainforesponsive= "1";
+indextugastambahan= arrdata.length - 5;
+indexstatushukuman= arrdata.length - 4;
+indexstatuseselon= arrdata.length - 3;
+infocolormode= 'pegawai';
 
 jQuery(document).ready(function() {
     var jsonurl= "json-main/pegawai_json/json";
@@ -193,16 +235,8 @@ jQuery(document).ready(function() {
         var dataselected= datanewtable.DataTable().row(this).data();
         // console.log(dataselected);
         // console.log(Object.keys(dataselected).length);
-        fieldinfoid= arrdata[indexfieldid]["field"]
-        fieldvalidasiid= arrdata[indexvalidasiid]["field"]
-        fieldvalidasihapusid= arrdata[indexvalidasihapusid]["field"]
+        fieldinfoid= arrdata[indexfieldid]["field"];
         valinfoid= dataselected[fieldinfoid];
-        valinfovalidasiid= dataselected[fieldvalidasiid];
-        valinfovalidasihapusid= dataselected[fieldvalidasihapusid];
-        if (valinfovalidasiid == null)
-        {
-            valinfovalidasiid = '';
-        }
     });
 
     $('#'+infotableid+' tbody').on( 'dblclick', 'tr', function () {
@@ -232,7 +266,6 @@ jQuery(document).ready(function() {
             vpilihid= "";
 
         varurl= "app/index/pegawai_data_fip?reqId="+vpilihid;
-        
         document.location.href = varurl;
     });
 

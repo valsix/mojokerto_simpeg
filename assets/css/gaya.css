@@ -471,7 +471,7 @@ ul.breadcrumb li a.text-muted {
 
 .breadcrumb.breadcrumb-dot .breadcrumb-item::after {
 
-    content: "›";
+    content: ">";
     padding-left: 0.5rem;
     font-size: 18px !important;
     color: red !important;
@@ -1231,6 +1231,13 @@ ul.breadcrumb li a.text-muted {
 		overflow: auto;
 	}
 }
+
+.hukumanStyle { background-color:#F00; }
+.EselonII { background-color:#fb5858; }
+.EselonIII { background-color:#778ff7; }
+.EselonIV { background-color:#5bdd73; }
+.EselonV { background-color:#FF9; }
+.tugastambahan { background-color:#ebeb19; }
 
 /*loading bar*/
 .loading {

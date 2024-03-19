@@ -161,14 +161,18 @@ class pegawai_json extends CI_Controller {
 
 		*/
 
+		$sOrder= "ORDER BY C.ESELON_ID ASC, A.TUGAS_TAMBAHAN_NEW ASC, B.PANGKAT_ID DESC, B.TMT_PANGKAT ASC";
+		// $statement .= " AND A.PEGAWAI_ID IN (995865801606, 995865800180, 235164100003, 235162000001)";
+
 		$searhjson= " AND (UPPER(B.GOL_RUANG) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(TEMPAT_LAHIR) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(NAMA) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(A.NAMA) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(A.NIP_LAMA) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(A.NIP_BARU) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(AMBIL_FORMAT_NIP_BARU(NIP_BARU)) LIKE '%".strtoupper($_GET['sSearch'])."%' ) ";
 
-		$set->selectByParamsMonitoring2(array(), $dsplyRange, $dsplyStart, $statement, $sOrder);
+		$set->selectmonitoring(array(), $dsplyRange, $dsplyStart, $statement, $sOrder);
 		
 		if(!empty($cekquery)){
 			echo $set->query;exit;
 		}
-		
+
+		$arrtgl= array("TMT_PANGKAT", "TMT_JABATAN", "TMT_JABATAN_AKHIR", "TMT_PENSIUN");
 		while ($set->nextRow()) 
 		{
 			$row= [];
@@ -177,6 +181,10 @@ class pegawai_json extends CI_Controller {
 				if ($valkey == "SORDERDEFAULT")
 				{
 					$row[$valkey]= "1";
+				}
+				else if(in_array($valkey, $arrtgl))
+				{
+					$row[$valkey]= dateToPageCheck($set->getField($valkey));
 				}
 				else
 				{

@@ -1,3 +1,133 @@
+create schema opt authorization postgres;
+
+--alter table pangkat_riwayat alter column pangkat_riwayat_id type numeric using cast(pangkat_riwayat_id as numeric);
+
+alter table pegawai add column pangkat_riwayat_id numeric, add column jabatan_riwayat_id numeric, add column jabatan_tambahan_id numeric, add column pendidikan_riwayat_id numeric, add column hukuman_id numeric;
+
+alter table pegawai add column format_nip_baru character varying;
+alter table pegawai add column vnama_lengkap character varying;
+
+create or replace view opt.pangkat_terakhir_riwayat as 
+select
+a.pangkat_riwayat_id, a.pegawai_id
+from
+(
+  select a.pangkat_riwayat_id, a.pegawai_id
+  , row_number () over ( partition by a.pegawai_id order by a.tmt_pangkat desc, a.tanggal_sk desc ) urut
+  from pangkat_riwayat a
+) a
+where urut = 1
+order by a.pegawai_id
+;
+
+update pegawai as u
+set
+pangkat_riwayat_id= aggr.pangkat_riwayat_id
+from
+(
+  select a.pegawai_id, a.pangkat_riwayat_id
+  from opt.pangkat_terakhir_riwayat a
+  where 1=1
+) as aggr
+where u.pegawai_id = aggr.pegawai_id;
+
+create or replace view opt.jabatan_terakhir_riwayat as 
+select
+a.jabatan_riwayat_id, a.pegawai_id
+from
+(
+  select a.jabatan_riwayat_id, a.pegawai_id
+  , row_number () over ( partition by a.pegawai_id order by a.tmt_jabatan desc ) urut
+  from jabatan_riwayat a
+) a
+where urut = 1
+order by a.pegawai_id
+;
+
+update pegawai as u
+set
+jabatan_riwayat_id= aggr.jabatan_riwayat_id
+from
+(
+  select a.pegawai_id, a.jabatan_riwayat_id
+  from opt.jabatan_terakhir_riwayat a
+  where 1=1
+) as aggr
+where u.pegawai_id = aggr.pegawai_id;
+
+create or replace view opt.jabatan_tambahan_terakhir_riwayat as 
+select
+a.jabatan_tambahan_id, a.pegawai_id
+from
+(
+  select a.jabatan_tambahan_id, a.pegawai_id
+  , row_number () over ( partition by a.pegawai_id order by a.tmt_jabatan desc ) urut
+  from jabatan_tambahan a
+) a
+where urut = 1
+order by a.pegawai_id
+;
+
+update pegawai as u
+set
+jabatan_tambahan_id= aggr.jabatan_tambahan_id
+from
+(
+  select a.pegawai_id, a.jabatan_tambahan_id
+  from opt.jabatan_tambahan_terakhir_riwayat a
+  where 1=1
+) as aggr
+where u.pegawai_id = aggr.pegawai_id;
+
+create or replace view opt.pendidikan_terakhir_riwayat as 
+select
+a.pendidikan_riwayat_id, a.pegawai_id
+from
+(
+  select a.pendidikan_riwayat_id, a.pegawai_id
+  , row_number () over ( partition by a.pegawai_id order by b.urutan desc ) urut
+  from pendidikan_riwayat a
+  join pendidikan b on a.pendidikan_id = b.pendidikan_id
+) a
+where urut = 1
+order by a.pegawai_id
+;
+
+update pegawai as u
+set
+pendidikan_riwayat_id= aggr.pendidikan_riwayat_id
+from
+(
+  select a.pegawai_id, a.pendidikan_riwayat_id
+  from opt.pendidikan_terakhir_riwayat a
+  where 1=1
+) as aggr
+where u.pegawai_id = aggr.pegawai_id;
+
+create or replace view opt.hukuman_terakhir_riwayat as 
+select
+a.hukuman_id, a.pegawai_id
+from
+(
+  select a.hukuman_id, a.pegawai_id
+  , row_number () over ( partition by a.pegawai_id order by a.tmt_sk desc ) urut
+  from hukuman a
+) a
+where urut = 1
+order by a.pegawai_id
+;
+
+update pegawai as u
+set
+hukuman_id= aggr.hukuman_id
+from
+(
+  select a.pegawai_id, a.hukuman_id
+  from opt.hukuman_terakhir_riwayat a
+  where 1=1
+) as aggr
+where u.pegawai_id = aggr.pegawai_id;
+--====================================================================================================================
 create or replace function ambil_satker_id(satkerid character varying)
 returns character varying as
 $body$
@@ -93,7 +223,7 @@ begin
 	vsatker_nama_detil:= ambil_satker_nama(new.satker_id);
 	new.vsatker_nama_detil:= vsatker_nama_detil;
 
-  return new;
+  	return new;
    
 end;
 $body$
@@ -136,20 +266,7 @@ cost 100;
 alter function getformatnipbaru(character varying)
 owner to postgres;
 
-alter table pegawai add column format_nip_baru character varying;
-alter table pegawai add column vnama_lengkap character varying;
-
-update pegawai as u
-set
-pegawai_id= aggr.pegawai_id
-from
-(
-  select a.pegawai_id
-  from pegawai a
-  where 1=1
-  --and coalesce(nullif(format_nip_baru, ''), null) is not null
-) as aggr
-where u.pegawai_id = aggr.pegawai_id;
+alter table pegawai add column vtmt_pensiun date;
 
 create or replace function ppegawai_detil_info()
   returns trigger as
@@ -162,6 +279,10 @@ declare
 	gelar_belakang character varying;
 	nama character varying;
 	vnama_lengkap character varying;
+	vtipepegawaiid character varying;
+	veselonid character varying;
+	vjabatan character varying;
+	vtmt_pensiun date;
 
 	/*
 	info_satuan_kerja_nama character varying;
@@ -190,7 +311,7 @@ begin
 	nama:= new.nama;
 
 	if coalesce(nullif(gelar_depan, ''), null) is null then vnama_lengkap:= '';
-	else vnama_lengkap:= gelar_depan || '. ';
+	else vnama_lengkap:= replace(gelar_depan, '.', '') || '. ';
 	end if;
 
 	vnama_lengkap:= vnama_lengkap || nama;
@@ -201,6 +322,35 @@ begin
 	--raise notice 'sql %',vnama_lengkap;
 
 	new.vnama_lengkap:= vnama_lengkap;
+
+	if new.tanggal_lahir is not null then
+		vtipepegawaiid:= new.tipe_pegawai_id; veselonid:= ''; vjabatan:= '';
+		--update tmt pensiun
+		if vtipepegawaiid = '11' or vtipepegawaiid = '21' then
+			select
+			substring(a.eselon_id::text, 1,1) veselonid, a.nama vjabatan
+			into veselonid, vjabatan
+			from jabatan_riwayat a
+			where a.jabatan_riwayat_id = new.jabatan_riwayat_id;
+		end if;
+		--raise notice 'sql %',vjabatan;
+
+		if vtipepegawaiid = '11' and (substring(veselonid::text, 1,1) = '1' or substring(veselonid::text, 1,1) = '2') then
+			select
+			to_date('01-' || to_char(add_months(new.tanggal_lahir, (60 * 12) + 1),  'mm-yyyy'), 'dd-mm-yyyy')
+			into vtmt_pensiun;
+		elsif vtipepegawaiid = '21' or (vtipepegawaiid = '22' and lower(vjabatan) like '%dokter%') then
+			select
+			to_date('01-' || to_char(add_months(new.tanggal_lahir, (60 * 12) + 1),  'mm-yyyy'), 'dd-mm-yyyy')
+			into vtmt_pensiun;
+		else
+			select
+			to_date('01-' || to_char(add_months(new.tanggal_lahir, (58 * 12) + 1),  'mm-yyyy'), 'dd-mm-yyyy')
+			into vtmt_pensiun;
+		end if;
+		--raise notice 'sql %',vtmt_pensiun;
+		new.vtmt_pensiun:= vtmt_pensiun;
+	end if;
 
   return new;
    
@@ -215,3 +365,15 @@ before insert or update
 on pegawai
 for each row
 execute procedure ppegawai_detil_info();
+
+update pegawai as u
+set
+pegawai_id= aggr.pegawai_id
+from
+(
+  select a.pegawai_id
+  from pegawai a
+  where 1=1
+  --and coalesce(nullif(format_nip_baru, ''), null) is not null
+) as aggr
+where u.pegawai_id = aggr.pegawai_id;
