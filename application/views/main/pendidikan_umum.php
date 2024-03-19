@@ -11,17 +11,19 @@ else
 $reqId= $this->input->get('reqId');
 
 $arrtabledata= array(
-    array("label"=>"Tanggal Mulai", "field"=> "TANGGAL_KERJA", "display"=>"",  "width"=>"")
-    , array("label"=>"Instansi", "field"=> "NAMA", "display"=>"",  "width"=>"")
-    , array("label"=>"Jabatan", "field"=> "JABATAN", "display"=>"",  "width"=>"")
-    , array("label"=>"Masa Kerja (Th)", "field"=> "MASA_KERJA_TAHUN", "display"=>"",  "width"=>"")
-    , array("label"=>"Masa Kerja (Bln)", "field"=> "MASA_KERJA_BULAN", "display"=>"",  "width"=>"")
+    array("label"=>"Pendidikan", "field"=> "PENDIDIKAN", "display"=>"",  "width"=>"")
+    , array("label"=>"Jurusan", "field"=> "JURUSAN", "display"=>"",  "width"=>"")
+    , array("label"=>"Nama Sekolah", "field"=> "NAMA", "display"=>"",  "width"=>"")
+    , array("label"=>"Alamat Sekolah", "field"=> "TEMPAT", "display"=>"",  "width"=>"")
+    , array("label"=>"Kepala Sekolah", "field"=> "KEPALA", "display"=>"",  "width"=>"")
+    , array("label"=>"No. STTB", "field"=> "NO_STTB", "display"=>"",  "width"=>"")
+    , array("label"=>"Tgl. STTB", "field"=> "TANGGAL_STTB", "display"=>"",  "width"=>"")
 
     , array("label"=>"Warna", "field"=> "WARNA", "display"=>"1",  "width"=>"")
     , array("label"=>"validasiid", "field"=> "TEMP_VALIDASI_HAPUS_ID", "display"=>"1", "width"=>"")
     , array("label"=>"validasihapusid", "field"=> "TEMP_VALIDASI_ID", "display"=>"1", "width"=>"")
     , array("label"=>"sorderdefault", "field"=> "SORDERDEFAULT", "display"=>"1", "width"=>"")
-    , array("label"=>"fieldid", "field"=> "PENGALAMAN_ID", "display"=>"1", "width"=>"")
+    , array("label"=>"fieldid", "field"=> "PENDIDIKAN_ID", "display"=>"1", "width"=>"")
 );
 ?>
 
