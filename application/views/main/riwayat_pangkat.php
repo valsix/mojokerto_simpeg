@@ -11,17 +11,23 @@ else
 $reqId= $this->input->get('reqId');
 
 $arrtabledata= array(
-    array("label"=>"Tanggal Mulai", "field"=> "TANGGAL_KERJA", "display"=>"",  "width"=>"")
-    , array("label"=>"Instansi", "field"=> "NAMA", "display"=>"",  "width"=>"")
-    , array("label"=>"Jabatan", "field"=> "JABATAN", "display"=>"",  "width"=>"")
-    , array("label"=>"Masa Kerja (Th)", "field"=> "MASA_KERJA_TAHUN", "display"=>"",  "width"=>"")
-    , array("label"=>"Masa Kerja (Bln)", "field"=> "MASA_KERJA_BULAN", "display"=>"",  "width"=>"")
+    array("label"=>"Pangkat", "field"=> "NMPANGKAT", "display"=>"",  "width"=>"")
+    , array("label"=>"TMT Pangkat", "field"=> "TMT_PANGKAT", "display"=>"",  "width"=>"")
+    , array("label"=>"No. Nota", "field"=> "NO_NOTA", "display"=>"",  "width"=>"")
+    , array("label"=>"Tgl. Nota", "field"=> "TANGGAL_NOTA", "display"=>"",  "width"=>"")
+    , array("label"=>"No. SK", "field"=> "NO_SK", "display"=>"",  "width"=>"")
+    , array("label"=>"Tgl. SK", "field"=> "TANGGAL_SK", "display"=>"",  "width"=>"")
+    , array("label"=>"Pejabat Penetap", "field"=> "PEJABAT_PENETAP", "display"=>"",  "width"=>"")
+    , array("label"=>"Jenis KP", "field"=> "NMJENIS", "display"=>"",  "width"=>"")
+    , array("label"=>"Kredit", "field"=> "KREDIT", "display"=>"",  "width"=>"")
+    , array("label"=>"Masa Kerja", "field"=> "MASA_KERJA", "display"=>"",  "width"=>"")
+    , array("label"=>"Keterangan", "field"=> "KETERANGAN", "display"=>"",  "width"=>"")
 
     , array("label"=>"Warna", "field"=> "WARNA", "display"=>"1",  "width"=>"")
     , array("label"=>"validasiid", "field"=> "TEMP_VALIDASI_HAPUS_ID", "display"=>"1", "width"=>"")
     , array("label"=>"validasihapusid", "field"=> "TEMP_VALIDASI_ID", "display"=>"1", "width"=>"")
     , array("label"=>"sorderdefault", "field"=> "SORDERDEFAULT", "display"=>"1", "width"=>"")
-    , array("label"=>"fieldid", "field"=> "PENGALAMAN_ID", "display"=>"1", "width"=>"")
+    , array("label"=>"fieldid", "field"=> "PANGKAT_RIWAYAT_ID", "display"=>"1", "width"=>"")
 );
 ?>
 
@@ -173,23 +179,8 @@ var valinfoid = '';
 var valinfovalidasiid = '';
 var valinfovalidasihapusid = '';
 
-$(function(){
-    var tt = $('#tt').treegrid({
-        url: 'json-main/satuan_kerja_json/treepilih',
-        rownumbers: false,
-        pagination: false,
-        idField: 'ID',
-        treeField: 'NAMA',
-        onBeforeLoad: function(row,param){
-            if (!row) { // load top level rows
-            param.id = 0; // set id=0, indicate to load new page rows
-            }
-        }
-    });
-});
-
 jQuery(document).ready(function() {
-    var jsonurl= "json-main/pengalaman_kerja_json/json?reqId=<?=$reqId?>";
+    var jsonurl= "json-main/riwayat_pangkat_json/json?reqId=<?=$reqId?>";
     ajaxserverselectsingle.init(infotableid, jsonurl, arrdata);
         $('#vlsxloading').hide();
 
