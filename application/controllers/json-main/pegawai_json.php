@@ -106,19 +106,24 @@ class pegawai_json extends CI_Controller {
 				$statement.= " AND A.SATKER_ID LIKE '".$reqId."%' ";
 		}
 
-		/*$reqSearch= "and TANGGAL_LAHIR is not null";
-
 		if($reqSearch == "")
-			$reqSearch.= " AND (STATUS_PEGAWAI = 1 OR STATUS_PEGAWAI = 2)";
+			$reqSearch.= " AND A.STATUS_PEGAWAI IN (1, 2)";
 
-		if($userLogin->userGroupId == 99)
-			$reqSearch.= " AND JUMLAH_HUKUMAN > 0 ";
+		$reqSearch.= " AND A.TANGGAL_LAHIR IS NOT NULL";
 
+		/*if($userLogin->userGroupId == 99)
+			$reqSearch.= " AND JUMLAH_HUKUMAN > 0 ";*/
 
 		if($reqStatusHukuman == ""){}
 		else
-		$reqSearch .= " AND CASE WHEN current_Date <= G.TANGGAL_AKHIR AND current_Date >= G.TANGGAL_MULAI THEN 1 ELSE 0 END = 1 ";
+		$reqSearch .= " AND CASE WHEN CURRENT_DATE <= G.TANGGAL_AKHIR AND CURRENT_DATE >= G.TANGGAL_MULAI THEN 1 ELSE 0 END = 1 ";
 
+		if(empty($reqId) || $reqId == "-1")
+			$statement.= "".$reqSearch;
+		else
+			$statement.= " AND A.SATKER_ID LIKE '".$reqId."%' ".$reqSearch;
+
+		/*
 		if($reqCari == ""){ // tanpa pencarian
 			if($reqId == "")
 				$statement .= "".$reqSearch;

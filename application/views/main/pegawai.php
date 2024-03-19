@@ -203,6 +203,7 @@ $arrsatkerdata= $this->sessdatatree;
     </div>
 </div>
 
+<a href="#" id="triggercari" style="display:none" title="triggercari">triggercari</a>
 <script type="text/javascript">
 var datanewtable;
 var infotableid= "kt_datatable";
@@ -269,13 +270,7 @@ jQuery(document).ready(function() {
         document.location.href = varurl;
     });
 
-    $("#buttoncaridetil").on("click", function () {
-        carijenis= "2";
-        calltriggercari();
-    });
-
     $("#triggercari").on("click", function () {
-console.log("Asd");
         if(carijenis == "1")
         {
             pencarian= $('#'+infotableid+'_filter input').val();
@@ -283,11 +278,24 @@ console.log("Asd");
         }
         else
         {
-            
+            reqStatusHukuman= $("#reqStatusHukuman").val();
+            reqSearch= encodeURIComponent($("#filter").val());
+            reqId= $("#reqSatkerId").val();
+
+            jsonurl= "json-main/pegawai_json/json?reqStatusHukuman="+reqStatusHukuman+"&reqSearch="+reqSearch+"&reqId="+reqId;
+            datanewtable.DataTable().ajax.url(jsonurl).load();
         }
     });
 
-    $("#filter,#reqStatusHukuman").change(function() { 
+    $("#filter, #reqStatusHukuman, #reqSatkerId").change(function() { 
+        btnid= $(this).attr('id');
+
+        carijenis= "2";
+        if(btnid == "reqSatkerId")
+        {
+            setinfosatkerdetil();
+        }
+
         calltriggercari();
     });
 
@@ -295,10 +303,6 @@ console.log("Asd");
     arrsatkerdata= JSON.parse('<?=JSON_encode($arrsatkerdata)?>');
 
     $("#reqSatkerId").select2ToTree({treeData: {dataArr: arrsatkertree, dftVal:"<?=$reqSatkerId?>"}, maximumSelectionLength: 3, placeholder: 'Pilih salah satu data'});
-
-    $("#reqSatkerId").change(function() {
-        setinfosatkerdetil();
-    });
 
     $(".area-filter").hide();
     $("button.filter").click(function(){
@@ -331,6 +335,7 @@ function setinfosatkerdetil()
 
 function calltriggercari()
 {
+    console.log("xxx");
     $(document).ready( function () {
       $("#triggercari").click();      
     });
