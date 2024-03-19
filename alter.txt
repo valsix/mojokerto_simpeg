@@ -1,0 +1,217 @@
+create or replace function ambil_satker_id(satkerid character varying)
+returns character varying as
+$body$
+declare
+vreturn character varying;
+vparent character varying;
+begin
+	select satker_id_parent into vparent from satker where satker_id = satkerid;
+
+	if substr(satkerid, 1, 6) = '010101' then
+		vreturn:= '010101';
+	elsif substr(satkerid, 1, 6) = '010104' then
+		vreturn:= '010104'; 
+	elsif substr(satkerid, 1, 6) = '010105' then
+		vreturn:= '010105';
+	elsif substr(satkerid, 1, 6) = '010201' then
+		vreturn:= '010201'; 
+	elsif substr(satkerid, 1, 6) = '010202' then
+		vreturn:= '010202';
+	elsif substr(satkerid, 1, 6) = '010205' then
+		vreturn:= '010205';
+	elsif substr(satkerid, 1, 6) = '010301' then
+		vreturn:= '010301';
+	elsif substr(satkerid, 1, 6) = '010302' then
+		vreturn:= '010302';
+	elsif substr(satkerid, 1, 6) = '010303' then
+		vreturn:= '010303';
+	elsif substr(satkerid, 1, 6) = '010304' then
+		vreturn:= '010304';
+	--elsif length(satkerid) = 4 and satkerid like '01%' then
+		--vreturn:= satkerid;
+	elsif vparent like '01%' = false then
+		vreturn:= satkerid;
+	else
+		vreturn:= substr(satkerid, 1, 2);
+	end if;
+return vreturn;
+end;
+$body$
+language plpgsql volatile cost 100;
+alter function ambil_satker_id(character varying) owner to postgres;
+
+create or replace function ambil_satker_nama(satkerid character varying)
+returns character varying as
+$body$
+declare
+vreturn character varying;
+vnama character varying;
+vid character varying;
+vcheckid character varying;
+begin
+
+	for i in 0 .. (length(satkerid) / 2) - 1 loop
+		--if length(satkerid) = 4 and satkerid like '01%' and i = 0 then
+		if satkerid in ('0101', '0102', '0103', '0104', '0105', '0106') and i = 0 then
+			vid:= satkerid;
+		else
+			vid:= ambil_satker_id(substr(satkerid, 1, length(satkerid) - (i * 2)));
+		end if;
+
+		if vcheckid = vid then
+			vreturn := vreturn;
+		else
+			select nama into vnama from satker where satker_id = vid;
+
+			if i = 0 then
+			vreturn := vnama;
+			else
+			vreturn := vnama || ' - ' || vreturn;
+			end if;
+		end if;
+
+		vcheckid:= vid;
+
+	end loop;
+	--raise notice 'sql %', vreturn;
+
+	return vreturn;
+
+end;
+$body$
+language plpgsql volatile cost 100;
+alter function ambil_satker_nama(character varying) owner to postgres;
+
+alter table satker add column vsatker_nama_detil character varying;
+create or replace function psatker_detil_info()
+  returns trigger as
+$body$
+declare
+	vsatker_nama_detil character varying;
+begin
+	
+	vsatker_nama_detil:= ambil_satker_nama(new.satker_id);
+	new.vsatker_nama_detil:= vsatker_nama_detil;
+
+  return new;
+   
+end;
+$body$
+language plpgsql volatile cost 100;
+alter function psatker_detil_info() owner to postgres;
+  
+drop trigger if exists tsatker_detil_info on satker;
+create trigger tsatker_detil_info
+before insert or update
+on satker
+for each row
+execute procedure psatker_detil_info();
+
+update satker as u
+set
+satker_id= aggr.satker_id
+from
+(
+  select a.satker_id
+  from satker a
+  where 1=1
+) as aggr
+where u.satker_id = aggr.satker_id;
+
+create or replace function getformatnipbaru(vnip character varying)
+returns character varying as
+$body$
+declare
+vreturn character varying;
+begin
+	select
+	substr(vnip, 0, 8) || ' ' || substr(vnip, 9, 6) || ' ' || substr(vnip, 15, 1) || ' ' || substr(vnip, 16, 3) vnip
+	into vreturn;
+	
+	return vreturn;
+end;
+$body$
+language plpgsql volatile
+cost 100;
+alter function getformatnipbaru(character varying)
+owner to postgres;
+
+alter table pegawai add column format_nip_baru character varying;
+alter table pegawai add column vnama_lengkap character varying;
+
+update pegawai as u
+set
+pegawai_id= aggr.pegawai_id
+from
+(
+  select a.pegawai_id
+  from pegawai a
+  where 1=1
+  --and coalesce(nullif(format_nip_baru, ''), null) is not null
+) as aggr
+where u.pegawai_id = aggr.pegawai_id;
+
+create or replace function ppegawai_detil_info()
+  returns trigger as
+$body$
+declare
+	var_id integer;
+	varcheck integer;
+	format_nip_baru character varying;
+	gelar_depan character varying;
+	gelar_belakang character varying;
+	nama character varying;
+	vnama_lengkap character varying;
+
+	/*
+	info_satuan_kerja_nama character varying;
+	info_satuan_kerja_induk character varying;
+	info_satuan_kerja_detil character varying;
+	*/
+begin
+
+	/*if new.satuan_kerja_id is not null then
+		select ambil_satker_nama_dynamic(new.satuan_kerja_id) into info_satuan_kerja_nama;
+		select ambil_satker_induk(new.satuan_kerja_id) into info_satuan_kerja_induk;
+		select ambil_satker_nama_detil(new.satuan_kerja_id) into info_satuan_kerja_detil;
+
+		new.info_satuan_kerja_nama:= info_satuan_kerja_nama;
+		new.info_satuan_kerja_induk:= info_satuan_kerja_induk;
+		new.info_satuan_kerja_detil:= info_satuan_kerja_detil;
+	end if;*/
+
+	if coalesce(nullif(new.nip_baru, ''), null) is not null then
+		select getformatnipbaru(new.nip_baru) into format_nip_baru;
+		new.format_nip_baru:= format_nip_baru;
+	end if;
+
+	gelar_depan:= new.gelar_depan;
+	gelar_belakang:= new.gelar_belakang;
+	nama:= new.nama;
+
+	if coalesce(nullif(gelar_depan, ''), null) is null then vnama_lengkap:= '';
+	else vnama_lengkap:= gelar_depan || '. ';
+	end if;
+
+	vnama_lengkap:= vnama_lengkap || nama;
+
+	if coalesce(nullif(gelar_belakang, ''), null) is not null then
+		vnama_lengkap:= vnama_lengkap || ', ' || gelar_belakang;
+	end if;
+	--raise notice 'sql %',vnama_lengkap;
+
+	new.vnama_lengkap:= vnama_lengkap;
+
+  return new;
+   
+end;
+$body$
+language plpgsql volatile cost 100;
+alter function ppegawai_detil_info() owner to postgres;
+  
+drop trigger if exists tpegawai_detil_info on pegawai;
+create trigger tpegawai_detil_info
+before insert or update
+on pegawai
+for each row
+execute procedure ppegawai_detil_info();

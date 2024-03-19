@@ -171,8 +171,8 @@ $reqTahunLulus= $set->getField('TAHUN');
                     </div>
                 </div>
                 <div class="clearfix"></div>
-                <div class="row" style="border: 1px solid cyan; margin-top: 40px;">
-                    <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-5">
                         <div class="area-ulasan-data-asn">
                             <div class="judul">
                                 Ulasan Data ASN
@@ -206,7 +206,7 @@ $reqTahunLulus= $set->getField('TAHUN');
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-7">
                         <div class="area-biodata-pegawai">
                             <ul class="nav nav-tabs">
                                 <li><a class="active" data-toggle="tab" href="#home">Data Pegawai</a></li>
@@ -217,50 +217,63 @@ $reqTahunLulus= $set->getField('TAHUN');
                             <div class="tab-content">
                                 <div id="home" class="tab-pane fade in active show">
                                     <form class="form-horizontal" action="/action_page.php">
-                                        NIP :                                                           Gol :                               
-                                        190305022033000001                              III/b TMT 01 April 2015
-                                        TTL :                                                           Jenis Kelamin :
-                                        Mojokerto, 02 Mei 1983                          Perempuan
-                                        Status / Kedudukan
-                                        PNS / PNS Terkena Hukuman Disiplin
-                                        OPD :
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed 
-                                        do eiusmod tempor incididunt ut labore et dolore magna 
-                                        aliqua. Ut enim ad minim veniam, quis nostrud exercitation 
-                                        ullamco laboris nisi ut aliquip ex ea commodo.
-                                      <!-- <div class="form-group">
-                                        <label class="control-label col-sm-2" for="email">Email:</label>
-                                        <div class="col-sm-10">
-                                          <input type="email" class="form-control" id="email" placeholder="Enter email">
+                                        <div class="form-group row">
+                                            <label class="control-label col-sm-2" for="email">NIP :</label>
+                                            <div class="col-sm-4">
+                                              <input type="email" class="form-control" id="email" value="190305022033000001">
+                                            </div>
+                                            <label class="control-label col-sm-2" for="email">Gol :</label>
+                                            <div class="col-sm-4">
+                                              <input type="email" class="form-control" id="email" value="III/b TMT 01 April 2015">
+                                            </div>
                                         </div>
-                                      </div>
-                                      <div class="form-group">
-                                        <label class="control-label col-sm-2" for="pwd">Password:</label>
-                                        <div class="col-sm-10">
-                                          <input type="password" class="form-control" id="pwd" placeholder="Enter password">
+
+                                        <div class="form-group row">
+                                            <label class="control-label col-sm-2" for="email">TTL :</label>
+                                            <div class="col-sm-4">
+                                              <input type="email" class="form-control" id="email" value="Mojokerto, 02 Mei 1983">
+                                            </div>
+                                            <label class="control-label col-sm-2" for="email">Jenis Kelamin :</label>
+                                            <div class="col-sm-4">
+                                              <input type="email" class="form-control" id="email" value="Perempuan">
+                                            </div>
                                         </div>
-                                      </div>
-                                      <div class="form-group">
-                                        <div class="col-sm-offset-2 col-sm-10">
-                                          <div class="checkbox">
-                                            <label><input type="checkbox"> Remember me</label>
-                                          </div>
+
+                                        <div class="form-group row">
+                                            <label class="control-label col-sm-2" for="email">Status / Kedudukan :</label>
+                                            <div class="col-sm-10">
+                                              <input type="email" class="form-control" id="email" value="PNS / PNS Terkena Hukuman Disiplin">
+                                            </div>
                                         </div>
-                                      </div>
-                                      <div class="form-group">
-                                        <div class="col-sm-offset-2 col-sm-10">
-                                          <button type="submit" class="btn btn-default">Submit</button>
+
+                                        <div class="form-group row">
+                                            <label class="control-label col-sm-2" for="email">OPD :</label>
+                                            <div class="col-sm-10">
+                                                <textarea class="form-control">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.</textarea>
+                                            </div>
                                         </div>
-                                      </div> -->
+
                                     </form> 
                                 </div>
                                 <div id="menu1" class="tab-pane fade">
-                                    <h3>Menu 1</h3>
-                                    <p>Some content in menu 1.</p>
+                                    <form class="form-horizontal" action="/action_page.php">
+                                        <div class="form-group row">
+                                            <label class="control-label col-sm-2" for="email">Test :</label>
+                                            <div class="col-sm-10">
+                                              <input type="email" class="form-control" id="email" value="Test Data ASN">
+                                            </div>
+                                        </div>
+                                    </form> 
                                 </div>
                                 <div id="menu2" class="tab-pane fade">
-                                    <h3>Menu 2</h3>
-                                    <p>Some content in menu 2.</p>
+                                    <form class="form-horizontal" action="/action_page.php">
+                                        <div class="form-group row">
+                                            <label class="control-label col-sm-2" for="email">Test :</label>
+                                            <div class="col-sm-10">
+                                              <input type="email" class="form-control" id="email" value="Test Data Pribadi">
+                                            </div>
+                                        </div>
+                                    </form> 
                                 </div>
                             </div>
                         </div>

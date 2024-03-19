@@ -241,6 +241,26 @@ DESCRIPTION			:
 		return $this->selectLimit($str,$limit,$from); 
 		
     }
+
+    function selectdata($paramsArray=array(), $limit=-1, $from=-1, $statement='', $order=' ORDER BY A.SATKER_ID ASC ')
+	{
+		$str = "
+		SELECT 
+			A.*
+		FROM satker A
+		WHERE 1 = 1
+		"; 
+		
+		foreach ($paramsArray as $key => $val)
+		{
+			$str .= " AND $key = '$val' ";
+		}
+		
+		$str .= $statement." ".$order;
+		$this->query = $str;
+		// echo $str;exit();
+		return $this->selectLimit($str,$limit,$from); 
+    }
 	
 	function selectByParamsTreeMonitoring($paramsArray=array(),$limit=-1,$from=-1, $statement='',$order=' ORDER BY A.satker_id ASC ')
 	{

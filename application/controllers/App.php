@@ -56,6 +56,10 @@ class App extends CI_Controller {
 
 		$this->userlevel= $this->session->userdata("userlevel".$configvlxsessfolder);
 
+		$this->session->set_userdata("sesstree", $_SESSION["sesstree"]);
+		$this->sesstree= $_SESSION["sesstree"];
+		$this->session->set_userdata("sessdatatree", $_SESSION["sessdatatree"]);
+		$this->sessdatatree= $_SESSION["sessdatatree"];
 
         if(!empty($reqPegawaiHard)){
         	$this->userpegawaimode=$reqPegawaiHard;
@@ -81,6 +85,23 @@ class App extends CI_Controller {
 			'pg' => $pg
 		);
 		// print_r($view);exit;
+
+		if($pg == "home")
+		{
+			$this->load->library('globalsatuankerja');
+
+			$vgl= new globalsatuankerja();
+			$arrtreesatuankerja= $vgl->getsatuankerjatree([]);
+			$arrdatasatuankerja= $vgl->getsatuankerjadata([]);
+
+			$this->session->set_userdata('sesstree'.$configvlxsessfolder, $arrtreesatuankerja);
+			$_SESSION["sesstree"]= $arrtreesatuankerja;
+			// print_r($_SESSION["sesstree"]);exit;
+
+			$this->session->set_userdata('sessdatatree'.$configvlxsessfolder, $arrdatasatuankerja);
+			$_SESSION["sessdatatree"]= $arrdatasatuankerja;
+			// print_r($_SESSION["sessdatatree"]);exit;
+		}
 		
 		$this->load->view('main/index', $data);
 	}

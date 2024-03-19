@@ -1,7 +1,7 @@
 <?
 include_once("functions/personal.func.php");
 
-$this->load->model("base-data/InfoData");
+/*$this->load->model("base-data/InfoData");
 
 $reqPegawaiId= $this->pegawaiId;
 $reqSatkerId= $this->input->get('reqSatkerId');
@@ -29,7 +29,7 @@ $set->selectbyparamspendidikan(array("A.PEGAWAI_ID"=>$reqPegawaiId),-1,-1);
 // echo $set->query;exit;
 $set->firstRow();
 $reqPendidikanTerkahir= $set->getField('PENDIDIKAN_NAMA');
-$reqTahunLulus= $set->getField('TAHUN');
+$reqTahunLulus= $set->getField('TAHUN');*/
 ?>
 <div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
     <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">

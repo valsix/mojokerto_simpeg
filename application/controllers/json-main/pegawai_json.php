@@ -91,20 +91,22 @@ class pegawai_json extends CI_Controller {
 		$userpegawaimode= $this->userpegawaimode;
 		$adminuserid= $this->adminuserid;
 
+		// ambil seseuai login
+		$sess_satkerid= $this->sess_satkerid;
 		
-		if($userLogin->userSatkerId == "")//kondisi login sebagai admin
+		if(empty($sess_satkerid))//kondisi login sebagai admin
 		{
-			$statement='';
+			$statement= '';
 		}
 		else // kondisi login sebagai SKPD
 		{
-			if($reqId == "")
-				$statement .= " AND A.SATKER_ID LIKE '".$userLogin->userSatkerId."%' ";
+			if(empty($reqId))
+				$statement.= " AND A.SATKER_ID LIKE '".$sess_satkerid."%' ";
 			else
-				$statement .= " AND A.SATKER_ID LIKE '".$reqId."%' ";
+				$statement.= " AND A.SATKER_ID LIKE '".$reqId."%' ";
 		}
 
-		$reqSearch= "and TANGGAL_LAHIR is not null";
+		/*$reqSearch= "and TANGGAL_LAHIR is not null";
 
 		if($reqSearch == "")
 			$reqSearch.= " AND (STATUS_PEGAWAI = 1 OR STATUS_PEGAWAI = 2)";
@@ -157,13 +159,16 @@ class pegawai_json extends CI_Controller {
 			$sOrder = "ORDER BY C.ESELON_ID asc,A.TUGAS_TAMBAHAN_NEW asc,B.PANGKAT_ID  DESC,B.TMT_PANGKAT asc";
 		// }
 
+		*/
 
-		// $sOrder = "";
-		$set->selectByParamsMonitoring2(array(), $dsplyRange, $dsplyStart, $statement." AND (UPPER(B.GOL_RUANG) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(TEMPAT_LAHIR) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(NAMA) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(A.NAMA) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(A.NIP_LAMA) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(A.NIP_BARU) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(AMBIL_FORMAT_NIP_BARU(NIP_BARU)) LIKE '%".strtoupper($_GET['sSearch'])."%' ) ", $sOrder);
+		$searhjson= " AND (UPPER(B.GOL_RUANG) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(TEMPAT_LAHIR) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(NAMA) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(A.NAMA) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(A.NIP_LAMA) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(A.NIP_BARU) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(AMBIL_FORMAT_NIP_BARU(NIP_BARU)) LIKE '%".strtoupper($_GET['sSearch'])."%' ) ";
+
+		$set->selectByParamsMonitoring2(array(), $dsplyRange, $dsplyStart, $statement, $sOrder);
 		
 		if(!empty($cekquery)){
 			echo $set->query;exit;
 		}
+		
 		while ($set->nextRow()) 
 		{
 			$row= [];
