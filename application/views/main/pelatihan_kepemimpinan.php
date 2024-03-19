@@ -11,17 +11,22 @@ else
 $reqId= $this->input->get('reqId');
 
 $arrtabledata= array(
-    array("label"=>"Tanggal Mulai", "field"=> "TANGGAL_KERJA", "display"=>"",  "width"=>"")
-    , array("label"=>"Instansi", "field"=> "NAMA", "display"=>"",  "width"=>"")
-    , array("label"=>"Jabatan", "field"=> "JABATAN", "display"=>"",  "width"=>"")
-    , array("label"=>"Masa Kerja (Th)", "field"=> "MASA_KERJA_TAHUN", "display"=>"",  "width"=>"")
-    , array("label"=>"Masa Kerja (Bln)", "field"=> "MASA_KERJA_BULAN", "display"=>"",  "width"=>"")
+    array("label"=>"Diklat", "field"=> "NAMADIKLAT", "display"=>"",  "width"=>"")
+    , array("label"=>"Tempat", "field"=> "TEMPAT", "display"=>"",  "width"=>"")
+    , array("label"=>"Penyelenggara", "field"=> "PENYELENGGARA", "display"=>"",  "width"=>"")
+    , array("label"=>"Angkatan", "field"=> "ANGKATAN", "display"=>"",  "width"=>"")
+    , array("label"=>"Tahun", "field"=> "TAHUN", "display"=>"",  "width"=>"")
+    , array("label"=>"Tanggal Mulai", "field"=> "TANGGAL_MULAI", "display"=>"",  "width"=>"")
+    , array("label"=>"Tanggal Selesai", "field"=> "TANGGAL_SELESAI", "display"=>"",  "width"=>"")
+    , array("label"=>"No. STTPP", "field"=> "NO_STTPP", "display"=>"",  "width"=>"")
+    , array("label"=>"Tgl. STTPP", "field"=> "TANGGAL_STTPP", "display"=>"",  "width"=>"")
+    , array("label"=>"Jumlah Jam", "field"=> "JUMLAH_JAM", "display"=>"",  "width"=>"")
 
     , array("label"=>"Warna", "field"=> "WARNA", "display"=>"1",  "width"=>"")
     , array("label"=>"validasiid", "field"=> "TEMP_VALIDASI_HAPUS_ID", "display"=>"1", "width"=>"")
     , array("label"=>"validasihapusid", "field"=> "TEMP_VALIDASI_ID", "display"=>"1", "width"=>"")
     , array("label"=>"sorderdefault", "field"=> "SORDERDEFAULT", "display"=>"1", "width"=>"")
-    , array("label"=>"fieldid", "field"=> "PENGALAMAN_ID", "display"=>"1", "width"=>"")
+    , array("label"=>"fieldid", "field"=> "DIKLAT_STRUKTURAL_ID", "display"=>"1", "width"=>"")
 );
 ?>
 
@@ -173,23 +178,8 @@ var valinfoid = '';
 var valinfovalidasiid = '';
 var valinfovalidasihapusid = '';
 
-$(function(){
-    var tt = $('#tt').treegrid({
-        url: 'json-main/satuan_kerja_json/treepilih',
-        rownumbers: false,
-        pagination: false,
-        idField: 'ID',
-        treeField: 'NAMA',
-        onBeforeLoad: function(row,param){
-            if (!row) { // load top level rows
-            param.id = 0; // set id=0, indicate to load new page rows
-            }
-        }
-    });
-});
-
 jQuery(document).ready(function() {
-    var jsonurl= "json-main/pengalaman_kerja_json/json?reqId=<?=$reqId?>";
+    var jsonurl= "json-main/pelatihan_kepemimpinan_json/json?reqId=<?=$reqId?>";
     ajaxserverselectsingle.init(infotableid, jsonurl, arrdata);
         $('#vlsxloading').hide();
 
