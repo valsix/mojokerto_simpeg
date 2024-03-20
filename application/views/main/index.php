@@ -48,7 +48,7 @@ $arrcarimenuparent= $vfpeg->cariparentmenu($arrparam);
     <head>
         <base href="<?=base_url()?>">
         <meta charset="utf-8" />
-        <title>Aplikasi Manajemen Talenta</title>
+        <title>SIMPEG 2024</title>
         <meta name="description" content="User profile block example" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <link href="assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
@@ -491,7 +491,7 @@ $arrcarimenuparent= $vfpeg->cariparentmenu($arrparam);
                                         </a>
                                     </li>
                                     <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover">
-                                        <a href="javascript:void(0);" class="menu-link menu-toggle">
+                                        <a href="app/index/daftar_urutan_pegawai" class="menu-link menu-toggle">
                                             <span class="menu-text">DUK</span>
                                             <i class="menu-arrow"></i>
                                         </a>

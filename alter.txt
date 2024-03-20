@@ -2,7 +2,7 @@ create schema opt authorization postgres;
 
 --alter table pangkat_riwayat alter column pangkat_riwayat_id type numeric using cast(pangkat_riwayat_id as numeric);
 
-alter table pegawai add column pangkat_riwayat_id numeric, add column jabatan_riwayat_id numeric, add column jabatan_tambahan_id numeric, add column pendidikan_riwayat_id numeric, add column hukuman_id numeric;
+alter table pegawai add column pangkat_riwayat_id numeric, add column jabatan_riwayat_id numeric, add column jabatan_tambahan_id numeric, add column pendidikan_riwayat_id numeric, add column hukuman_id numeric, add column diklat_struktural_id numeric;
 
 alter table pegawai add column format_nip_baru character varying;
 alter table pegawai add column vnama_lengkap character varying;
@@ -12,9 +12,9 @@ select
 a.pangkat_riwayat_id, a.pegawai_id
 from
 (
-  select a.pangkat_riwayat_id, a.pegawai_id
-  , row_number () over ( partition by a.pegawai_id order by a.tmt_pangkat desc, a.tanggal_sk desc ) urut
-  from pangkat_riwayat a
+	select a.pangkat_riwayat_id, a.pegawai_id
+	, row_number () over ( partition by a.pegawai_id order by a.tmt_pangkat desc, a.tanggal_sk desc ) urut
+	from pangkat_riwayat a
 ) a
 where urut = 1
 order by a.pegawai_id
@@ -25,9 +25,9 @@ set
 pangkat_riwayat_id= aggr.pangkat_riwayat_id
 from
 (
-  select a.pegawai_id, a.pangkat_riwayat_id
-  from opt.pangkat_terakhir_riwayat a
-  where 1=1
+	select a.pegawai_id, a.pangkat_riwayat_id
+	from opt.pangkat_terakhir_riwayat a
+	where 1=1
 ) as aggr
 where u.pegawai_id = aggr.pegawai_id;
 
@@ -36,9 +36,9 @@ select
 a.jabatan_riwayat_id, a.pegawai_id
 from
 (
-  select a.jabatan_riwayat_id, a.pegawai_id
-  , row_number () over ( partition by a.pegawai_id order by a.tmt_jabatan desc ) urut
-  from jabatan_riwayat a
+	select a.jabatan_riwayat_id, a.pegawai_id
+	, row_number () over ( partition by a.pegawai_id order by a.tmt_jabatan desc ) urut
+	from jabatan_riwayat a
 ) a
 where urut = 1
 order by a.pegawai_id
@@ -49,9 +49,9 @@ set
 jabatan_riwayat_id= aggr.jabatan_riwayat_id
 from
 (
-  select a.pegawai_id, a.jabatan_riwayat_id
-  from opt.jabatan_terakhir_riwayat a
-  where 1=1
+	select a.pegawai_id, a.jabatan_riwayat_id
+	from opt.jabatan_terakhir_riwayat a
+	where 1=1
 ) as aggr
 where u.pegawai_id = aggr.pegawai_id;
 
@@ -60,9 +60,9 @@ select
 a.jabatan_tambahan_id, a.pegawai_id
 from
 (
-  select a.jabatan_tambahan_id, a.pegawai_id
-  , row_number () over ( partition by a.pegawai_id order by a.tmt_jabatan desc ) urut
-  from jabatan_tambahan a
+	select a.jabatan_tambahan_id, a.pegawai_id
+	, row_number () over ( partition by a.pegawai_id order by a.tmt_jabatan desc ) urut
+	from jabatan_tambahan a
 ) a
 where urut = 1
 order by a.pegawai_id
@@ -73,9 +73,9 @@ set
 jabatan_tambahan_id= aggr.jabatan_tambahan_id
 from
 (
-  select a.pegawai_id, a.jabatan_tambahan_id
-  from opt.jabatan_tambahan_terakhir_riwayat a
-  where 1=1
+	select a.pegawai_id, a.jabatan_tambahan_id
+	from opt.jabatan_tambahan_terakhir_riwayat a
+	where 1=1
 ) as aggr
 where u.pegawai_id = aggr.pegawai_id;
 
@@ -84,10 +84,10 @@ select
 a.pendidikan_riwayat_id, a.pegawai_id
 from
 (
-  select a.pendidikan_riwayat_id, a.pegawai_id
-  , row_number () over ( partition by a.pegawai_id order by b.urutan desc ) urut
-  from pendidikan_riwayat a
-  join pendidikan b on a.pendidikan_id = b.pendidikan_id
+	select a.pendidikan_riwayat_id, a.pegawai_id
+	, row_number () over ( partition by a.pegawai_id order by b.urutan desc ) urut
+	from pendidikan_riwayat a
+	join pendidikan b on a.pendidikan_id = b.pendidikan_id
 ) a
 where urut = 1
 order by a.pegawai_id
@@ -98,9 +98,9 @@ set
 pendidikan_riwayat_id= aggr.pendidikan_riwayat_id
 from
 (
-  select a.pegawai_id, a.pendidikan_riwayat_id
-  from opt.pendidikan_terakhir_riwayat a
-  where 1=1
+	select a.pegawai_id, a.pendidikan_riwayat_id
+	from opt.pendidikan_terakhir_riwayat a
+	where 1=1
 ) as aggr
 where u.pegawai_id = aggr.pegawai_id;
 
@@ -109,9 +109,9 @@ select
 a.hukuman_id, a.pegawai_id
 from
 (
-  select a.hukuman_id, a.pegawai_id
-  , row_number () over ( partition by a.pegawai_id order by a.tmt_sk desc ) urut
-  from hukuman a
+	select a.hukuman_id, a.pegawai_id
+	, row_number () over ( partition by a.pegawai_id order by a.tmt_sk desc ) urut
+	from hukuman a
 ) a
 where urut = 1
 order by a.pegawai_id
@@ -122,9 +122,33 @@ set
 hukuman_id= aggr.hukuman_id
 from
 (
-  select a.pegawai_id, a.hukuman_id
-  from opt.hukuman_terakhir_riwayat a
-  where 1=1
+	select a.pegawai_id, a.hukuman_id
+	from opt.hukuman_terakhir_riwayat a
+	where 1=1
+) as aggr
+where u.pegawai_id = aggr.pegawai_id;
+
+create or replace view opt.diklat_struktural_terakhir_riwayat as 
+select
+a.diklat_struktural_id, a.pegawai_id
+from
+(
+	select a.diklat_struktural_id, a.pegawai_id
+	, row_number () over ( partition by a.pegawai_id order by a.tanggal_sttpp desc ) urut
+	from diklat_struktural a
+) a
+where urut = 1
+order by a.pegawai_id
+;
+
+update pegawai as u
+set
+diklat_struktural_id= aggr.diklat_struktural_id
+from
+(
+	select a.pegawai_id, a.diklat_struktural_id
+	from opt.diklat_struktural_terakhir_riwayat a
+	where 1=1
 ) as aggr
 where u.pegawai_id = aggr.pegawai_id;
 --====================================================================================================================
@@ -267,6 +291,7 @@ alter function getformatnipbaru(character varying)
 owner to postgres;
 
 alter table pegawai add column vtmt_pensiun date;
+alter table pegawai add column vttl character varying;
 
 create or replace function ppegawai_detil_info()
   returns trigger as
@@ -283,6 +308,8 @@ declare
 	veselonid character varying;
 	vjabatan character varying;
 	vtmt_pensiun date;
+	vtanggal_lahir date;
+	vttl character varying;
 
 	/*
 	info_satuan_kerja_nama character varying;
@@ -301,11 +328,13 @@ begin
 		new.info_satuan_kerja_detil:= info_satuan_kerja_detil;
 	end if;*/
 
+	--untuk membuat format nip baru
 	if coalesce(nullif(new.nip_baru, ''), null) is not null then
 		select getformatnipbaru(new.nip_baru) into format_nip_baru;
 		new.format_nip_baru:= format_nip_baru;
 	end if;
 
+	--untuk membuat nama lengkap
 	gelar_depan:= new.gelar_depan;
 	gelar_belakang:= new.gelar_belakang;
 	nama:= new.nama;
@@ -323,7 +352,9 @@ begin
 
 	new.vnama_lengkap:= vnama_lengkap;
 
-	if new.tanggal_lahir is not null then
+	--untuk membuat tmt pensiun
+	vtanggal_lahir:= new.tanggal_lahir;
+	if vtanggal_lahir is not null then
 		vtipepegawaiid:= new.tipe_pegawai_id; veselonid:= ''; vjabatan:= '';
 		--update tmt pensiun
 		if vtipepegawaiid = '11' or vtipepegawaiid = '21' then
@@ -337,20 +368,33 @@ begin
 
 		if vtipepegawaiid = '11' and (substring(veselonid::text, 1,1) = '1' or substring(veselonid::text, 1,1) = '2') then
 			select
-			to_date('01-' || to_char(add_months(new.tanggal_lahir, (60 * 12) + 1),  'mm-yyyy'), 'dd-mm-yyyy')
+			to_date('01-' || to_char(add_months(vtanggal_lahir, (60 * 12) + 1),  'mm-yyyy'), 'dd-mm-yyyy')
 			into vtmt_pensiun;
 		elsif vtipepegawaiid = '21' or (vtipepegawaiid = '22' and lower(vjabatan) like '%dokter%') then
 			select
-			to_date('01-' || to_char(add_months(new.tanggal_lahir, (60 * 12) + 1),  'mm-yyyy'), 'dd-mm-yyyy')
+			to_date('01-' || to_char(add_months(vtanggal_lahir, (60 * 12) + 1),  'mm-yyyy'), 'dd-mm-yyyy')
 			into vtmt_pensiun;
 		else
 			select
-			to_date('01-' || to_char(add_months(new.tanggal_lahir, (58 * 12) + 1),  'mm-yyyy'), 'dd-mm-yyyy')
+			to_date('01-' || to_char(add_months(vtanggal_lahir, (58 * 12) + 1),  'mm-yyyy'), 'dd-mm-yyyy')
 			into vtmt_pensiun;
 		end if;
 		--raise notice 'sql %',vtmt_pensiun;
 		new.vtmt_pensiun:= vtmt_pensiun;
 	end if;
+
+	--untuk membuat ttl
+	vttl:= '';
+	if coalesce(nullif(new.tempat_lahir, ''), null) is not null
+	then
+		vttl:= new.tempat_lahir;
+	end if;
+
+	if vtanggal_lahir is not null then
+		vttl:= vttl || ', ' || to_char(vtanggal_lahir, 'dd') || ' ' || nama_bulan(to_char(vtanggal_lahir, 'mm')::integer) || ' ' || to_char(vtanggal_lahir, 'yyyy');
+	end if;
+	--raise notice 'sql %',vttl;
+	new.vttl:= vttl;
 
   return new;
    
@@ -377,3 +421,126 @@ from
   --and coalesce(nullif(format_nip_baru, ''), null) is not null
 ) as aggr
 where u.pegawai_id = aggr.pegawai_id;
+
+--indexing
+--====================================================================================================================
+drop index if exists duk_indexing;
+create index duk_indexing on duk (satker_id_generate, duk);
+
+--cursor
+--====================================================================================================================
+drop type if exists daftar_urutan_pegawai_type;
+create type daftar_urutan_pegawai_type as (pegawai_id numeric, nip_lama character varying, nip_baru character varying, nama character varying, ttl character varying
+, jenis_kelamin character varying, status_pegawai character varying, pangkat_id numeric, gol_ruang character varying
+, tmt_pangkat date, jabatan character varying, tmt_jabatan date, eselon_id numeric, eselon character varying
+, tmt_eselon date, masa_kerja character varying, diklat_struktural character varying, tahun_diklat numeric
+, jumlah_diklat_struktural numeric, jumlah_diklat_nonstruktural numeric
+, pendidikan character varying, nama_sekolah character varying, tahun_lulus character varying, agama character varying
+, usia character varying, tipe_pegawai_id character varying, satker_id character varying
+, masa_kerja_tahun numeric, masa_kerja_bulan numeric, tempat_lahir character varying, tanggal_lahir date);
+
+drop function if exists daftar_urutan_pegawai_type();
+--select * from daftar_urutan_pegawai();
+create or replace function daftar_urutan_pegawai() returns setof daftar_urutan_pegawai_type as $$
+declare
+cur refcursor;
+query text;
+rec daftar_urutan_pegawai_type%rowtype;
+begin
+	query := '
+		select
+			p.pegawai_id, p.nip_lama, p.nip_baru, p.vnama_lengkap nama
+			, p.vttl ttl, p.jenis_kelamin, sp.nama status_pegawai
+			, coalesce(pt.pangkat_id, 11) pangkat_id, pt.pangkat_kode gol_ruang, pt.pangkat_tmt tmt_pangkat
+			, jt.jabatan, jt.tmt_jabatan, coalesce(jt.eselon_id, 99) eselon_id, jt.eselon, jt.tmt_eselon
+			, (pt.pangkat_masa_kerja_tahun || '' - ''::text) || pt.pangkat_masa_kerja_bulan masa_kerja
+			, ds.nama diklat_struktural, ds.tahun tahun_diklat
+			, coalesce(ds1.jumlah_diklat, 0) as jumlah_diklat_struktural
+			, coalesce(dns.jumlah_diklat, 0) as jumlah_diklat_nonstruktural
+			, (pd.pendidikan::text || '' - ''::text) || pd.jurusan::text pendidikan
+			, pd.nama_sekolah, pd.tahun tahun_lulus, ag.nama agama
+			,
+			(
+			case
+			when (to_number(to_char(now(), ''mm''::text), ''99''::text) - to_number(to_char(p.tanggal_lahir::timestamp with time zone, ''mm''::text), ''99''::text)) < 0::numeric then to_number(to_char(now(), ''yyyy''::text), ''9999''::text) - to_number(to_char(p.tanggal_lahir::timestamp with time zone, ''yyyy''::text), ''9999''::text) - 1::numeric
+			else to_number(to_char(now(), ''yyyy''::text), ''9999''::text) - to_number(to_char(p.tanggal_lahir::timestamp with time zone, ''yyyy''::text), ''9999''::text)
+			end || '' - ''::text) ||
+			case
+			when (to_number(to_char(now(), ''mm''::text), ''99''::text) - to_number(to_char(p.tanggal_lahir::timestamp with time zone, ''mm''::text), ''99''::text)) < 0::numeric then 12::numeric + to_number(to_char(now(), ''mm''::text), ''99''::text) - to_number(to_char(p.tanggal_lahir::timestamp with time zone, ''mm''::text), ''99''::text)
+			else to_number(to_char(now(), ''mm''::text), ''99''::text) - to_number(to_char(p.tanggal_lahir::timestamp with time zone, ''mm''::text), ''99''::text)
+			end usia
+			, p.tipe_pegawai_id, p.satker_id
+			, pt.pangkat_masa_kerja_tahun masa_kerja_tahun, pt.pangkat_masa_kerja_bulan masa_kerja_bulan
+			, p.tempat_lahir, p.tanggal_lahir
+		from pegawai p
+		inner join status_pegawai sp on p.status_pegawai = sp.status_pegawai_id
+		left join
+		(
+			select
+				a.jabatan_riwayat_id, coalesce(a.eselon_id,99) eselon_id, b.nama eselon
+				, a.tmt_jabatan, a.nama jabatan, a.tmt_eselon
+			from jabatan_riwayat a
+			left join eselon b on a.eselon_id = b.eselon_id
+		) jt on p.jabatan_riwayat_id = jt.jabatan_riwayat_id
+		left join
+		(
+			select
+				a.pangkat_riwayat_id, a.pangkat_id, b.kode pangkat_kode, b.nama pangkat_nama, a.tmt_pangkat pangkat_tmt
+				, a.masa_kerja_tahun pangkat_masa_kerja_tahun, a.masa_kerja_bulan pangkat_masa_kerja_bulan
+			from pangkat_riwayat a
+			left join pangkat b on a.pangkat_id = b.pangkat_id
+		) pt on p.pangkat_riwayat_id = pt.pangkat_riwayat_id
+		left join
+		(
+			select
+				a.diklat_struktural_id, c.nama, a.tahun
+			from diklat_struktural a
+			left join diklat c on a.diklat_id = c.diklat_id
+		) ds on p.diklat_struktural_id = ds.diklat_struktural_id
+		left join
+		(
+			select
+				x.pegawai_id, count(1) jumlah_diklat
+			from diklat_struktural x
+			group by x.pegawai_id
+		) ds1 on p.pegawai_id = ds1.pegawai_id
+		left join 
+		(
+			select dkt.pegawai_id, sum(dkt.jumlah) as jumlah_diklat
+			from 
+			(
+				select a.pegawai_id, count(a.pegawai_id) as jumlah
+				from diklat_fungsional a
+				group by a.pegawai_id
+				union all
+				select a.pegawai_id, count(a.pegawai_id) as jumlah
+				from diklat_teknis a
+				group by a.pegawai_id
+			) dkt
+			group by dkt.pegawai_id
+		) dns on p.pegawai_id = dns.pegawai_id
+		left join
+		(
+			select 
+			a.pendidikan_riwayat_id, a.pegawai_id, c.nama pendidikan, a.jurusan, a.nama nama_sekolah
+			, to_char(a.tanggal_sttb, ''yyyy'') tahun
+			from pendidikan_riwayat a
+			left join pendidikan c on a.pendidikan_id = c.pendidikan_id
+			where 1 = 1
+		) pd on p.pendidikan_riwayat_id = pd.pendidikan_riwayat_id
+		left join agama ag on p.agama_id = ag.agama_id
+		where 1=1
+		and p.status_pegawai in (1, 2)
+  		order by coalesce(pt.pangkat_id, 11) desc, pt.pangkat_tmt
+  		, coalesce(jt.eselon_id, 99), jt.tmt_eselon, pt.pangkat_masa_kerja_tahun desc, coalesce(dns.jumlah_diklat, 0::numeric) desc
+	';
+
+	open cur for execute query;
+		fetch cur into rec;
+			while found loop
+			return next rec;
+			fetch cur into rec;
+		end loop;
+	close cur;
+end;
+$$ language plpgsql strict;

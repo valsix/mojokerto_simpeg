@@ -10,6 +10,44 @@ class Pegawai extends Entity{
 		$this->Entity(); 
 	}
 
+	function callDUK()
+	{
+        $str = "
+        select pinsertduk('".$this->getField("PERIODE")."', '".$this->getField("SATKERID")."', '".$this->getField("TIPEPEGAWAI")."')
+		";
+		$this->query = $str;
+		// echo $str;exit;
+        return $this->execQuery($str);
+    }	
+
+	function selectByParamsDUK($paramsArray=array(),$limit=-1,$from=-1, $statement='')
+	{
+		$str = "
+		SELECT 
+			A.SATKER_ID, A.DUK, A.PEGAWAI_ID, A.NIP_LAMA, A.NIP_BARU NIP_BARU, A.NAMA, A.TEMPAT_LAHIR, A.TANGGAL_LAHIR
+			, A.JENIS_KELAMIN, A.STATUS_PEGAWAI, A.GOL_RUANG, A.TMT_PANGKAT
+			, A.JABATAN, A.TMT_JABATAN, A.ESELON, A.TMT_ESELON, A.MASA_KERJA_TAHUN, A.MASA_KERJA_BULAN, A.DIKLAT_STRUKTURAL
+			, A.TAHUN_DIKLAT, A.JUMLAH_DIKLAT_STRUKTURAL || '/' || A.JUMLAH_DIKLAT_NONSTRUKTURAL JUMLAH_DIKLAT
+			, A.PENDIDIKAN, A.TAHUN_LULUS, A.NAMA_SEKOLAH, A.USIA, B.NAMA SATKER_NAMA, A.AGAMA, C.TIPE_PEGAWAI_ID
+		FROM duk A
+		LEFT JOIN satker B ON A.SATKER_ID = B.SATKER_ID
+		INNER JOIN pegawai C ON A.PEGAWAI_ID = C.PEGAWAI_ID
+		WHERE 1 = 1
+ 		"; 
+		
+		while(list($key,$val) = each($paramsArray))
+		{
+			$str .= " AND $key = '$val' ";
+		}
+	
+		$str .= $statement." ";
+		$this->query = $str;
+		// echo $str;exit;
+		// ORDER BY DUK
+		
+		return $this->selectLimit($str,$limit,$from); 
+    }
+
 	function selectmonitoring($paramsArray=array(),$limit=-1,$from=-1, $statement='', $orderby='')
 	{
 		$str = "

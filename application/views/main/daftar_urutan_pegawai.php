@@ -1,4 +1,6 @@
 <?php
+$this->load->model('base/Pangkat');
+
 $userpegawaimode= $this->userpegawaimode;
 $adminuserid= $this->adminuserid;
 
@@ -8,35 +10,36 @@ else
     $reqPegawaiId= $this->pegawaiId;
 
 $arrtabledata= array(
-    array("label"=>"NIP", "field"=> "NIP_LAMA", "display"=>"", "width"=>"")
+    array("label"=>"DUK", "field"=> "DUK", "display"=>"", "width"=>"")
+    , array("label"=>"NIP", "field"=> "NIP_LAMA", "display"=>"", "width"=>"")
     , array("label"=>"NIP Baru", "field"=> "NIP_BARU", "display"=>"", "width"=>"")
     , array("label"=>"Nama", "field"=> "NAMA", "display"=>"", "width"=>"")
-    , array("label"=>"Tempat Lahir", "field"=> "TEMPAT_LAHIR", "display"=>"", "width"=>"")
-    , array("label"=>"Tanggal Lahir", "field"=> "TANGGAL_LAHIR", "display"=>"", "width"=>"")
+    , array("label"=>"TTL", "field"=> "TTL", "display"=>"", "width"=>"")
     , array("label"=>"L/P", "field"=> "JENIS_KELAMIN", "display"=>"", "width"=>"")
     , array("label"=>"Status", "field"=> "STATUS_PEGAWAI", "display"=>"", "width"=>"")
-    , array("label"=>"Gol.Ruang", "field"=> "GOL_RUANG", "display"=>"", "width"=>"")
+    , array("label"=>"Gol. Ruang", "field"=> "GOL_RUANG", "display"=>"", "width"=>"")
     , array("label"=>"TMT Pangkat", "field"=> "TMT_PANGKAT", "display"=>"", "width"=>"")
-    , array("label"=>"Eselon", "field"=> "ESELON", "display"=>"", "width"=>"")
     , array("label"=>"Jabatan", "field"=> "JABATAN", "display"=>"", "width"=>"")
     , array("label"=>"TMT Jabatan", "field"=> "TMT_JABATAN", "display"=>"", "width"=>"")
-    , array("label"=>"Mata Pelajaran", "field"=> "JENIS_MAPEL", "display"=>"", "width"=>"")
-    , array("label"=>"Agama", "field"=> "AGAMA", "display"=>"", "width"=>"")
-    , array("label"=>"Jabatan Tambahan", "field"=> "JABATAN_TAMBAHAN_NAMA", "display"=>"", "width"=>"")
-    , array("label"=>"TMT Jabatan Tambahan", "field"=> "TMT_JABATAN_AKHIR", "display"=>"", "width"=>"")
-    , array("label"=>"Telepon", "field"=> "TELEPON", "display"=>"", "width"=>"")
-    , array("label"=>"Alamat", "field"=> "ALAMAT", "display"=>"", "width"=>"")
-    , array("label"=>"Satuan Kerja", "field"=> "SATKER", "display"=>"", "width"=>"")
-    , array("label"=>"TMT Pensiun", "field"=> "TMT_PENSIUN", "display"=>"", "width"=>"")
+    , array("label"=>"Eselon", "field"=> "ESELON", "display"=>"", "width"=>"")
+    , array("label"=>"TMT Eselon", "field"=> "TMT_ESELON", "display"=>"", "width"=>"")
+    , array("label"=>"Masa Kerja", "field"=> "MASA_KERJA", "display"=>"", "width"=>"")
+    , array("label"=>"Nama Diklat", "field"=> "DIKLAT_STRUKTURAL", "display"=>"", "width"=>"")
+    , array("label"=>"Tahun Diklat", "field"=> "TAHUN_DIKLAT", "display"=>"", "width"=>"")
+    , array("label"=>"Struk./Non Struk.", "field"=> "JUMLAH_DIKLAT", "display"=>"", "width"=>"")
     , array("label"=>"Pendidikan", "field"=> "PENDIDIKAN", "display"=>"", "width"=>"")
-    , array("label"=>"Lulus", "field"=> "LULUS", "display"=>"", "width"=>"")
+    , array("label"=>"Sekolah", "field"=> "NAMA_SEKOLAH", "display"=>"", "width"=>"")
+    , array("label"=>"Usia", "field"=> "USIA", "display"=>"", "width"=>"")
 
-    , array("label"=>"tugas tambahan", "field"=> "TUGAS_TAMBAHAN_NEW", "display"=>"1", "width"=>"")
-    , array("label"=>"hukuman status", "field"=> "HUKUMAN_STATUS_TERAKHIR", "display"=>"1", "width"=>"")
-    , array("label"=>"status warna", "field"=> "STATUS_ESELON", "display"=>"1", "width"=>"")
     , array("label"=>"sorderdefault", "field"=> "SORDERDEFAULT", "display"=>"1", "width"=>"")
     , array("label"=>"fieldid", "field"=> "PEGAWAI_ID", "display"=>"1", "width"=>"")
 );
+
+$reqTahun= date("Y");
+$reqBulan= date("m");
+
+$pangkat= new Pangkat();
+$pangkat->selectByParams();
 
 $arrsatkertree= $this->sesstree;
 $arrsatkerdata= $this->sessdatatree;
@@ -78,10 +81,10 @@ $arrsatkerdata= $this->sessdatatree;
             <div class="d-flex align-items-baseline flex-wrap mr-5">
                 <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
                     <li class="breadcrumb-item text-muted">
-                        <a class="text-muted">Pegawai</a>
+                        <a class="text-muted">DUK</a>
                     </li>
                     <li class="breadcrumb-item text-muted">
-                        <a class="text-muted">Monitoring Pegawai</a>
+                        <a class="text-muted">Monitoring DUK</a>
                     </li>
                 </ul>
             </div>
@@ -100,7 +103,7 @@ $arrsatkerdata= $this->sessdatatree;
                         <i class="flaticon2-notepad text-primary"></i>
                     </span>
                     <h3 class="card-label">
-                        Pegawai<br/>
+                        DUK<br/>
                         <label id="infodetilsatkernama">Pemerintah Kabupaten Mojokerto</label>
                     </h3>
                 </div>
@@ -109,33 +112,10 @@ $arrsatkerdata= $this->sessdatatree;
 
                     <div class="dropdown dropdown-inline mr-2">
                         <button class="filter btn btn-light-primary pull-right">Filter <i class="fa fa-caret-down" aria-hidden="true"></i></button>
-
-                        <button type="button" class="btn btn-light-primary font-weight-bolder dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="svg-icon svg-icon-md"></span>Aksi
+                        <button type="button" id="btnProses" class="btn btn-light-primary font-weight-bolder">
+                            <i class="fa fa-list-alt" aria-hidden="true"></i>
+                            Proses
                         </button>
-
-                        <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
-                            <ul class="navi flex-column navi-hover py-2">
-                                <li class="navi-item">
-                                    <a id="btnAdd" class="navi-link">
-                                        <span class="navi-icon"><i class="la la-plus"></i></span>
-                                        <span class="navi-text">Tambah</span>
-                                    </a>
-                                </li>
-                                <li class="navi-item">
-                                    <a id="btnUbahData" class="navi-link">
-                                        <span class="navi-icon"><i class="la la-edit"></i></span>
-                                        <span class="navi-text">Ubah</span>
-                                    </a>
-                                </li>
-                                <li class="navi-item">
-                                    <a  id="btnDelete" class="navi-link">
-                                        <span class="navi-icon"><i class="la la-trash"></i></span>
-                                        <span class="navi-text">Hapus</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
                     </div>
 
                     <button class="btn btn-light-primary" onclick="showhidesatker()"><i class="fa fa-sitemap" aria-hidden="true"></i> Satker</button>
@@ -154,29 +134,59 @@ $arrsatkerdata= $this->sessdatatree;
             <div class="col-md-12">
                 <div class="area-filter">
                     <div class="row mb-8">
-                        <div class="col-md-6" style="margin-top: 10px">
-                            <label>Status Pegawai:</label>
-                            <select id='filter' class="form-control datatable-input">
-                                <option value='AND STATUS_PEGAWAI = 0'>Usulan</option>
-                                <option value='AND (STATUS_PEGAWAI = 1 OR STATUS_PEGAWAI = 2)' selected='selected'>CPNS / PNS</option>
-                                <option value='AND STATUS_PEGAWAI = 1'>CPNS</option>
-                                <option value='AND STATUS_PEGAWAI = 2'>PNS</option>
-                                <option value='AND STATUS_PEGAWAI = 12'>PPPK</option>
-                                <option value='AND STATUS_PEGAWAI = 3'>Pensiun</option>
-                                <option value='AND STATUS_PEGAWAI = 4'>TNI</option>
-                                <option value='AND (STATUS_PEGAWAI = 5 OR STATUS_PEGAWAI = 6)'>Tewas / Wafat</option>
-                                <option value='AND STATUS_PEGAWAI = 7'>Pindah</option>
-                                <option value='AND STATUS_PEGAWAI = 8'>Diberhentikan dengan hormat</option>
-                                <option value='AND STATUS_PEGAWAI = 9'>Diberhentikan tidak dengan hormat</option>
-                                <option value='AND STATUS_PEGAWAI = 10'>Pensiun BUP</option>
-                                <option value='AND STATUS_PEGAWAI = 11'>Pensiun Dini</option>
+                        <div class="col-md-4" style="margin-top: 10px">
+                            <label>Tipe:</label>
+                            <select id='reqTipePegawaiId' class="form-control datatable-input">
+                                <option value=''>Semua</option>
+                                <option value='1'>Struktural</option>
+                                <option value='2'>Fungsional</option>
                             </select>
                         </div>
-                        <div class="col-md-6" style="margin-top: 10px">
-                            <label>Hukuman:</label>
-                            <select id='reqStatusHukuman' class="form-control datatable-input">
-                                <option></option>
-                                <option value='1'>Masih Berlaku</option>
+                        <div class="col-md-4" style="margin-top: 10px">
+                            <label>Periode:</label>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <select id='reqBulan' class="form-control datatable-input">
+                                        <option value='01' <? if($reqBulan == "01") echo 'selected';?>>Januari</option>
+                                        <option value='02' <? if($reqBulan == "02") echo 'selected';?>>Februari</option>
+                                        <option value='03' <? if($reqBulan == "03") echo 'selected';?>>Maret</option>
+                                        <option value='04' <? if($reqBulan == "04") echo 'selected';?>>April</option>
+                                        <option value='05' <? if($reqBulan == "05") echo 'selected';?>>Mei</option>
+                                        <option value='06' <? if($reqBulan == "06") echo 'selected';?>>Juni</option>
+                                        <option value='07' <? if($reqBulan == "07") echo 'selected';?>>Juli</option>
+                                        <option value='08' <? if($reqBulan == "08") echo 'selected';?>>Agustus</option>
+                                        <option value='09' <? if($reqBulan == "09") echo 'selected';?>>September</option>
+                                        <option value='10' <? if($reqBulan == "10") echo 'selected';?>>Oktober</option>
+                                        <option value='11' <? if($reqBulan == "11") echo 'selected';?>>November</option>
+                                        <option value='12' <? if($reqBulan == "12") echo 'selected';?>>Desember</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <select id='reqTahun' class="form-control datatable-input">
+                                        <?
+                                            for($i=date("Y")-2; $i<=date("Y")+2; $i++)
+                                            {
+                                        ?>
+                                            <option value="<?=$i?>" <? if($reqTahun == $i) echo 'selected';?>><?=$i?></option>
+                                        <?
+                                            }
+                                        ?>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4" style="margin-top: 10px">
+                            <label>Gol.Ruang:</label>
+                            <select id='reqPangkatId' class="form-control datatable-input">
+                                <option value=''>Semua</option>
+                                <?
+                                while($pangkat->nextRow())
+                                {
+                                ?>
+                                    <option value="<?=$pangkat->getField("PANGKAT_ID")?>"><?=$pangkat->getField("KODE")?></option>
+                                <?
+                                }
+                                ?>
                             </select>
                         </div>
                     </div>
@@ -214,13 +224,9 @@ var valinfoid = '';
 var valinfovalidasiid = '';
 
 var datainforesponsive= "1";
-indextugastambahan= arrdata.length - 5;
-indexstatushukuman= arrdata.length - 4;
-indexstatuseselon= arrdata.length - 3;
-infocolormode= 'pegawai';
 
 jQuery(document).ready(function() {
-    var jsonurl= "json-main/pegawai_json/json";
+    var jsonurl= "json-main/pegawai_json/jsonduk";
     ajaxserverselectsingle.init(infotableid, jsonurl, arrdata);
         $('#vlsxloading').hide();
 
@@ -270,23 +276,29 @@ jQuery(document).ready(function() {
     });
 
     $("#triggercari").on("click", function () {
+        reqPangkatId= $("#reqPangkatId").val();
+        reqTipePegawaiId= $("#reqTipePegawaiId").val();
+        reqBulan= $("#reqBulan").val();
+        reqTahun= $("#reqTahun").val();
+
         if(carijenis == "1")
         {
             pencarian= $('#'+infotableid+'_filter input').val();
             datanewtable.DataTable().search( pencarian ).draw();
         }
+        else if(carijenis == "p")
+        {
+            jsonurl= "json-main/pegawai_json/jsonduk?reqMode=proses&reqTipePegawaiId="+reqTipePegawaiId+"&reqPangkatId="+reqPangkatId+"&reqBulan="+reqBulan+"&reqTahun="+reqTahun;
+            datanewtable.DataTable().ajax.url(jsonurl).load();
+        }
         else
         {
-            reqStatusHukuman= $("#reqStatusHukuman").val();
-            reqSearch= encodeURIComponent($("#filter").val());
-            reqId= $("#reqSatkerId").val();
-
-            jsonurl= "json-main/pegawai_json/json?reqStatusHukuman="+reqStatusHukuman+"&reqSearch="+reqSearch+"&reqId="+reqId;
+            jsonurl= "json-main/pegawai_json/jsonduk?reqTipePegawaiId="+reqTipePegawaiId+"&reqPangkatId="+reqPangkatId+"&reqBulan="+reqBulan+"&reqTahun="+reqTahun;
             datanewtable.DataTable().ajax.url(jsonurl).load();
         }
     });
 
-    $("#filter, #reqStatusHukuman, #reqSatkerId").change(function() { 
+    $("#reqTipePegawaiId, #reqPangkatId, #reqBulan, #reqTahun, #reqSatkerId").change(function() { 
         btnid= $(this).attr('id');
 
         carijenis= "2";
@@ -295,6 +307,11 @@ jQuery(document).ready(function() {
             setinfosatkerdetil();
         }
 
+        calltriggercari();
+    });
+
+    $('#btnProses').on('click', function () {
+        carijenis= "p";
         calltriggercari();
     });
 
@@ -317,7 +334,7 @@ jQuery(document).ready(function() {
 
     $("#reqSatkerId").select2ToTree({treeData: {dataArr: arrsatkertree, dftVal:"<?=$reqSatkerId?>"}, maximumSelectionLength: 3, placeholder: 'Pilih salah satu data'});
 
-    $(".area-filter").hide();
+    // $(".area-filter").hide();
     $("button.filter").click(function(){
         $(".area-filter").toggle();
     });
