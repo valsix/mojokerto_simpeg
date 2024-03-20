@@ -422,6 +422,113 @@ from
 ) as aggr
 where u.pegawai_id = aggr.pegawai_id;
 
+--proses data
+--====================================================================================================================
+--select pinsertduk('032024', '', '')
+drop function if exists pinsertduk(character varying, character varying, integer);
+drop function if exists pinsertduk(character varying, character varying, character varying);
+create or replace function pinsertduk(pperiode character varying, psatker character varying, ptipepegawai character varying)
+  returns void as
+$body$
+declare
+ sqlquery text ;
+begin
+	
+	sqlquery:= '';
+	if coalesce(nullif(psatker,'') , null ) is null
+	then
+		sqlquery := 'delete duk where 
+		periode = ''' || pperiode || '''
+		and pegawai_id in (select pegawai_id from pegawai where satker_id_generate is null
+		';
+
+		if coalesce(nullif(ptipepegawai,'') , null ) is not null
+      	then
+			sqlquery := sqlquery || ' and (tipe_pegawai_id like ''' || ptipepegawai || '%'') ';
+      	end if;
+
+      	sqlquery := sqlquery || ')';
+   else
+		sqlquery := 'delete duk where 
+		periode = ' || pperiode || '
+		and pegawai_id in (select pegawai_id from pegawai where satker_id_generate = ''' || psatker || '''
+		';
+
+		if coalesce(nullif(ptipepegawai,'') , null ) is not null
+      	then
+			sqlquery := sqlquery || ' and (tipe_pegawai_id like ''' || ptipepegawai || '%'') ';
+		end if;
+
+      	sqlquery := sqlquery || ')';
+      
+   end if;
+
+   if coalesce(nullif(sqlquery,'') , null ) is not null then
+   	raise notice 'sql %',sqlquery;
+   	--execute immediate sqlquery;
+   end if;
+
+   /*
+   sqlquery :=
+      'insert into duk (
+                    pegawai_id, nip_lama, nip_baru,
+                    nama, tempat_lahir, tanggal_lahir, jenis_kelamin,
+                    status_pegawai, pangkat_id, gol_ruang,
+                    tmt_pangkat, jabatan, tmt_jabatan,
+                    eselon_id, eselon, tmt_eselon,
+                    masa_kerja_tahun, masa_kerja_bulan, diklat_struktural, tahun_diklat,
+                    jumlah_diklat_struktural, jumlah_diklat_nonstruktural, pendidikan,
+                    nama_sekolah, tahun_lulus, agama,
+                    usia, tipe_pegawai_id, satker_id,
+                    duk, periode, satker_id_generate)
+                    select d.pegawai_id, d.nip_lama, ambil_format_nip_baru(d.nip_baru),
+                               d.nama, d.tempat_lahir, d.tanggal_lahir, d.jenis_kelamin,
+                               d.status_pegawai, d.pangkat_id, d.gol_ruang,
+                               d.tmt_pangkat, d.jabatan, d.tmt_jabatan,
+                               d.eselon_id, d.eselon, d.tmt_eselon,
+                               floor( d.masa_kerja_tahun  + 
+                                case
+                                when d.masa_kerja_bulan + months_between(to_date(''01' || pperiode || ''', ''ddmmyyyy''), d.tmt_pangkat) = 12
+                                then 1
+                                when d.masa_kerja_bulan + months_between(to_date(''01' || pperiode || ''', ''ddmmyyyy''), d.tmt_pangkat) > 12
+                                then  (d.masa_kerja_bulan+months_between(to_date(''01' || pperiode || ''', ''ddmmyyyy''), d.tmt_pangkat) )  / 12 
+                                else 0 
+                                end) masa_kerja_tahun,
+                                case 
+                                when d.masa_kerja_bulan + months_between(to_date(''01' || pperiode || ''', ''ddmmyyyy''), d.tmt_pangkat) = 12
+                                then 0
+                                when d.masa_kerja_bulan + months_between(to_date(''01' || pperiode || ''', ''ddmmyyyy''), d.tmt_pangkat) > 12
+                                then mod(d.masa_kerja_bulan + months_between(to_date(''01' || pperiode || ''', ''ddmmyyyy''), d.tmt_pangkat), 12)
+                                else (d.masa_kerja_bulan + months_between(to_date(''01' || pperiode || ''', ''ddmmyyyy''), d.tmt_pangkat)) end as masa_kerja_bulan,
+                               d.diklat_struktural, d.tahun_diklat,
+                               d.jumlah_diklat_struktural, d.jumlah_diklat_nonstruktural, d.pendidikan,
+                               d.nama_sekolah, d.tahun_lulus, d.agama,
+                               ambil_umur_duk(d.tanggal_lahir, to_date(''01' || pperiode || ''', ''ddmmyyyy'')) usia, d.tipe_pegawai_id, d.satker_id, rownum, '''
+      || pperiode
+      || ''', '''
+      || psatker
+      || '''
+                    from daftar_urutan_pegawai d
+      where (d.satker_id like '''
+      || psatker
+      || '%'' ) and (d.status_pegawai in (''cpns'',''pns''))';
+
+   if ptipepegawai is not null
+   then
+      sqlquery :=
+            sqlquery
+         || ' and (d.tipe_pegawai_id like '''
+         || ptipepegawai
+         || '%'') ';
+   end if;
+
+   execute immediate sqlquery;*/
+
+end;
+$body$
+language plpgsql volatile cost 100;
+alter function pinsertduk(character varying, character varying, character varying) owner to postgres;
+
 --indexing
 --====================================================================================================================
 drop index if exists duk_indexing;
