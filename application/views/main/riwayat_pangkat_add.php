@@ -1,7 +1,7 @@
 <?
 include_once("functions/personal.func.php");
 
-$this->load->model("base/PengalamanKerja");
+$this->load->model("base/RiwayatPangkat");
 
 $userpegawaimode= $this->userpegawaimode;
 $adminuserid= $this->adminuserid;
@@ -14,8 +14,8 @@ else
 $reqId= $this->input->get('reqId');
 $reqRowId= $this->input->get('reqRowId');
 
-$pengalaman= new PengalamanKerja();
-$pengalaman->selectByParams(array('PENGALAMAN_ID'=>$reqRowId));
+$pengalaman= new RiwayatPangkat();
+$pengalaman->selectByParams(array('PANGKAT_RIWAYAT_ID'=>$reqRowId));
 $pengalaman->firstRow();
 $reqPengalamanId = $pengalaman->getField('PENGALAMAN_ID');
 $reqInstansi 			= $pengalaman->getField('NAMA');
@@ -43,7 +43,7 @@ $readonly = "readonly";
 						<a class="" href="app/index/pegawai">Data Pegawai</a>
 					</li>
 					<li class="breadcrumb-item text-muted">
-						<a class="" href="app/index/pengalaman_kerja?reqId=<?=$reqId?>">Pengalaman Kerja</a>
+						<a class="" href="app/index/riwayat_pangkat?reqId=<?=$reqId?>">Riwayat Pangkat</a>
 					</li>
 					<li class="breadcrumb-item text-muted">
 						<a class="text-muted">Halaman Input</a>
