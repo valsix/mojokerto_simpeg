@@ -11,17 +11,25 @@ else
 $reqId= $this->input->get('reqId');
 
 $arrtabledata= array(
-    array("label"=>"Tanggal Mulai", "field"=> "TANGGAL_KERJA", "display"=>"",  "width"=>"")
-    , array("label"=>"Instansi", "field"=> "NAMA", "display"=>"",  "width"=>"")
-    , array("label"=>"Jabatan", "field"=> "JABATAN", "display"=>"",  "width"=>"")
-    , array("label"=>"Masa Kerja (Th)", "field"=> "MASA_KERJA_TAHUN", "display"=>"",  "width"=>"")
-    , array("label"=>"Masa Kerja (Bln)", "field"=> "MASA_KERJA_BULAN", "display"=>"",  "width"=>"")
-
+    array("label"=>"Nama", "field"=> "NAMA", "display"=>"",  "width"=>"")
+    , array("label"=>"Tempat Lahir", "field"=> "TEMPAT_LAHIR", "display"=>"",  "width"=>"")
+    , array("label"=>"Tgl Lahir", "field"=> "TANGGAL_LAHIR", "display"=>"",  "width"=>"")
+    , array("label"=>"Usia", "field"=> "USIA", "display"=>"",  "width"=>"")
+    , array("label"=>"Jenis Kelamin", "field"=> "JENIS_KELAMIN", "display"=>"",  "width"=>"")
+    , array("label"=>"Pekerjaan", "field"=> "PEKERJAAN", "display"=>"",  "width"=>"")
+    , array("label"=>"Alamat", "field"=> "ALAMAT", "display"=>"",  "width"=>"")
+    , array("label"=>"Kode Pos", "field"=> "KODEPOS", "display"=>"",  "width"=>"")
+    , array("label"=>"Telepon", "field"=> "TELEPON", "display"=>"",  "width"=>"")
+    , array("label"=>"Propinsi", "field"=> "NMPROPINSI", "display"=>"",  "width"=>"")
+    , array("label"=>"Kabupaten", "field"=> "NMKABUPATEN", "display"=>"",  "width"=>"")
+    , array("label"=>"Kecamatan", "field"=> "NMKECAMATAN", "display"=>"",  "width"=>"")
+    , array("label"=>"Kelurahan", "field"=> "NMKELURAHAN", "display"=>"",  "width"=>"")
+    
     , array("label"=>"Warna", "field"=> "WARNA", "display"=>"1",  "width"=>"")
     , array("label"=>"validasiid", "field"=> "TEMP_VALIDASI_HAPUS_ID", "display"=>"1", "width"=>"")
     , array("label"=>"validasihapusid", "field"=> "TEMP_VALIDASI_ID", "display"=>"1", "width"=>"")
     , array("label"=>"sorderdefault", "field"=> "SORDERDEFAULT", "display"=>"1", "width"=>"")
-    , array("label"=>"fieldid", "field"=> "PENGALAMAN_ID", "display"=>"1", "width"=>"")
+    , array("label"=>"fieldid", "field"=> "SAUDARA_ID", "display"=>"1", "width"=>"")
 );
 ?>
 
@@ -176,7 +184,7 @@ var valinfovalidasihapusid = '';
 
 
 jQuery(document).ready(function() {
-    var jsonurl= "json-main/pengalaman_kerja_json/json?reqId=<?=$reqId?>";
+    var jsonurl= "json-main/saudara_json/json?reqId=<?=$reqId?>";
     ajaxserverselectsingle.init(infotableid, jsonurl, arrdata);
         $('#vlsxloading').hide();
 

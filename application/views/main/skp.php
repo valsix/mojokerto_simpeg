@@ -11,17 +11,23 @@ else
 $reqId= $this->input->get('reqId');
 
 $arrtabledata= array(
-    array("label"=>"Tanggal Mulai", "field"=> "TANGGAL_KERJA", "display"=>"",  "width"=>"")
-    , array("label"=>"Instansi", "field"=> "NAMA", "display"=>"",  "width"=>"")
-    , array("label"=>"Jabatan", "field"=> "JABATAN", "display"=>"",  "width"=>"")
-    , array("label"=>"Masa Kerja (Th)", "field"=> "MASA_KERJA_TAHUN", "display"=>"",  "width"=>"")
-    , array("label"=>"Masa Kerja (Bln)", "field"=> "MASA_KERJA_BULAN", "display"=>"",  "width"=>"")
+    array("label"=>"Tahun", "field"=> "TAHUN", "display"=>"",  "width"=>"")
+    , array("label"=>"Nilai Skp", "field"=> "NAMA", "display"=>"",  "width"=>"")
+    , array("label"=>"Orientasi Pelayanan", "field"=> "ORIENTASI_PELAYANAN", "display"=>"",  "width"=>"")
+    , array("label"=>"Integritas", "field"=> "INTEGRITAS", "display"=>"",  "width"=>"")
+    , array("label"=>"Komitmen", "field"=> "KOMITMEN", "display"=>"",  "width"=>"")
+    , array("label"=>"Disiplin", "field"=> "DISIPLIN", "display"=>"",  "width"=>"")
+    , array("label"=>"Kerjasama", "field"=> "KERJASAMA", "display"=>"",  "width"=>"")
+    , array("label"=>"Kepimpinan", "field"=> "KEPEMIMPINAN", "display"=>"",  "width"=>"")
+    , array("label"=>"Inisiatif Kerja", "field"=> "INISIATIF_KERJA", "display"=>"",  "width"=>"")
+    , array("label"=>"Nip Pejabat Penilai", "field"=> "PEJABAT_NIP", "display"=>"",  "width"=>"")
+    , array("label"=>"Nip Atasan Pejabat Penilai", "field"=> "ATASAN_NIP", "display"=>"",  "width"=>"")
 
     , array("label"=>"Warna", "field"=> "WARNA", "display"=>"1",  "width"=>"")
     , array("label"=>"validasiid", "field"=> "TEMP_VALIDASI_HAPUS_ID", "display"=>"1", "width"=>"")
     , array("label"=>"validasihapusid", "field"=> "TEMP_VALIDASI_ID", "display"=>"1", "width"=>"")
     , array("label"=>"sorderdefault", "field"=> "SORDERDEFAULT", "display"=>"1", "width"=>"")
-    , array("label"=>"fieldid", "field"=> "PENGALAMAN_ID", "display"=>"1", "width"=>"")
+    , array("label"=>"fieldid", "field"=> "SKP_ID", "display"=>"1", "width"=>"")
 );
 ?>
 
@@ -173,23 +179,8 @@ var valinfoid = '';
 var valinfovalidasiid = '';
 var valinfovalidasihapusid = '';
 
-$(function(){
-    var tt = $('#tt').treegrid({
-        url: 'json-main/satuan_kerja_json/treepilih',
-        rownumbers: false,
-        pagination: false,
-        idField: 'ID',
-        treeField: 'NAMA',
-        onBeforeLoad: function(row,param){
-            if (!row) { // load top level rows
-            param.id = 0; // set id=0, indicate to load new page rows
-            }
-        }
-    });
-});
-
 jQuery(document).ready(function() {
-    var jsonurl= "json-main/pengalaman_kerja_json/json?reqId=<?=$reqId?>";
+    var jsonurl= "json-main/skp_json/json?reqId=<?=$reqId?>";
     ajaxserverselectsingle.init(infotableid, jsonurl, arrdata);
         $('#vlsxloading').hide();
 

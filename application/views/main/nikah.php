@@ -11,17 +11,19 @@ else
 $reqId= $this->input->get('reqId');
 
 $arrtabledata= array(
-    array("label"=>"Tanggal Mulai", "field"=> "TANGGAL_KERJA", "display"=>"",  "width"=>"")
-    , array("label"=>"Instansi", "field"=> "NAMA", "display"=>"",  "width"=>"")
-    , array("label"=>"Jabatan", "field"=> "JABATAN", "display"=>"",  "width"=>"")
-    , array("label"=>"Masa Kerja (Th)", "field"=> "MASA_KERJA_TAHUN", "display"=>"",  "width"=>"")
-    , array("label"=>"Masa Kerja (Bln)", "field"=> "MASA_KERJA_BULAN", "display"=>"",  "width"=>"")
+    array("label"=>"No. SK Cerai", "field"=> "SK_CERAI", "display"=>"",  "width"=>"")
+    , array("label"=>"Tgl. SK Cerai", "field"=> "SK_CERAI_TANGGAL", "display"=>"",  "width"=>"")
+    , array("label"=>"TMT SK Cerai", "field"=> "SK_CERAI_TMT", "display"=>"",  "width"=>"")
+    , array("label"=>"Nama", "field"=> "NAMA", "display"=>"",  "width"=>"")
+    , array("label"=>"PNS", "field"=> "NMPNS", "display"=>"",  "width"=>"")
+    , array("label"=>"NIP", "field"=> "NIP_PNS", "display"=>"",  "width"=>"")
+    , array("label"=>"Pekerjaan", "field"=> "PEKERJAAN", "display"=>"",  "width"=>"")
 
     , array("label"=>"Warna", "field"=> "WARNA", "display"=>"1",  "width"=>"")
     , array("label"=>"validasiid", "field"=> "TEMP_VALIDASI_HAPUS_ID", "display"=>"1", "width"=>"")
     , array("label"=>"validasihapusid", "field"=> "TEMP_VALIDASI_ID", "display"=>"1", "width"=>"")
     , array("label"=>"sorderdefault", "field"=> "SORDERDEFAULT", "display"=>"1", "width"=>"")
-    , array("label"=>"fieldid", "field"=> "PENGALAMAN_ID", "display"=>"1", "width"=>"")
+    , array("label"=>"fieldid", "field"=> "SUAMI_ISTRI_ID", "display"=>"1", "width"=>"")
 );
 ?>
 
@@ -173,23 +175,9 @@ var valinfoid = '';
 var valinfovalidasiid = '';
 var valinfovalidasihapusid = '';
 
-$(function(){
-    var tt = $('#tt').treegrid({
-        url: 'json-main/satuan_kerja_json/treepilih',
-        rownumbers: false,
-        pagination: false,
-        idField: 'ID',
-        treeField: 'NAMA',
-        onBeforeLoad: function(row,param){
-            if (!row) { // load top level rows
-            param.id = 0; // set id=0, indicate to load new page rows
-            }
-        }
-    });
-});
 
 jQuery(document).ready(function() {
-    var jsonurl= "json-main/pengalaman_kerja_json/json?reqId=<?=$reqId?>";
+    var jsonurl= "json-main/nikah_json/json?reqId=<?=$reqId?>";
     ajaxserverselectsingle.init(infotableid, jsonurl, arrdata);
         $('#vlsxloading').hide();
 
