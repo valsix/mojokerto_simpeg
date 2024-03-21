@@ -290,7 +290,7 @@ jQuery(document).ready(function() {
             vpilihid= "";
 
         // varurl= "app/index/pegawai_diklat_teknis_add?formulaid=<?=$formulaid?>&reqRowId="+vpilihid;
-        varurl= "app/index/pengalaman_kerja_add?reqRowId="+vpilihid+"&reqId=<?=$reqId?>";
+        varurl= "app/index/penghargaan_add?reqRowId="+vpilihid+"&reqId=<?=$reqId?>";
         
         document.location.href = varurl;
     });
