@@ -312,10 +312,10 @@ class pegawai_json extends CI_Controller {
 		// ambil seseuai login
 		$sess_satkerid= $this->sess_satkerid;
 
-		if($sess_satkerid == "")//kondisi login sebagai admin
+		if(empty($sess_satkerid))//kondisi login sebagai admin
 		{	
 			if(empty($reqId))
-				$reqRowId= '';
+				$reqRowId= "-1";
 			else
 				$reqRowId= $reqId;
 		}
@@ -331,9 +331,19 @@ class pegawai_json extends CI_Controller {
 		{
 			$setdetil= new Pegawai();
 			$setdetil->setField("PERIODE", $reqBulan.$reqTahun);	
-			$setdetil->setField("SATKERID", $reqRowId);	
+			$setdetil->setField("SATKERID", $reqRowId);
 			$setdetil->setField("TIPEPEGAWAI", $reqTipePegawaiId);	
 			$setdetil->callDUK();
+		}
+
+		if(!empty($reqTipePegawaiId))
+		{
+			$statement .= " AND A.TIPE_PEGAWAI_ID LIKE '".$reqTipePegawaiId."%'";
+		}
+
+		if(!empty($reqPangkatId))
+		{
+			$statement .= " AND A.GOL_RUANG = '".$reqPangkatId."'";
 		}
 		
 		$set->selectByParamsDUK(array(), $dsplyRange, $dsplyStart, $statement, $sOrder);
@@ -342,7 +352,7 @@ class pegawai_json extends CI_Controller {
 			echo $set->query;exit;
 		}
 
-		$arrtgl= array("TMT_PANGKAT", "TMT_JABATAN", "TMT_JABATAN_AKHIR", "TMT_PENSIUN");
+		$arrtgl= array("TMT_PANGKAT", "TMT_JABATAN", "TMT_ESELON");
 		while ($set->nextRow()) 
 		{
 			$row= [];

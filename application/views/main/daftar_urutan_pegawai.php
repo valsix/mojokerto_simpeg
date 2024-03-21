@@ -280,6 +280,7 @@ jQuery(document).ready(function() {
         reqTipePegawaiId= $("#reqTipePegawaiId").val();
         reqBulan= $("#reqBulan").val();
         reqTahun= $("#reqTahun").val();
+        reqSatkerId= $("#reqSatkerId").val();
 
         if(carijenis == "1")
         {
@@ -288,7 +289,7 @@ jQuery(document).ready(function() {
         }
         else if(carijenis == "p")
         {
-            jsonurl= "json-main/pegawai_json/jsonduk?reqMode=proses&reqTipePegawaiId="+reqTipePegawaiId+"&reqPangkatId="+reqPangkatId+"&reqBulan="+reqBulan+"&reqTahun="+reqTahun;
+            jsonurl= "json-main/pegawai_json/jsonduk?reqMode=proses&reqId="+reqSatkerId+"&reqTipePegawaiId="+reqTipePegawaiId+"&reqPangkatId="+reqPangkatId+"&reqBulan="+reqBulan+"&reqTahun="+reqTahun;
             datanewtable.DataTable().ajax.url(jsonurl).load();
         }
         else
@@ -311,8 +312,27 @@ jQuery(document).ready(function() {
     });
 
     $('#btnProses').on('click', function () {
-        carijenis= "p";
-        calltriggercari();
+        var _buttonSpinnerClasses = 'spinner spinner-right spinner-white pr-15';
+        var formSubmitButton = KTUtil.getById('btnProses');
+
+        Swal.fire({
+            title: 'Apakah anda yakin proses duk sesuai filter?',
+            text: "",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yakin',
+            cancelButtonText: 'Tidak',
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                KTUtil.btnWait(formSubmitButton, _buttonSpinnerClasses, "Please wait");
+                carijenis= "p";
+                calltriggercari();
+                KTUtil.btnRelease(formSubmitButton);
+            }
+        })
+        
     });
 
     <?

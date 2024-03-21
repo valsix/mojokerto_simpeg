@@ -497,7 +497,7 @@ $arrcarimenuparent= $vfpeg->cariparentmenu($arrparam);
                                         </a>
                                     </li>
                                     <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover">
-                                        <a href="javascript:void(0);" class="menu-link menu-toggle">
+                                        <a href="app/index/statistik" class="menu-link menu-toggle">
                                             <span class="menu-text">Statistik</span>
                                             <i class="menu-arrow"></i>
                                         </a>

@@ -28,10 +28,10 @@ class Pegawai extends Entity{
 			, A.JENIS_KELAMIN, A.STATUS_PEGAWAI, A.GOL_RUANG, A.TMT_PANGKAT
 			, A.JABATAN, A.TMT_JABATAN, A.ESELON, A.TMT_ESELON, A.MASA_KERJA_TAHUN, A.MASA_KERJA_BULAN, A.DIKLAT_STRUKTURAL
 			, A.TAHUN_DIKLAT, A.JUMLAH_DIKLAT_STRUKTURAL || '/' || A.JUMLAH_DIKLAT_NONSTRUKTURAL JUMLAH_DIKLAT
-			, A.PENDIDIKAN, A.TAHUN_LULUS, A.NAMA_SEKOLAH, A.USIA, B.NAMA SATKER_NAMA, A.AGAMA, C.TIPE_PEGAWAI_ID
+			, A.PENDIDIKAN, A.TAHUN_LULUS, A.NAMA_SEKOLAH, A.USIA, A.AGAMA--, B.NAMA SATKER_NAMA, C.TIPE_PEGAWAI_ID
 		FROM duk A
-		LEFT JOIN satker B ON A.SATKER_ID = B.SATKER_ID
-		INNER JOIN pegawai C ON A.PEGAWAI_ID = C.PEGAWAI_ID
+		--LEFT JOIN satker B ON A.SATKER_ID = B.SATKER_ID
+		--INNER JOIN pegawai C ON A.PEGAWAI_ID = C.PEGAWAI_ID
 		WHERE 1 = 1
  		"; 
 		
@@ -40,10 +40,9 @@ class Pegawai extends Entity{
 			$str .= " AND $key = '$val' ";
 		}
 	
-		$str .= $statement." ";
+		$str .= $statement." ORDER BY DUK";
 		$this->query = $str;
 		// echo $str;exit;
-		// ORDER BY DUK
 		
 		return $this->selectLimit($str,$limit,$from); 
     }
