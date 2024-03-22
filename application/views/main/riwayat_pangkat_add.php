@@ -2,6 +2,8 @@
 include_once("functions/personal.func.php");
 
 $this->load->model("base/RiwayatPangkat");
+$this->load->model("base/Core");
+
 
 $userpegawaimode= $this->userpegawaimode;
 $adminuserid= $this->adminuserid;
@@ -24,6 +26,10 @@ $reqTglMulaiKerja = dateToPageCheck($pengalaman->getField('TANGGAL_KERJA'));
 $reqMasaKerjaTh = $pengalaman->getField('MASA_KERJA_TAHUN');
 $reqMasaKerjaBl = $pengalaman->getField('MASA_KERJA_BULAN');
 // echo $reqTmtJabatan;exit;
+
+$pangkat= new Core();
+$pangkat->selectByParamsPangkat(array());
+
 $reqMode="update";
 // $reqMode="insert";
 $readonly = "readonly";
@@ -71,11 +77,30 @@ $readonly = "readonly";
 	        	<div class="card-body">
 	        		<div class="form-group row">
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			Tanggal Mulai Kerja
+		        			STLUD
 		        		</label>
 	        			<div class="col-lg-10 col-sm-12">
 	        				<div class="input-group date">
-		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTglMulaiKerja" value="<?=$reqTglMulaiKerja?>" />
+		        				<select <?=$disabled?> class="form-control"  name="reqSTLUD">
+									<option></option>
+				                    <option value="1" <? if($reqSTLUD == 1) echo 'selected'?>>Tingkat I</option>
+				                    <option value="2" <? if($reqSTLUD == 2) echo 'selected'?>>Tingkat II</option>
+				                    <option value="3" <? if($reqSTLUD == 3) echo 'selected'?>>Tingkat III</option>
+								</select>
+		        			</div>
+	        			</div>
+	        		</div>
+	        		<div class="form-group row">
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">No. STLUD</label>
+	        			<div class="col-lg-10 col-sm-12">
+	        				<input type="text" class="form-control" name="reqNoSTLUD" id="reqNoSTLUD" value="<?=$reqNoSTLUD?>" />
+	        			</div>
+	        		</div>
+	        		<div class="form-group row">
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Tgl. STLUD</label>
+	        			<div class="col-lg-10 col-sm-12">
+	        				<div class="input-group date">
+	        					<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTglSTLUD" value="<?=$reqTglSTLUD?>" />
 		        				<div class="input-group-append">
 		        					<span class="input-group-text">
 		        						<i class="la la-calendar"></i>
@@ -85,21 +110,19 @@ $readonly = "readonly";
 	        			</div>
 	        		</div>
 	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Instansi</label>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Gol/Ruang</label>
 	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" name="reqInstansi" id="reqInstansi" value="<?=$reqInstansi?>" />
+	        				<select name="reqGolRuang" <?=$disabled?> id="reqGolRuang"  class="form-control">
+			                    <? while($pangkat->nextRow()){?>
+			                        <option value="<?=$pangkat->getField('PANGKAT_ID')?>" <? if($reqGolRuang == $pangkat->getField('PANGKAT_ID')) echo 'selected';?>><?=$pangkat->getField('KODE')?></option>
+			                    <? }?>
+			                </select>
 	        			</div>
 	        		</div>
 	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Jabatan</label>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">TMT Gol</label>
 	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" name="reqJabatan" id="reqJabatan" value="<?=$reqJabatan?>" />
-	        			</div>
-	        		</div>
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Masa Kerja (Th)</label>
-	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" name="reqMasaKerjaTh" id="reqMasaKerjaTh" value="<?=$reqMasaKerjaTh?>" />
+	        				<input type="text" class="form-control" name="reqTMTGol" id="reqTMTGol" value="<?=$reqTMTGol?>" />
 	        			</div>
 	        		</div>
 	        		<div class="form-group row">
