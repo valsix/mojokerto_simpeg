@@ -68,145 +68,20 @@ $reqTahunLulus= $set->getField('LAST_DIK_TAHUN');
 $reqMode="update";
 // $reqMode="insert";
 $readonly = "readonly";
+
+$arrtabledata= array(
+    array("label"=>"Nama", "field"=> "NAMA", "display"=>"",  "width"=>"")
+    , array("label"=>"Tanggal", "field"=> "TANGGAL_INFO", "display"=>"",  "width"=>"")
+    , array("label"=>"Penyelenggara", "field"=> "PENYELENGGARA", "display"=>"",  "width"=>"")
+
+    , array("label"=>"validasiid", "field"=> "TEMP_VALIDASI_HAPUS_ID", "display"=>"1", "width"=>"")
+    , array("label"=>"validasihapusid", "field"=> "TEMP_VALIDASI_ID", "display"=>"1", "width"=>"")
+    , array("label"=>"sorderdefault", "field"=> "SORDERDEFAULT", "display"=>"1", "width"=>"")
+    , array("label"=>"fieldid", "field"=> "RIWAYAT_DIKLAT_TEKNIS_ID", "display"=>"1", "width"=>"")
+);
 ?>
 
-<style type="text/css">
-.appendme {
-	border: 2px solid green;
-	
-}
-.appendme .item {
-	/*border: 1px solid #ebedf3;*/
-	/*padding: 5px;*/
 
-	display: flex;
-	display: -webkit-flex;
-	flex-wrap: wrap;
-}
-.appendme .item:after {
-	content: "";
-	  clear: both;
-	  display: table;
-}
-.appendme .item .nama {
-	/*border: 1px solid red;*/
-	border: 1px solid #ebedf3;
-	float: left;
-	width: calc(100% - 100px - 40px);
-	padding: 4px 4px;
-}
-.appendme .item .urutan {
-	/*border: 1px solid red;*/
-	border: 1px solid #ebedf3;
-	float: left;
-	width: 100px;
-	padding: 4px 4px;
-}
-.appendme .item .aksi {
-	/*border: 1px solid red;*/
-	border: 1px solid #ebedf3;
-	float: left;
-	width: 40px;
-	height: 100%;
-	padding: 6px 4px;
-
-	display: flex;
-	justify-content: center; /* align horizontal */
-	align-items: center; /* align vertical */
-}
-.appendme .item .aksi i {
-	color: red;
-}
-</style>
-<style>
-    /* style menu container */
-    .menu {
-      display: none;
-      position: absolute;
-      border: 1px solid black;
-      background-color: rgb(244, 239, 210);
-    }
-
-    /* style menu items */
-    .option {
-      padding: 10px;
-      cursor: pointer;
-    }
-
-    .option:hover {
-      background-color: rgb(222, 159, 23);
-    }
-</style>
-<style type="text/css">
-	#wrapper.menu {
-	  margin-left: 10px;
-	  width: 150px;
-	  height: 200px;
-	  padding: 0px;
-	  background-color: #D0D0D0;
-	}
-
-	.menu ul {
-	  /*font-family: Veranda, Ariel, Sans-Serif;*/
-	  /*font-size: 16px;*/
-	  padding: 0px;
-	  list-style: none;
-	  letter-spacing: 2px;
-	  text-align: center;
-	}
-
-	.menu ul li {
-	  display: block;
-	  position: relative;
-	  width: 150px;
-	}
-
-	.menu li ul {
-	  display: none;
-	  margin: 0;
-	}
-
-	.menu ul li a {
-	  display: block;
-	  text-decoration: none;
-	  /*background: gray;*/
-	  color: #000;
-	  border-top: 1px solid #666;
-	  padding: 5px 15px 5px 15px;
-	  margin-left: 1px;
-	  white-space: nowrap;
-
-	  /*border: 1px solid red;*/
-	}
-
-	.menu ul li a:hover {
-	  background: #949494;
-	}
-
-	.menu li:hover ul {
-	  display: block;
-	  position: absolute;
-	}
-
-	.menu li:hover li {
-	  float: left;
-	  font-size: 11px;
-	}
-
-	.menu li:hover a {
-	  background: #A0A0A0;
-	}
-
-	.menu li:hover li a:hover {
-	  background: #C2C2C2;
-	}
-
-	.menu ul li ul {
-	  position: absolute;
-	  left: 100%;
-	  top: 0;
-	}
-</style>
 <style type="text/css">
 	   select[readonly].select2-hidden-accessible + .select2-container {
         pointer-events: none;
@@ -229,6 +104,13 @@ $readonly = "readonly";
 	 		var valueHtml = $(this).html();
 	 		$(".appendme").append('<div class="item"><div class="nama">'+valueHtml+' </div><div class="urutan"><select class=form-control><option>Asc</option><option>Desc</option></select></div><div class="aksi" ><i class="fa fa-times-circle" aria-hidden="true" onclick="$(this).parent().parent().remove();"></i></div></div>');
 	 	});
+
+	 	$(".option2").click(function() {
+	 		var valueHtml2 = $(this).html();
+	 		// $(".appendme2").append('<div class="item"><div class="nama">'+valueHtml2+' </div><div class="urutan"><select class=form-control><option>Asc</option><option>Desc</option></select></div><div class="aksi" ><i class="fa fa-times-circle" aria-hidden="true" onclick="$(this).parent().parent().remove();"></i></div></div>');
+	 		$(".appendme2").append('<div class="item item-operasi"><div class="nama"><select class=form-control><option>NIP</option><option>NIP Baru</option></select></div><div class="operasi"><select class=form-control><option>=</option><option>!=</option></select></div><div class="isi"><input class=form-control></div><div class="aksi"><i class="fa fa-times-circle" aria-hidden="true" onclick="$(this).parent().parent().remove();"></i></div></div>');
+	 	});
+
 	 });
 </script>
 <div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
@@ -261,9 +143,14 @@ $readonly = "readonly";
             <form class="form" id="ktloginform" method="POST" enctype="multipart/form-data">
             	<div class="card-body">
             		<div class="row">
-            			<div class="col-md-6">
+            			<div class="col-md-5">
             				<div class="area-dynaport appendme kursor" id="kursor">
 								Silakan pilih field yang akan ditampilkan :
+								<div class="item item-header">
+									<div class="nama">Field</div>
+									<div class="urutan">Urutan</div>
+									<div class="aksi" >Aksi</div>
+								</div>
 								
 								<!-- The custom context menu -->
 								<div id="wrapper" class="menu">
@@ -288,42 +175,29 @@ $readonly = "readonly";
 								</div>
 							</div>
             			</div>
-            			<div class="col-md-6">
-            				<div class="area-dynaport">
-	            				Silakan pilih operasi yang akan ditampilkan :
-	            			</div>
+            			<div class="col-md-7">
+            				
+	            			<div class="area-dynaport appendme2 kursor" id="kursor2">
+								Silakan pilih operasi yang akan ditampilkan :
+								<div class="item item-operasi item-header">
+									<div class="nama">Field</div>
+									<div class="operasi">Operasi</div>
+									<div class="isi">Isi</div>
+									<div class="aksi">Aksi</div>
+								</div>
+								
+								<!-- The custom context menu -->
+								<div id="wrapper" class="menu2">
+									<ul id="menu">
+										<li><a class="option2 appendbtn">Tambah</a></li>
+									</ul>
+								</div>
+							</div>
             			</div>
             		</div>
-            		<!-- <script type="text/html" id="appendTemplate">
-					    <div>The div that should be appended</div>
-					</script> -->
+            		
 
-					<!-- <script
-					  src="https://code.jquery.com/jquery-2.2.3.min.js"
-					  integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo="
-					  crossorigin="anonymous"></script> -->
-
-					<!-- <table class="table-append">
-						<tr>
-							<td>
-								
-							</td>
-						</tr>
-					</table> -->
-					
-					
-					<!-- <button class="appendbtn" type="button">Click to append</button> -->
-
-					<!-- <div style="height: 100px; background-color: red;" oncontextmenu="window.alert('test');return false;"></div> -->
-
-					<!-------->
-					
-					
-
-					  <!-- Other contents of the page -->
-					  <!-- <h1>Right Click to see the menu</h1> -->
-
-					  <script>
+					<script>
 					    // select the menu element
 					    const menu = document.querySelector(".menu"); 
 					    // menu.style.display = "none"; 
@@ -337,9 +211,7 @@ $readonly = "readonly";
 							// position the menu element near the cursor horizontally
 							// menu.style.left = `${event.clientX}px`; 
 							menu.style.left = `320px`; 
-							// menu.style.left = event.pageX; 
-							
-        
+							// menu.style.left = event.pageX;
 
 							// position the menu element near the cursor vertically
 							// menu.style.top = `${event.clientY}px`; 
@@ -378,17 +250,89 @@ $readonly = "readonly";
 					   //      }
 					   //    });
 					   //  });
+					</script>
+					
+					<script>
+					    // select the menu element
+					    const menu2 = document.querySelector(".menu2"); 
+					    // menu.style.display = "none"; 
+					    var kursor2 =  document.getElementById("kursor2");
+					    // add an event listener for the right-click event on the document
+					    kursor2.addEventListener("contextmenu", (event) => {
+					    	// alert("haii");
+							// prevent the default browser behavior
+							event.preventDefault(); 
+							// show the menu element
+							menu2.style.display = "block"; 
+							// position the menu element near the cursor horizontally
+							// menu.style.left = `${event.clientX}px`; 
+							menu2.style.left = `320px`; 
+							// menu.style.left = event.pageX;
+
+							// position the menu element near the cursor vertically
+							// menu.style.top = `${event.clientY}px`; 
+							menu2.style.top = `40px`; 
+							// menu.style.top = event.pageY; 
+
+					    });
+
+					    // add an event listener for the click event on the document
+					    document.addEventListener("click", () => {
+					    //   // hide the menu element
+					      menu2.style.display = "none"; 
+					    });
+
+					    // select all the option elements
+					    const options2 = document.querySelectorAll(".option2"); 
+
+
+					    // add an event listener for the click event on each option element
+					   //  options.forEach((option) => {
+					   //  	option.addEventListener("click", (event) => {
+					   //  		// var teks = document.getElementsByClassName(".option"); 
+								// // alert(teks);
+
+					   //      // get the text content of the clicked option
+					   //      const text = event.target.textContent; 
+					   //      if (text === "Option 1") {
+					   //        // do something for option 1
+					   //        console.log("Option 1 selected");
+					   //      } else if (text === "Option 2") {
+					   //        // do something for option 2
+					   //        console.log("Option 2 selected");
+					   //      } else if (text === "Option 3") {
+					   //        // do something for option 3
+					   //        console.log("Option 3 selected");
+					   //      }
+					   //    });
+					   //  });
 					  </script>
 
             	</div>
 
-	        	<div class="card-body">
+	        	<div class="card-body area-button">
 	        		<div class="row">
 		        		<div class="col-md-12">
-			        		hai
+			        		<button class="btn btn-light-primary"><i class="fa fa-search" aria-hidden="true"></i> Cari</button>
+			        		<button class="btn btn-light-warning"><i class="fa fa-print" aria-hidden="true"></i> Cetak</button>
 		        		</div>
 		        	</div>
 	        	</div>
+
+	        	<div class="card-body">
+	                <table class="table table-bordered table-hover table-checkable" id="kt_datatable" style="margin-top: 13px !important">
+	                    <thead>
+	                        <tr>
+	                            <?php
+	                            foreach($arrtabledata as $valkey => $valitem) 
+	                            {
+	                                echo "<th>".$valitem["label"]."</th>";
+	                            }
+	                            ?>
+	                        </tr>
+	                    </thead>
+	                </table>
+	            </div>
 	        </form>
         </div>
     </div>
@@ -537,5 +481,290 @@ $readonly = "readonly";
 	function dismiss(){
 		document.getElementById('dismiss').parentNode.style.display='none';
 	};
+</script>
+
+<!-- DATATABLE -->
+<a href="#" id="triggercari" style="display:none" title="triggercari">triggercari</a>
+<script type="text/javascript">
+var datanewtable;
+var infotableid= "kt_datatable";
+var carijenis= "";
+var arrdata= <?php echo json_encode($arrtabledata); ?>;
+// console.log(arrdata);
+var indexfieldid= arrdata.length - 1;
+var indexvalidasiid= arrdata.length - 3;
+var indexvalidasihapusid= arrdata.length - 4;
+var valinfoid = '';
+var valinfovalidasiid = '';
+var valinfovalidasihapusid = '';
+
+jQuery(document).ready(function() {
+    var jsonurl= "json-data/info_data_json/jsondiklatteknis";
+    ajaxserverselectsingle.init(infotableid, jsonurl, arrdata);
+
+    var infoid= [];
+    $('#'+infotableid+' tbody').on( 'click', 'tr', function () {
+        // untuk pilih satu data, kalau untuk multi comman saja
+        $('#'+infotableid+' tbody tr').removeClass('selected');
+
+        var el= $(this);
+        el.addClass('selected');
+
+        var dataselected= datanewtable.DataTable().row(this).data();
+        // console.log(dataselected);
+        // console.log(Object.keys(dataselected).length);
+        fieldinfoid= arrdata[indexfieldid]["field"]
+        fieldvalidasiid= arrdata[indexvalidasiid]["field"]
+        fieldvalidasihapusid= arrdata[indexvalidasihapusid]["field"]
+        valinfoid= dataselected[fieldinfoid];
+        valinfovalidasiid= dataselected[fieldvalidasiid];
+        valinfovalidasihapusid= dataselected[fieldvalidasihapusid];
+        if (valinfovalidasiid == null)
+        {
+            valinfovalidasiid = '';
+        }
+    });
+
+    $('#btnDelete').on('click', function (e) {
+        if(valinfoid == "")
+        {
+            Swal.fire({
+                text: "Pilih salah satu data Riwayat terlebih dahulu.",
+                icon: "error",
+                buttonsStyling: false,
+                confirmButtonText: "Ok",
+                customClass: {
+                    confirmButton: "btn font-weight-bold btn-light-primary"
+                }
+            });
+        }
+        else
+        {
+            urlAjax= "json-data/info_data_json/jsondiklatteknisdelete?&reqDetilId="+valinfoid;
+            swal.fire({
+                title: 'Apakah anda yakin untuk hapus data?',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes'
+            }).then(function(result) { 
+                if (result.value) {
+                    $.ajax({
+                        url : urlAjax,
+                        type : 'DELETE',
+                        dataType:'json',
+                        beforeSend: function() {
+                            swal.fire({
+                                title: 'Please Wait..!',
+                                text: 'Is working..',
+                                onOpen: function() {
+                                    swal.showLoading()
+                                }
+                            })
+                        },
+                        success : function(data) { 
+                            swal.fire({
+                                position: 'top-right',
+                                icon: "success",
+                                type: 'success',
+                                title: data.message,
+                                showConfirmButton: false,
+                                timer: 2000
+                            }).then(function() {
+                                document.location.href = "app/index/pegawai_diklat_teknis?formulaid=<?=$formulaid?>";
+                            });
+                        },
+                        complete: function() {
+                            swal.hideLoading();
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            swal.hideLoading();
+                            var err = JSON.parse(jqXHR.responseText);
+                            Swal.fire("Error", err.message, "error");
+                        }
+                    });
+                }
+            });
+        }
+    });
+
+    $('#'+infotableid+' tbody').on( 'dblclick', 'tr', function () {
+      $("#btnUbahData").click();    
+    });
+
+    $("#btnAdd, #btnUbahData").on("click", function () {
+        btnid= $(this).attr('id');
+
+        if(valinfoid == "" && btnid == "btnUbahData")
+        {
+            Swal.fire({
+                text: "Pilih salah satu data Riwayat terlebih dahulu.",
+                icon: "error",
+                buttonsStyling: false,
+                confirmButtonText: "Ok",
+                customClass: {
+                    confirmButton: "btn font-weight-bold btn-light-primary"
+                }
+            });
+            return false;
+        }
+
+        if(btnid == "btnUbahData")
+            vpilihid= valinfoid;
+        else
+            vpilihid= "";
+
+        // varurl= "app/index/pegawai_diklat_teknis_add?formulaid=<?=$formulaid?>&reqRowId="+vpilihid;
+        varurl= "app/index/pegawai_data_fip?formulaid=<?=$formulaid?>&reqRowId="+vpilihid;
+        
+        document.location.href = varurl;
+    });
+
+    $("#buttoncaridetil").on("click", function () {
+        carijenis= "2";
+        calltriggercari();
+    });
+    $("#triggercari").on("click", function () {
+
+        if(carijenis == "1")
+        {
+            pencarian= $('#'+infotableid+'_filter input').val();
+            datanewtable.DataTable().search( pencarian ).draw();
+        }
+        else
+        {
+            
+        }
+    });
+
+});
+
+function calltriggercari()
+{
+    $(document).ready( function () {
+      $("#triggercari").click();      
+    });
+}
+
+function submitForm() {
+   $("#ktloginformsubmitbutton").click(); 
+}
+
+var _buttonSpinnerClasses = 'spinner spinner-right spinner-white pr-15';
+
+jQuery(document).ready(function(){
+    jQuery('#ktloginform').submit(function(event){ 
+        event.preventDefault();
+           var formData = new FormData(document.querySelector('form'));
+           var form = KTUtil.getById('ktloginform');
+           var formSubmitButton = KTUtil.getById('ktloginformsubmitbutton');
+                KTUtil.btnWait(formSubmitButton, _buttonSpinnerClasses, "Please wait");
+               $.ajax({
+                url: 'json-data/info_data_json/jsondiklatteknisupload', 
+                dataType: 'json', 
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: formData,                         
+                type: 'POST',
+                beforeSend: function() {
+                    swal.fire({
+                        title: 'Mohon tunggu sebentar..',
+                        text: 'File sedang dalam proses upload..',
+                        onOpen: function() {
+                            swal.showLoading()
+                        }
+                    })
+                },
+                success: function (response) {
+                // console.log(response); return false;
+                Swal.fire({
+                    text: response.message,
+                    icon: "success",
+                    buttonsStyling: false,
+                    confirmButtonText: "Ok",
+                    customClass: {
+                        confirmButton: "btn font-weight-bold btn-light-primary"
+                    }
+                    }).then(function() {
+                        location.reload();
+                    });
+                },
+                error: function(xhr, status, error) {
+                    var err = JSON.parse(xhr.responseText);
+                    Swal.fire("Error", err.message, "error");
+                   
+                },
+                complete: function () {
+                    KTUtil.btnRelease(formSubmitButton);
+                }
+            });   
+       }); 
+});
+
+function btnUploadSk(reqPegawaiId,reqRowId)
+{
+    $("#reqLinkFileSk").click();
+    $('#reqPegawaiId').val(reqPegawaiId);
+    $('#reqRowId').val(reqRowId);
+}
+
+function btnUploadStlud(reqPegawaiId,reqRowId)
+{
+    $("#reqLinkFileStlud").click();
+    $('#reqPegawaiId').val(reqPegawaiId);
+    $('#reqRowId').val(reqRowId);
+}
+
+
+function btnDeleteFile (fileid,reqPegawaiId,reqRowId,reqMode) {
+    if(fileid !== "")
+    {
+        urlAjax= "json-data/info_data_json/jsondiklatteknisdeletefile?reqFileId="+fileid+"&reqPegawaiId="+reqPegawaiId+"&reqRowId="+reqRowId+"&reqMode="+reqMode;
+        swal.fire({
+            title: 'Apakah anda yakin untuk hapus file?',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes'
+        }).then(function(result) { 
+            if (result.value) {
+                $.ajax({
+                    url : urlAjax,
+                    type : 'DELETE',
+                    dataType:'json',
+                    beforeSend: function() {
+                        swal.fire({
+                            title: 'Please Wait..!',
+                            text: 'Is working..',
+                            onOpen: function() {
+                                swal.showLoading()
+                            }
+                        })
+                    },
+                    success : function(data) { 
+                        swal.fire({
+                            position: 'center',
+                            icon: "success",
+                            type: 'success',
+                            title: data.message,
+                            showConfirmButton: false,
+                            timer: 2000
+                        }).then(function() {
+                            location.reload();
+                        });
+                    },
+                    complete: function() {
+                        swal.hideLoading();
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        swal.hideLoading();
+                        var err = JSON.parse(jqXHR.responseText);
+                        Swal.fire("Error", err.message, "error");
+                    }
+                });
+            }
+        });
+    }
+}
+
 </script>
 

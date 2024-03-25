@@ -2,7 +2,7 @@ create schema opt authorization postgres;
 
 --alter table pangkat_riwayat alter column pangkat_riwayat_id type numeric using cast(pangkat_riwayat_id as numeric);
 
-alter table pegawai add column pangkat_riwayat_id numeric, add column jabatan_riwayat_id numeric, add column jabatan_tambahan_id numeric, add column pendidikan_riwayat_id numeric, add column hukuman_id numeric, add column diklat_struktural_id numeric;
+alter table pegawai add column pangkat_riwayat_id numeric, add column gaji_riwayat_id numeric, add column jabatan_riwayat_id numeric, add column jabatan_tambahan_id numeric, add column pendidikan_riwayat_id numeric, add column hukuman_id numeric, add column diklat_struktural_id numeric;
 
 alter table pegawai add column format_nip_baru character varying;
 alter table pegawai add column vnama_lengkap character varying;
@@ -100,6 +100,30 @@ from
 (
 	select a.pegawai_id, a.pendidikan_riwayat_id
 	from opt.pendidikan_terakhir_riwayat a
+	where 1=1
+) as aggr
+where u.pegawai_id = aggr.pegawai_id;
+
+create or replace view opt.gaji_terakhir_riwayat as 
+select
+a.gaji_riwayat_id, a.pegawai_id
+from
+(
+	select a.gaji_riwayat_id, a.pegawai_id
+	, row_number () over ( partition by a.pegawai_id order by a.tmt_sk desc, a.tanggal_sk desc ) urut
+	from gaji_riwayat a
+) a
+where urut = 1
+order by a.pegawai_id
+;
+
+update pegawai as u
+set
+gaji_riwayat_id= aggr.gaji_riwayat_id
+from
+(
+	select a.pegawai_id, a.gaji_riwayat_id
+	from opt.gaji_terakhir_riwayat a
 	where 1=1
 ) as aggr
 where u.pegawai_id = aggr.pegawai_id;
@@ -585,10 +609,199 @@ $body$
 language plpgsql volatile cost 100;
 alter function pinsertduk(character varying, character varying, character varying) owner to postgres;
 
+drop function if exists pinsertpensiun(character varying, character varying, character varying);
+create or replace function pinsertpensiun(pperiode character varying, psatker character varying, puserappid character varying)
+  returns void as
+$body$
+declare
+	sqlquery text;
+	vuserappid numeric;
+begin
+	--select pinsertpensiun('032024', '', '')
+	--select pinsertpensiun('032024', '01', '')
+
+	if coalesce(nullif(puserappid,'') , null ) is not null then
+		vuserappid:= puserappid::numeric;
+	else
+		vuserappid:= -1::numeric;
+	end if;
+	
+	sqlquery:= '';
+	if coalesce(nullif(psatker,'') , null ) is null
+	then
+		sqlquery := 'delete from pensiun where 
+		periode = ''' || pperiode || ''' and user_app_id = ' || vuserappid;
+   	else
+		sqlquery := 'delete from pensiun where 
+		periode = ''' || pperiode || ''' and user_app_id = ' || vuserappid || ' 
+		and satker_id like ''' || psatker || '%''
+		';
+   	end if;
+
+	if coalesce(nullif(sqlquery,'') , null ) is not null then
+		--raise notice 'sql %',sqlquery;
+		execute sqlquery;
+	end if;
+
+	sqlquery := '
+	insert into pensiun 
+	(
+		pegawai_id, nip_lama, nip_baru, nama, no_bkn, tanggal_bkn, sk_pensiun, tanggal_pensiun
+		, tmt_pensiun, tmt_cpns, tanggal_lahir, jenis_kelamin, gol_ruang, eselon, jabatan
+		, alamat, masa_kerja, usia, usia_tahun, usia_batas, satker_id, periode , user_app_id
+	)
+	select
+		pegawai_id, nip_lama, nip_baru, nama, '''' no_bkn, tanggal_bkn
+		, '''' sk_pensiun, tanggal_pensiun, tmt_pensiun, tmt_cpns
+		, tanggal_lahir, jenis_kelamin, gol_ruang, eselon, jabatan, alamat, masa_kerja, usia
+		, usia_tahun, usia_batas, satker_id, '''||pperiode||''' periode, ' || vuserappid || ' user_app_id
+	from
+	(
+		select
+			a.pegawai_id, a.nip_lama, a.nip_baru, a.nama
+			, a.tanggal_bkn, a.tmt_pensiun
+			, a.usia, a.usia_tahun, a.usia_batas
+			, a.tipe_pegawai_id, a.tmt_cpns, a.tanggal_lahir, a.jenis_kelamin, a.alamat
+			, a.masa_kerja_tahun || '' - '' || a.masa_kerja_bulan masa_kerja
+			, a.gol_ruang, a.eselon, a.jabatan, a.satker_id, a.eselon_id, a.eselon_group_id
+
+			,
+			--untuk pejabat
+			case when
+			(
+				a.tipe_pegawai_id = ''11'' and ( a.eselon_group_id = ''1'' or a.eselon_group_id = ''2'' )
+				and usia_batas >= 60
+			)
+			--untuk dokter atau fungsional guru
+			or
+			(
+				(
+					a.tipe_pegawai_id = ''21'' or 
+					( a.tipe_pegawai_id = ''22'' and lower(jabatan) like ''%dokter%'' )
+				)
+				and usia_batas >= 60
+			) then a.tanggal_pensiun_60
+			else a.tanggal_pensiun_58
+			end tanggal_pensiun
+		from 
+		(
+			select
+				to_date(to_char(tanggal_lahir, ''dd-mm-'') || substr('''||pperiode||''',3, 4), ''dd-mm-yyyy'') tanggal_bkn
+				, case when tanggal_lahir is not null then to_date(to_char(tanggal_lahir, ''dd-'') || to_char(add_months(tanggal_lahir, (60 * 12)),  ''mm-yyyy''), ''dd-mm-yyyy'') end tanggal_pensiun_60
+				, case when tanggal_lahir is not null then to_date(to_char(tanggal_lahir, ''dd-'') || to_char(add_months(tanggal_lahir, (58 * 12)),  ''mm-yyyy''), ''dd-mm-yyyy'') end tanggal_pensiun_58
+				,
+				case when tanggal_lahir is not null then
+					to_date
+					(
+						case when tgl_bulan = ''12'' then
+						to_char( add_months( to_date(''01'' || tgl_bulan || (substr('''||pperiode||''', 3, 4)::numeric - 1), ''ddmmyyyy''), 1), ''dd-mm-yyyy'')
+						else to_char(add_months(to_date(''01'' || tgl_bulan || substr('''||pperiode||''', 3, 4), ''ddmmyyyy''), 1), ''dd-mm-yyyy'') end
+					, ''dd-mm-yyyy'')
+				end tmt_pensiun
+				, ambil_umur_duk(a.tanggal_lahir, to_date(''01'' || '''||pperiode||''', ''ddmmyyyy'')) usia
+				,
+				case when (now_bulan - tgl_bulan::numeric) < 0 then
+				now_tahun - tgl_tahun::numeric - 1
+				else now_tahun - to_char(tanggal_lahir, ''yyyy'')::numeric end
+				usia_tahun
+				,
+				case when (to_char(tgl_periode, ''mm'')::numeric) - tgl_bulan::numeric < 0 then
+				to_char(tgl_periode, ''yyyy'')::numeric - tgl_tahun::numeric - 1
+				else to_char(tgl_periode, ''yyyy'')::numeric - tgl_tahun::numeric end usia_batas
+				, b.masa_kerja_tahun, b.masa_kerja_bulan, b.gol_ruang, c.eselon, c.jabatan, c.eselon_id
+				, substring(c.eselon_id::text, 1, 1) eselon_group_id
+				, a.pegawai_id, a.nip_lama, a.format_nip_baru nip_baru, a.vnama_lengkap nama, a.alamat
+				, a.jenis_kelamin, a.tipe_pegawai_id, d.tmt_cpns tmt_cpns, a.tanggal_lahir, a.satker_id
+			from
+			(
+				select
+				to_char(tanggal_lahir, ''mm'') tgl_bulan
+				, to_char(tanggal_lahir, ''yyyy'') tgl_tahun
+				, a.*
+				from pegawai a
+			) a
+			left join
+			(
+				select
+				a.pangkat_riwayat_id, a.pangkat_id, b.kode gol_ruang, a.tmt_pangkat
+				, a.masa_kerja_tahun, a.masa_kerja_bulan
+				from pangkat_riwayat a
+				left join pangkat b on a.pangkat_id = b.pangkat_id
+			) b on a.pangkat_riwayat_id = b.pangkat_riwayat_id
+			left join
+			(
+				select a.jabatan_riwayat_id, coalesce(a.eselon_id,99) eselon_id, b.nama eselon, a.tmt_jabatan, a.nama jabatan
+				from jabatan_riwayat a
+				left join eselon b on a.eselon_id = b.eselon_id
+			) c on a.jabatan_riwayat_id = c.jabatan_riwayat_id
+			left join sk_cpns d on a.pegawai_id = d.pegawai_id 
+			, 
+			(
+				select
+				to_char(now(), ''mm'')::numeric now_bulan
+				, to_char(now(), ''yyyy'')::numeric now_tahun
+				, to_date(''01'' || '''||pperiode||''', ''ddmmyyyy'') tgl_periode
+			) x
+			where 1=1 and a.status_pegawai in (1,2)
+		) a
+		where 1 = 1
+		and
+		(
+			--untuk pejabat
+			(
+				a.tipe_pegawai_id = ''11'' and ( a.eselon_group_id = ''1'' or a.eselon_group_id = ''2'' )
+				and usia_batas >= 60
+			)
+			--untuk dokter atau fungsional guru
+			or
+			(
+				(
+					a.tipe_pegawai_id = ''21'' or 
+					( a.tipe_pegawai_id = ''22'' and lower(jabatan) like ''%dokter%'' )
+				)
+				and usia_batas >= 60
+			)
+			--selain itu
+			or
+			(
+				(
+					(
+						a.tipe_pegawai_id in (''12'', ''21'', ''23'') or 
+						( a.tipe_pegawai_id = ''22'' and lower(jabatan) not like ''%dokter%'' )
+					)
+					or
+					(
+						a.tipe_pegawai_id = ''11'' and a.eselon_group_id::numeric > 2
+					)
+				)
+				and usia_batas >= 58
+			)
+		)
+		and a.satker_id like ''' || psatker || '%''
+		and a.tmt_pensiun = to_date(''01-''||substr('''||pperiode||''', 1 ,2) || ''-'' || substr('''||pperiode||''', 3 ,4), ''dd-mm-yyyy'')
+	) a
+	where 1=1
+	and substr('''||pperiode||''', 3 ,4) = to_char(a.tanggal_pensiun, ''yyyy'')
+	order by a.pegawai_id
+	';
+
+	if coalesce(nullif(sqlquery,'') , null ) is not null then
+		--raise notice 'sql %',sqlquery;
+		execute sqlquery;
+	end if;
+
+end;
+$body$
+language plpgsql volatile cost 100;
+alter function pinsertpensiun(character varying, character varying, character varying) owner to postgres;
+
 --indexing
 --====================================================================================================================
 drop index if exists duk_indexing;
 create index duk_indexing on duk (satker_id_generate, duk);
+
+--drop index if exists jabatan_riwayat_indexing;
+--create index jabatan_riwayat_indexing on jabatan_riwayat (eselon_id, tmt_jabatan desc);
 
 --cursor
 --====================================================================================================================
