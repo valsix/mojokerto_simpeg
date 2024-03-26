@@ -877,6 +877,7 @@ ul.breadcrumb li a.text-muted {
 	/*position: relative;*/
 	border: 1px solid #ebedf3 !important;
 	height: 30vh;
+	overflow: auto;
 
 	-webkit-border-radius: 10px;
 	-moz-border-radius: 10px;
@@ -1058,6 +1059,7 @@ ul.breadcrumb li a.text-muted {
   /*height: 200px;*/
   padding: 0px;
   background-color: #D0D0D0;
+  z-index: 1;
 }
 
 #wrapper.menu ul {
