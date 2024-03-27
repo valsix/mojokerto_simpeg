@@ -2,7 +2,7 @@ create schema opt authorization postgres;
 
 --alter table pangkat_riwayat alter column pangkat_riwayat_id type numeric using cast(pangkat_riwayat_id as numeric);
 
-alter table pegawai add column pangkat_riwayat_id numeric, add column gaji_riwayat_id numeric, add column jabatan_riwayat_id numeric, add column jabatan_tambahan_id numeric, add column pendidikan_riwayat_id numeric, add column hukuman_id numeric, add column diklat_struktural_id numeric;
+alter table pegawai add column pangkat_riwayat_id numeric, add column pangkat_awal_riwayat_id numeric, add column gaji_riwayat_id numeric, add column jabatan_riwayat_id numeric, add column jabatan_tambahan_id numeric, add column pendidikan_riwayat_id numeric, add column hukuman_id numeric, add column diklat_struktural_id numeric;
 
 alter table pegawai add column format_nip_baru character varying;
 alter table pegawai add column vnama_lengkap character varying;
@@ -27,6 +27,30 @@ from
 (
 	select a.pegawai_id, a.pangkat_riwayat_id
 	from opt.pangkat_terakhir_riwayat a
+	where 1=1
+) as aggr
+where u.pegawai_id = aggr.pegawai_id;
+
+create or replace view opt.pangkat_awal_riwayat as 
+select
+a.pangkat_riwayat_id, a.pegawai_id
+from
+(
+	select a.pangkat_riwayat_id, a.pegawai_id
+	, row_number () over ( partition by a.pegawai_id order by a.tmt_pangkat, a.tanggal_sk) urut
+	from pangkat_riwayat a
+) a
+where urut = 1
+order by a.pegawai_id
+;
+
+update pegawai as u
+set
+pangkat_awal_riwayat_id= aggr.pangkat_riwayat_id
+from
+(
+	select a.pegawai_id, a.pangkat_riwayat_id
+	from opt.pangkat_awal_riwayat a
 	where 1=1
 ) as aggr
 where u.pegawai_id = aggr.pegawai_id;
@@ -323,9 +347,9 @@ set
 satker_id= aggr.satker_id
 from
 (
-  select a.satker_id
-  from satker a
-  where 1=1
+	select a.satker_id
+	from satker a
+	where 1=1
 ) as aggr
 where u.satker_id = aggr.satker_id;
 
@@ -472,10 +496,10 @@ set
 pegawai_id= aggr.pegawai_id
 from
 (
-  select a.pegawai_id
-  from pegawai a
-  where 1=1
-  --and coalesce(nullif(format_nip_baru, ''), null) is not null
+	select a.pegawai_id
+	from pegawai a
+	where 1=1
+	--and coalesce(nullif(format_nip_baru, ''), null) is not null
 ) as aggr
 where u.pegawai_id = aggr.pegawai_id;
 
@@ -933,6 +957,119 @@ $body$
 language plpgsql volatile cost 100;
 alter function pinsertkgb(character varying, character varying) owner to postgres;
 
+/*
+alter table pangkat add column pangkat_turun_id integer;
+update pangkat as u
+set
+pangkat_turun_id= aggr.pangkat_turun_id
+from
+(
+	select
+	pangkat_id
+	, case pangkat_id when 21 then 14 when 31 then 24 when 41 then 34 else pangkat_id - 1 end pangkat_turun_id
+	from pangkat where pangkat_id > 11 and pangkat_id <= 45
+) as aggr
+where u.pangkat_id = aggr.pangkat_id;
+
+alter table pangkat add column pangkat_naik_id integer;
+update pangkat as u
+set
+pangkat_naik_id= aggr.pangkat_naik_id
+from
+(
+	select
+	pangkat_id
+	, case pangkat_id when 14 then 21 when 24 then 31 when 34 then 41 when 45 then 45 else pangkat_id + 1 end pangkat_naik_id
+	from pangkat where pangkat_id > 11 and pangkat_id <= 45
+) as aggr
+where u.pangkat_id = aggr.pangkat_id;
+
+alter table kp add column pangkat_akhir_id integer;
+*/
+
+create or replace function last_day(date)
+returns date as
+$$
+select (date_trunc('month', $1) + interval '1 month - 1 day')::date;
+$$ language 'sql'
+immutable strict;
+
+--masih sampai query
+select
+periode, satker_id_generate, tanggal_proses
+, pegawai_id, nip_lama, nip_baru, nama, no_sk, tmt_baru, tmt_lama
+, pejabat_penetap, gol_ruang, gol_ruang_lama
+, masa_kerja, masa_kerja_lama, pendidikan, stlud, no_stlud, tanggal_stlud, no_nota_bkn, tanggal_nota_bkn
+, satker_id, pangkat0, mskerjath0, mskerjabl0
+from
+(
+	select
+	add_months(a.tmt_pangkat,12 * 4) tgl_1
+	, to_date( to_char(last_day(to_date('01' || '042024', 'ddmmyyyy')), 'dd') || '042024', 'ddmmyyyy') tgl_2
+	, '042024' periode, upper('reguler') satker_id_generate, now() tanggal_proses
+	, a.pegawai_id, a.nip_lama, a.nip_baru, a.nama, '' no_sk
+	, to_date( '01' || '042024', 'ddmmyyyy') tanggal_sk, to_date( '01' || '042024', 'ddmmyyyy') tmt_baru, tmt_pangkat tmt_lama
+	, upper('kepala badan kepegawaian daerah') pejabat_penetap
+	, gol_ruang, gol_ruang_lama
+	,
+	case when mskerjath0 = 0 then 0
+	else floor(((mskerjath0 * 12) + mskerjabl0 + months_between(to_date( '01' || '042024', 'ddmmyyyy'), tmt_pangkat)) / 12) end
+	|| ' - ' ||
+	case when mskerjath0 = 0 and mskerjabl0 = 0 then 0
+	else
+	floor((mod((mskerjath0 * 12) + mskerjabl0 + months_between(to_date( '01' || '042024', 'ddmmyyyy'), tmt_pangkat), 12)))
+	end masa_kerja
+	, mskerjath0 || ' - ' || mskerjabl0 masa_kerja_lama
+	, pendidikan_jurusan pendidikan, '' stlud, '' no_stlud, '' tanggal_stlud, '' no_nota_bkn, '' tanggal_nota_bkn
+	, a.satker_id, pangkat0, mskerjath0, mskerjabl0
+	, a.pendidikan_id, a.pangkatidbaru, a.eselon_id, a.tipe_pegawai_id::text tipe_pegawai_id
+	from opt.kp_umum_fungsional() a
+	where 1=1
+) a
+inner join 
+(
+	select
+	pendidikan_id, pangkat_minimal, pangkat_maksimal, nama pendidikan_nama
+	from pendidikan
+)
+d on 
+(
+    a.pendidikan_id = d.pendidikan_id and a.pangkatidbaru between pangkat_minimal and pangkat_maksimal
+)
+or
+(
+    a.pendidikan_id = d.pendidikan_id
+    and 
+    case
+    when upper(pendidikan_nama) in (upper('slta'), upper('di'), upper('dii')) and a.eselon_id in (51, 52) then 32
+    when upper(pendidikan_nama) in (upper('slta'), upper('di'), upper('dii')) and a.eselon_id = 42 then 33
+    when upper(pendidikan_nama) in (upper('slta'), upper('di'), upper('dii')) and a.eselon_id = 41 then 34
+    when upper(pendidikan_nama) in (upper('slta'), upper('di'), upper('dii')) and a.eselon_id = 32 then 41
+    when upper(pendidikan_nama) in (upper('diii')) and a.eselon_id in (51, 52, 42) then 33
+    when upper(pendidikan_nama) in (upper('diii')) and a.eselon_id = 41 then 34
+    when upper(pendidikan_nama) in (upper('diii')) and a.eselon_id = 32 then 41
+    when upper(pendidikan_nama) in (upper('diii')) and a.eselon_id = 31 then 42
+    when upper(pendidikan_nama) in (upper('d.iv'), upper('s1')) and a.eselon_id in (51, 52, 41, 42) then 34
+    when upper(pendidikan_nama) in (upper('d.iv'), upper('s1')) and a.eselon_id = 32 then 41
+    when upper(pendidikan_nama) in (upper('d.iv'), upper('s1')) and a.eselon_id = 31 then 42
+    when upper(pendidikan_nama) in (upper('d.iv'), upper('s1')) and a.eselon_id = 22 then 43
+    when upper(pendidikan_nama) in (upper('d.iv'), upper('s1')) and a.eselon_id = 21 then 44
+    when upper(pendidikan_nama) in (upper('s2')) and a.eselon_id in (51, 52, 41, 42, 32) then 41
+    when upper(pendidikan_nama) in (upper('s2')) and a.eselon_id = 31 then 42
+    when upper(pendidikan_nama) in (upper('s2')) and a.eselon_id = 22 then 43
+    when upper(pendidikan_nama) in (upper('s2')) and a.eselon_id = 21 then 44
+    when upper(pendidikan_nama) in (upper('s3')) and a.eselon_id in (51, 52, 41, 42, 32, 31) then 42
+    when upper(pendidikan_nama) in (upper('s3')) and a.eselon_id = 22 then 43
+    when upper(pendidikan_nama) in (upper('s3')) and a.eselon_id = 21 then 44
+    else null
+    end
+    IS NOT NULL
+)
+where 1=1 and tgl_1 <= tgl_2
+and a.satker_id like '' || '%' and a.tipe_pegawai_id like '1%'
+--and a.pegawai_id = 235162000007
+order by pangkat0 desc, mskerjath0 desc, mskerjabl0 desc;
+
 --indexing
 --====================================================================================================================
 drop index if exists duk_indexing;
@@ -943,6 +1080,123 @@ create index duk_indexing on duk (satker_id_generate, duk);
 
 --cursor
 --====================================================================================================================
+drop type if exists opt.kp_umum_fungsional_type;
+create type opt.kp_umum_fungsional_type as (pegawai_id numeric, satker_id character varying, nip_lama character varying, nip_baru character varying, nama character varying
+, tipe_pegawai_id numeric, tmt_pangkat date, mskerjath0 numeric, mskerjabl0 numeric, pendidikan_id numeric
+, pendidikan_jurusan character varying, pangkat0 numeric, pangkatidbaru numeric, eselon_id numeric
+, gol_ruang_lama character varying, gol_ruang character varying);
+
+drop function if exists opt.kp_umum_fungsional();
+--select * from opt.kp_umum_fungsional();
+create or replace function opt.kp_umum_fungsional() returns setof opt.kp_umum_fungsional_type as $$
+declare
+cur refcursor;
+query text;
+rec opt.kp_umum_fungsional_type%rowtype;
+begin
+	query := '
+	select
+		a.pegawai_id, a.satker_id, a.nip_lama, a.nip_baru, a.nama, a.tipe_pegawai_id
+		, a.tmt_pangkat, a.mskerjath0, a.mskerjabl0, a.pendidikan_id, a.pendidikan_jurusan
+		, a.pangkat0, a.pangkatidbaru, a.eselon_id
+		, pn1.kode gol_ruang_lama, pn2.kode gol_ruang
+	from
+	(
+		select
+			a.pegawai_id, a.satker_id, a.nip_lama, a.nip_baru, a.nama, a.tipe_pegawai_id
+			, a.tmt_pangkat, a.mskerjath0, a.mskerjabl0, a.pendidikan_id, a.pendidikan_jurusan
+			, a.pangkat0, a.eselon_id
+			,
+			case pangkat0 when 14 then 21 when 24 then 31 when 34 then 41 when 45 then 45
+			else pangkat0 + 1
+			end pangkatidbaru
+		from
+		(
+			select
+				a.pegawai_id, a.satker_id, a.nip_lama, a.nip_baru, a.nama, a.tipe_pegawai_id
+				, case when vkondisi = 1 then tmt_awal_pangkat else tmt_akhir_pangkat end tmt_pangkat
+				, case when vkondisi = 1 then pangkat_awal_id else pangkat_akhir_id end pangkat0
+				, case when vkondisi = 1 then ms_kerja_awal_th else ms_kerja_akhir_th end mskerjath0
+				, case when vkondisi = 1 then ms_kerja_awal_bl else ms_kerja_akhir_bl end mskerjabl0
+				, a.pendidikan_id, a.pendidikan_jurusan, a.eselon_id
+			from
+			(
+				select
+					p.pegawai_id, p.satker_id, p.nip_lama, p.format_nip_baru nip_baru, p.vnama_lengkap nama, p.tipe_pegawai_id
+					, v.pangkat_id pangkat_akhir_id, aw.pangkat_id pangkat_awal_id
+					, v.tmt_pangkat tmt_akhir_pangkat, aw.tmt_pangkat tmt_awal_pangkat
+					, to_char(v.tmt_pangkat, ''yyyy'') tmt_pangkat_akhir_th, to_char(aw.tmt_pangkat, ''yyyy'') tmt_pangkat_awal_th
+					, to_char(v.tmt_pangkat, ''mm'') tmt_pangkat_akhir_bl, to_char(aw.tmt_pangkat, ''mm'') tmt_pangkat_awal_bl
+					, coalesce(v.masa_kerja_tahun, 0) ms_kerja_akhir_th, coalesce(aw.masa_kerja_tahun, 0) ms_kerja_awal_th
+					, coalesce(v.masa_kerja_bulan, 0) ms_kerja_akhir_bl, coalesce(aw.masa_kerja_bulan, 0) ms_kerja_awal_bl
+					,
+					case
+					when sp.tmt_cpns = aw.tmt_pangkat and jml_kp = 2 then 1
+					else 0 end vkondisi
+					, pd.pendidikan_id, jt.eselon_id
+					, pd.pendidikan || case when coalesce(nullif(pd.jurusan, ''''), null) is not null then '' '' || pd.jurusan else '''' end pendidikan_jurusan
+				from pegawai p
+				left join
+				(
+					select
+						a.jabatan_riwayat_id, coalesce(a.eselon_id,99) eselon_id
+					from jabatan_riwayat a
+				) jt on p.jabatan_riwayat_id = jt.jabatan_riwayat_id
+				left join
+				(
+					select 
+					a.pendidikan_riwayat_id, a.pegawai_id, c.nama pendidikan, a.jurusan, a.nama nama_sekolah
+					, to_char(a.tanggal_sttb, ''yyyy'') tahun, a.pendidikan_id
+					from pendidikan_riwayat a
+					left join pendidikan c on a.pendidikan_id = c.pendidikan_id
+					where 1 = 1
+				) pd on p.pendidikan_riwayat_id = pd.pendidikan_riwayat_id
+				left join sk_cpns sp on p.pegawai_id = sp.pegawai_id
+				--pangkat akhir
+				left join
+				(
+					select
+						a.pangkat_riwayat_id, a.pangkat_id, b.kode, b.nama, a.tmt_pangkat
+						, a.masa_kerja_tahun, a.masa_kerja_bulan
+					from pangkat_riwayat a
+					left join pangkat b on a.pangkat_id = b.pangkat_id
+				) v on p.pangkat_riwayat_id = v.pangkat_riwayat_id
+				--pangkat awal
+				left join
+				(
+					select
+						a.pangkat_riwayat_id, a.pangkat_id, b.kode, b.nama, a.tmt_pangkat
+						, a.masa_kerja_tahun, a.masa_kerja_bulan
+					from pangkat_riwayat a
+					left join pangkat b on a.pangkat_id = b.pangkat_id
+				) aw on p.pangkat_awal_riwayat_id = aw.pangkat_riwayat_id
+				left join
+				(
+					select count (1) jml_kp, pegawai_id
+					from pangkat_riwayat
+					group by pegawai_id
+				) j on p.pegawai_id = j.pegawai_id
+				where p.status_pegawai = 2
+			) a
+			where 1=1
+		) a
+		where 1=1
+		and a.tmt_pangkat is not null
+	) a
+	left join pangkat pn1 on pn1.pangkat_id = a.pangkat0
+	left join pangkat pn2 on pn2.pangkat_id = a.pangkatidbaru
+	';
+
+	open cur for execute query;
+		fetch cur into rec;
+			while found loop
+			return next rec;
+			fetch cur into rec;
+		end loop;
+	close cur;
+end;
+$$ language plpgsql strict;
+
 drop type if exists daftar_urutan_pegawai_type;
 create type daftar_urutan_pegawai_type as (pegawai_id numeric, nip_lama character varying, nip_baru character varying, nama character varying, ttl character varying
 , jenis_kelamin character varying, status_pegawai character varying, pangkat_id numeric, gol_ruang character varying
