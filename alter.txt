@@ -238,8 +238,10 @@ begin
 		vreturn:= '010304';
 	--elsif length(satkerid) = 4 and satkerid like '01%' then
 		--vreturn:= satkerid;
-	elsif vparent like '01%' = false then
-		vreturn:= satkerid;
+	--elsif vparent like '01%' = false then
+		--vreturn:= satkerid;
+	--elsif substring(satkerid, 1,2) = '1' and length(satkerid) = 8 then
+		--vreturn:= satkerid;
 	else
 		vreturn:= substr(satkerid, 1, 2);
 	end if;
@@ -261,7 +263,7 @@ begin
 
 	for i in 0 .. (length(satkerid) / 2) - 1 loop
 		--if length(satkerid) = 4 and satkerid like '01%' and i = 0 then
-		if satkerid in ('0101', '0102', '0103', '0104', '0105', '0106') and i = 0 then
+		if (satkerid in ('0101', '0102', '0103', '0104', '0105', '0106') and i = 0) or i = 0 then
 			vid:= satkerid;
 		else
 			vid:= ambil_satker_id(substr(satkerid, 1, length(satkerid) - (i * 2)));
@@ -664,7 +666,6 @@ begin
 			, a.tipe_pegawai_id, a.tmt_cpns, a.tanggal_lahir, a.jenis_kelamin, a.alamat
 			, a.masa_kerja_tahun || '' - '' || a.masa_kerja_bulan masa_kerja
 			, a.gol_ruang, a.eselon, a.jabatan, a.satker_id, a.eselon_id, a.eselon_group_id
-
 			,
 			--untuk pejabat
 			case when
@@ -794,6 +795,143 @@ end;
 $body$
 language plpgsql volatile cost 100;
 alter function pinsertpensiun(character varying, character varying, character varying) owner to postgres;
+
+alter table kgb alter column tanggal_proses type timestamp without time zone using cast(tanggal_proses as date);
+drop function if exists pinsertkgb(character varying, character varying);
+create or replace function pinsertkgb(pperiode character varying, psatker character varying)
+  returns void as
+$body$
+declare
+	sqlquery text;
+	vuserappid numeric;
+begin
+	--select pinsertkgb('032024', '')
+	--select pinsertkgb('032024', '01')
+
+	sqlquery:= '';
+
+	sqlquery:= '';
+	if coalesce(nullif(psatker,'') , null ) is null
+	then
+		sqlquery := 'delete from kgb where 
+		periode = ''' || pperiode || '''
+		and coalesce(nullif(satker_id_generate,'''') , null ) is null
+		';
+   	else
+		sqlquery := 'delete from kgb where 
+		periode = ''' || pperiode || '''
+		and satker_id_generate = ''' || psatker || '''
+		';
+   	end if;
+
+	if coalesce(nullif(sqlquery,'') , null ) is not null then
+		--raise notice 'sql %',sqlquery;
+		execute sqlquery;
+	end if;
+
+	sqlquery := '
+	insert into kgb
+	(
+		periode, pegawai_id, pangkat_id
+		, pejabat_penetap_id, pejabat_penetap,no_sk,  no_sk_lama, tanggal_sk_lama, pejabat_lama
+		, tanggal_sk, tmt_baru, tmt_lama, masa_kerja_tahun, masa_kerja_bulan, mk_tahun_lama, mk_bulan_lama
+		, gaji_baru, gaji_lama, nip_lama, nip_baru
+		, nama, gol_ruang, satker_id, satker_id_generate, tanggal_proses
+	)
+	select
+		'''||pperiode||''' periode, v3.pegawai_id, v3.pangkat_id, null pejabat_penetap_id
+		, upper(''kepala '' || v3.vsatkerinduk) pejabat_penetap
+		, ''822.'' || substring(v3.pangkat_id::text, 1, 1) || ''/    /''|| s.kode ||''/'' || to_char(now(), ''yyyy'') no_sk
+		, v3.no_sk no_sk_lama, v3.tanggal_sk tanggal_sk_lama, v3.pejabat_penetap pejabat_lama
+		, to_date(''01''|| '''||pperiode||''' , ''ddmmyyyy'') tanggal_sk
+		, to_date(''01''|| '''||pperiode||''' , ''ddmmyyyy'') tmt_baru
+		, v3.tmtlama tmt_lama, v3.msthacuan + (substring('''||pperiode||''',3, 4)::numeric - v3.thacuan) masa_kerja_tahun
+		, 0 as masa_kerja_bulan, v3.masa_kerja_tahun mk_tahun_lama, v3.masa_kerja_bulan mk_bulan_lama
+		, gp.gaji gaji_baru, v3.gajilama gaji_lama, nip_lama, nip_baru, v3.nama, v3.gol_ruang
+		, v3.satker_id, '''||psatker||''', now()
+	from
+	(
+		select
+			v2.satker_id, v2.vsatkerid, v2.vsatkerinduk, v2.pegawai_id, v2.nama, v2.tmt_lama tmtlama, v2.msthlama, v2.msbllama
+			, v2.gajilama, v2.pangkat_id, v2.nip_lama, v2.nip_baru, v2.no_sk, v2.tanggal_sk, v2.pejabat_penetap
+			, v2.masa_kerja_tahun, v2.masa_kerja_bulan, v2.gol_ruang
+			,
+			case when (((v2.jenis = 0) and (v2.modth = 1)) or ((v2.jenis = 1) and (v2.modth = 0))) then v2.th1a + 1 else th1a end thacuan, v2.blacuan
+			, case when (((v2.jenis = 0) and (v2.modth = 1)) or ((v2.jenis = 1) and (v2.modth = 0))) then v2.msth1a + 1 else msth1a end msthacuan
+		from
+		(
+			select
+				case when ((v1.msbllama <> 0) and (v1.bl1a > 12)) then v1.bl1a - 12 else v1.bl1a end blacuan
+				, case when ((v1.msbllama <> 0) and (v1.bl1a > 12)) then v1.th0 + 1 else v1.th0 end th1a
+				, mod(v1.msth1a, 2) as modth , v1.*
+			from
+			(
+				select
+					case when v0.msbllama <> 0 then v0.msthlama + 1 else v0.msthlama end msth1a
+					, case when v0.msbllama <> 0 then v0.bl0 + (12 - msbllama) else v0.bl0 end bl1a
+					, ambil_satker_id(v0.satker_id) vsatkerid, ambil_satker_induk(v0.satker_id) vsatkerinduk
+					, v0.*
+				from
+				(
+					select
+						a.pegawai_id, a.nip_lama, a.nip_baru, a.nama, a.satker_id
+						, a.gaji_riwayat_id, a.pangkat_id, a.gol_ruang
+						, a.tmt_lama, a.no_sk, a.tanggal_sk, a.pejabat_penetap
+						, a.masa_kerja_tahun, a.masa_kerja_bulan, a.gajilama
+						, a.th0, a.bl0, a.jenis
+						, case when t_masa_kerja < t_gaji then a.masa_kerja_tahun else a.tahun_baru end msthlama
+						, case when t_masa_kerja < t_gaji then masa_kerja_bulan else a.bulan_baru end msbllama
+					from
+					(
+						select
+							a.pegawai_id, a.nip_lama, a.format_nip_baru nip_baru, a.vnama_lengkap nama, a.satker_id
+							, a.gaji_riwayat_id, coalesce(b.pangkat_id, 11) pangkat_id, b.gol_ruang
+							, b.tmt_sk tmt_lama, b.no_sk, b.tanggal_sk, b.pejabat_penetap
+							, coalesce(b.gaji_pokok,0) gajilama, coalesce(b.th0,0) th0, coalesce(b.bl0,0) bl0
+							, (coalesce(ms.tahun_baru,0)*12) + coalesce(ms.bulan_baru,0) t_masa_kerja
+							, (coalesce(b.masa_kerja_tahun,0)*12) + coalesce(b.masa_kerja_bulan,0) t_gaji
+							, coalesce(b.masa_kerja_tahun,0) masa_kerja_tahun, coalesce(ms.tahun_baru,0) tahun_baru
+							, coalesce(b.masa_kerja_bulan,0) masa_kerja_bulan, coalesce(ms.bulan_baru,0) bulan_baru
+							, (case when((b.pangkat_id>=12) and (b.pangkat_id<=24)) then 1 else 0 end) jenis
+						from pegawai a
+						left join
+						(
+							select
+							a.gaji_riwayat_id, a.pegawai_id, a.no_sk, a.tanggal_sk, a.tmt_sk, a.gaji_pokok
+							, b.kode gol_ruang, a.pangkat_id, substring(a.pangkat_id::text, 1,1) group_pangkat
+							, a.masa_kerja_tahun, a.masa_kerja_bulan
+							, case when a.pejabat_penetap_id is null then a.pejabat_penetap else c.jabatan end pejabat_penetap
+							, to_char(a.tmt_sk, ''yyyy'')::numeric th0
+							, to_char(a.tmt_sk, ''mm'')::numeric bl0
+							from gaji_riwayat a
+							left join pangkat b on a.pangkat_id = b.pangkat_id
+							left join pejabat_penetap c on a.pejabat_penetap_id = c.pejabat_penetap_id
+						) b on a.gaji_riwayat_id = b.gaji_riwayat_id
+						left join tambahan_masa_kerja ms on b.pegawai_id = ms.pegawai_id
+						where a.satker_id like '''||psatker||''' || ''%'' and a.status_pegawai = 2
+					) a
+					where 1=1
+				) v0
+				where 1=1
+			) v1
+			where 1=1
+		) v2
+		where 1=1
+	) v3
+	left join (select satker_id, case when coalesce(nullif(kode, ''''), null) is null then '''' else kode end kode from satker) s on v3.vsatkerid = s.satker_id
+	left join gaji_pokok gp on v3.pangkat_id = gp.pangkat_id and v3.msthacuan + (substring('''||pperiode||''',3, 4)::numeric - v3.thacuan) = gp.masa_kerja
+	where (mod((substring('''||pperiode||''',3, 4)::numeric - thacuan),2)=0) and (substring('''||pperiode||''',1, 2)::numeric = blacuan) and to_char(v3.tmtlama, ''mmyyyy'') <> '''||pperiode||'''
+	';
+
+	if coalesce(nullif(sqlquery,'') , null ) is not null then
+		--raise notice 'sql %',sqlquery;
+		execute sqlquery;
+	end if;
+
+end;
+$body$
+language plpgsql volatile cost 100;
+alter function pinsertkgb(character varying, character varying) owner to postgres;
 
 --indexing
 --====================================================================================================================

@@ -13,19 +13,15 @@ $arrtabledata= array(
     array("label"=>"NIP", "field"=> "NIP_LAMA", "display"=>"", "width"=>"")
     , array("label"=>"NIP Baru", "field"=> "NIP_BARU", "display"=>"", "width"=>"")
     , array("label"=>"Nama", "field"=> "NAMA", "display"=>"", "width"=>"")
-    , array("label"=>"No BKN", "field"=> "NO_BKN", "display"=>"", "width"=>"")
-    , array("label"=>"Tgl BKN", "field"=> "TANGGAL_BKN", "display"=>"", "width"=>"")
-    , array("label"=>"SK Pensiun", "field"=> "SK_PENSIUN", "display"=>"", "width"=>"")
-    , array("label"=>"Tgl Pensiun", "field"=> "TANGGAL_PENSIUN", "display"=>"", "width"=>"")
-    , array("label"=>"TMT", "field"=> "TMT_PENSIUN", "display"=>"", "width"=>"")
-    , array("label"=>"Tgl. Lahir", "field"=> "TANGGAL_LAHIR", "display"=>"", "width"=>"")
-    , array("label"=>"L/P", "field"=> "JENIS_KELAMIN", "display"=>"", "width"=>"")
-    , array("label"=>"Gol Ruang", "field"=> "GOL_RUANG", "display"=>"", "width"=>"")
-    , array("label"=>"Eselon", "field"=> "ESELON", "display"=>"", "width"=>"")
-    , array("label"=>"Jabatan", "field"=> "JABATAN", "display"=>"", "width"=>"")
-    , array("label"=>"Alamat", "field"=> "ALAMAT", "display"=>"", "width"=>"")
-    , array("label"=>"Ms Kerja", "field"=> "MASA_KERJA", "display"=>"", "width"=>"")
-    , array("label"=>"Usia", "field"=> "USIA", "display"=>"", "width"=>"")
+    , array("label"=>"No. SK", "field"=> "NO_SK", "display"=>"", "width"=>"")
+    , array("label"=>"Tanggal SK", "field"=> "TANGGAL_SK", "display"=>"", "width"=>"")
+    , array("label"=>"TMT Baru", "field"=> "TMT_BARU", "display"=>"", "width"=>"")
+    , array("label"=>"TMT Lama", "field"=> "TMT_LAMA", "display"=>"", "width"=>"")
+    , array("label"=>"Gaji Baru", "field"=> "GAJI_BARU", "display"=>"", "width"=>"")
+    , array("label"=>"Gaji Lama", "field"=> "GAJI_LAMA", "display"=>"", "width"=>"")
+    , array("label"=>"Pejabat Penetap", "field"=> "PEJABAT_PENETAP", "display"=>"", "width"=>"")
+    , array("label"=>"Gol/Ruang", "field"=> "GOL_RUANG", "display"=>"", "width"=>"")
+    , array("label"=>"Masa Kerja", "field"=> "MASA_KERJA", "display"=>"", "width"=>"")
 
     , array("label"=>"sorderdefault", "field"=> "SORDERDEFAULT", "display"=>"1", "width"=>"")
     , array("label"=>"fieldid", "field"=> "PEGAWAI_ID", "display"=>"1", "width"=>"")
@@ -77,10 +73,10 @@ $arrsatkerdata= $this->sessdatatree;
             <div class="d-flex align-items-baseline flex-wrap mr-5">
                 <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
                     <li class="breadcrumb-item text-muted">
-                        <a class="text-muted">Pensiun</a>
+                        <a class="text-muted">KGB</a>
                     </li>
                     <li class="breadcrumb-item text-muted">
-                        <a class="text-muted">Monitoring Pensiun</a>
+                        <a class="text-muted">Monitoring KGB</a>
                     </li>
                 </ul>
             </div>
@@ -99,7 +95,7 @@ $arrsatkerdata= $this->sessdatatree;
                         <i class="flaticon2-notepad text-primary"></i>
                     </span>
                     <h3 class="card-label">
-                        Pensiun<br/>
+                        KGB<br/>
                         <label id="infodetilsatkernama">Pemerintah Kabupaten Mojokerto</label>
                     </h3>
                 </div>
@@ -130,14 +126,6 @@ $arrsatkerdata= $this->sessdatatree;
             <div class="col-md-12">
                 <div class="area-filter">
                     <div class="row mb-8">
-                        <div class="col-md-4" style="margin-top: 10px">
-                            <label>Tipe:</label>
-                            <select id='reqTipePegawaiId' class="form-control datatable-input">
-                                <option value=''>Semua</option>
-                                <option value='1'>Struktural</option>
-                                <option value='2'>Fungsional</option>
-                            </select>
-                        </div>
                         <div class="col-md-4" style="margin-top: 10px">
                             <label>Periode:</label>
                             <div class="row">
@@ -209,7 +197,7 @@ var valinfovalidasiid = '';
 var datainforesponsive= "1";
 
 jQuery(document).ready(function() {
-    var jsonurl= "json-main/pegawai_json/jsonpensiun";
+    var jsonurl= "json-main/pegawai_json/jsonkgb";
     ajaxserverselectsingle.init(infotableid, jsonurl, arrdata);
         $('#vlsxloading').hide();
 
@@ -259,7 +247,6 @@ jQuery(document).ready(function() {
     });
 
     $("#triggercari").on("click", function () {
-        reqTipePegawaiId= $("#reqTipePegawaiId").val();
         reqBulan= $("#reqBulan").val();
         reqTahun= $("#reqTahun").val();
         reqSatkerId= $("#reqSatkerId").val();
@@ -271,17 +258,17 @@ jQuery(document).ready(function() {
         }
         else if(carijenis == "p")
         {
-            jsonurl= "json-main/pegawai_json/jsonpensiun?reqMode=proses&reqId="+reqSatkerId+"&reqTipePegawaiId="+reqTipePegawaiId+"&reqBulan="+reqBulan+"&reqTahun="+reqTahun;
+            jsonurl= "json-main/pegawai_json/jsonkgb?reqMode=proses&reqId="+reqSatkerId+"&reqBulan="+reqBulan+"&reqTahun="+reqTahun;
             datanewtable.DataTable().ajax.url(jsonurl).load();
         }
         else
         {
-            jsonurl= "json-main/pegawai_json/jsonpensiun?reqId="+reqSatkerId+"&reqTipePegawaiId="+reqTipePegawaiId+"&reqBulan="+reqBulan+"&reqTahun="+reqTahun;
+            jsonurl= "json-main/pegawai_json/jsonkgb?reqId="+reqSatkerId+"&reqBulan="+reqBulan+"&reqTahun="+reqTahun;
             datanewtable.DataTable().ajax.url(jsonurl).load();
         }
     });
 
-    $("#reqTipePegawaiId, #reqBulan, #reqTahun, #reqSatkerId").change(function() { 
+    $("#reqBulan, #reqTahun, #reqSatkerId").change(function() { 
         btnid= $(this).attr('id');
 
         carijenis= "2";
@@ -298,7 +285,7 @@ jQuery(document).ready(function() {
         var formSubmitButton = KTUtil.getById('btnProses');
 
         Swal.fire({
-            title: 'Apakah anda yakin proses pensiun sesuai filter?',
+            title: 'Apakah anda yakin proses kgb sesuai filter?',
             text: "",
             icon: 'warning',
             showCancelButton: true,
