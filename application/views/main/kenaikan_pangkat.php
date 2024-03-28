@@ -10,25 +10,34 @@ else
     $reqPegawaiId= $this->pegawaiId;
 
 $arrtabledata= array(
-    array("label"=>"NIP", "field"=> "NIP_LAMA", "display"=>"", "width"=>"")
-    , array("label"=>"NIP Baru", "field"=> "NIP_BARU", "display"=>"", "width"=>"")
-    , array("label"=>"Nama", "field"=> "NAMA", "display"=>"", "width"=>"")
-    , array("label"=>"No. SK", "field"=> "NO_SK", "display"=>"", "width"=>"")
-    , array("label"=>"Tanggal SK", "field"=> "TANGGAL_SK", "display"=>"", "width"=>"")
-    , array("label"=>"TMT Baru", "field"=> "TMT_BARU", "display"=>"", "width"=>"")
-    , array("label"=>"TMT Lama", "field"=> "TMT_LAMA", "display"=>"", "width"=>"")
-    , array("label"=>"Gaji Baru", "field"=> "GAJI_BARU", "display"=>"", "width"=>"")
-    , array("label"=>"Gaji Lama", "field"=> "GAJI_LAMA", "display"=>"", "width"=>"")
-    , array("label"=>"Pejabat Penetap", "field"=> "PEJABAT_PENETAP", "display"=>"", "width"=>"")
-    , array("label"=>"Gol/Ruang", "field"=> "GOL_RUANG", "display"=>"", "width"=>"")
-    , array("label"=>"Masa Kerja", "field"=> "MASA_KERJA", "display"=>"", "width"=>"")
+    array("label"=>"NIP", "field"=> "NIP_LAMA", "display"=>"", "width"=>"", "colspan"=>"", "rowspan"=>"2")
+    , array("label"=>"NIP Baru", "field"=> "NIP_BARU", "display"=>"", "width"=>"", "colspan"=>"", "rowspan"=>"2")
+    , array("label"=>"Nama", "field"=> "NAMA", "display"=>"", "width"=>"", "colspan"=>"", "rowspan"=>"2")
+    , array("label"=>"Gol/Ruang", "field"=> "GOL_RUANG", "display"=>"", "width"=>"", "colspan"=>"2", "rowspan"=>"")
+    , array("label"=>"", "field"=> "GOL_RUANG_LAMA", "display"=>"", "width"=>"", "colspan"=>"", "rowspan"=>"")
+    , array("label"=>"TMT", "field"=> "TMT_BARU", "display"=>"", "width"=>"", "colspan"=>"2", "rowspan"=>"")
+    , array("label"=>"", "field"=> "TMT_LAMA", "display"=>"", "width"=>"", "colspan"=>"", "rowspan"=>"")
+    , array("label"=>"Masa Kerja", "field"=> "MASA_KERJA", "display"=>"", "width"=>"", "colspan"=>"2", "rowspan"=>"")
+    , array("label"=>"", "field"=> "MASA_KERJA_LAMA", "display"=>"", "width"=>"", "colspan"=>"", "rowspan"=>"")
+    , array("label"=>"Gaji", "field"=> "GAJI_BARU", "display"=>"", "width"=>"", "colspan"=>"2", "rowspan"=>"")
+    , array("label"=>"", "field"=> "GAJI_LAMA", "display"=>"", "width"=>"", "colspan"=>"", "rowspan"=>"")
+    , array("label"=>"Pejabat Penetap", "field"=> "PEJABAT_PENETAP", "display"=>"", "width"=>"", "colspan"=>"", "rowspan"=>"2")
+    , array("label"=>"No. SK", "field"=> "NO_SK", "display"=>"", "width"=>"", "colspan"=>"", "rowspan"=>"2")
+    , array("label"=>"Tanggal SK", "field"=> "NO_SK", "display"=>"", "width"=>"", "colspan"=>"", "rowspan"=>"2")
+    , array("label"=>"Pendidikan", "field"=> "PENDIDIKAN", "display"=>"", "width"=>"", "colspan"=>"", "rowspan"=>"2")
+    , array("label"=>"STLUD", "field"=> "NO_SK", "display"=>"", "width"=>"", "colspan"=>"", "rowspan"=>"2")
+    , array("label"=>"No. STLUD", "field"=> "NO_SK", "display"=>"", "width"=>"", "colspan"=>"", "rowspan"=>"2")
+    , array("label"=>"Tanggal STLUD", "field"=> "NO_SK", "display"=>"", "width"=>"", "colspan"=>"", "rowspan"=>"2")
+    , array("label"=>"No. Nota BKN", "field"=> "NO_SK", "display"=>"", "width"=>"", "colspan"=>"", "rowspan"=>"2")
+    , array("label"=>"Tanggal Nota BKN", "field"=> "NO_SK", "display"=>"", "width"=>"", "colspan"=>"", "rowspan"=>"2")
 
-    , array("label"=>"sorderdefault", "field"=> "SORDERDEFAULT", "display"=>"1", "width"=>"")
-    , array("label"=>"fieldid", "field"=> "PEGAWAI_ID", "display"=>"1", "width"=>"")
+    , array("label"=>"sorderdefault", "field"=> "SORDERDEFAULT", "display"=>"1", "width"=>"", "colspan"=>"", "rowspan"=>"2")
+    , array("label"=>"fieldid", "field"=> "PEGAWAI_ID", "display"=>"1", "width"=>"", "colspan"=>"", "rowspan"=>"2")
 );
 
 $reqTahun= date("Y");
 $reqBulan= date("m");
+$reqBulan= setBulanKp($reqBulan);
 
 $pangkat= new Pangkat();
 $pangkat->selectByParams();
@@ -73,10 +82,10 @@ $arrsatkerdata= $this->sessdatatree;
             <div class="d-flex align-items-baseline flex-wrap mr-5">
                 <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
                     <li class="breadcrumb-item text-muted">
-                        <a class="text-muted">KGB</a>
+                        <a class="text-muted">KP</a>
                     </li>
                     <li class="breadcrumb-item text-muted">
-                        <a class="text-muted">Monitoring KGB</a>
+                        <a class="text-muted">Monitoring KP</a>
                     </li>
                 </ul>
             </div>
@@ -95,7 +104,7 @@ $arrsatkerdata= $this->sessdatatree;
                         <i class="flaticon2-notepad text-primary"></i>
                     </span>
                     <h3 class="card-label">
-                        KGB<br/>
+                        KP<br/>
                         <label id="infodetilsatkernama">Pemerintah Kabupaten Mojokerto</label>
                     </h3>
                 </div>
@@ -127,23 +136,24 @@ $arrsatkerdata= $this->sessdatatree;
                 <div class="area-filter">
                     <div class="row mb-8">
                         <div class="col-md-4" style="margin-top: 10px">
+                            <label>Jenis KP:</label>
+                            <div class="row">
+                                <select id='reqType' class="form-control datatable-input">
+                                    <option value='REGULER'>Reguler</option>
+                                    <option value='PILIHAN_STRUKTURAL'>Pilihan (Struktural)</option>
+                                    <option value='PILIHAN_FUNGSIONAL'>Pilihan (Fungsional)</option>
+                                    <!-- <option value='ANUMERTA'>Anumerta</option>
+                                    <option value='PENGABDIAN'>Pengabdian</option> -->
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4" style="margin-top: 10px">
                             <label>Periode:</label>
                             <div class="row">
                                 <div class="col-md-6">
                                     <select id='reqBulan' class="form-control datatable-input">
-                                        <option value='' <? if($reqBulan == "") echo 'selected';?>>Semua</option>
-                                        <option value='01' <? if($reqBulan == "01") echo 'selected';?>>Januari</option>
-                                        <option value='02' <? if($reqBulan == "02") echo 'selected';?>>Februari</option>
-                                        <option value='03' <? if($reqBulan == "03") echo 'selected';?>>Maret</option>
                                         <option value='04' <? if($reqBulan == "04") echo 'selected';?>>April</option>
-                                        <option value='05' <? if($reqBulan == "05") echo 'selected';?>>Mei</option>
-                                        <option value='06' <? if($reqBulan == "06") echo 'selected';?>>Juni</option>
-                                        <option value='07' <? if($reqBulan == "07") echo 'selected';?>>Juli</option>
-                                        <option value='08' <? if($reqBulan == "08") echo 'selected';?>>Agustus</option>
-                                        <option value='09' <? if($reqBulan == "09") echo 'selected';?>>September</option>
                                         <option value='10' <? if($reqBulan == "10") echo 'selected';?>>Oktober</option>
-                                        <option value='11' <? if($reqBulan == "11") echo 'selected';?>>November</option>
-                                        <option value='12' <? if($reqBulan == "12") echo 'selected';?>>Desember</option>
                                     </select>
                                 </div>
                                 <div class="col-md-6">
@@ -171,7 +181,33 @@ $arrsatkerdata= $this->sessdatatree;
                             <?php
                             foreach($arrtabledata as $valkey => $valitem) 
                             {
-                                echo "<th>".$valitem["label"]."</th>";
+                                $colspan= $valitem["colspan"];
+                                $rowspan= $valitem["rowspan"];
+
+                                if(empty($colspan) && empty($rowspan)){}
+                                else
+                                {
+                                    $vcenter= "";
+                                    if(!empty($colspan))
+                                    {
+                                        $vcenter= "center";
+                                    }
+                                    echo "<th style='text-align:".$vcenter."' colspan='".$colspan."' rowspan='".$rowspan."'>".$valitem["label"]."</th>";
+                                }
+                            }
+                            ?>
+                        </tr>
+                        <tr>
+                            <?php
+                            foreach($arrtabledata as $valkey => $valitem) 
+                            {
+                                $colspan= $valitem["colspan"];
+                                $rowspan= $valitem["rowspan"];
+                                if(empty($colspan) && empty($rowspan))
+                                {
+                                    echo "<th style='text-align:center'>Baru</th>
+                                    <th style='text-align:center'>Lama</th>";
+                                }
                             }
                             ?>
                         </tr>
@@ -197,7 +233,7 @@ var valinfovalidasiid = '';
 var datainforesponsive= "1";
 var formSubmitButton;
 jQuery(document).ready(function() {
-    var jsonurl= "json-main/pegawai_json/jsonkgb";
+    var jsonurl= "json-main/pegawai_json/jsonkp?reqBulan=<?=$reqBulan?>&reqTahun=<?=$reqTahun?>";
     ajaxserverselectsingle.init(infotableid, jsonurl, arrdata);
         $('#vlsxloading').hide();
 
@@ -249,6 +285,7 @@ jQuery(document).ready(function() {
     $("#triggercari").on("click", function () {
         reqBulan= $("#reqBulan").val();
         reqTahun= $("#reqTahun").val();
+        reqType= $("#reqType").val();
         reqSatkerId= $("#reqSatkerId").val();
 
         if(carijenis == "1")
@@ -258,17 +295,17 @@ jQuery(document).ready(function() {
         }
         else if(carijenis == "p")
         {
-            jsonurl= "json-main/pegawai_json/jsonkgb?reqMode=proses&reqId="+reqSatkerId+"&reqBulan="+reqBulan+"&reqTahun="+reqTahun;
+            jsonurl= "json-main/pegawai_json/jsonkp?reqMode=proses&reqId="+reqSatkerId+"&reqType="+reqType+"&reqBulan="+reqBulan+"&reqTahun="+reqTahun;
             datanewtable.DataTable().ajax.url(jsonurl).load();
         }
         else
         {
-            jsonurl= "json-main/pegawai_json/jsonkgb?reqId="+reqSatkerId+"&reqBulan="+reqBulan+"&reqTahun="+reqTahun;
+            jsonurl= "json-main/pegawai_json/jsonkp?reqId="+reqSatkerId+"&reqType="+reqType+"&reqBulan="+reqBulan+"&reqTahun="+reqTahun;
             datanewtable.DataTable().ajax.url(jsonurl).load();
         }
     });
 
-    $("#reqBulan, #reqTahun, #reqSatkerId").change(function() { 
+    $("#reqType, #reqBulan, #reqTahun, #reqSatkerId").change(function() { 
         btnid= $(this).attr('id');
 
         carijenis= "2";
@@ -285,7 +322,7 @@ jQuery(document).ready(function() {
         formSubmitButton = KTUtil.getById('btnProses');
 
         Swal.fire({
-            title: 'Apakah anda yakin proses kgb sesuai filter?',
+            title: 'Apakah anda yakin proses kp sesuai filter?',
             text: "",
             icon: 'warning',
             showCancelButton: true,

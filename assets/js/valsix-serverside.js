@@ -162,6 +162,18 @@ var ajaxserverselectsingle = function() {
                             calltriggercari();
                         }
                     });
+                    
+                    if (typeof window.afterreload === 'function')
+                    {
+                        window.afterreload();
+                    }
+                }
+                , "fnInitComplete": function(oSettings, json) {
+                    /*if (typeof window.afterreload === 'function')
+                    {
+                        window.afterreload();
+                    }
+                    console.log( 'DataTables has finished its initialisation.' );*/
                 }
                 , "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
                     console.log(aData);
@@ -222,6 +234,18 @@ var ajaxserverselectsingle = function() {
                             calltriggercari();
                         }
                     });
+                    
+                    if (typeof window.afterreload === 'function')
+                    {
+                        window.afterreload();
+                    }
+                }
+                , "fnInitComplete": function(oSettings, json) {
+                    /*if (typeof window.afterreload === 'function')
+                    {
+                        window.afterreload();
+                    }
+                    console.log( 'DataTables has finished its initialisation.' );*/
                 }
                 , "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
                     // console.log(aData['WARNA']);

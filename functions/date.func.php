@@ -702,6 +702,14 @@ DESCRIPTION			: Functions to handle date operations
 		else
 			return '04';
 	}
+
+	function setBulanKpLoop()
+	{
+		$arrBulan[0]= '04';
+		$arrBulan[1]= '10';
+		
+		return $arrBulan;
+	}
 	
 	function isDateCheckVal($date, $format = 'd-m-Y')
 	{

@@ -224,7 +224,7 @@ var valinfoid = '';
 var valinfovalidasiid = '';
 
 var datainforesponsive= "1";
-
+var formSubmitButton;
 jQuery(document).ready(function() {
     var jsonurl= "json-main/pegawai_json/jsonduk";
     ajaxserverselectsingle.init(infotableid, jsonurl, arrdata);
@@ -313,7 +313,7 @@ jQuery(document).ready(function() {
 
     $('#btnProses').on('click', function () {
         var _buttonSpinnerClasses = 'spinner spinner-right spinner-white pr-15';
-        var formSubmitButton = KTUtil.getById('btnProses');
+        formSubmitButton = KTUtil.getById('btnProses');
 
         Swal.fire({
             title: 'Apakah anda yakin proses duk sesuai filter?',
@@ -329,7 +329,6 @@ jQuery(document).ready(function() {
                 KTUtil.btnWait(formSubmitButton, _buttonSpinnerClasses, "Please wait");
                 carijenis= "p";
                 calltriggercari();
-                KTUtil.btnRelease(formSubmitButton);
             }
         })
         
@@ -398,6 +397,11 @@ function showhidesatker()
     } else {
         x.style.display = "none";
     }
+}
+
+function afterreload()
+{
+    KTUtil.btnRelease(formSubmitButton);
 }
 </script>
 
