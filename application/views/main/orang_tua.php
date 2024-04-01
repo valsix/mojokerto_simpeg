@@ -2,6 +2,7 @@
 include_once("functions/personal.func.php");
 
 $this->load->model("base/Pegawai");
+$this->load->model("base/Core");
 
 $userpegawaimode= $this->userpegawaimode;
 $adminuserid= $this->adminuserid;
@@ -13,40 +14,107 @@ else
 
 $reqId= $this->input->get('reqId');
 
-$set= new Pegawai();
-// $skpns->selectByParams(array("PEGAWAI_ID" => $reqPegawaiId), -1,-1,'');
-// $skpns->firstRow();
-			   
-// $reqPejabatPenetapan			= $skpns->getField('PEJABAT_PENETAP_ID');
-// $reqNamaPejabatPenetap			= $skpns->getField('NAMA_PENETAP');
-// $reqNIPPejabatPenetap			= $skpns->getField('NIP_PENETAP');
-// $reqNoSuratKeputusan			= $skpns->getField('NO_SK');
-// $reqTanggalSuratKeputusan		= dateToPageCheck($skpns->getField('TANGGAL_SK'));
-// $reqTerhitungMulaiTanggal		= dateToPageCheck($skpns->getField('TMT_PNS'));
-// $reqNoDiklatPrajabatan			= $skpns->getField('NO_PRAJAB');
-// $reqTanggalDiklatPrajabatan	= dateToPageCheck($skpns->getField('TANGGAL_PRAJAB'));
-// $reqNoSuratUjiKesehatan		= $skpns->getField('NO_UJI_KESEHATAN');
-// $reqTanggalSuratUjiKesehatan	= dateToPageCheck($skpns->getField('TANGGAL_UJI_KESEHATAN'));
-// $reqGolRuang					= $skpns->getField('PANGKAT_ID');
-// $reqPengambilanSumpah			= $skpns->getField('SUMPAH');
-// $reqSKPNSId					= (int)$skpns->getField('SK_PNS_ID');
-// $reqTanggalSumpah				= $skpns->getField('TANGGAL_SUMPAH');
-// $reqNoSuratjiKesehatan			= $skpns->getField('NO_UJI_KESEHATAN');
-// $reqNoDiklatPrajabatan			= $skpns->getField('NO_PRAJAB');
-// $reqTh 						= $skpns->getField('MASA_KERJA_TAHUN');
-// $reqBl 						= $skpns->getField('MASA_KERJA_BULAN');
+$pegawai= new Pegawai();
+$pegawai->selectByParams(array("p.PEGAWAI_ID" => $reqId)); 
+$pegawai->firstRow();
+// echo $pegawai->query; exit;
 
-// $reqNoBeritaAcara				= $skpns->getField('NOMOR_BERITA_ACARA');
-// $reqTanggalBeritaAcara			= dateToPageCheck($skpns->getField('TANGGAL_BERITA_ACARA'));
-// $reqKeteranganLPJ				= $skpns->getField('KETERANGAN_LPJ');
+$reqNIP1				= $pegawai->getField('NIP_LAMA');
+$reqNIP2				= $pegawai->getField('NIP_BARU');
+$reqNama				= $pegawai->getField('NAMA');
+$reqTipePegawai		= $pegawai->getField('TIPE_PEGAWAI_ID');
+$reqGelarDepan			= $pegawai->getField('GELAR_DEPAN');
+$reqGelarBelakang		= $pegawai->getField('GELAR_BELAKANG');
+$reqStatusPegawai		= $pegawai->getField('STATUS_PEGAWAI');
+$reqTempatLahir		= $pegawai->getField('TEMPAT_LAHIR');
+$reqTanggalLahir		= dateToPageCheck($pegawai->getField('TANGGAL_LAHIR'));
+$reqTglPensiun			= dateToPageCheck($pegawai->getField('TANGGAL_PENSIUN'));
+$reqTglPindah			= dateToPageCheck($pegawai->getField('TANGGAL_PINDAH'));
+$reqKeteranganPindah	= $pegawai->getField('KETERANGAN_PINDAH');
+$reqJenisKelamin		= $pegawai->getField('JENIS_KELAMIN');
+$reqJenisPegawai		= $pegawai->getField('JENIS_PEGAWAI_ID');
+$reqKeterangan			= $pegawai->getField('KETERANGAN_PINDAH');
+$reqStatusPernikahan	= $pegawai->getField('STATUS_KAWIN');
+$reqKartuPegawai		= $pegawai->getField('KARTU_PEGAWAI');
+$reqSukuBangsa			= $pegawai->getField('SUKU_BANGSA');
+$reqGolDarah			= $pegawai->getField('GOLONGAN_DARAH');
+$reqAkses				= $pegawai->getField('ASKES');
+$reqTaspen				= $pegawai->getField('TASPEN');
+$reqAlamat				= $pegawai->getField('ALAMAT');
+$reqNPWP				= $pegawai->getField('NPWP');
+$reqNIK				= $pegawai->getField('NIK');
+$reqRT					= $pegawai->getField('RT');
+$reqRW					= $pegawai->getField('RW');
+$reqEmail				= $pegawai->getField('EMAIL');
+$reqPropinsi			= $pegawai->getField('PROPINSI_ID');
+$reqKabupaten			= $pegawai->getField('KABUPATEN_ID');
+$reqKecamatan			= $pegawai->getField('KECAMATAN_ID');
+$reqDesa				= $pegawai->getField('KELURAHAN_ID');
+$reqBank				= $pegawai->getField('BANK_ID');
+$reqNoRekening			= $pegawai->getField('NO_REKENING');
+$reqPangkatTerkahir	= $pegawai->getField('GOL_RUANG');
+$reqTMTPangkat			= $pegawai->getField('TMT_PANGKAT');
+$reqJabatanTerkahir	= $pegawai->getField('JABATAN');
+$reqTMTJabatan			= $pegawai->getField('TMT_JABATAN');
+$reqPendidikanTerakhir	= $pegawai->getField('PENDIDIKAN');
+$reqJurusanTerakhir	= $pegawai->getField('JURUSAN');
+$reqTahunLulus			= $pegawai->getField('TAHUN');
+$reqGambar				= $pegawai->getField('FOTO_BLOB');
+$reqAgamaId			= $pegawai->getField('AGAMA_ID');
+$reqTelepon			= $pegawai->getField('TELEPON');
+$reqKodePos			= $pegawai->getField('KODEPOS');
+$reqKedudukanId		= $pegawai->getField('KEDUDUKAN_ID');
+$reqSatkerId		= $pegawai->getField('SATKER_FULL');
 
+$reqNikPns				= $pegawai->getField('KTP_PNS');
+$reqDrh				= $pegawai->getField('DRH');
+$reqNomorKK				= $pegawai->getField('KK');
+$reqKtpPasangan				= $pegawai->getField('KTP_PASANGAN');
+$reqTugasTambahan			= $pegawai->getField('TUGAS_TAMBAHAN_NEW');
+$reqJenisMapelId			= $pegawai->getField('JENIS_MAPEL_ID');
+$data = $pegawai->getField('FOTO_BLOB');
+$data_karpeg= $pegawai->getField('DOSIR_KARPEG');
+$data_askes= $pegawai->getField('DOSIR_ASKES');
+$data_taspen= $pegawai->getField('DOSIR_TASPEN');
+$data_npwp= $pegawai->getField('DOSIR_NPWP');
+			
+$reqGambarTmp   		= $pegawai->getField('FOTO_BLOB');
+$reqGambarSetengah		= $pegawai->getField('FOTO_BLOB_OTHER');
+$reqGambarTmpSetengah	= $pegawai->getField('FOTO_BLOB_OTHER');
+
+
+$agama= new Core();
+$agama->selectByParamsAgama(); 
+
+$bank= new Core();
+$bank->selectByParamsBank(); 
+
+$tipepegawai= new Core();
+$tipepegawai->selectByParamsTipePegawai(); 
+
+$status_pegawai= new Core();
+$status_pegawai->selectByParamsStatusPegawai(); 
+
+$jenis_pegawai= new Core();
+$jenis_pegawai->selectByParamsJenisPegawai(); 
+
+$kedudukan= new Core();
+$kedudukan->selectByParamsKedudukan(); 
+
+$propinsi= new Core();
+
+$kabupaten= new Core();
+
+$kecamatan= new Core();
+
+$kelurahan= new Core();
 
 // echo $reqTmtJabatan;exit;
 $reqMode="update";
 // $reqMode="insert";
 $readonly = "readonly";
 ?>
-<style type="text/css">
+<!-- <style type="text/css">
 	   select[readonly].select2-hidden-accessible + .select2-container {
         pointer-events: none;
         touch-action: none;
@@ -62,7 +130,7 @@ $readonly = "readonly";
     }
 
 </style>
-
+ -->
 <!-- Bootstrap core CSS -->
 <!-- <link href="lib/bootstrap-3.3.7/dist/css/bootstrap.min.css" rel="stylesheet"> -->
 <link href="lib/bootstrap-3.3.7/docs/examples/navbar/navbar.css" rel="stylesheet">
@@ -77,7 +145,7 @@ $readonly = "readonly";
 						<a class="" href="app/index/pegawai">Data Pegawai</a>
 					</li>
 					<li class="breadcrumb-item text-muted">
-						<a class="text-muted">SK PNS</a>
+						<a class="text-muted">Identitas Pegawai</a>
 					</li>
 				</ul>
 			</div>
@@ -95,175 +163,391 @@ $readonly = "readonly";
                     <span class="card-icon">
                         <i class="flaticon2-notepad text-primary"></i>
                     </span>
-                    <h3 class="card-label">SK PNS</h3>
+                    <h3 class="card-label">Profil Pegawai</h3>
                 </div>
             </div>
             <form class="form" id="ktloginform" method="POST" enctype="multipart/form-data">
 	        	<div class="card-body">
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			Pejabat Penetapan
-		        		</label>
-	        			<div class="col-lg-10 col-sm-12">
-	        				<select class="form-control" id="reqPejabatPenetapan" name="reqPejabatPenetapan">
-	        					<option></option>
-	        				</select>
-	        			</div>
-	        		</div>
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			Nama Pejabat Penetap
-		        		</label>
-	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" name="reqNamaPejabatPenetap" id="reqNamaPejabatPenetap" value="<?=$reqNamaPejabatPenetap?>" />
-	        			</div>
-	        		</div>
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			NIP Pejabat Penetap
-		        		</label>
-	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" name="reqNIPPejabatPenetap" id="reqNIPPejabatPenetap" value="<?=$reqNIPPejabatPenetap?>" />
-	        			</div>
-	        		</div>
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			No. Surat Keputusan
-		        		</label>
-	        			<div class="col-lg-4 col-sm-12">
-	        				<input type="text" class="form-control" name="reqNoSuratKeputusan" id="reqNoSuratKeputusan" value="<?=$reqNoSuratKeputusan?>" />
-	        			</div>
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			Tanggal Surat Keputusan
-		        		</label>
-	        			<div class="col-lg-4 col-sm-12">
-	        				<div class="input-group date">
-		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTanggalSuratKeputusan" value="<?=$reqTanggalSuratKeputusan?>" />
-		        				<div class="input-group-append">
-		        					<span class="input-group-text">
-		        						<i class="la la-calendar"></i>
-		        					</span>
-		        				</div>
-		        			</div>
-	        			</div>
-	        		</div>
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			Terhitung Mulai Tanggal
-		        		</label>
-	        			<div class="col-lg-4 col-sm-12">
-	        				<div class="input-group date">
-		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTerhitungMulaiTanggal" value="<?=$reqTerhitungMulaiTanggal?>" />
-		        				<div class="input-group-append">
-		        					<span class="input-group-text">
-		        						<i class="la la-calendar"></i>
-		        					</span>
-		        				</div>
-		        			</div>
-	        			</div>
-	        		</div>
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			No. Berita Acara
-		        		</label>
-	        			<div class="col-lg-4 col-sm-12">
-	        				<input type="text" class="form-control" name="reqNoBeritaAcara" id="reqNoBeritaAcara" value="<?=$reqNoBeritaAcara?>" />
-	        			</div>
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			Tanggal Berita Acara
-		        		</label>
-	        			<div class="col-lg-4 col-sm-12">
-	        				<div class="input-group date">
-		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTanggalBeritaAcara" value="<?=$reqTanggalBeritaAcara?>" />
-		        				<div class="input-group-append">
-		        					<span class="input-group-text">
-		        						<i class="la la-calendar"></i>
-		        					</span>
-		        				</div>
-		        			</div>
-	        			</div>
-	        		</div>
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			No. Diklat Prajabatan
-		        		</label>
-	        			<div class="col-lg-4 col-sm-12">
-	        				<input type="text" class="form-control" name="reqNoDiklatPrajabatan" id="reqNoDiklatPrajabatan" value="<?=$reqNoDiklatPrajabatan?>" />
-	        			</div>
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			Tanggal Diklat Prajabatan
-		        		</label>
-	        			<div class="col-lg-4 col-sm-12">
-	        				<div class="input-group date">
-		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTanggalDiklatPrajabatan" value="<?=$reqTanggalDiklatPrajabatan?>" />
-		        				<div class="input-group-append">
-		        					<span class="input-group-text">
-		        						<i class="la la-calendar"></i>
-		        					</span>
-		        				</div>
-		        			</div>
-	        			</div>
-	        		</div>
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			No. Surat Uji Kesehatan
-		        		</label>
-	        			<div class="col-lg-4 col-sm-12">
-	        				<input type="text" class="form-control" name="reqNoSuratUjiKesehatan" id="reqNoSuratUjiKesehatan" value="<?=$reqNoSuratUjiKesehatan?>" />
-	        			</div>
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			Tanggal Surat Uji Kesehatan
-		        		</label>
-	        			<div class="col-lg-4 col-sm-12">
-	        				<div class="input-group date">
-		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTanggalSuratUjiKesehatan" value="<?=$reqTanggalSuratUjiKesehatan?>" />
-		        				<div class="input-group-append">
-		        					<span class="input-group-text">
-		        						<i class="la la-calendar"></i>
-		        					</span>
-		        				</div>
-		        			</div>
-	        			</div>
-	        		</div>
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			Pengkat/Gol.Ruang
-		        		</label>
-	        			<div class="col-lg-8 col-sm-12">
-	        				<select class="form-control" id="reqGolRuang" name="reqGolRuang">
-	        					<option></option>
-	        				</select>
-	        			</div>
-	        		</div>
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			Pengambilan Sumpah
-		        		</label>
-	        			<div class="col-lg-1 col-sm-12">
-	        				<input type="checkbox" class="form-control" name="reqPengambilanSumpah" id="reqPengambilanSumpah" value="<?=$reqPengambilanSumpah?>" />
-	        			</div>
-	        		</div>
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			Latihan Pra Jabatan(LPJ)
-		        		</label>
-	        			<div class="col-lg-4 col-sm-12">
-	        				<input type="text" class="form-control" name="reqKeteranganLPJ" id="reqKeteranganLPJ" value="<?=$reqKeteranganLPJ?>" />
-	        			</div>
-	        		</div>
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Masa Kerja </label>
-	        			<div class="col-lg-1 col-sm-12">
-	        				<input type="text" class="form-control" name="tempTh" id="tempTh" value="<?=$tempTh?>" />
-	        			</div>
-	        			<label class="col-form-label">Tahun </label>
-	        			<div class="col-lg-1 col-sm-12">
-	        				<input type="text" class="form-control" name="tempBl" id="tempBl" value="<?=$tempBl?>" />
-	        			</div>
-	        			<label class="col-form-label">Bulan</label>
-	        			
-	        		</div>
-	        	</div>
+	        		<div class="row">
+	        			<div class="col-md-6">
+	        				<div class="card-title">
+			                    <h3 class="card-label">Profil Ayah</h3>
+			                </div>
+			        	</div>
+			        	<div class="col-md-6">
+	        				<div class="card-title">
+			                    <h3 class="card-label">Profil Ibu</h3>
+			                </div>
+			        	</div>
+			        </div>
+
+			        <div class="row">
+	        			<div class="col-md-6">
+	        				<div class="form-group row">
+			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Nama</label>
+			        			<div class="col-lg-9 col-sm-12">
+			        				<input type="text" class="form-control"  name="reqGelarDepan" id="reqGelarDepan" value="<?=$reqGelarDepan?>" />
+			        			</div>
+			        		</div>
+			        	</div>
+			        	<div class="col-md-6">
+	        				<div class="form-group row">
+			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Nama</label>
+			        			<div class="col-lg-9 col-sm-12">
+			        				<input type="text" class="form-control"  name="reqGelarBelakang" id="reqGelarBelakang" value="<?=$reqGelarBelakang?>" />
+			        			</div>
+			        		</div>
+			        	</div>
+			        </div>
+
+			        <div class="row">
+	        			<div class="col-md-6">
+	        				<div class="form-group row">
+			        			<label class="col-form-label text-right col-lg-3 col-sm-12">
+				        			Tempat Lahir
+				        		</label>
+			        			<div class="col-lg-9 col-sm-12">
+			        				<input type="text" class="form-control"  name="reqTempatLahir" id="reqTempatLahir" value="<?=$reqTempatLahir?>" />
+			        			</div>
+			        		</div>
+			        	</div>
+			        	<div class="col-md-6">
+	        				<div class="form-group row">
+			        			<label class="col-form-label text-right col-lg-3 col-sm-12">
+				        			Tempat Lahir
+				        		</label>
+			        			<div class="col-lg-9 col-sm-12">
+			        				<input type="text" class="form-control"  name="reqTempatLahir" id="reqTempatLahir" value="<?=$reqTempatLahir?>" />
+			        			</div>
+			        		</div>
+			        	</div>
+			        </div>
+
+			        <div class="row">
+			        	<div class="col-md-6">
+	        				<div class="form-group row">
+			        			<label class="col-form-label text-right col-lg-3 col-sm-12">
+				        			Tanggal Lahir
+				        		</label>
+			        			<div class="col-lg-9 col-sm-12">
+			        				<div class="input-group date">
+				        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTanggalLahir" value="<?=$reqTanggalLahir?>" />
+				        				<div class="input-group-append">
+				        					<span class="input-group-text">
+				        						<i class="la la-calendar"></i>
+				        					</span>
+				        				</div>
+				        			</div>
+			        			</div>
+			        		</div>
+			        	</div>
+			        	
+			        	<div class="col-md-6">
+	        				<div class="form-group row">
+			        			<label class="col-form-label text-right col-lg-3 col-sm-12">
+				        			Tanggal Lahir
+				        		</label>
+			        			<div class="col-lg-9 col-sm-12">
+			        				<div class="input-group date">
+				        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTanggalLahir" value="<?=$reqTanggalLahir?>" />
+				        				<div class="input-group-append">
+				        					<span class="input-group-text">
+				        						<i class="la la-calendar"></i>
+				        					</span>
+				        				</div>
+				        			</div>
+			        			</div>
+			        		</div>
+			        	</div>
+			        </div>
+
+			        <div class="row">
+	        			<div class="col-md-6">
+	        				<div class="form-group row">
+			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Usia</label>
+			        			<div class="col-lg-9 col-sm-12">
+			        				<input type="text" class="form-control"  name="reqGelarDepan" id="reqGelarDepan" value="<?=$reqGelarDepan?>" />
+			        			</div>
+			        		</div>
+			        	</div>
+			        	<div class="col-md-6">
+	        				<div class="form-group row">
+			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Usia</label>
+			        			<div class="col-lg-9 col-sm-12">
+			        				<input type="text" class="form-control"  name="reqGelarBelakang" id="reqGelarBelakang" value="<?=$reqGelarBelakang?>" />
+			        			</div>
+			        		</div>
+			        	</div>
+			        </div>
+
+			        <div class="row">
+	        			<div class="col-md-6">
+	        				<div class="form-group row">
+			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Pekerjaan</label>
+			        			<div class="col-lg-9 col-sm-12">
+			        				<input type="text" class="form-control"  name="reqGelarDepan" id="reqGelarDepan" value="<?=$reqGelarDepan?>" />
+			        			</div>
+			        		</div>
+			        	</div>
+			        	<div class="col-md-6">
+	        				<div class="form-group row">
+			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Pekerjaan</label>
+			        			<div class="col-lg-9 col-sm-12">
+			        				<input type="text" class="form-control"  name="reqGelarBelakang" id="reqGelarBelakang" value="<?=$reqGelarBelakang?>" />
+			        			</div>
+			        		</div>
+			        	</div>
+			        </div>
+
+			        <div class="row">
+	        			<div class="col-md-6">
+	        				<div class="form-group row">
+			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Alamat</label>
+			        			<div class="col-lg-9 col-sm-12">
+			        				<textarea class="form-control"  name="reqGelarBelakang" id="reqGelarBelakang" ></textarea>
+			        			</div>
+			        		</div>
+			        	</div>
+			        	<div class="col-md-6">
+	        				<div class="form-group row">
+			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Alamat</label>
+			        			<div class="col-lg-9 col-sm-12">
+			        				<textarea class="form-control"  name="reqGelarBelakang" id="reqGelarBelakang" ></textarea>
+			        			</div>
+			        		</div>
+			        	</div>
+			        </div>
+
+			        <div class="row">
+	        			<div class="col-md-6">
+	        				<div class="form-group row">
+			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Propinsi</label>
+			        			<div class="col-lg-9 col-sm-12">
+			        				<select class="form-control" id='reqPropinsi' name='reqPropinsi'>
+			        					<option value="" <?if($reqPropinsi=='') echo 'selected' ?> disabled></option>
+										<?
+										$propinsi->selectByParamsPropinsi(); 
+										while($propinsi->nextRow())
+										 {
+										?>
+											<option value="<?=$propinsi->getField('PROPINSI_ID')?>" <? if($propinsi->getField('PROPINSI_ID') == $reqPropinsi) echo 'selected' ?>>
+					                        	<?=$propinsi->getField('NAMA')?>
+					                        </option>
+					                    <?
+										 }
+										 ?>
+
+			        				</select>
+			        			</div>
+			        		</div>
+			        	</div>
+			        	<div class="col-md-6">
+	        				<div class="form-group row">
+			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Propinsi</label>
+			        			<div class="col-lg-9 col-sm-12">
+			        				<select class="form-control" id='reqPropinsiIbu' name='reqPropinsi'>
+			        					<option value="" <?if($reqPropinsi=='') echo 'selected' ?> disabled></option>
+										<?
+										$propinsi->selectByParamsPropinsi();
+										while($propinsi->nextRow())
+										 {
+										?>
+											<option value="<?=$propinsi->getField('PROPINSI_ID')?>" <? if($propinsi->getField('PROPINSI_ID') == $reqPropinsi) echo 'selected' ?>>
+					                        	<?=$propinsi->getField('NAMA')?>
+					                        </option>
+					                    <?
+										 }
+										 ?>
+
+			        				</select>
+			        			</div>
+			        		</div>
+			        	</div>
+			        </div>
+
+			        <div class="row">
+			        	<div class="col-md-6">
+	        				<div class="form-group row">
+			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Kabupaten</label>
+			        			<div class="col-lg-9 col-sm-12">
+			        				<select class="form-control" id='reqKabupaten' name='reqKabupaten'>
+			        					<option value="" <?if($reqKabupaten=='') echo 'selected' ?> disabled></option>
+										<?
+										$kabupaten->selectByParamsKabupaten(array('PROPINSI_ID'=>$reqPropinsi)); 
+										while($kabupaten->nextRow())
+										 {
+										?>
+											<option value="<?=$kabupaten->getField('KABUPATEN_ID')?>" <? if($kabupaten->getField('KABUPATEN_ID') == $reqKabupaten) echo 'selected' ?>>
+					                        	<?=$kabupaten->getField('NAMA')?>
+					                        </option>
+					                    <?
+										 }
+										 ?>
+			        				</select>
+			        			</div>
+			        		</div>
+			        	</div>
+			        	<div class="col-md-6">
+	        				<div class="form-group row">
+			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Kabupaten</label>
+			        			<div class="col-lg-9 col-sm-12">
+			        				<select class="form-control" id='reqKabupaten' name='reqKabupaten'>
+			        					<option value="" <?if($reqKabupaten=='') echo 'selected' ?> disabled></option>
+										<?
+										$kabupaten->selectByParamsKabupaten(array('PROPINSI_ID'=>$reqPropinsi)); 
+										while($kabupaten->nextRow())
+										 {
+										?>
+											<option value="<?=$kabupaten->getField('KABUPATEN_ID')?>" <? if($kabupaten->getField('KABUPATEN_ID') == $reqKabupaten) echo 'selected' ?>>
+					                        	<?=$kabupaten->getField('NAMA')?>
+					                        </option>
+					                    <?
+										 }
+										 ?>
+			        				</select>
+			        			</div>
+			        		</div>
+			        	</div>
+			        </div>
+
+			        <div class="row">
+			        	<div class="col-md-6">
+	        				<div class="form-group row">
+			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Kecamatan</label>
+			        			<div class="col-lg-9 col-sm-12">
+			        				<select class="form-control" id="reqKecamatan" name="reqKecamatan">
+			        					<option value="" <?if($reqKecamatan=='') echo 'selected' ?> disabled></option>
+										<?
+										$kecamatan->selectByParamsKecamatan(array('PROPINSI_ID'=>$reqPropinsi, 'KABUPATEN_ID'=>$reqKabupaten)); 
+										while($kecamatan->nextRow())
+										 {
+										?>
+											<option value="<?=$kecamatan->getField('KECAMATAN_ID')?>" <? if($kecamatan->getField('KECAMATAN_ID') == $reqKecamatan) echo 'selected' ?>>
+					                        	<?=$kecamatan->getField('NAMA')?>
+					                        </option>
+					                    <?
+										 }
+										 ?>
+			        				</select>
+			        			</div>
+			        		</div>
+			        	</div>
+			        	<div class="col-md-6">
+	        				<div class="form-group row">
+			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Kecamatan</label>
+			        			<div class="col-lg-9 col-sm-12">
+			        				<select class="form-control" id="reqKecamatanIbu" name="reqKecamatan">
+			        					<option value="" <?if($reqKecamatan=='') echo 'selected' ?> disabled></option>
+										<?
+										$kecamatan->selectByParamsKecamatan(array('PROPINSI_ID'=>$reqPropinsi, 'KABUPATEN_ID'=>$reqKabupaten)); 
+										while($kecamatan->nextRow())
+										 {
+										?>
+											<option value="<?=$kecamatan->getField('KECAMATAN_ID')?>" <? if($kecamatan->getField('KECAMATAN_ID') == $reqKecamatan) echo 'selected' ?>>
+					                        	<?=$kecamatan->getField('NAMA')?>
+					                        </option>
+					                    <?
+										 }
+										 ?>
+			        				</select>
+			        			</div>
+			        		</div>
+			        	</div>
+			        </div>
+
+			        <div class="row">
+			        	<div class="col-md-6">
+	        				<div class="form-group row">
+			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Desa</label>
+			        			<div class="col-lg-9 col-sm-12">
+			        				<select class="form-control" id="reqKelurahan" name="reqDesa">
+			        					<option value="" <?if($reqKelurahan=='') echo 'selected' ?> disabled></option>
+										<?
+										$kelurahan->selectByParamsKelurahan(array('PROPINSI_ID'=>$reqPropinsiId, 'KABUPATEN_ID'=>$reqKabupatenId,'KECAMATAN_ID'=>$reqKecamatanId)); 
+										while($kelurahan->nextRow())
+										 {
+										?>
+											<option value="<?=$kelurahan->getField('KELURAHAN_ID')?>" <? if($kelurahan->getField('KELURAHAN_ID') == $reqKelurahan) echo 'selected' ?>>
+					                        	<?=$kelurahan->getField('NAMA')?>
+					                        </option>
+					                    <?
+										 }
+										 ?>
+			        				</select>
+			        			</div>
+			        		</div>
+			        	</div>
+			        	
+			        	<div class="col-md-6">
+	        				<div class="form-group row">
+			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Desa</label>
+			        			<div class="col-lg-9 col-sm-12">
+			        				<select class="form-control" id="reqKelurahanIbu" name="reqDesa">
+			        					<option value="" <?if($reqKelurahan=='') echo 'selected' ?> disabled></option>
+										<?
+										$kelurahan->selectByParamsKelurahan(array('PROPINSI_ID'=>$reqPropinsiId, 'KABUPATEN_ID'=>$reqKabupatenId,'KECAMATAN_ID'=>$reqKecamatanId)); 
+										while($kelurahan->nextRow())
+										 {
+										?>
+											<option value="<?=$kelurahan->getField('KELURAHAN_ID')?>" <? if($kelurahan->getField('KELURAHAN_ID') == $reqKelurahan) echo 'selected' ?>>
+					                        	<?=$kelurahan->getField('NAMA')?>
+					                        </option>
+					                    <?
+										 }
+										 ?>
+			        				</select>
+			        			</div>
+			        		</div>
+			        	</div>
+			        </div>
+
+					<div class="row">
+			        	<div class="col-md-6">
+			        		<div class="form-group row">
+	        					<label class="col-form-label text-right col-lg-3 col-sm-12">
+				        			Kode Pos 
+				        		</label>
+				        		<div class="col-lg-9 col-sm-12">
+			        				<input type="text" class="form-control"  name="reqKodePos" id="reqKodePos" value="<?=$reqKodePos?>" />
+			        			</div>
+			        		</div>
+		        		</div>
+			        	<div class="col-md-6">
+			        		<div class="form-group row">
+	        					<label class="col-form-label text-right col-lg-3 col-sm-12">
+				        			Kode Pos 
+				        		</label>
+				        		<div class="col-lg-9 col-sm-12">
+			        				<input type="text" class="form-control"  name="reqKodePos" id="reqKodePos" value="<?=$reqKodePos?>" />
+			        			</div>
+			        		</div>
+		        		</div>
+			        </div>
+
+			        <div class="row">
+			        	<div class="col-md-6">
+			        		<div class="form-group row">
+	        					<label class="col-form-label text-right col-lg-3 col-sm-12">
+				        			Telepon
+				        		</label>
+				        		<div class="col-lg-9 col-sm-12">
+			        				<input type="text" class="form-control"  name="reqKodePos" id="reqKodePos" value="<?=$reqKodePos?>" />
+			        			</div>
+			        		</div>
+		        		</div>
+			        	<div class="col-md-6">
+			        		<div class="form-group row">
+	        					<label class="col-form-label text-right col-lg-3 col-sm-12">
+				        			Telepon
+				        		</label>
+				        		<div class="col-lg-9 col-sm-12">
+			        				<input type="text" class="form-control"  name="reqKodePos" id="reqKodePos" value="<?=$reqKodePos?>" />
+			        			</div>
+			        		</div>
+		        		</div>
+			        </div>
+			    </div>
+
 	        	<div class="card-footer">
 	        		<div class="row">
 	        			<div class="col-lg-9">
@@ -285,17 +569,17 @@ $readonly = "readonly";
 		// $('[data-toggle="tooltip"]').tooltip()
 	})
 
-	$('#ktagamaid').select2({
-		placeholder: "Pilih agama"
-	});
+	// $('#ktagamaid').select2({
+	// 	placeholder: "Pilih agama"
+	// });
 
-	$('#ktsatuankerjad').select2({
-		placeholder: "Pilih Satuan Kerja"
-	});
+	// $('#ktsatuankerjad').select2({
+	// 	placeholder: "Pilih Satuan Kerja"
+	// });
 	
-	$('#ktjeniskelamin').select2({
-		placeholder: "Pilih jenis kelamin"
-	});
+	// $('#ktjeniskelamin').select2({
+	// 	placeholder: "Pilih jenis kelamin"
+	// });
 
 	arrows= {leftArrow: '<i class="la la-angle-left"></i>', rightArrow: '<i class="la la-angle-right"></i>'};
 	$('#kttanggallahir').datepicker({
@@ -397,11 +681,117 @@ $readonly = "readonly";
 
 </script>
 
-<!-- <button onclick="tes()">tesss</button>
-<script>
-    function tes() {
-        // pageUrl= "app/loadUrl/main/pegawai_data";
-        pageUrl= "iframe/index/pegawai_data";
-        openAdd(pageUrl);
-    }
-</script> -->
+<script type="text/javascript">
+	$(function(){
+		$('#reqPropinsi').bind('change', function(ev) {
+			var propinsi = $('#reqPropinsi').val();
+			$.getJSON('json-main/lokasi_json/getKabupaten?reqPropinsiId='+propinsi, function (data) 
+	        {
+	            Result = data; //Use this data for further creation of your elements.
+	            var items = "";
+				items += "<option value='' disabled selected>Pilih Kabupaten</option>";
+	            $.each(data, function (i, SingleElement) {
+
+					items += "<option value='" + SingleElement.kabupaten_id + "'>" + SingleElement.kabupaten + "</option>";
+	            });
+				$("#reqKabupaten").html(items);
+				// $.uniform.update("#reqKecamatan"); 
+				// $.uniform.update("#reqKelurahan");             
+	        });
+		});
+		$('#reqKabupaten').bind('change', function(ev) {
+			var kabupaten = $('#reqKabupaten').val();
+			//alert(kabupaten);
+			$.getJSON('json-main/lokasi_json/getKecamatan?reqKabupatenId='+kabupaten, function (data) 
+	        {
+	            Result = data; //Use this data for further creation of your elements.
+	            var items = "";
+				items += "<option value='' disabled selected>Pilih Kecamatan</option>";
+	            $.each(data, function (i, SingleElement) {
+					items += "<option value='" + SingleElement.kecamatan_id + "'>" + SingleElement.kecamatan + "</option>";
+					//alert(SingleElement.kecamatan);
+	            });
+				$("#reqKecamatan").html(items);
+				$.uniform.update("#reqKecamatan");
+				
+				var items = "";			
+				$("#reqKelurahan").html(items); 
+				// $.uniform.update("#reqKelurahan"); 
+	        });
+		});
+		$('#reqKecamatan').bind('change', function(ev) {
+			//$("#reqKabupaten").reset(); 
+			var kecamatan = $('#reqKecamatan').val();
+			$.getJSON('json-main/lokasi_json/getKelurahan?reqKecamatanId='+kecamatan, function (data) 
+	        {
+	            Result = data; //Use this data for further creation of your elements.
+	            var items = "";
+				items += "<option value='' disabled selected>Pilih Desa</option>";
+	            //items += "<option value=0> -- </option>";
+	            $.each(data, function (i, SingleElement) {
+					items += "<option value='" + SingleElement.kelurahan_id + "'>" + SingleElement.kelurahan + "</option>";
+	            });
+	            $("#reqKelurahan").html(items);
+				// $.uniform.update("#reqKecamatan"); 
+
+	        });
+		});	
+	})
+</script>
+
+<script type="text/javascript">
+	$(function(){
+		$('#reqPropinsiIbu').bind('change', function(ev) {
+			var propinsi = $('#reqPropinsiIbu').val();
+			$.getJSON('json-main/lokasi_json/getKabupaten?reqPropinsiId='+propinsi, function (data) 
+	        {
+	            Result = data; //Use this data for further creation of your elements.
+	            var items = "";
+				items += "<option value='' disabled selected>Pilih Kabupaten</option>";
+	            $.each(data, function (i, SingleElement) {
+
+					items += "<option value='" + SingleElement.kabupaten_id + "'>" + SingleElement.kabupaten + "</option>";
+	            });
+				$("#reqKabupatenIbu").html(items);
+				// $.uniform.update("#reqKecamatan"); 
+				// $.uniform.update("#reqKelurahan");             
+	        });
+		});
+		$('#reqKabupatenIbu').bind('change', function(ev) {
+			var kabupaten = $('#reqKabupatenIbu').val();
+			//alert(kabupaten);
+			$.getJSON('json-main/lokasi_json/getKecamatan?reqKabupatenId='+kabupaten, function (data) 
+	        {
+	            Result = data; //Use this data for further creation of your elements.
+	            var items = "";
+				items += "<option value='' disabled selected>Pilih Kecamatan</option>";
+	            $.each(data, function (i, SingleElement) {
+					items += "<option value='" + SingleElement.kecamatan_id + "'>" + SingleElement.kecamatan + "</option>";
+					//alert(SingleElement.kecamatan);
+	            });
+				$("#reqKecamatanIbu").html(items);
+				$.uniform.update("#reqKecamatanIbu");
+				
+				var items = "";			
+				$("#reqKelurahanIbu").html(items); 
+				// $.uniform.update("#reqKelurahan"); 
+	        });
+		});
+		$('#reqKecamatanIbu').bind('change', function(ev) {
+			//$("#reqKabupaten").reset(); 
+			var kecamatan = $('#reqKecamatanIbu').val();
+			$.getJSON('json-main/lokasi_json/getKelurahan?reqKecamatanId='+kecamatan, function (data) 
+	        {
+	            Result = data; //Use this data for further creation of your elements.
+	            var items = "";
+				items += "<option value='' disabled selected>Pilih Desa</option>";
+	            //items += "<option value=0> -- </option>";
+	            $.each(data, function (i, SingleElement) {
+					items += "<option value='" + SingleElement.kelurahan_id + "'>" + SingleElement.kelurahan + "</option>";
+	            });
+	            $("#reqKelurahanIbu").html(items);
+				// $.uniform.update("#reqKecamatan"); 
+	        });
+		});	
+	})
+</script>

@@ -23,7 +23,7 @@ $arrtabledata= array(
     , array("label"=>"validasiid", "field"=> "TEMP_VALIDASI_HAPUS_ID", "display"=>"1", "width"=>"")
     , array("label"=>"validasihapusid", "field"=> "TEMP_VALIDASI_ID", "display"=>"1", "width"=>"")
     , array("label"=>"sorderdefault", "field"=> "SORDERDEFAULT", "display"=>"1", "width"=>"")
-    , array("label"=>"fieldid", "field"=> "PENDIDIKAN_ID", "display"=>"1", "width"=>"")
+    , array("label"=>"fieldid", "field"=> "PENDIDIKAN_RIWAYAT_ID", "display"=>"1", "width"=>"")
 );
 ?>
 

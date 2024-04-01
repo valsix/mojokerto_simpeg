@@ -220,5 +220,37 @@ class Core extends Entity{
 				
 		return $this->selectLimit($str,$limit,$from); 
     }
+
+    function selectByParamsPendidikan($paramsArray=array(),$limit=-1,$from=-1, $statement='')
+	{
+		$str = "SELECT PENDIDIKAN_ID, PANGKAT_MINIMAL, PANGKAT_MAKSIMAL, NAMA, KETERANGAN
+				FROM PENDIDIKAN WHERE PENDIDIKAN_ID IS NOT NULL"; 
+		
+		while(list($key,$val) = each($paramsArray))
+		{
+			$str .= " AND $key = '$val' ";
+		}
+		
+		$str .= $statement." ORDER BY PENDIDIKAN_ID ASC";
+		$this->query = $str;
+				
+		return $this->selectLimit($str,$limit,$from); 
+    }
+
+    function selectByParamsDiklat($paramsArray=array(),$limit=-1,$from=-1, $statement='')
+	{
+		$str = "SELECT DIKLAT_ID, NAMA, KETERANGAN
+				FROM DIKLAT WHERE DIKLAT_ID IS NOT NULL"; 
+		
+		while(list($key,$val) = each($paramsArray))
+		{
+			$str .= " AND $key = '$val' ";
+		}
+		
+		$this->query = $str;
+		$str .= $statement." ORDER BY NAMA ASC";
+				
+		return $this->selectLimit($str,$limit,$from); 
+    }
 } 
 ?>

@@ -1,7 +1,8 @@
 <?
 include_once("functions/personal.func.php");
 
-$this->load->model("base/PengalamanKerja");
+$this->load->model("base/PelatihanKepemimpinan");
+$this->load->model("base/Core");
 
 $userpegawaimode= $this->userpegawaimode;
 $adminuserid= $this->adminuserid;
@@ -14,16 +15,26 @@ else
 $reqId= $this->input->get('reqId');
 $reqRowId= $this->input->get('reqRowId');
 
-$pengalaman= new PengalamanKerja();
-$pengalaman->selectByParams(array('PENGALAMAN_ID'=>$reqRowId));
-$pengalaman->firstRow();
-$reqPengalamanId = $pengalaman->getField('PENGALAMAN_ID');
-$reqInstansi 			= $pengalaman->getField('NAMA');
-$reqJabatan = $pengalaman->getField('JABATAN');
-$reqTglMulaiKerja = dateToPageCheck($pengalaman->getField('TANGGAL_KERJA'));
-$reqMasaKerjaTh = $pengalaman->getField('MASA_KERJA_TAHUN');
-$reqMasaKerjaBl = $pengalaman->getField('MASA_KERJA_BULAN');
+$diklat_struktural= new PelatihanKepemimpinan();
+$diklat_struktural->selectByParams(array('DIKLAT_STRUKTURAL_ID'=>$reqRowId));
+$diklat_struktural->firstRow();
+$reqDIKLAT_STRUKTURAL_ID = $diklat_struktural->getField('DIKLAT_STRUKTURAL_ID');
+$reqDiklat = $diklat_struktural->getField('DIKLAT_ID');
+$reqTahun = $diklat_struktural->getField('TAHUN');
+$reqNoSTTPP = $diklat_struktural->getField('NO_STTPP');
+$reqPenyelenggara 			= $diklat_struktural->getField('PENYELENGGARA');
+$reqAngkatan 		= $diklat_struktural->getField('ANGKATAN');
+$reqTglMulai 		= dateToPageCheck($diklat_struktural->getField('TANGGAL_MULAI'));
+$reqTglSelesai 		= dateToPageCheck($diklat_struktural->getField('TANGGAL_SELESAI'));
+$reqTglSTTPP 		= dateToPageCheck($diklat_struktural->getField('TANGGAL_STTPP'));
+//$reqPegawaiId		= $diklat_struktural->getField('PEGAWAI_ID');
+$reqTempat		= $diklat_struktural->getField('TEMPAT');
+$reqJumlahJam		= $diklat_struktural->getField('JUMLAH_JAM');
 // echo $reqTmtJabatan;exit;
+
+$diklat= new Core();
+$diklat->selectByParamsDiklat();
+
 $reqMode="update";
 // $reqMode="insert";
 $readonly = "readonly";
@@ -43,7 +54,7 @@ $readonly = "readonly";
 						<a class="" href="app/index/pegawai">Data Pegawai</a>
 					</li>
 					<li class="breadcrumb-item text-muted">
-						<a class="" href="app/index/pengalaman_kerja?reqId=<?=$reqId?>">Pengalaman Kerja</a>
+						<a class="" href="app/index/pelatihan_kepemimpinan?reqId=<?=$reqId?>">Pelatihan Kepemimpinan</a>
 					</li>
 					<li class="breadcrumb-item text-muted">
 						<a class="text-muted">Halaman Input</a>
@@ -70,12 +81,52 @@ $readonly = "readonly";
             <form class="form" id="ktloginform" method="POST" enctype="multipart/form-data">
 	        	<div class="card-body">
 	        		<div class="form-group row">
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Diklat</label>
+	        			<div class="col-lg-10 col-sm-12">
+	        				<select class="form-control" name="reqInstansi" id="reqInstansi">
+	        					<?while($diklat->nextRow()){?>
+				            		<option <?=$read?> value="<?=$diklat->getField('DIKLAT_ID')?>" <? if($diklat->getField('DIKLAT_ID')==$reqDiklat) echo 'selected'?>><?=$diklat->getField('NAMA')?></option>
+								<? }?>
+	        				</select>
+	        			</div>
+	        		</div>
+	        		<div class="form-group row">
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Tempat</label>
+	        			<div class="col-lg-10 col-sm-12">
+	        				<input type="text" class="form-control" name="reqTempat" id="reqTempat" value="<?=$reqTempat?>" />
+	        			</div>
+	        		</div>
+	        		<div class="form-group row">
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Penyelenggara</label>
+	        			<div class="col-lg-10 col-sm-12">
+	        				<input type="text" class="form-control" name="reqPenyelenggara" id="reqPenyelenggara" value="<?=$reqPenyelenggara?>" />
+	        			</div>
+	        		</div>
+	        		<div class="form-group row">
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Angkatan</label>
+	        			<div class="col-lg-10 col-sm-12">
+	        				<input type="text" class="form-control" name="reqAngkatan" id="reqAngkatan" value="<?=$reqAngkatan?>" />
+	        			</div>
+	        		</div>
+	        		<div class="form-group row">
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Tahun</label>
+	        			<div class="col-lg-10 col-sm-12">
+	        				<input type="text" class="form-control" name="reqTahun" id="reqTahun" value="<?=$reqTahun?>" />
+	        			</div>
+	        		</div>
+	        		<div class="form-group row">
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">No. STTPP</label>
+	        			<div class="col-lg-10 col-sm-12">
+	        				<input type="text" class="form-control" name="reqNoSTTPP" id="reqNoSTTPP" value="<?=$reqNoSTTPP?>" />
+	        			</div>
+	        		</div>
+	        		<div class="form-group row">
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			Tanggal Mulai Kerja
+		        			Tgl Mulai
 		        		</label>
 	        			<div class="col-lg-10 col-sm-12">
 	        				<div class="input-group date">
-		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTglMulaiKerja" value="<?=$reqTglMulaiKerja?>" />
+		        				<input type="text" autocomplete="off" class="form-control" id="reqTglMulai" name="reqTglMulai" value="<?=$reqTglMulai?>" />
 		        				<div class="input-group-append">
 		        					<span class="input-group-text">
 		        						<i class="la la-calendar"></i>
@@ -85,38 +136,50 @@ $readonly = "readonly";
 	        			</div>
 	        		</div>
 	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Instansi</label>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+		        			Tgl. STTPP
+		        		</label>
 	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" name="reqInstansi" id="reqInstansi" value="<?=$reqInstansi?>" />
+	        				<div class="input-group date">
+		        				<input type="text" autocomplete="off" class="form-control" id="reqTglSTTPP" name="reqTglSTTPP" value="<?=$reqTglSTTPP?>" />
+		        				<div class="input-group-append">
+		        					<span class="input-group-text">
+		        						<i class="la la-calendar"></i>
+		        					</span>
+		        				</div>
+		        			</div>
 	        			</div>
 	        		</div>
 	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Jabatan</label>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+		        			Tgl Selesai
+		        		</label>
 	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" name="reqJabatan" id="reqJabatan" value="<?=$reqJabatan?>" />
+	        				<div class="input-group date">
+		        				<input type="text" autocomplete="off" class="form-control" id="reqTglSelesai" name="reqTglSelesai" value="<?=$reqTglSelesai?>" />
+		        				<div class="input-group-append">
+		        					<span class="input-group-text">
+		        						<i class="la la-calendar"></i>
+		        					</span>
+		        				</div>
+		        			</div>
 	        			</div>
 	        		</div>
 	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Masa Kerja (Th)</label>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Jumlah Jam</label>
 	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" name="reqMasaKerjaTh" id="reqMasaKerjaTh" value="<?=$reqMasaKerjaTh?>" />
-	        			</div>
-	        		</div>
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Masa Kerja (Bln)</label>
-	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" name="reqMasaKerjaBl" id="reqMasaKerjaBl" value="<?=$reqMasaKerjaBl?>" />
+	        				<input type="text" class="form-control" name="reqJumlahJam" id="reqJumlahJam" value="<?=$reqJumlahJam?>" />
 	        			</div>
 	        		</div>
 	        		<div class="card-footer">
-	        		<div class="row">
-	        			<div class="col-lg-9">
-	        				<input type="hidden" name="reqMode" value="<?=$reqMode?>">
-	        				<input type="hidden" name="reqTempValidasiId" value="<?=$reqTempValidasiId?>">
-	        				<button type="submit" id="ktloginformsubmitbutton" class="btn btn-light-success"><i class="fa fa-save" aria-hidden="true"></i> Simpan</button>
-	        			</div>
-	        		</div>
-	        	</div>
+		        		<div class="row">
+		        			<div class="col-lg-9">
+		        				<input type="hidden" name="reqMode" value="<?=$reqMode?>">
+		        				<input type="hidden" name="reqTempValidasiId" value="<?=$reqTempValidasiId?>">
+		        				<button type="submit" id="ktloginformsubmitbutton" class="btn btn-light-success"><i class="fa fa-save" aria-hidden="true"></i> Simpan</button>
+		        			</div>
+		        		</div>
+		        	</div>
 	        	</div>
 	        </form>
         </div>
