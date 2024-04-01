@@ -1,7 +1,8 @@
 <?
 include_once("functions/personal.func.php");
 
-$this->load->model("base/PengalamanKerja");
+$this->load->model("base/RiwayatGaji");
+$this->load->model("base/Core");
 
 $userpegawaimode= $this->userpegawaimode;
 $adminuserid= $this->adminuserid;
@@ -14,18 +15,37 @@ else
 $reqId= $this->input->get('reqId');
 $reqRowId= $this->input->get('reqRowId');
 
-$pengalaman= new PengalamanKerja();
-$pengalaman->selectByParams(array('PENGALAMAN_ID'=>$reqRowId));
-$pengalaman->firstRow();
-$reqPengalamanId = $pengalaman->getField('PENGALAMAN_ID');
-$reqInstansi 			= $pengalaman->getField('NAMA');
-$reqJabatan = $pengalaman->getField('JABATAN');
-$reqTglMulaiKerja = dateToPageCheck($pengalaman->getField('TANGGAL_KERJA'));
-$reqMasaKerjaTh = $pengalaman->getField('MASA_KERJA_TAHUN');
-$reqMasaKerjaBl = $pengalaman->getField('MASA_KERJA_BULAN');
-// echo $reqTmtJabatan;exit;
+$gaji= new RiwayatGaji();
+$gaji->selectByParams(array('GAJI_RIWAYAT_ID'=>$reqRowId,));
+$gaji->firstRow();
+//echo $gaji->query;
+$reqGAJI_RIWAYAT_ID = $gaji->getField('GAJI_RIWAYAT_ID');
+$reqNoSK	= $gaji->getField('NO_SK');
+$reqGolRuang	= $gaji->getField('PANGKAT_ID');
+$reqTglSK = dateToPageCheck($gaji->getField('TANGGAL_SK'));
+$reqGajiPokok	= $gaji->getField('GAJI_POKOK');
+$reqTh	= $gaji->getField('MASA_KERJA_TAHUN');
+$reqBl	= $gaji->getField('MASA_KERJA_BULAN');
+
+if( $gaji->getField('PEJABAT_PENETAP_ID')==''){
+	$reqStatus='baru';
+	$reqDisplayBaru='';
+	$reqDisplay='none';
+}else{
+	$reqDisplayBaru='none';
+	$reqDisplay='';
+}
+$reqPjPenetapNama= $gaji->getField('PEJABAT_PENETAP');
+$reqPjPenetapId= $gaji->getField('PEJABAT_PENETAP_ID');
+$reqTMTSK= dateToPageCheck($gaji->getField('TMT_SK'));
+
+$pangkat= new Core();
+$pangkat->selectByParamsPangkat(array());
+
+$pejabat_penetap= new Core();
+$pejabat_penetap->selectByParamsPejabatPenetap(array());
+
 $reqMode="update";
-// $reqMode="insert";
 $readonly = "readonly";
 ?>
 
@@ -43,7 +63,7 @@ $readonly = "readonly";
 						<a class="" href="app/index/pegawai">Data Pegawai</a>
 					</li>
 					<li class="breadcrumb-item text-muted">
-						<a class="" href="app/index/pengalaman_kerja?reqId=<?=$reqId?>">Pengalaman Kerja</a>
+						<a class="" href="app/index/riwayat_gaji?reqId=<?=$reqId?>">Riwayat Gaji</a>
 					</li>
 					<li class="breadcrumb-item text-muted">
 						<a class="text-muted">Halaman Input</a>
@@ -55,9 +75,6 @@ $readonly = "readonly";
 </div>
 <div class="d-flex flex-column-fluid">
     <div class="container">
-    	<!-- <div class="area-menu-fip">
-    		ffffj hai
-    	</div> -->
         <div class="card card-custom">
         	<div class="card-header">
                 <div class="card-title">
@@ -70,12 +87,18 @@ $readonly = "readonly";
             <form class="form" id="ktloginform" method="POST" enctype="multipart/form-data">
 	        	<div class="card-body">
 	        		<div class="form-group row">
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">No. SK</label>
+	        			<div class="col-lg-10 col-sm-12">
+	        				<input type="text" class="form-control" name="reqNoSK" id="reqNoSK" value="<?=$reqNoSK?>" />
+	        			</div>
+	        		</div>
+	        		<div class="form-group row">
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			Tanggal Mulai Kerja
+		        			 	Tgl. SK
 		        		</label>
 	        			<div class="col-lg-10 col-sm-12">
 	        				<div class="input-group date">
-		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTglMulaiKerja" value="<?=$reqTglMulaiKerja?>" />
+		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTglSK" value="<?=$reqTglSK?>" />
 		        				<div class="input-group-append">
 		        					<span class="input-group-text">
 		        						<i class="la la-calendar"></i>
@@ -84,28 +107,88 @@ $readonly = "readonly";
 		        			</div>
 	        			</div>
 	        		</div>
+	        		
 	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Instansi</label>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Gol/Ruang</label>
 	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" name="reqInstansi" id="reqInstansi" value="<?=$reqInstansi?>" />
+	        				<select class="form-control" name="reqGolRuang" id="reqGolRuang">
+	        					<? while($pangkat->nextRow()){?>
+			                        <option value="<?=$pangkat->getField('PANGKAT_ID')?>" <? if($reqGolRuang == $pangkat->getField('PANGKAT_ID')) echo 'selected';?>><?=$pangkat->getField('KODE')?></option>
+			                    <? }?>
+	        				</select>
 	        			</div>
 	        		</div>
+
 	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Jabatan</label>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+		        			 	TMT SK
+		        		</label>
 	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" name="reqJabatan" id="reqJabatan" value="<?=$reqJabatan?>" />
+	        				<div class="input-group date">
+		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTMTSK" value="<?=$reqTMTSK?>" />
+		        				<div class="input-group-append">
+		        					<span class="input-group-text">
+		        						<i class="la la-calendar"></i>
+		        					</span>
+		        				</div>
+		        			</div>
 	        			</div>
 	        		</div>
+
+	        		<div class="form-group row">
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Pj Penetap</label>
+	        			<div class="col-lg-10 col-sm-12">
+	        				<select class="form-control" name="reqPjPenetap" id="reqPjPenetap">
+	        					<? while($pejabat_penetap->nextRow()){?>
+			                        <option value="<?=$pejabat_penetap->getField('PEJABAT_PENETAP_ID')?>" 
+			                        	<? 
+			                        	if($reqPjPenetapId == $pejabat_penetap->getField('PEJABAT_PENETAP_ID'))
+			                        	{ 
+			                        		echo 'selected';
+			                        	}
+				                        else if($tempPjPenetapId=="")
+				                    	{
+				                    		if($pejabat_penetap->getField('PEJABAT_PENETAP_ID')==8)
+				                    		{
+				                    			echo 'selected';
+				                    		}
+				                    	}
+			                        	?>
+			                        	><?=$pejabat_penetap->getField('JABATAN')?>
+			                        	
+			                   		 </option>
+			                    <? }?>
+	        				</select>
+	        			</div>
+	        		</div>
+
 	        		<div class="form-group row">
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Masa Kerja (Th)</label>
 	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" name="reqMasaKerjaTh" id="reqMasaKerjaTh" value="<?=$reqMasaKerjaTh?>" />
+	        				<input type="text" class="form-control" name="reqTh" id="reqTh" value="<?=$reqTh?>" />
 	        			</div>
 	        		</div>
 	        		<div class="form-group row">
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Masa Kerja (Bln)</label>
 	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" name="reqMasaKerjaBl" id="reqMasaKerjaBl" value="<?=$reqMasaKerjaBl?>" />
+	        				<input type="text" class="form-control" name="reqBl" id="reqBl" value="<?=$reqBl?>" />
+	        			</div>
+	        		</div>
+	        		<div class="form-group row">
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Gaji Pokok</label>
+	        			<div class="col-lg-10 col-sm-12">
+	        				<input type="text" class="form-control" name="reqGajiPokok" id="reqGajiPokok" value="<?=$reqGajiPokok?>" />
+	        			</div>
+	        		</div>
+	        		<div class="form-group row">
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Jenis</label>
+	        			<div class="col-lg-10 col-sm-12">
+	        				<select class="form-control" name="reqJenis" id="reqJenis">
+	        					<option value="1" <? if($reqJenis == 1) echo "selected";?>>Kenaikan Pangkat</option>
+								<option value="2" <? if($reqJenis == 2) echo "selected";?>>Gaji Berkala</option>
+								<option value="3" <? if($reqJenis == 3) echo "selected";?>>Penyesuaian Tabel Gaji Pokok</option>
+								<option value="4" <? if($reqJenis == 4) echo "selected";?>>SK Lain-lain</option>
+	        				</select>
 	        			</div>
 	        		</div>
 	        		<div class="card-footer">
