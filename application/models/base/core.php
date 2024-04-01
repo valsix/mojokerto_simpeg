@@ -203,5 +203,22 @@ class Core extends Entity{
 				
 		return $this->selectLimit($str,$limit,$from); 
     }
+
+    function selectByParamsEselon($paramsArray=array(),$limit=-1,$from=-1, $statement='')
+	{
+		$str = "SELECT ESELON_ID, NAMA, TUNJANGAN, 
+				   PANGKAT_MINIMAL, PANGKAT_MAKSIMAL
+				FROM ESELON WHERE ESELON_ID IS NOT NULL"; 
+		
+		while(list($key,$val) = each($paramsArray))
+		{
+			$str .= " AND $key = '$val' ";
+		}
+		
+		$str .= $statement." ORDER BY NAMA ASC";
+		$this->query = $str;
+				
+		return $this->selectLimit($str,$limit,$from); 
+    }
 } 
 ?>

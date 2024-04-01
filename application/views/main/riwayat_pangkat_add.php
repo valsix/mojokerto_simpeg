@@ -16,15 +16,24 @@ else
 $reqId= $this->input->get('reqId');
 $reqRowId= $this->input->get('reqRowId');
 
-$pengalaman= new RiwayatPangkat();
-$pengalaman->selectByParams(array('PANGKAT_RIWAYAT_ID'=>$reqRowId));
-$pengalaman->firstRow();
-$reqPengalamanId = $pengalaman->getField('PENGALAMAN_ID');
-$reqInstansi 			= $pengalaman->getField('NAMA');
-$reqJabatan = $pengalaman->getField('JABATAN');
-$reqTglMulaiKerja = dateToPageCheck($pengalaman->getField('TANGGAL_KERJA'));
-$reqMasaKerjaTh = $pengalaman->getField('MASA_KERJA_TAHUN');
-$reqMasaKerjaBl = $pengalaman->getField('MASA_KERJA_BULAN');
+$pangkat_riwayat= new RiwayatPangkat();
+$pangkat_riwayat->selectByParams(array('PANGKAT_RIWAYAT_ID'=>$reqRowId,'PEGAWAI_ID'=>$reqId));
+$pangkat_riwayat->firstRow();
+// echo $pangkat_riwayat->query;exit;
+$reqTglSTLUD 			= dateToPageCheck($pangkat_riwayat->getField('TANGGAL_STLUD'));
+$reqSTLUD				= $pangkat_riwayat->getField('STLUD');
+$reqNoSTLUD			= $pangkat_riwayat->getField('NO_STLUD');
+$reqNoNota 			= $pangkat_riwayat->getField('NO_NOTA');
+$reqNoSK 				= $pangkat_riwayat->getField('NO_SK');
+$reqTh					= $pangkat_riwayat->getField('MASA_KERJA_TAHUN');
+$reqBl					= $pangkat_riwayat->getField('MASA_KERJA_BULAN');
+$reqKredit				= $pangkat_riwayat->getField('KREDIT');
+$reqJenisKP			= $pangkat_riwayat->getField('JENIS_KP');
+$reqKeterangan			= $pangkat_riwayat->getField('KETERANGAN');
+$reqGajiPokok			= $pangkat_riwayat->getField('GAJI_POKOK');
+$reqTglNota			= dateToPageCheck($pangkat_riwayat->getField('TANGGAL_NOTA'));
+$reqTglSK 				= dateToPageCheck($pangkat_riwayat->getField('TANGGAL_SK'));
+$reqTMTGol 			= dateToPageCheck($pangkat_riwayat->getField('TMT_PANGKAT'));
 // echo $reqTmtJabatan;exit;
 
 $pangkat= new Core();
@@ -81,7 +90,7 @@ $readonly = "readonly";
 		        		</label>
 	        			<div class="col-lg-10 col-sm-12">
 	        				<div class="input-group date">
-		        				<select <?=$disabled?> class="form-control"  name="reqSTLUD">
+		        				<select class="form-control"  name="reqSTLUD">
 									<option></option>
 				                    <option value="1" <? if($reqSTLUD == 1) echo 'selected'?>>Tingkat I</option>
 				                    <option value="2" <? if($reqSTLUD == 2) echo 'selected'?>>Tingkat II</option>
@@ -112,7 +121,7 @@ $readonly = "readonly";
 	        		<div class="form-group row">
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Gol/Ruang</label>
 	        			<div class="col-lg-10 col-sm-12">
-	        				<select name="reqGolRuang" <?=$disabled?> id="reqGolRuang"  class="form-control">
+	        				<select name="reqGolRuang" id="reqGolRuang"  class="form-control">
 			                    <? while($pangkat->nextRow()){?>
 			                        <option value="<?=$pangkat->getField('PANGKAT_ID')?>" <? if($reqGolRuang == $pangkat->getField('PANGKAT_ID')) echo 'selected';?>><?=$pangkat->getField('KODE')?></option>
 			                    <? }?>
@@ -128,7 +137,7 @@ $readonly = "readonly";
 	        		<div class="form-group row">
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Masa Kerja (Bln)</label>
 	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" name="reqMasaKerjaBl" id="reqMasaKerjaBl" value="<?=$reqMasaKerjaBl?>" />
+	        				<input type="text" class="form-control" name="reqBl" id="reqBl" value="<?=$reqBl?>" />
 	        			</div>
 	        		</div>
 	        		<div class="card-footer">

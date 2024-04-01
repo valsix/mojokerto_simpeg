@@ -1,7 +1,7 @@
 <?
 include_once("functions/personal.func.php");
 
-$this->load->model("base/PengalamanKerja");
+$this->load->model("base/RiwayatJabatan");
 
 $userpegawaimode= $this->userpegawaimode;
 $adminuserid= $this->adminuserid;
@@ -14,15 +14,43 @@ else
 $reqId= $this->input->get('reqId');
 $reqRowId= $this->input->get('reqRowId');
 
-$pengalaman= new PengalamanKerja();
-$pengalaman->selectByParams(array('PENGALAMAN_ID'=>$reqRowId));
-$pengalaman->firstRow();
-$reqPengalamanId = $pengalaman->getField('PENGALAMAN_ID');
-$reqInstansi 			= $pengalaman->getField('NAMA');
-$reqJabatan = $pengalaman->getField('JABATAN');
-$reqTglMulaiKerja = dateToPageCheck($pengalaman->getField('TANGGAL_KERJA'));
-$reqMasaKerjaTh = $pengalaman->getField('MASA_KERJA_TAHUN');
-$reqMasaKerjaBl = $pengalaman->getField('MASA_KERJA_BULAN');
+$jabatan_riwayat= new RiwayatJabatan();
+$jabatan_riwayat->selectByParams(array('JABATAN_RIWAYAT_ID'=>$reqRowId, 'PEGAWAI_ID'	=> $reqId));
+// $jabatan_riwayat->query;exit;
+$jabatan_riwayat->firstRow();
+if( $jabatan_riwayat->getField('PEJABAT_PENETAP_ID')==''){
+	$reqStatus='baru';
+	$reqDisplayBaru='';
+	$reqDisplay='none';
+}else{
+	$reqDisplayBaru='none';
+	$reqDisplay='';
+}
+$reqPjPenetapNama= $jabatan_riwayat->getField('PEJABAT_PENETAP');
+$reqPjPenetapId= $jabatan_riwayat->getField('PEJABAT_PENETAP_ID');
+
+$reqSatkerId 			= $jabatan_riwayat->getField('SATKER_ID');
+$reqNoSK				= $jabatan_riwayat->getField('NO_SK');
+$reqEselon			= $jabatan_riwayat->getField('ESELON_ID');
+$reqNamaJabatan	= $jabatan_riwayat->getField('NAMA');
+$reqNoPelantikan = $jabatan_riwayat->getField('NO_PELANTIKAN');
+$reqTunjangan = $jabatan_riwayat->getField('TUNJANGAN');
+$reqTglSK 		= dateToPageCheck($jabatan_riwayat->getField('TANGGAL_SK'));
+$reqTMTJabatan	= dateToPageCheck($jabatan_riwayat->getField('TMT_JABATAN'));
+$reqTMTEselon	= dateToPageCheck($jabatan_riwayat->getField('TMT_ESELON'));
+$reqTglPelantikan = dateToPageCheck($jabatan_riwayat->getField('TANGGAL_PELANTIKAN'));
+$reqBlnDibayar = dateToPageCheck($jabatan_riwayat->getField('BULAN_DIBAYAR'));
+$reqMataPelajaran= $jabatan_riwayat->getField('MATA_PELAJARAN');
+$reqTMTJabatanFungsional = dateToPageCheck($jabatan_riwayat->getField('TMT_JABATAN_FUNGSIONAL'));
+$reqTMTTugasTambahan = dateToPageCheck($jabatan_riwayat->getField('TMT_TUGAS_TAMBAHAN'));
+$reqKeteranganBUP = $jabatan_riwayat->getField('KETERANGAN_BUP');
+$reqKredit = $jabatan_riwayat->getField('ANGKA_KREDIT');
+$reqJenisJabatan = $jabatan_riwayat->getField('JENIS_JABATAN');
+$reqTentangJabatan = $jabatan_riwayat->getField('TENTANG_JABATAN');
+$reqKodeJabatan = $jabatan_riwayat->getField('KODE_JABATAN');
+$reqSatker = $jabatan_riwayat->getField('SATKER');
+
+
 // echo $reqTmtJabatan;exit;
 $reqMode="update";
 // $reqMode="insert";
@@ -70,12 +98,18 @@ $readonly = "readonly";
             <form class="form" id="ktloginform" method="POST" enctype="multipart/form-data">
 	        	<div class="card-body">
 	        		<div class="form-group row">
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">No.SK</label>
+	        			<div class="col-lg-10 col-sm-12">
+	        				<input type="text" class="form-control" name="reqNoSK" id="reqNoSK" value="<?=$reqNoSK?>" />
+	        			</div>
+	        		</div>
+	        		<div class="form-group row">
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			Tanggal Mulai Kerja
+		        			Tanggal SK
 		        		</label>
 	        			<div class="col-lg-10 col-sm-12">
 	        				<div class="input-group date">
-		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTglMulaiKerja" value="<?=$reqTglMulaiKerja?>" />
+		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTglSK" value="<?=$reqTglSK?>" />
 		        				<div class="input-group-append">
 		        					<span class="input-group-text">
 		        						<i class="la la-calendar"></i>
@@ -85,27 +119,104 @@ $readonly = "readonly";
 	        			</div>
 	        		</div>
 	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Instansi</label>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Nama Jabatan</label>
 	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" name="reqInstansi" id="reqInstansi" value="<?=$reqInstansi?>" />
+	        				<input type="text" class="form-control" name="reqNamaJabatan" id="reqNamaJabatan" value="<?=$reqNamaJabatan?>" />
 	        			</div>
 	        		</div>
 	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Jabatan</label>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">TMT Mutasi</label>
 	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" name="reqJabatan" id="reqJabatan" value="<?=$reqJabatan?>" />
+	        				<input type="text" class="form-control" name="reqTMTJabatan" id="reqTMTJabatan" value="<?=$reqTMTJabatan?>" />
 	        			</div>
 	        		</div>
 	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Masa Kerja (Th)</label>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">TMT Jabatan Fungsional</label>
 	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" name="reqMasaKerjaTh" id="reqMasaKerjaTh" value="<?=$reqMasaKerjaTh?>" />
+	        				<input type="text" class="form-control" name="reqTMTJabatanFungsional" id="reqTMTJabatanFungsional" value="<?=$reqTMTJabatanFungsional?>" />
 	        			</div>
 	        		</div>
 	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Masa Kerja (Bln)</label>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">TMT Tugas Tambahan</label>
 	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" name="reqMasaKerjaBl" id="reqMasaKerjaBl" value="<?=$reqMasaKerjaBl?>" />
+	        				<input type="text" class="form-control" name="reqTMTTugasTambahan" id="reqTMTTugasTambahan" value="<?=$reqTMTTugasTambahan?>" />
+	        			</div>
+	        		</div>
+	        		<div class="form-group row">
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Pj Penetap</label>
+	        			<div class="col-lg-10 col-sm-12">
+	        				<select class="form-control" name="reqStatusPejabatPenetap" id="reqStatusPejabatPenetap">
+	        					
+	        				</select>
+	        			</div>
+	        		</div>
+	        		<div class="form-group row">
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">No. Pelantikan</label>
+	        			<div class="col-lg-10 col-sm-12">
+	        				<input type="text" class="form-control" name="reqNoPelantikan" id="reqNoPelantikan" value="<?=$reqNoPelantikan?>" />
+	        			</div>
+	        		</div>
+	        		<div class="form-group row">
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+		        			Tanggal Pelantikan
+		        		</label>
+	        			<div class="col-lg-10 col-sm-12">
+	        				<div class="input-group date">
+		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTglPelantikan" value="<?=$reqTglPelantikan?>" />
+		        				<div class="input-group-append">
+		        					<span class="input-group-text">
+		        						<i class="la la-calendar"></i>
+		        					</span>
+		        				</div>
+		        			</div>
+	        			</div>
+	        		</div>
+	        		<div class="form-group row">
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Tunjangan</label>
+	        			<div class="col-lg-10 col-sm-12">
+	        				<input type="text" class="form-control" name="reqTunjangan" id="reqTunjangan" value="<?=$reqTunjangan?>" />
+	        			</div>
+	        		</div>
+	        		<div class="form-group row">
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Bln. Dibayar</label>
+	        			<div class="col-lg-10 col-sm-12">
+	        				<input type="text" class="form-control" name="reqBlnDibayar" id="reqBlnDibayar" value="<?=$reqBlnDibayar?>" />
+	        			</div>
+	        		</div>
+	        		<div class="form-group row">
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Perpanjangan BUP</label>
+	        			<div class="col-lg-10 col-sm-12">
+	        				<input type="text" class="form-control" name="reqKeteranganBUP" id="reqKeteranganBUP" value="<?=$reqKeteranganBUP?>" />
+	        			</div>
+	        		</div>
+	        		<div class="form-group row">
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Angka Kredit</label>
+	        			<div class="col-lg-10 col-sm-12">
+	        				<input type="text" class="form-control" name="reqKredit" id="reqKredit" value="<?=$reqKredit?>" />
+	        			</div>
+	        		</div>
+	        		<div class="form-group row">
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Tentang Jabatan</label>
+	        			<div class="col-lg-10 col-sm-12">
+	        				<input type="text" class="form-control" name="reqTentangJabatan" id="reqTentangJabatan" value="<?=$reqTentangJabatan?>" />
+	        			</div>
+	        		</div>
+	        		<div class="form-group row">
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Jenis Jabatan</label>
+	        			<div class="col-lg-10 col-sm-12">
+	        				<input type="text" class="form-control" name="reqJenisJabatan" id="reqJenisJabatan" value="<?=$reqJenisJabatan?>" />
+	        			</div>
+	        		</div>
+	        		<div class="form-group row">
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Kode Jabatan</label>
+	        			<div class="col-lg-10 col-sm-12">
+	        				<input type="text" class="form-control" name="reqKodeJabatan" id="reqKodeJabatan" value="<?=$reqKodeJabatan?>" />
+	        			</div>
+	        		</div>
+	        		<div class="form-group row">
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Satker</label>
+	        			<div class="col-lg-10 col-sm-12">
+	        				<input type="text" class="form-control" name="reqSatker" id="reqSatker" value="<?=$reqSatker?>" />
 	        			</div>
 	        		</div>
 	        		<div class="card-footer">
