@@ -155,7 +155,7 @@ jQuery(document).ready(function() {
       datanewtable.DataTable().ajax.url(jsonurl).load();
     });
 
-    var jsonurl= "json-data/pegawai_assesment_json/json?reqBulan=<?=$reqBulan?>&reqTahun=<?=$reqTahun?>&reqValidasi=<?=$reqValidasi?>&reqSatuanKerja=<?=$reqSatuanKerja?>";
+    var jsonurl= "json-data/pegawai_kinerja_json/json?reqBulan=<?=$reqBulan?>&reqTahun=<?=$reqTahun?>&reqValidasi=<?=$reqValidasi?>&reqSatuanKerja=<?=$reqSatuanKerja?>";
     ajaxserverselectsingle.init(infotableid, jsonurl, arrdata);
 
     var infoid= [];

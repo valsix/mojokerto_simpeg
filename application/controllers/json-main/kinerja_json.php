@@ -75,7 +75,6 @@ class kinerja_json extends CI_Controller {
 			}
 		}
 		$reqId = $this->input->get("reqId");
-		$cekquery= $this->input->get("c");
 		// print_r($columnsDefault);exit;
 
 		$displaystart= -1;
@@ -86,14 +85,14 @@ class kinerja_json extends CI_Controller {
 		$userpegawaimode= $this->userpegawaimode;
 		$adminuserid= $this->adminuserid;
 
-		// $sOrder = "";
-		// $set->selectByParams(array(), $dsplyRange, $dsplyStart, $statement." AND (UPPER(B.GOL_RUANG) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(TEMPAT_LAHIR) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(NAMA) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(A.NAMA) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(A.NIP_LAMA) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(A.NIP_BARU) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(AMBIL_FORMAT_NIP_BARU(NIP_BARU)) LIKE '%".strtoupper($_GET['sSearch'])."%' ) ", $sOrder);
-		$statement= "and pegawai_id= ".$reqId ;
+		$sOrder = "";
+	
+		$statement= "AND PEGAWAI_ID= ".$reqId ;
 		$set->selectByParams(array(), $dsplyRange, $dsplyStart, $statement, $sOrder);
+
+		// echo $set->query;exit;
 		
-		if(!empty($cekquery)){
-			echo $set->query;exit;
-		}
+		
 		while ($set->nextRow()) 
 		{
 			$row= [];
@@ -184,6 +183,99 @@ class kinerja_json extends CI_Controller {
 
 		header('Content-Type: application/json');
 		echo json_encode( $result, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);	
+	}
+
+	function add()
+	{
+		$this->load->model("base/Kinerja");
+
+		$reqId= $this->input->post("reqId");
+		$reqRowId= $this->input->post("reqRowId");
+		$reqMode= $this->input->post("reqMode");
+
+		$reqPegawaiId= $this->input->post("reqPegawaiId");
+		$reqTahun= $this->input->post("reqTahun");
+		$reqHasil= $this->input->post("reqHasil");
+		$reqPerilaku= $this->input->post("reqPerilaku");
+		$reqPredikat= $this->input->post("reqPredikat");
+		$reqNipPejabat= $this->input->post("reqNipPejabat");
+		$reqNamaPejabat= $this->input->post("reqNamaPejabat");
+
+		// print_r($reqMode);exit;
+
+		$kinerja = new Kinerja();
+	
+		$kinerja->setField('PEGAWAI_ID', $reqId);
+		$kinerja->setField('TAHUN', $reqTahun);
+		$kinerja->setField('HASIL_KERJA', $reqHasil);
+		$kinerja->setField('PERILAKU_KERJA', $reqPerilaku);
+		$kinerja->setField('PREDIKAT_KINERJA', $reqPredikat);
+		$kinerja->setField('NIP_PEJABAT_PENILAI', ValToNullDB($reqNipPejabat));
+		$kinerja->setField('NAMA_PEJABAT_PENILAI', $reqNamaPejabat);
+
+		$kinerja->setField('KINERJA_ID', $reqRowId);
+
+		$reqSimpan= "";
+		if ($reqMode == "insert")
+		{
+
+			$kinerja->setField("LAST_CREATE_USER", $adminusernama);
+			$kinerja->setField("LAST_CREATE_DATE", "NOW()");	
+			$kinerja->setField("LAST_CREATE_SATKER", $userSatkerId);
+	
+			if($kinerja->insert())
+			{
+				$reqSimpan= 1;
+			}
+		}
+		else
+		{	
+			$kinerja->setField("LAST_UPDATE_USER", $adminusernama);
+			$kinerja->setField("LAST_UPDATE_DATE", "NOW()");	
+			$kinerja->setField("LAST_UPDATE_SATKER", $userSatkerId);
+			if($kinerja->update())
+			{
+				$reqSimpan= 1;
+			}
+		}
+
+
+		if($reqSimpan == 1)
+		{
+			echo json_response(200, $reqRowId."-Data berhasil disimpan.");
+		}
+		else
+		{
+			echo json_response(400, "Data gagal disimpan");
+		}
+				
+	}
+
+
+	function delete()
+	{
+		$this->load->model("base/Kinerja");
+		$set = new Kinerja();
+		
+		$reqRowId =  $this->input->get('reqRowId');
+		$reqMode =  $this->input->get('reqMode');
+
+		$set->setField("KINERJA_ID", $reqRowId);
+		$reqSimpan="";
+		if($set->delete())
+		{
+			$reqSimpan=1;
+		}
+
+		if($reqSimpan == 1 )
+		{
+			echo json_response(200, 'Data berhasil dihapus');
+		}
+		else
+		{
+			echo json_response(400, 'Data gagal dihapus');
+		}
+
 	}
 }
 ?>
