@@ -32,6 +32,7 @@ class PAK extends Entity{
 				  '".$this->getField("LAST_CREATE_SATKER")."'
 				)"; 
 				
+		$this->id= $this->getField("PAK_ID");
 		$this->query = $str;
 		// echo $str;exit;
 		return $this->execQuery($str);
