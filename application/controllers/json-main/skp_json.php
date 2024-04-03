@@ -86,14 +86,12 @@ class skp_json extends CI_Controller {
 		$userpegawaimode= $this->userpegawaimode;
 		$adminuserid= $this->adminuserid;
 
-		// $sOrder = "";
-		// $set->selectByParams(array(), $dsplyRange, $dsplyStart, $statement." AND (UPPER(B.GOL_RUANG) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(TEMPAT_LAHIR) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(NAMA) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(A.NAMA) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(A.NIP_LAMA) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(A.NIP_BARU) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(AMBIL_FORMAT_NIP_BARU(NIP_BARU)) LIKE '%".strtoupper($_GET['sSearch'])."%' ) ", $sOrder);
+		$sOrder = "";
+		
 		$statement= "and a.pegawai_id= '".$reqId."'" ;
 		$set->selectByParams(array(), $dsplyRange, $dsplyStart, $statement, $sOrder);
+		// echo $set->query;exit;
 		
-		if(!empty($cekquery)){
-			echo $set->query;exit;
-		}
 		while ($set->nextRow()) 
 		{
 			$row= [];
@@ -188,6 +186,112 @@ class skp_json extends CI_Controller {
 
 		header('Content-Type: application/json');
 		echo json_encode( $result, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);	
+	}
+
+	function add()
+	{
+		$this->load->model("base/Skp");
+
+		$reqId= $this->input->post("reqId");
+		$reqRowId= $this->input->post("reqRowId");
+		$reqMode= $this->input->post("reqMode");
+
+		$reqPegawaiId	= $this->input->post("reqId");
+
+		$reqTahun			= $this->input->post("reqTahun");
+		$reqNilai	= $this->input->post("reqNilai");
+		$reqOrientasi			= $this->input->post("reqOrientasi");
+		$reqIntegritas			= $this->input->post("reqIntegritas");
+		$reqKomitmen	= $this->input->post("reqKomitmen");
+		$reqDisiplin	= $this->input->post("reqDisiplin");
+		$reqKerjasama	= $this->input->post("reqKerjasama");
+		$reqKepemimpinan	= $this->input->post("reqKepemimpinan");
+		$reqPejabatId	= $this->input->post("reqPejabatId");
+		$reqAtasanId	= $this->input->post("reqAtasanId");
+		$reqInisiatif	= $this->input->post("reqInisiatif");
+
+
+		// print_r($reqPejabatId);exit;
+
+		$skp = new Skp();
+	
+		
+		$skp->setField('PEGAWAI_ID', $reqPegawaiId);
+		$skp->setField('PEJABAT_ID', ValToNullDB($reqPejabatId));
+		$skp->setField('ATASAN_PEJABAT_ID', ValToNullDB($reqAtasanId));
+		$skp->setField('TAHUN', $reqTahun);
+		$skp->setField('NILAI', str_replace(",", ".", $reqNilai));
+		$skp->setField('ORIENTASI_PELAYANAN', $reqOrientasi);
+		$skp->setField('INTEGRITAS', $reqIntegritas);
+		$skp->setField('KOMITMEN', $reqKomitmen);
+		$skp->setField('DISIPLIN', $reqDisiplin);
+		$skp->setField('KERJASAMA', $reqKerjasama);
+		$skp->setField('KEPEMIMPINAN', $reqKepemimpinan);
+		$skp->setField('INISIATIF_KERJA', $reqInisiatif);
+
+		$skp->setField('SKP_ID', $reqRowId);
+		
+		$reqSimpan= "";
+		if ($reqMode == "insert")
+		{
+
+			$skp->setField("LAST_CREATE_USER", $adminusernama);
+			$skp->setField("LAST_CREATE_DATE", "NOW()");	
+			$skp->setField("LAST_CREATE_SATKER", $userSatkerId);
+	
+			if($skp->insert())
+			{
+				$reqSimpan= 1;
+			}
+		}
+		else
+		{	
+			$skp->setField("LAST_UPDATE_USER", $adminusernama);
+			$skp->setField("LAST_UPDATE_DATE", "NOW()");	
+			$skp->setField("LAST_UPDATE_SATKER", $userSatkerId);
+			if($skp->update())
+			{
+				$reqSimpan= 1;
+			}
+		}
+
+
+		if($reqSimpan == 1)
+		{
+			echo json_response(200, $reqRowId."-Data berhasil disimpan.");
+		}
+		else
+		{
+			echo json_response(400, "Data gagal disimpan");
+		}
+				
+	}
+
+
+	function delete()
+	{
+		$this->load->model("base/Skp");
+		$set = new Skp();
+		
+		$reqRowId =  $this->input->get('reqRowId');
+		$reqMode =  $this->input->get('reqMode');
+
+		$set->setField("SKP_ID", $reqRowId);
+		$reqSimpan="";
+		if($set->delete())
+		{
+			$reqSimpan=1;
+		}
+
+		if($reqSimpan == 1 )
+		{
+			echo json_response(200, 'Data berhasil dihapus');
+		}
+		else
+		{
+			echo json_response(400, 'Data gagal dihapus');
+		}
+
 	}
 }
 ?>

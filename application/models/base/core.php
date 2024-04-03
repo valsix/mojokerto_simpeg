@@ -252,5 +252,32 @@ class Core extends Entity{
 				
 		return $this->selectLimit($str,$limit,$from); 
     }
+
+    function selectByParamsPegawaiAutoComplete($paramsArray=array(),$limit=-1,$from=-1, $statement='', $orderby='')
+	{
+		$str = "
+					SELECT PEGAWAI_ID, PROPINSI_ID, KABUPATEN_ID, 
+					KECAMATAN_ID, KELURAHAN_ID, SATKER_ID, 
+					KEDUDUKAN_ID, JENIS_PEGAWAI_ID, BANK_ID, 
+					NIP_LAMA,  NIP_BARU, NAMA, 
+					GELAR_DEPAN, GELAR_BELAKANG, TEMPAT_LAHIR, TANGGAL_LAHIR, JENIS_KELAMIN, STATUS_KAWIN, SUKU_BANGSA, GOLONGAN_DARAH,
+					EMAIL, ALAMAT, RT, RW, TELEPON, KODEPOS, STATUS_PEGAWAI, KARTU_PEGAWAI, ASKES, TASPEN,
+					NPWP, NIK, FOTO, NO_REKENING, TANGGAL_MATI, TANGGAL_PENSIUN, TANGGAL_TERUSAN, TANGGAL_UPDATE
+					FROM PEGAWAI 
+					WHERE 1=1
+	 				"; 
+
+		while(list($key,$val) = each($paramsArray))
+		{
+			$str .= " AND $key = '$val' ";
+		}
+		
+		
+		$str .= $statement." ".$orderby;
+		$this->query = $str;
+		//echo $str;
+				
+		return $this->selectLimit($str,$limit,$from); 
+    }
 } 
 ?>

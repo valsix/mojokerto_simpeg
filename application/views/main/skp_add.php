@@ -1,7 +1,7 @@
 <?
 include_once("functions/personal.func.php");
 
-$this->load->model("base/PengalamanKerja");
+$this->load->model("base/Skp");
 
 $userpegawaimode= $this->userpegawaimode;
 $adminuserid= $this->adminuserid;
@@ -14,19 +14,44 @@ else
 $reqId= $this->input->get('reqId');
 $reqRowId= $this->input->get('reqRowId');
 
-$pengalaman= new PengalamanKerja();
-$pengalaman->selectByParams(array('PENGALAMAN_ID'=>$reqRowId));
-$pengalaman->firstRow();
-$reqPengalamanId = $pengalaman->getField('PENGALAMAN_ID');
-$reqInstansi 			= $pengalaman->getField('NAMA');
-$reqJabatan = $pengalaman->getField('JABATAN');
-$reqTglMulaiKerja = dateToPageCheck($pengalaman->getField('TANGGAL_KERJA'));
-$reqMasaKerjaTh = $pengalaman->getField('MASA_KERJA_TAHUN');
-$reqMasaKerjaBl = $pengalaman->getField('MASA_KERJA_BULAN');
-// echo $reqTmtJabatan;exit;
-$reqMode="update";
-// $reqMode="insert";
+if(empty($reqRowId))
+{
+	$reqMode="insert";
+}
+else
+{
+
+	$skp = new Skp();
+	$skp->selectByParams(array('SKP_ID'=>$reqRowId));
+	$skp->firstRow();
+
+	// echo $skp->query;exit; 
+
+	$reqReqId					= (int)$skp->getField('SKP_ID');
+	$reqTahun				= $skp->getField('TAHUN');
+	$reqNilai		= str_replace(".", ",", $skp->getField('NILAI'));
+	$reqOrientasi		= $skp->getField('ORIENTASI_PELAYANAN');
+	$reqIntegritas		= $skp->getField('INTEGRITAS');
+	$reqKomitmen		= $skp->getField('KOMITMEN');
+	$reqDisiplin		= $skp->getField('DISIPLIN');
+	$reqKerjasama		= $skp->getField('KERJASAMA');
+	$reqKepemimpinan		= $skp->getField('KEPEMIMPINAN');
+	$reqPejabatId		= $skp->getField('PEJABAT_ID');
+	$reqAtasanId		= $skp->getField('ATASAN_PEJABAT_ID');
+	$reqPejabat		= $skp->getField('PEJABAT_NIP');
+	$reqAtasan		= $skp->getField('ATASAN_NIP');
+	$reqInisiatif		= $skp->getField('INISIATIF_KERJA');
+
+	$reqMode="update";
+
+
+}
+
 $readonly = "readonly";
+
+
+
+
 ?>
 
 <!-- Bootstrap core CSS -->
@@ -43,7 +68,7 @@ $readonly = "readonly";
 						<a class="" href="app/index/pegawai">Data Pegawai</a>
 					</li>
 					<li class="breadcrumb-item text-muted">
-						<a class="" href="app/index/pengalaman_kerja?reqId=<?=$reqId?>">Pengalaman Kerja</a>
+						<a class="" href="app/index/skp?reqId=<?=$reqId?>">Skp</a>
 					</li>
 					<li class="breadcrumb-item text-muted">
 						<a class="text-muted">Halaman Input</a>
@@ -70,49 +95,83 @@ $readonly = "readonly";
             <form class="form" id="ktloginform" method="POST" enctype="multipart/form-data">
 	        	<div class="card-body">
 	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			Tanggal Mulai Kerja
-		        		</label>
-	        			<div class="col-lg-10 col-sm-12">
-	        				<div class="input-group date">
-		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTglMulaiKerja" value="<?=$reqTglMulaiKerja?>" />
-		        				<div class="input-group-append">
-		        					<span class="input-group-text">
-		        						<i class="la la-calendar"></i>
-		        					</span>
-		        				</div>
-		        			</div>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Tahun</label>
+	        			<div class="col-lg-2 col-sm-12">
+	        				<input type="text" class="form-control" name="reqTahun" id="reqTahun" value="<?=$reqTahun?>" />
 	        			</div>
 	        		</div>
 	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Instansi</label>
-	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" name="reqInstansi" id="reqInstansi" value="<?=$reqInstansi?>" />
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Nilai Skp</label>
+	        			<div class="col-lg-3 col-sm-12">
+	        				<input type="text" class="form-control" name="reqNilai" id="reqNilai" value="<?=$reqNilai?>" />
 	        			</div>
 	        		</div>
 	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Jabatan</label>
-	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" name="reqJabatan" id="reqJabatan" value="<?=$reqJabatan?>" />
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">NIP Pejabat Penilai</label>
+	        			<div class="col-lg-4 col-sm-12">
+	        				<input type="hidden" name="reqPejabatId" id="reqPejabatId" style="width:350px;" value="<?=$reqPejabatId?>" />   
+	        				<select class="form-control select2"  id="reqPejabat" name="reqPejabat">
+	        					<option value="<?=$reqPejabatId?>"><?=$reqPejabat?></option>
+	        				</select>
 	        			</div>
 	        		</div>
 	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Masa Kerja (Th)</label>
-	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" name="reqMasaKerjaTh" id="reqMasaKerjaTh" value="<?=$reqMasaKerjaTh?>" />
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">NIP Atasan Pejabat Penilai</label>
+	        			<div class="col-lg-4 col-sm-12">
+	        				<input type="hidden" name="reqAtasanId" id="reqAtasanId" style="width:350px;" value="<?=$reqAtasanId?>" />   
+	        				<select class="form-control select2"  id="reqAtasan" name="reqAtasan">
+	        					<option value="<?=$reqAtasanId?>"><?=$reqAtasan?></option>
+	        				</select>
 	        			</div>
 	        		</div>
 	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Masa Kerja (Bln)</label>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Orientasi Pelayanan</label>
 	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" name="reqMasaKerjaBl" id="reqMasaKerjaBl" value="<?=$reqMasaKerjaBl?>" />
+	        				<input type="text" class="form-control" name="reqOrientasi" id="reqOrientasi" value="<?=$reqOrientasi?>" />
+	        			</div>
+	        		</div>
+	        		<div class="form-group row">
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Integritas</label>
+	        			<div class="col-lg-10 col-sm-12">
+	        				<input type="text" class="form-control" name="reqIntegritas" id="reqIntegritas" value="<?=$reqIntegritas?>" />
+	        			</div>
+	        		</div>
+	        		<div class="form-group row">
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Komitmen</label>
+	        			<div class="col-lg-10 col-sm-12">
+	        				<input type="text" class="form-control" name="reqKomitmen" id="reqKomitmen" value="<?=$reqKomitmen?>" />
+	        			</div>
+	        		</div>
+	        		<div class="form-group row">
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Disiplin</label>
+	        			<div class="col-lg-10 col-sm-12">
+	        				<input type="text" class="form-control" name="reqDisiplin" id="reqDisiplin" value="<?=$reqDisiplin?>" />
+	        			</div>
+	        		</div>
+	        		<div class="form-group row">
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Kerjasama</label>
+	        			<div class="col-lg-10 col-sm-12">
+	        				<input type="text" class="form-control" name="reqKerjasama" id="reqKerjasama" value="<?=$reqKerjasama?>" />
+	        			</div>
+	        		</div>
+	        		<div class="form-group row">
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Kepemimpinan</label>
+	        			<div class="col-lg-10 col-sm-12">
+	        				<input type="text" class="form-control" name="reqKepemimpinan" id="reqKepemimpinan" value="<?=$reqKepemimpinan?>" />
+	        			</div>
+	        		</div>
+	        		<div class="form-group row">
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Inisiatif Kerja </label>
+	        			<div class="col-lg-10 col-sm-12">
+	        				<input type="text" class="form-control" name="reqInisiatif" id="reqInisiatif" value="<?=$reqInisiatif?>" />
 	        			</div>
 	        		</div>
 	        		<div class="card-footer">
 	        		<div class="row">
 	        			<div class="col-lg-9">
 	        				<input type="hidden" name="reqMode" value="<?=$reqMode?>">
-	        				<input type="hidden" name="reqTempValidasiId" value="<?=$reqTempValidasiId?>">
+	        				<input type="hidden" name="reqId" value="<?=$reqId?>">
+	        				<input type="hidden" name="reqRowId" value="<?=$reqRowId?>">
 	        				<button type="submit" id="ktloginformsubmitbutton" class="btn btn-light-success"><i class="fa fa-save" aria-hidden="true"></i> Simpan</button>
 	        			</div>
 	        		</div>
@@ -130,10 +189,19 @@ $readonly = "readonly";
 		// $('[data-toggle="tooltip"]').tooltip()
 	})
 
+	$('#reqTahun').bind('keyup paste', function(){
+		this.value = this.value.replace(/\D/g,'');
+	});
+
+	$('#reqNilai').bind('keyup paste', function(){
+		this.value = this.value.replace(/[^0-9\.|\,]/g,'');
+	});
+
+
 	var _buttonSpinnerClasses = 'spinner spinner-right spinner-white pr-15';
 	jQuery(document).ready(function() {
 		var form = KTUtil.getById('ktloginform');
-		var formSubmitUrl = "json-data/info_data_json/indentitaspegawai";
+		var formSubmitUrl = "json-main/skp_json/add";
 		var formSubmitButton = KTUtil.getById('ktloginformsubmitbutton');
 		if (!form) {
 			return;
@@ -182,17 +250,30 @@ $readonly = "readonly";
 					success: function (response) {
 			        	// console.log(response); return false;
 			        	// Swal.fire("Good job!", "You clicked the button!", "success");
-			        	Swal.fire({
-			        		text: response.message,
-			        		icon: "success",
-			        		buttonsStyling: false,
-			        		confirmButtonText: "Ok",
-			        		customClass: {
-			        			confirmButton: "btn font-weight-bold btn-light-primary"
-			        		}
-			        	}).then(function() {
-			        		document.location.href = "app/index/pegawai_data";
-			        	});
+			        	data= response.message;
+			        	data= data.split("-");
+			        	rowid= data[0];
+			        	infodata= data[1];
+
+			        	if(rowid == "xxx")
+                        {
+                            Swal.fire("Error", infodata, "error");
+                        }
+                        else
+                        {
+                            Swal.fire({
+                                text: infodata,
+                                icon: "success",
+                                buttonsStyling: false,
+                                confirmButtonText: "Ok",
+                                customClass: {
+                                    confirmButton: "btn font-weight-bold btn-light-primary"
+                                }
+                            }).then(function() {
+                                document.location.href = "app/index/skp?reqId=<?=$reqId?>";
+                                // window.location.reload();
+                            });
+                        }
 			        },
 			        error: function(xhr, status, error) {
 			        	var err = JSON.parse(xhr.responseText);
@@ -218,14 +299,103 @@ $readonly = "readonly";
 		});
 	});
 
-	arrows= {leftArrow: '<i class="la la-angle-left"></i>', rightArrow: '<i class="la la-angle-right"></i>'};
-	$('#kttanggallahir').datepicker({
-		todayHighlight: true
-		, autoclose: true
-		, orientation: "bottom left"
-		, clearBtn: true
-		, format: 'dd-mm-yyyy'
-		, templates: arrows
-	});
+
+	$("#reqPejabat").select2({
+        placeholder: "Pilih Pejabat",
+        allowClear: true,
+        ajax: {
+            url: "json-main/combo_json/autocompletepejabat",
+            dataType: 'json',
+            delay: 250,
+            data: function(params) {
+                return {
+                    q: params.term
+                    , page: params.page
+                };
+            },
+            processResults: function(data, params) {
+                params.page = params.page || 1;
+                return {
+                    results: data.items
+                    , pagination: {
+                        more: (params.page * 30) < data.total_count && data.items != ""
+                    }
+                };
+            },
+            cache: true
+        },
+        escapeMarkup: function(markup) {
+            return markup;
+        }, // let our custom formatter work
+        minimumInputLength: 1,
+        templateResult: tampilPejabat, // omitted for brevity, see the source of this page
+        templateSelection: pilihPejabat // omitted for brevity, see the source of this page
+    });
+
+    $("#reqAtasan").select2({
+        placeholder: "Pilih Atasan Pejabat",
+        allowClear: true,
+        ajax: {
+            url: "json-main/combo_json/autocompletepejabat",
+            dataType: 'json',
+            delay: 250,
+            data: function(params) {
+                return {
+                    q: params.term
+                    , page: params.page
+                };
+            },
+            processResults: function(data, params) {
+                params.page = params.page || 1;
+                return {
+                    results: data.items
+                    , pagination: {
+                        more: (params.page * 30) < data.total_count && data.items != ""
+                    }
+                };
+            },
+            cache: true
+        },
+        escapeMarkup: function(markup) {
+            return markup;
+        }, // let our custom formatter work
+        minimumInputLength: 1,
+        templateResult: tampilAtasan, // omitted for brevity, see the source of this page
+        templateSelection: pilihAtasan // omitted for brevity, see the source of this page
+    });
+
+    function tampilPejabat(val) {
+        if (val.loading) return val.text;
+        var markup = "<div class='select2-result-repository clearfix'>" +
+	            "<div class='select2-result-repository__meta'>" +
+	            	"<div class='select2-result-repository__title'>" + val.description + "</div>" +
+	            "</div>" +
+            "</div>";
+        return markup;
+    }
+    function pilihPejabat(val) {
+    	$("#reqPejabatId").val(val.id);
+        // console.log(val);
+        return val.text;
+    }
+
+
+    function tampilAtasan(val) {
+        if (val.loading) return val.text;
+        var markup = "<div class='select2-result-repository clearfix'>" +
+	            "<div class='select2-result-repository__meta'>" +
+	            	"<div class='select2-result-repository__title'>" + val.description + "</div>" +
+	            "</div>" +
+            "</div>";
+        return markup;
+    }
+    function pilihAtasan(val) {
+    	$("#reqAtasanId").val(val.id);
+        // console.log(val.id);
+        return val.text;
+    }
+
+
+
 
 </script>

@@ -12,7 +12,7 @@ $reqId= $this->input->get('reqId');
 
 $arrtabledata= array(
     array("label"=>"Tahun", "field"=> "TAHUN", "display"=>"",  "width"=>"")
-    , array("label"=>"Nilai Skp", "field"=> "NAMA", "display"=>"",  "width"=>"")
+    , array("label"=>"Nilai Skp", "field"=> "NILAI", "display"=>"",  "width"=>"")
     , array("label"=>"Orientasi Pelayanan", "field"=> "ORIENTASI_PELAYANAN", "display"=>"",  "width"=>"")
     , array("label"=>"Integritas", "field"=> "INTEGRITAS", "display"=>"",  "width"=>"")
     , array("label"=>"Komitmen", "field"=> "KOMITMEN", "display"=>"",  "width"=>"")
@@ -70,66 +70,13 @@ $arrtabledata= array(
                 <div class="card-toolbar">
                     <!--begin::Dropdown-->
                     <div class="dropdown dropdown-inline mr-2">
-                        <!-- <button type="button" class="btn btn-light-primary font-weight-bolder dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="svg-icon svg-icon-md"></span>Aksi
-                        </button>
-
-                        <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
-                            <ul class="navi flex-column navi-hover py-2">
-                                <li class="navi-item">
-                                    <a id="btnAdd" class="navi-link">
-                                        <span class="navi-icon"><i class="la la-plus"></i></span>
-                                        <span class="navi-text">Tambah</span>
-                                    </a>
-                                </li>
-                                <li class="navi-item">
-                                    <a id="btnUbahData" class="navi-link">
-                                        <span class="navi-icon"><i class="la la-edit"></i></span>
-                                        <span class="navi-text">Ubah</span>
-                                    </a>
-                                </li>
-                                <li class="navi-item">
-                                    <a id="btnUbahData" class="navi-link">
-                                        <span class="navi-icon"><i class="la la-edit"></i></span>
-                                        <span class="navi-text">Log</span>
-                                    </a>
-                                </li>
-                                <li class="navi-item">
-                                    <a  id="btnDelete" class="navi-link">
-                                        <span class="navi-icon"><i class="la la-trash"></i></span>
-                                        <span class="navi-text">Hapus</span>
-                                    </a>
-                                </li>
-                                <li class="navi-item">
-                                    <a id="btnUbahData" class="navi-link">
-                                        <span class="navi-icon"><i class="la la-edit"></i></span>
-                                        <span class="navi-text">Mutasi</span>
-                                    </a>
-                                </li>
-                                <li class="navi-item">
-                                    <a id="btnUbahData" class="navi-link">
-                                        <span class="navi-icon"><i class="la la-edit"></i></span>
-                                        <span class="navi-text">Cetak</span>
-                                    </a>
-                                </li>
-                                <li class="navi-item">
-                                    <a id="btnUbahData" class="navi-link">
-                                        <span class="navi-icon"><i class="la la-edit"></i></span>
-                                        <span class="navi-text">Cari</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div> -->
-
+                        
                     	<button class="btn btn-light-primary" id="btnAdd"><i class="fa fa-plus" aria-hidden="true"></i> Tambah</button>
 	            		<button class="btn btn-light-warning" id="btnUbahData"><i class="fa fa-pen" aria-hidden="true"></i> Edit</button>
 	            		<button class="btn btn-light-danger" id="btnDelete"><i class="fa fa-trash" aria-hidden="true"></i> Hapus</button>
-	            		<!-- <button class="btn btn-light-success" id="btnAdd"><i class="fa fa-save" aria-hidden="true"></i> Simpan</button> -->
-	            		<!-- <button class="btn btn-light-danger" id="btnAdd"><i class="fa fa-undo" aria-hidden="true"></i> Batal</button> -->
 	            	
                     </div>
 
-                    <!-- <button class="btn btn-light-primary" onclick="myFunction()"><i class="fa fa-sitemap" aria-hidden="true"></i> Satker</button> -->
                 </div>
             </div>
 
@@ -150,18 +97,6 @@ $arrtabledata= array(
         </div>
 
     </div>
-</div>
-
-<div style="height:0px;overflow:hidden">
-    <form id="ktloginform" method="POST" enctype="multipart/form-data" autocomplete="off">
-        <input type="file" id="reqLinkFileSk" name="reqLinkFileSk" accept=".pdf" onchange="submitForm();"/>
-        <input type="file" id="reqLinkFileStlud" name="reqLinkFileStlud" accept=".pdf" onchange="submitForm();"/>
-        <input type="hidden" id="reqDetilId" name="reqDetilId" />
-        <input type="hidden" id="reqPegawaiId" name="reqPegawaiId" />
-        <input type="hidden" id="reqRowId" name="reqRowId" />
-        <input type="hidden" id="reqId" name="reqId" />
-        <button type="submit" id="ktloginformsubmitbutton"  class="btn btn-primary font-weight-bold mr-2">Simpan</button>
-    </form>
 </div>
 
 
@@ -211,7 +146,7 @@ jQuery(document).ready(function() {
         if(valinfoid == "")
         {
             Swal.fire({
-                text: "Pilih salah satu data Riwayat terlebih dahulu.",
+                text: "Pilih salah satu data terlebih dahulu.",
                 icon: "error",
                 buttonsStyling: false,
                 confirmButtonText: "Ok",
@@ -222,7 +157,7 @@ jQuery(document).ready(function() {
         }
         else
         {
-            urlAjax= "json-data/info_data_json/jsondiklatteknisdelete?&reqDetilId="+valinfoid;
+            urlAjax= "json-main/skp_json/delete?&reqRowId="+valinfoid;
             swal.fire({
                 title: 'Apakah anda yakin untuk hapus data?',
                 type: 'warning',
@@ -245,14 +180,14 @@ jQuery(document).ready(function() {
                         },
                         success : function(data) { 
                             swal.fire({
-                                position: 'top-right',
+                                position: 'center',
                                 icon: "success",
                                 type: 'success',
                                 title: data.message,
                                 showConfirmButton: false,
                                 timer: 2000
                             }).then(function() {
-                                document.location.href = "app/index/pegawai_diklat_teknis?formulaid=<?=$formulaid?>";
+                                document.location.href = "app/index/skp?reqId=<?=$reqId?>";
                             });
                         },
                         complete: function() {
@@ -295,7 +230,6 @@ jQuery(document).ready(function() {
         else
             vpilihid= "";
 
-        // varurl= "app/index/pegawai_diklat_teknis_add?formulaid=<?=$formulaid?>&reqRowId="+vpilihid;
         varurl= "app/index/skp_add?reqRowId="+vpilihid+"&reqId=<?=$reqId?>";
         
         document.location.href = varurl;
@@ -331,139 +265,13 @@ function submitForm() {
    $("#ktloginformsubmitbutton").click(); 
 }
 
-var _buttonSpinnerClasses = 'spinner spinner-right spinner-white pr-15';
 
-jQuery(document).ready(function(){
-    jQuery('#ktloginform').submit(function(event){ 
-        event.preventDefault();
-           var formData = new FormData(document.querySelector('form'));
-           var form = KTUtil.getById('ktloginform');
-           var formSubmitButton = KTUtil.getById('ktloginformsubmitbutton');
-                KTUtil.btnWait(formSubmitButton, _buttonSpinnerClasses, "Please wait");
-               $.ajax({
-                url: 'json-data/info_data_json/jsondiklatteknisupload', 
-                dataType: 'json', 
-                cache: false,
-                contentType: false,
-                processData: false,
-                data: formData,                         
-                type: 'POST',
-                beforeSend: function() {
-                    swal.fire({
-                        title: 'Mohon tunggu sebentar..',
-                        text: 'File sedang dalam proses upload..',
-                        onOpen: function() {
-                            swal.showLoading()
-                        }
-                    })
-                },
-                success: function (response) {
-                // console.log(response); return false;
-                Swal.fire({
-                    text: response.message,
-                    icon: "success",
-                    buttonsStyling: false,
-                    confirmButtonText: "Ok",
-                    customClass: {
-                        confirmButton: "btn font-weight-bold btn-light-primary"
-                    }
-                    }).then(function() {
-                        location.reload();
-                    });
-                },
-                error: function(xhr, status, error) {
-                    var err = JSON.parse(xhr.responseText);
-                    Swal.fire("Error", err.message, "error");
-                   
-                },
-                complete: function () {
-                    KTUtil.btnRelease(formSubmitButton);
-                }
-            });   
-       }); 
-});
-
-function btnUploadSk(reqPegawaiId,reqRowId)
-{
-    $("#reqLinkFileSk").click();
-    $('#reqPegawaiId').val(reqPegawaiId);
-    $('#reqRowId').val(reqRowId);
-}
-
-function btnUploadStlud(reqPegawaiId,reqRowId)
-{
-    $("#reqLinkFileStlud").click();
-    $('#reqPegawaiId').val(reqPegawaiId);
-    $('#reqRowId').val(reqRowId);
-}
-
-
-function btnDeleteFile (fileid,reqPegawaiId,reqRowId,reqMode) {
-    if(fileid !== "")
-    {
-        urlAjax= "json-data/info_data_json/jsondiklatteknisdeletefile?reqFileId="+fileid+"&reqPegawaiId="+reqPegawaiId+"&reqRowId="+reqRowId+"&reqMode="+reqMode;
-        swal.fire({
-            title: 'Apakah anda yakin untuk hapus file?',
-            type: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Yes'
-        }).then(function(result) { 
-            if (result.value) {
-                $.ajax({
-                    url : urlAjax,
-                    type : 'DELETE',
-                    dataType:'json',
-                    beforeSend: function() {
-                        swal.fire({
-                            title: 'Please Wait..!',
-                            text: 'Is working..',
-                            onOpen: function() {
-                                swal.showLoading()
-                            }
-                        })
-                    },
-                    success : function(data) { 
-                        swal.fire({
-                            position: 'center',
-                            icon: "success",
-                            type: 'success',
-                            title: data.message,
-                            showConfirmButton: false,
-                            timer: 2000
-                        }).then(function() {
-                            location.reload();
-                        });
-                    },
-                    complete: function() {
-                        swal.hideLoading();
-                    },
-                    error: function(jqXHR, textStatus, errorThrown) {
-                        swal.hideLoading();
-                        var err = JSON.parse(jqXHR.responseText);
-                        Swal.fire("Error", err.message, "error");
-                    }
-                });
-            }
-        });
-    }
-}
-
-$("#filter,#reqStatusHukuman").change(function() { 
-    setCariInfo()
-})
-
-function calltreeid(id, nama)
-{   
-    $("#reqId").val(id);
-    $("#bagian").text(nama);
-    setCariInfo()
-}
 function setCariInfo(){
-    $('#vlsxloading').show();
-     jsonurl= "json-main/pegawai_json/json?reqStatusHukuman=" + $("#reqStatusHukuman").val() + "&reqSearch=" + $("#filter").val() + "&reqId="+$("#reqId").val();
-    // jsonurl= "json-admin/export_json/jsonpegawaidiklat?reqBulan="+reqBulan+"&reqTahun="+reqTahun;
-    datanewtable.DataTable().ajax.url(jsonurl).load();
-    $('#vlsxloading').hide();
+    // $('#vlsxloading').show();
+    //  jsonurl= "json-main/pegawai_json/json?reqStatusHukuman=" + $("#reqStatusHukuman").val() + "&reqSearch=" + $("#filter").val() + "&reqId="+$("#reqId").val();
+    // // jsonurl= "json-admin/export_json/jsonpegawaidiklat?reqBulan="+reqBulan+"&reqTahun="+reqTahun;
+    // datanewtable.DataTable().ajax.url(jsonurl).load();
+    // $('#vlsxloading').hide();
 }
 
     
