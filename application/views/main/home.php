@@ -1,7 +1,7 @@
 <?
 include_once("functions/personal.func.php");
 
-/*$this->load->model("base-data/InfoData");
+$this->load->model("base-data/InfoData");
 
 $reqPegawaiId= $this->pegawaiId;
 $reqSatkerId= $this->input->get('reqSatkerId');
@@ -29,7 +29,7 @@ $set->selectbyparamspendidikan(array("A.PEGAWAI_ID"=>$reqPegawaiId),-1,-1);
 // echo $set->query;exit;
 $set->firstRow();
 $reqPendidikanTerkahir= $set->getField('PENDIDIKAN_NAMA');
-$reqTahunLulus= $set->getField('TAHUN');*/
+$reqTahunLulus= $set->getField('TAHUN');
 ?>
 <div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
     <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
@@ -128,12 +128,24 @@ $reqTahunLulus= $set->getField('TAHUN');*/
                             </div>
                             <div class="col-md-6">
                                 <div class="area-filter">
-                                    <label>Filter :</label>
-                                    <select>
+
+                                    <div class="form-group row">
+                                        <label class="control-label col-sm-3" for="email">Filter :</label>
+                                        <div class="col-sm-9">
+                                            <select class="form-control">
+                                                <option>Pilih 1</option>
+                                                <option>Pilih 2</option>
+                                                <option>Pilih 3</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <!-- <label>Filter :</label> -->
+                                    <!-- <select class="form-control">
                                         <option>Pilih 1</option>
                                         <option>Pilih 2</option>
                                         <option>Pilih 3</option>
-                                    </select>
+                                    </select> -->
                                 </div>
                             </div>
                         </div>
@@ -149,6 +161,38 @@ $reqTahunLulus= $set->getField('TAHUN');*/
     <!--end::Container-->
 </div>
 <!--end::Entry-->
+
+<!-- LIVE TIME -->
+<script type="text/javascript">
+    var today = new Date();
+    var day = today.getDate();
+    var month = today.getMonth() + 1;
+
+    function appendZero(value) {
+        return "0" + value;
+    }
+
+    function theTime() {
+        var d = new Date();
+        document.getElementById("time").innerHTML = d.toLocaleTimeString("en-US");
+    }
+
+    if (day < 10) {
+        day = appendZero(day);
+    }
+
+    if (month < 10) {
+        month = appendZero(month);
+    }
+
+    today = day + "/" + month + "/" + today.getFullYear();
+
+    document.getElementById("date").innerHTML = today;
+
+    var myVar = setInterval(function () {
+        theTime();
+    }, 1000);
+</script>
 
 <!-- HIGHCHARTS -->
 <script src="lib/highcharts/highcharts.js"></script>
@@ -325,34 +369,3 @@ $reqTahunLulus= $set->getField('TAHUN');*/
 
 </script>
 
-<!-- LIVE TIME -->
-<script type="text/javascript">
-    var today = new Date();
-    var day = today.getDate();
-    var month = today.getMonth() + 1;
-
-    function appendZero(value) {
-        return "0" + value;
-    }
-
-    function theTime() {
-        var d = new Date();
-        document.getElementById("time").innerHTML = d.toLocaleTimeString("en-US");
-    }
-
-    if (day < 10) {
-        day = appendZero(day);
-    }
-
-    if (month < 10) {
-        month = appendZero(month);
-    }
-
-    today = day + "/" + month + "/" + today.getFullYear();
-
-    document.getElementById("date").innerHTML = today;
-
-    var myVar = setInterval(function () {
-        theTime();
-    }, 1000);
-</script>

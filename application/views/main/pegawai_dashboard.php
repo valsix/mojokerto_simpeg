@@ -45,6 +45,22 @@ $reqTahunLulus= $set->getField('TAHUN');
     </div>
 </div>
 
+<style type="text/css">
+    @media screen and (min-width: 768px) {
+        .col-sm-push-8 {
+            left: 66.66666667%;
+        }    
+        .col-sm-pull-4 {
+            right: 33.33333333%;
+        }
+    }
+    /*@media (min-width: 768px)*/
+    
+
+    /*@media (min-width: 768px)*/
+    
+</style>
+
 <!--begin::Entry-->
 <div class="d-flex flex-column-fluid">
     <!--begin::Container-->
@@ -54,7 +70,52 @@ $reqTahunLulus= $set->getField('TAHUN');
         <!-- <div class="card card-custom gutter-b" style="background: rgba(255,255,255,0.9);"> -->
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-8">
+                    <div class="col-sm-4 col-sm-push-8">
+                        <div class="area-profil-personal">
+                            <div class="biodata">
+                                <div class="foto"><img src="images/img-user.png"></div>
+                                <div class="data">
+                                    <div class="nama">Indah Puspita Ningrum, S.Kom., M.KP.</div>
+                                    <div class="jabatan">Pranata Komputer Pertama</div>
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="logout">
+                                    <button><img src="images/icon-logout-putih.png"> Logout</button>
+                                </div>
+                            </div>
+                            <div class="area-info-kehadiran">
+                                <div class="judul">
+                                    Info Kehadiran
+                                    <div class="keterangan">Info Check In & Check Out</div>
+                                </div>
+                                <div class="inner">
+                                    <div class="item">
+                                        <div class="ikon">
+                                            <img src="images/icon-checkin.png">
+                                        </div>
+                                        <div class="data">
+                                            <div class="title">Check In </div>
+                                            <div class="tanggal">04 Jan 24</div>
+                                        </div>
+                                        <div class="pukul">07:44</div>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="item out">
+                                        <div class="ikon">
+                                            <img src="images/icon-checkout.png">
+                                        </div>
+                                        <div class="data">
+                                            <div class="title">Check Out</div>
+                                            <div class="tanggal">04 Jan 24</div>
+                                        </div>
+                                        <div class="pukul">16:18</div>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-8 col-sm-pull-4">
                         <div class="area-selamat-datang">
                             <div class="judul">
                                 Dashboard
@@ -124,52 +185,15 @@ $reqTahunLulus= $set->getField('TAHUN');
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="area-profil-personal">
-                            <div class="biodata">
-                                <div class="foto"><img src="images/img-user.png"></div>
-                                <div class="data">
-                                    <div class="nama">Indah Puspita Ningrum, S.Kom., M.KP.</div>
-                                    <div class="jabatan">Pranata Komputer Pertama</div>
-                                </div>
-                                <div class="clearfix"></div>
-                                <div class="logout">
-                                    <button><img src="images/icon-logout-putih.png"> Logout</button>
-                                </div>
-                            </div>
-                            <div class="area-info-kehadiran">
-                                <div class="judul">
-                                    Info Kehadiran
-                                    <div class="keterangan">Info Check In & Check Out</div>
-                                </div>
-                                <div class="inner">
-                                    <div class="item">
-                                        <div class="ikon">
-                                            <img src="images/icon-checkin.png">
-                                        </div>
-                                        <div class="data">
-                                            <div class="title">Check In </div>
-                                            <div class="tanggal">04 Jan 24</div>
-                                        </div>
-                                        <div class="pukul">07:44</div>
-                                        <div class="clearfix"></div>
-                                    </div>
-                                    <div class="item out">
-                                        <div class="ikon">
-                                            <img src="images/icon-checkout.png">
-                                        </div>
-                                        <div class="data">
-                                            <div class="title">Check Out</div>
-                                            <div class="tanggal">04 Jan 24</div>
-                                        </div>
-                                        <div class="pukul">16:18</div>
-                                        <div class="clearfix"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
+                <!-- <div class="row">
+                    <div class="col-md-8">
+                        
+                    </div>
+                    <div class="col-md-4">
+                        
+                    </div>
+                </div> -->
                 <div class="clearfix"></div>
                 <div class="row">
                     <div class="col-md-5">
