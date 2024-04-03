@@ -1,7 +1,7 @@
 <?
 include_once("functions/personal.func.php");
 
-$this->load->model("base/PengalamanKerja");
+$this->load->model("base/Pak");
 
 $userpegawaimode= $this->userpegawaimode;
 $adminuserid= $this->adminuserid;
@@ -14,19 +14,40 @@ else
 $reqId= $this->input->get('reqId');
 $reqRowId= $this->input->get('reqRowId');
 
-$pengalaman= new PengalamanKerja();
-$pengalaman->selectByParams(array('PENGALAMAN_ID'=>$reqRowId));
-$pengalaman->firstRow();
-$reqPengalamanId = $pengalaman->getField('PENGALAMAN_ID');
-$reqInstansi 			= $pengalaman->getField('NAMA');
-$reqJabatan = $pengalaman->getField('JABATAN');
-$reqTglMulaiKerja = dateToPageCheck($pengalaman->getField('TANGGAL_KERJA'));
-$reqMasaKerjaTh = $pengalaman->getField('MASA_KERJA_TAHUN');
-$reqMasaKerjaBl = $pengalaman->getField('MASA_KERJA_BULAN');
-// echo $reqTmtJabatan;exit;
-$reqMode="update";
-// $reqMode="insert";
-$readonly = "readonly";
+if(empty($reqRowId))
+{
+	$reqMode="insert";
+}
+else
+{
+
+	$pak = new Pak();
+	$pak->selectByParams(array('PAK_ID'=>$reqRowId));
+	// echo $pak->query;exit;
+	$pak->firstRow();
+	$reqRowId					= (int)$pak->getField('PAK_ID');
+	$reqNomor				= $pak->getField('NOMOR_SK');
+	$reqTahun				= $pak->getField('TAHUN');
+	$reqKredit				= $pak->getField('ANGKA_KREDIT');
+
+	$reqBulanMulai				= $pak->getField('BULAN_MULAI');
+	$reqTahunMulai				= $pak->getField('TAHUN_MULAI');
+	$reqBulanSelesai				= $pak->getField('BULAN_SELESAI');
+	$reqTahunSelesai				= $pak->getField('TAHUN_SELESAI');
+	$reqTglSK				= dateToPageCheck($pak->getField('TGL_SK'));
+
+	// echo $reqTmtJabatan;exit;
+	$reqMode="update";
+
+}
+
+	
+$arrBulan= setBulanLoop();
+$arrTahun= setTahunLoop(6,22);
+$reqBulanAktif= generateZeroDate(date("n"),2);
+$reqTahunAktif= date("Y");
+
+
 ?>
 
 <!-- Bootstrap core CSS -->
@@ -43,7 +64,7 @@ $readonly = "readonly";
 						<a class="" href="app/index/pegawai">Data Pegawai</a>
 					</li>
 					<li class="breadcrumb-item text-muted">
-						<a class="" href="app/index/pengalaman_kerja?reqId=<?=$reqId?>">Pengalaman Kerja</a>
+						<a class="" href="app/index/pak?reqId=<?=$reqId?>">Kinerja</a>
 					</li>
 					<li class="breadcrumb-item text-muted">
 						<a class="text-muted">Halaman Input</a>
@@ -70,49 +91,93 @@ $readonly = "readonly";
             <form class="form" id="ktloginform" method="POST" enctype="multipart/form-data">
 	        	<div class="card-body">
 	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			Tanggal Mulai Kerja
-		        		</label>
-	        			<div class="col-lg-10 col-sm-12">
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Nomor SK PAK</label>
+	        			<div class="col-lg-6 col-sm-12">
+	        				<input type="text" class="form-control" name="reqNomor" id="reqNomor" value="<?=$reqNomor?>" required />
+	        			</div>
+	        		</div>
+	        		<div class="form-group row">
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Tgl SK PAK</label>
+	        			<div class="col-lg-6 col-sm-12">
 	        				<div class="input-group date">
-		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTglMulaiKerja" value="<?=$reqTglMulaiKerja?>" />
-		        				<div class="input-group-append">
-		        					<span class="input-group-text">
-		        						<i class="la la-calendar"></i>
-		        					</span>
-		        				</div>
-		        			</div>
+	        					<input type="text" autocomplete="off" class="form-control" id="reqTglSK" name="reqTglSK" value="<?=$reqTglSK?>" />
+	        					<div class="input-group-append">
+	        						<span class="input-group-text">
+	        							<i class="la la-calendar"></i>
+	        						</span>
+	        					</div>
+	        				</div>
 	        			</div>
 	        		</div>
 	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Instansi</label>
-	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" name="reqInstansi" id="reqInstansi" value="<?=$reqInstansi?>" />
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Total Angka Kredit</label>
+	        			<div class="col-lg-6 col-sm-12">
+	        				<input type="text" class="form-control" name="reqKredit" id="reqKredit" value="<?=$reqKredit?>" />
 	        			</div>
 	        		</div>
 	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Jabatan</label>
-	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" name="reqJabatan" id="reqJabatan" value="<?=$reqJabatan?>" />
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Bulan Mulai Penilaian</label>
+	        			<div class="col-lg-2 col-sm-12">
+				        		<select name="reqBulanMulai" id="reqBulanMulai"  readonly class="form-control datatable-input">
+								<?
+								for($bulan=0;$bulan < count($arrBulan);$bulan++)
+								{
+									?>
+									<option value="<?=generateZero($arrBulan[$bulan],2)?>" <? if($reqBulanMulai == $arrBulan[$bulan]) echo "selected";?>><?=getNameMonth(generateZero($arrBulan[$bulan],2))?></option>
+									<?
+								}
+								?>
+							</select>
+	        			</div>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Bulan Selesai Penilaian</label>
+	        			<div class="col-lg-2 col-sm-12">
+				        		<select name="reqBulanSelesai" id="reqBulanSelesai"  readonly class="form-control datatable-input">
+								<?
+								for($bulan=0;$bulan < count($arrBulan);$bulan++)
+								{
+									?>
+									<option value="<?=generateZero($arrBulan[$bulan],2)?>" <? if($reqBulanSelesai == $arrBulan[$bulan]) echo "selected";?>><?=getNameMonth(generateZero($arrBulan[$bulan],2))?></option>
+									<?
+								}
+								?>
+							</select>
 	        			</div>
 	        		</div>
 	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Masa Kerja (Th)</label>
-	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" name="reqMasaKerjaTh" id="reqMasaKerjaTh" value="<?=$reqMasaKerjaTh?>" />
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Tahun Mulai Penilaian</label>
+	        			<div class="col-lg-2 col-sm-12">
+				        		<select name="reqTahunMulai" id="reqTahunMulai"  readonly class="form-control datatable-input">
+								<?
+								for($tahun=0;$tahun < count($arrTahun);$tahun++)
+								{
+									?>
+									<option value="<?=$arrTahun[$tahun]?>" <? if($reqTahunMulai == $arrTahun[$tahun]) echo "selected";?>><?=$arrTahun[$tahun]?></option>
+									<?
+								}
+								?>
+							</select>
+	        			</div>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Tahun Selesai Penilaian</label>
+	        			<div class="col-lg-2 col-sm-12">
+				        		<select name="reqTahunSelesai" id="reqTahunSelesai"  readonly class="form-control datatable-input">
+								<?
+								for($tahun=0;$tahun < count($arrTahun);$tahun++)
+								{
+									?>
+									<option value="<?=$arrTahun[$tahun]?>" <? if($reqTahunSelesai == $arrTahun[$tahun]) echo "selected";?>><?=$arrTahun[$tahun]?></option>
+									<?
+								}
+								?>
+							</select>
 	        			</div>
 	        		</div>
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Masa Kerja (Bln)</label>
-	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" name="reqMasaKerjaBl" id="reqMasaKerjaBl" value="<?=$reqMasaKerjaBl?>" />
-	        			</div>
-	        		</div>
+	        		
 	        		<div class="card-footer">
 	        		<div class="row">
 	        			<div class="col-lg-9">
 	        				<input type="hidden" name="reqMode" value="<?=$reqMode?>">
-	        				<input type="hidden" name="reqTempValidasiId" value="<?=$reqTempValidasiId?>">
+	        				<input type="hidden" name="reqId" value="<?=$reqId?>">
+	        				<input type="hidden" name="reqRowId" value="<?=$reqRowId?>">
 	        				<button type="submit" id="ktloginformsubmitbutton" class="btn btn-light-success"><i class="fa fa-save" aria-hidden="true"></i> Simpan</button>
 	        			</div>
 	        		</div>
@@ -130,10 +195,55 @@ $readonly = "readonly";
 		// $('[data-toggle="tooltip"]').tooltip()
 	})
 
+	$("#reqTglSK").keypress(function(e) {
+		if( e.which!=8 && e.which!=0 && (e.which<48 || e.which>57))
+		{
+		return false;
+		}
+	});
+
+
+	var kredit = document.getElementById('reqKredit');
+
+
+	kredit.addEventListener('keydown', function(event)
+	{
+		limitCharacter(event);
+	});
+	
+	function limitCharacter(event)
+	{
+		key = event.which || event.keyCode;
+		console.log(key);
+		if (  // 188 Comma
+			 key != 8 // Backspace
+			 && key != 17
+			 && key != 190
+			 && (key < 48 || key > 57) // Non digit
+			 // Dan masih banyak lagi seperti tombol del, panah kiri dan kanan, tombol tab, dll
+			) 
+		{
+			event.preventDefault();
+			return false;
+		}
+	}
+
+	arrows= {leftArrow: '<i class="la la-angle-left"></i>', rightArrow: '<i class="la la-angle-right"></i>'};
+	$('#reqTglSK').datepicker({
+		todayHighlight: true
+		, autoclose: true
+		, orientation: "bottom left"
+		, clearBtn: true
+		, format: 'dd-mm-yyyy'
+		, templates: arrows
+	});
+
+
+
 	var _buttonSpinnerClasses = 'spinner spinner-right spinner-white pr-15';
 	jQuery(document).ready(function() {
 		var form = KTUtil.getById('ktloginform');
-		var formSubmitUrl = "json-data/info_data_json/indentitaspegawai";
+		var formSubmitUrl = "json-main/pak_json/add";
 		var formSubmitButton = KTUtil.getById('ktloginformsubmitbutton');
 		if (!form) {
 			return;
@@ -182,17 +292,30 @@ $readonly = "readonly";
 					success: function (response) {
 			        	// console.log(response); return false;
 			        	// Swal.fire("Good job!", "You clicked the button!", "success");
-			        	Swal.fire({
-			        		text: response.message,
-			        		icon: "success",
-			        		buttonsStyling: false,
-			        		confirmButtonText: "Ok",
-			        		customClass: {
-			        			confirmButton: "btn font-weight-bold btn-light-primary"
-			        		}
-			        	}).then(function() {
-			        		document.location.href = "app/index/pegawai_data";
-			        	});
+			        	data= response.message;
+			        	data= data.split("-");
+			        	rowid= data[0];
+			        	infodata= data[1];
+
+			        	if(rowid == "xxx")
+                        {
+                            Swal.fire("Error", infodata, "error");
+                        }
+                        else
+                        {
+                            Swal.fire({
+                                text: infodata,
+                                icon: "success",
+                                buttonsStyling: false,
+                                confirmButtonText: "Ok",
+                                customClass: {
+                                    confirmButton: "btn font-weight-bold btn-light-primary"
+                                }
+                            }).then(function() {
+                                document.location.href = "app/index/pak?&reqId=<?=$reqId?>";
+                                // window.location.reload();
+                            });
+                        }
 			        },
 			        error: function(xhr, status, error) {
 			        	var err = JSON.parse(xhr.responseText);
@@ -218,14 +341,5 @@ $readonly = "readonly";
 		});
 	});
 
-	arrows= {leftArrow: '<i class="la la-angle-left"></i>', rightArrow: '<i class="la la-angle-right"></i>'};
-	$('#kttanggallahir').datepicker({
-		todayHighlight: true
-		, autoclose: true
-		, orientation: "bottom left"
-		, clearBtn: true
-		, format: 'dd-mm-yyyy'
-		, templates: arrows
-	});
 
 </script>

@@ -86,14 +86,13 @@ class pak_json extends CI_Controller {
 		$userpegawaimode= $this->userpegawaimode;
 		$adminuserid= $this->adminuserid;
 
-		// $sOrder = "";
-		// $set->selectByParams(array(), $dsplyRange, $dsplyStart, $statement." AND (UPPER(B.GOL_RUANG) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(TEMPAT_LAHIR) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(NAMA) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(A.NAMA) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(A.NIP_LAMA) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(A.NIP_BARU) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(AMBIL_FORMAT_NIP_BARU(NIP_BARU)) LIKE '%".strtoupper($_GET['sSearch'])."%' ) ", $sOrder);
+		
 		$statement= "and pegawai_id= '".$reqId."'" ;
 		$set->selectByParams(array(), $dsplyRange, $dsplyStart, $statement, $sOrder);
+
+		// echo $set->query;exit;
 		
-		if(!empty($cekquery)){
-			echo $set->query;exit;
-		}
+		
 		while ($set->nextRow()) 
 		{
 			$row= [];
@@ -106,6 +105,10 @@ class pak_json extends CI_Controller {
 				else if ($valkey == "NILAI")
 				{
 					$row[$valkey]= str_replace(".", ",", $set->getField($valkey));
+				}
+				else if ($valkey == "BULAN_MULAI" || $valkey == "BULAN_SELESAI" )
+				{
+					$row[$valkey]= getNameMonth($set->getField($valkey));
 				}
 				else
 				{
@@ -188,6 +191,116 @@ class pak_json extends CI_Controller {
 
 		header('Content-Type: application/json');
 		echo json_encode( $result, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);	
+	}
+
+	function add()
+	{
+		$this->load->model("base/Pak");
+
+		$reqId= $this->input->post("reqId");
+		$reqRowId= $this->input->post("reqRowId");
+		$reqMode= $this->input->post("reqMode");
+
+		$reqPegawaiId	= $this->input->post("reqId");
+
+		$reqNomor				= $this->input->post("reqNomor");
+		$reqTglSK				= $this->input->post("reqTglSK");
+		$reqKredit				= $this->input->post("reqKredit");
+		$reqBulanMulai				= $this->input->post("reqBulanMulai");
+		$reqTahunMulai				= $this->input->post("reqTahunMulai");
+		$reqBulanSelesai				= $this->input->post("reqBulanSelesai");
+		$reqTahunSelesai				= $this->input->post("reqTahunSelesai");
+
+		if(intval($reqTahunMulai) > intval($reqTahunSelesai) )
+		{
+			echo json_response(400, "Tahun Mulai Penilaian tidak boleh lebih dari tahun selesai");exit;
+		}
+
+		if(intval($reqBulanMulai) > intval($reqBulanSelesai) )
+		{
+			echo json_response(400, "Bulan Mulai Penilaian tidak boleh lebih dari bulan selesai");exit;
+		}
+
+
+		// print_r($reqPejabatId);exit;
+
+		$pak = new Pak();
+	
+		
+		$pak->setField('PAK_ID', $reqRowId);		
+		$pak->setField('NOMOR_SK', $reqNomor);
+		$pak->setField('TGL_SK', dateToDBCheck($reqTglSK));
+
+		$pak->setField('ANGKA_KREDIT', $reqKredit);
+		$pak->setField('BULAN_MULAI', $reqBulanMulai);
+		$pak->setField('TAHUN_MULAI', ValToNullDB($reqTahunMulai));
+		$pak->setField('BULAN_SELESAI', $reqBulanSelesai);
+		$pak->setField('TAHUN_SELESAI', ValToNullDB($reqTahunSelesai));
+		$pak->setField('PEGAWAI_ID', $reqId);		
+
+		
+		$reqSimpan= "";
+		if ($reqMode == "insert")
+		{
+
+			$pak->setField("LAST_CREATE_USER", $adminusernama);
+			$pak->setField("LAST_CREATE_DATE", "NOW()");	
+			$pak->setField("LAST_CREATE_SATKER", $userSatkerId);
+	
+			if($pak->insert())
+			{
+				$reqRowId=$pak->id;
+				$reqSimpan= 1;
+			}
+		}
+		else
+		{	
+			$pak->setField("LAST_UPDATE_USER", $adminusernama);
+			$pak->setField("LAST_UPDATE_DATE", "NOW()");	
+			$pak->setField("LAST_UPDATE_SATKER", $userSatkerId);
+			if($pak->update())
+			{
+				$reqSimpan= 1;
+			}
+		}
+
+
+		if($reqSimpan == 1)
+		{
+			echo json_response(200, $reqRowId."-Data berhasil disimpan.");
+		}
+		else
+		{
+			echo json_response(400, "Data gagal disimpan");
+		}
+				
+	}
+
+
+	function delete()
+	{
+		$this->load->model("base/Pak");
+		$set = new Pak();
+		
+		$reqRowId =  $this->input->get('reqRowId');
+		$reqMode =  $this->input->get('reqMode');
+
+		$set->setField("PAK_ID", $reqRowId);
+		$reqSimpan="";
+		if($set->delete())
+		{
+			$reqSimpan=1;
+		}
+
+		if($reqSimpan == 1 )
+		{
+			echo json_response(200, 'Data berhasil dihapus');
+		}
+		else
+		{
+			echo json_response(400, 'Data gagal dihapus');
+		}
+
 	}
 }
 ?>

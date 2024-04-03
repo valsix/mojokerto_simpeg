@@ -40,6 +40,7 @@ class SKP extends Entity{
 				  '".$this->getField("LAST_CREATE_SATKER")."'
 				)"; 
 				
+		$this->id= $this->getField("SKP_ID");
 		$this->query = $str;
 		// echo $str;exit;
 		return $this->execQuery($str);
