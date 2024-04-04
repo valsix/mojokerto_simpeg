@@ -95,7 +95,7 @@ $readonly = "readonly";
 						<a class="" href="app/index/pegawai">Data Pegawai</a>
 					</li>
 					<li class="breadcrumb-item text-muted">
-						<a class="text-muted">Identitas Pegawai</a>
+						<a class="text-muted">Identitas Orangtua</a>
 					</li>
 				</ul>
 			</div>
@@ -113,7 +113,7 @@ $readonly = "readonly";
                     <span class="card-icon">
                         <i class="flaticon2-notepad text-primary"></i>
                     </span>
-                    <h3 class="card-label">Profil Pegawai</h3>
+                    <h3 class="card-label">Profil Orangtua</h3>
                 </div>
             </div>
             <form class="form" id="ktloginform" method="POST" enctype="multipart/form-data">

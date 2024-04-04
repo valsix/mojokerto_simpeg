@@ -1,7 +1,10 @@
+<link href="assets/css/w3.css" rel="stylesheet" type="text/css" />
+
 <?
 include_once("functions/personal.func.php");
 
-$this->load->model("base/Pegawai");
+$this->load->model("base/SuamiIstri");
+$this->load->model("base/Core");
 
 $userpegawaimode= $this->userpegawaimode;
 $adminuserid= $this->adminuserid;
@@ -13,33 +16,30 @@ else
 
 $reqId= $this->input->get('reqId');
 
-$set= new Pegawai();
-// $skpns->selectByParams(array("PEGAWAI_ID" => $reqPegawaiId), -1,-1,'');
-// $skpns->firstRow();
-			   
-// $reqPejabatPenetapan			= $skpns->getField('PEJABAT_PENETAP_ID');
-// $reqNamaPejabatPenetap			= $skpns->getField('NAMA_PENETAP');
-// $reqNIPPejabatPenetap			= $skpns->getField('NIP_PENETAP');
-// $reqNoSuratKeputusan			= $skpns->getField('NO_SK');
-// $reqTanggalSuratKeputusan		= dateToPageCheck($skpns->getField('TANGGAL_SK'));
-// $reqTerhitungMulaiTanggal		= dateToPageCheck($skpns->getField('TMT_PNS'));
-// $reqNoDiklatPrajabatan			= $skpns->getField('NO_PRAJAB');
-// $reqTanggalDiklatPrajabatan	= dateToPageCheck($skpns->getField('TANGGAL_PRAJAB'));
-// $reqNoSuratUjiKesehatan		= $skpns->getField('NO_UJI_KESEHATAN');
-// $reqTanggalSuratUjiKesehatan	= dateToPageCheck($skpns->getField('TANGGAL_UJI_KESEHATAN'));
-// $reqGolRuang					= $skpns->getField('PANGKAT_ID');
-// $reqPengambilanSumpah			= $skpns->getField('SUMPAH');
-// $reqSKPNSId					= (int)$skpns->getField('SK_PNS_ID');
-// $reqTanggalSumpah				= $skpns->getField('TANGGAL_SUMPAH');
-// $reqNoSuratjiKesehatan			= $skpns->getField('NO_UJI_KESEHATAN');
-// $reqNoDiklatPrajabatan			= $skpns->getField('NO_PRAJAB');
-// $reqTh 						= $skpns->getField('MASA_KERJA_TAHUN');
-// $reqBl 						= $skpns->getField('MASA_KERJA_BULAN');
+$suami_istri= new SuamiIstri();
+$suami_istri->selectByParams(array("PEGAWAI_ID" => $reqId, "STATUS"=>1), -1,-1,'');
+$suami_istri->firstRow();
+// echo $suami_istri->query; exit;
+$reqIdSuamiIstri	= (int)$suami_istri->getField('SUAMI_ISTRI_ID');
+$reqNamaSuamiIstri	= $suami_istri->getField('NAMA');
+$reqTempatLahir	= $suami_istri->getField('TEMPAT_LAHIR');
+$reqTglLahir		= dateToPageCheck($suami_istri->getField('TANGGAL_LAHIR'));
+$reqTglKawin		= dateToPageCheck($suami_istri->getField('TANGGAL_KAWIN'));
+$reqPNS			= $suami_istri->getField('STATUS_PNS');
+$reqNIP			= $suami_istri->getField('NIP_PNS');
+$reqPendidikan		= $suami_istri->getField('PENDIDIKAN_ID');
+$reqPekerjaan		= $suami_istri->getField('PEKERJAAN');
+$reqTunjangan		= $suami_istri->getField('STATUS_TUNJANGAN');
+$reqSudahDibayar	= $suami_istri->getField('STATUS_BAYAR');
+$reqBulanDibayar	= dateToPageCheck($suami_istri->getField('BULAN_BAYAR'));
+$reqKartu	= $suami_istri->getField('KARTU');
+$reqPegawaiId= $suami_istri->getField('PEGAWAI_ID');
 
-// $reqNoBeritaAcara				= $skpns->getField('NOMOR_BERITA_ACARA');
-// $reqTanggalBeritaAcara			= dateToPageCheck($skpns->getField('TANGGAL_BERITA_ACARA'));
-// $reqKeteranganLPJ				= $skpns->getField('KETERANGAN_LPJ');
+$reqFoto			= $suami_istri->getField('FOTO');
+$reqFotoTmp			= $suami_istri->getField('FOTO');
 
+$pendidikan= new Core();
+$pendidikan->selectByParamsPendidikan(); 
 
 // echo $reqTmtJabatan;exit;
 $reqMode="update";
@@ -77,7 +77,7 @@ $readonly = "readonly";
 						<a class="" href="app/index/pegawai">Data Pegawai</a>
 					</li>
 					<li class="breadcrumb-item text-muted">
-						<a class="text-muted">SK PNS</a>
+						<a class="text-muted">Suami Istri</a>
 					</li>
 				</ul>
 			</div>
@@ -95,183 +95,160 @@ $readonly = "readonly";
                     <span class="card-icon">
                         <i class="flaticon2-notepad text-primary"></i>
                     </span>
-                    <h3 class="card-label">SK PNS</h3>
+                    <h3 class="card-label">Suami Istri</h3>
                 </div>
             </div>
             <form class="form" id="ktloginform" method="POST" enctype="multipart/form-data">
 	        	<div class="card-body">
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			Pejabat Penetapan
-		        		</label>
-	        			<div class="col-lg-10 col-sm-12">
-	        				<select class="form-control" id="reqPejabatPenetapan" name="reqPejabatPenetapan">
-	        					<option></option>
-	        				</select>
-	        			</div>
-	        		</div>
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			Nama Pejabat Penetap
-		        		</label>
-	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" name="reqNamaPejabatPenetap" id="reqNamaPejabatPenetap" value="<?=$reqNamaPejabatPenetap?>" />
-	        			</div>
-	        		</div>
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			NIP Pejabat Penetap
-		        		</label>
-	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" name="reqNIPPejabatPenetap" id="reqNIPPejabatPenetap" value="<?=$reqNIPPejabatPenetap?>" />
-	        			</div>
-	        		</div>
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			No. Surat Keputusan
-		        		</label>
-	        			<div class="col-lg-4 col-sm-12">
-	        				<input type="text" class="form-control" name="reqNoSuratKeputusan" id="reqNoSuratKeputusan" value="<?=$reqNoSuratKeputusan?>" />
-	        			</div>
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			Tanggal Surat Keputusan
-		        		</label>
-	        			<div class="col-lg-4 col-sm-12">
-	        				<div class="input-group date">
-		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTanggalSuratKeputusan" value="<?=$reqTanggalSuratKeputusan?>" />
-		        				<div class="input-group-append">
-		        					<span class="input-group-text">
-		        						<i class="la la-calendar"></i>
-		        					</span>
-		        				</div>
+	        		<div class="w3-bar w3-black">
+					    <a class="w3-bar-item w3-button tablink w3-red" onclick="openCity(event,'London')">Suami/Istri</a>
+					    <a class="w3-bar-item w3-button tablink" onclick="openCity(event,'Paris')">Kartu Pegawai</a>
+					</div>
+					  
+					<div id="London" class="w3-container w3-border city">
+				        <div class="card-title">
+		                    <h3 class="card-label">Suami/Istri</h3>
+		                </div>
+			            <div class="form-group row">
+		        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+			        			Foto
+			        		</label>
+		        			<div class="col-lg-4 col-sm-12">
+		        				<input type="file" class="form-control" name="reqNamaPejabatPenetap" id="reqNamaPejabatPenetap" value="<?=$reqNamaPejabatPenetap?>" />
 		        			</div>
-	        			</div>
-	        		</div>
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			Terhitung Mulai Tanggal
-		        		</label>
-	        			<div class="col-lg-4 col-sm-12">
-	        				<div class="input-group date">
-		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTerhitungMulaiTanggal" value="<?=$reqTerhitungMulaiTanggal?>" />
-		        				<div class="input-group-append">
-		        					<span class="input-group-text">
-		        						<i class="la la-calendar"></i>
-		        					</span>
-		        				</div>
+		        		</div>
+		        		<div class="form-group row">
+		        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+			        			Nama Suami/Istri
+			        		</label>
+		        			<div class="col-lg-10 col-sm-12">
+		        				<input type="text" class="form-control" name="reqNamaSuamiIstri" id="reqNamaSuamiIstri" value="<?=$reqNamaSuamiIstri?>" />
 		        			</div>
-	        			</div>
-	        		</div>
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			No. Berita Acara
-		        		</label>
-	        			<div class="col-lg-4 col-sm-12">
-	        				<input type="text" class="form-control" name="reqNoBeritaAcara" id="reqNoBeritaAcara" value="<?=$reqNoBeritaAcara?>" />
-	        			</div>
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			Tanggal Berita Acara
-		        		</label>
-	        			<div class="col-lg-4 col-sm-12">
-	        				<div class="input-group date">
-		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTanggalBeritaAcara" value="<?=$reqTanggalBeritaAcara?>" />
-		        				<div class="input-group-append">
-		        					<span class="input-group-text">
-		        						<i class="la la-calendar"></i>
-		        					</span>
-		        				</div>
+		        		</div>
+		        		<div class="form-group row">
+		        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+			        			Tempat Lahir
+			        		</label>
+		        			<div class="col-lg-10 col-sm-12">
+		        				<input type="text" class="form-control" name="reqTempatLahir" id="reqTempatLahir" value="<?=$reqTempatLahir?>" />
 		        			</div>
-	        			</div>
-	        		</div>
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			No. Diklat Prajabatan
-		        		</label>
-	        			<div class="col-lg-4 col-sm-12">
-	        				<input type="text" class="form-control" name="reqNoDiklatPrajabatan" id="reqNoDiklatPrajabatan" value="<?=$reqNoDiklatPrajabatan?>" />
-	        			</div>
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			Tanggal Diklat Prajabatan
-		        		</label>
-	        			<div class="col-lg-4 col-sm-12">
-	        				<div class="input-group date">
-		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTanggalDiklatPrajabatan" value="<?=$reqTanggalDiklatPrajabatan?>" />
-		        				<div class="input-group-append">
-		        					<span class="input-group-text">
-		        						<i class="la la-calendar"></i>
-		        					</span>
-		        				</div>
+		        		</div>
+		        		<div class="form-group row">
+		        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+			        			Kartu
+			        		</label>
+		        			<div class="col-lg-10 col-sm-12">
+		        				<input type="text" class="form-control" name="reqKartu" id="reqKartu" value="<?=$reqKartu?>" />
 		        			</div>
-	        			</div>
-	        		</div>
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			No. Surat Uji Kesehatan
-		        		</label>
-	        			<div class="col-lg-4 col-sm-12">
-	        				<input type="text" class="form-control" name="reqNoSuratUjiKesehatan" id="reqNoSuratUjiKesehatan" value="<?=$reqNoSuratUjiKesehatan?>" />
-	        			</div>
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			Tanggal Surat Uji Kesehatan
-		        		</label>
-	        			<div class="col-lg-4 col-sm-12">
-	        				<div class="input-group date">
-		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTanggalSuratUjiKesehatan" value="<?=$reqTanggalSuratUjiKesehatan?>" />
-		        				<div class="input-group-append">
-		        					<span class="input-group-text">
-		        						<i class="la la-calendar"></i>
-		        					</span>
-		        				</div>
+		        		</div>
+		        		<div class="form-group row">
+		        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+			        			Tgl Lahir
+			        		</label>
+		        			<div class="col-lg-4 col-sm-12">
+		        				<div class="input-group date">
+			        				<input type="text" autocomplete="off" class="form-control" id="reqTglLahir" name="reqTglLahir" value="<?=$reqTglLahir?>" />
+			        				<div class="input-group-append">
+			        					<span class="input-group-text">
+			        						<i class="la la-calendar"></i>
+			        					</span>
+			        				</div>
+			        			</div>
 		        			</div>
-	        			</div>
-	        		</div>
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			Pengkat/Gol.Ruang
-		        		</label>
-	        			<div class="col-lg-8 col-sm-12">
-	        				<select class="form-control" id="reqGolRuang" name="reqGolRuang">
-	        					<option></option>
-	        				</select>
-	        			</div>
-	        		</div>
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			Pengambilan Sumpah
-		        		</label>
-	        			<div class="col-lg-1 col-sm-12">
-	        				<input type="checkbox" class="form-control" name="reqPengambilanSumpah" id="reqPengambilanSumpah" value="<?=$reqPengambilanSumpah?>" />
-	        			</div>
-	        		</div>
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			Latihan Pra Jabatan(LPJ)
-		        		</label>
-	        			<div class="col-lg-4 col-sm-12">
-	        				<input type="text" class="form-control" name="reqKeteranganLPJ" id="reqKeteranganLPJ" value="<?=$reqKeteranganLPJ?>" />
-	        			</div>
-	        		</div>
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Masa Kerja </label>
-	        			<div class="col-lg-1 col-sm-12">
-	        				<input type="text" class="form-control" name="tempTh" id="tempTh" value="<?=$tempTh?>" />
-	        			</div>
-	        			<label class="col-form-label">Tahun </label>
-	        			<div class="col-lg-1 col-sm-12">
-	        				<input type="text" class="form-control" name="tempBl" id="tempBl" value="<?=$tempBl?>" />
-	        			</div>
-	        			<label class="col-form-label">Bulan</label>
-	        			
-	        		</div>
-	        	</div>
-	        	<div class="card-footer">
-	        		<div class="row">
-	        			<div class="col-lg-9">
-	        				<input type="hidden" name="reqMode" value="<?=$reqMode?>">
-	        				<input type="hidden" name="reqTempValidasiId" value="<?=$reqTempValidasiId?>">
-	        				<button type="submit" id="ktloginformsubmitbutton"  class="btn btn-primary font-weight-bold mr-2">Simpan</button>
-	        			</div>
-	        		</div>
+		        		</div>
+		        		<div class="form-group row">
+		        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+			        			Tgl Kawin
+			        		</label>
+		        			<div class="col-lg-4 col-sm-12">
+		        				<div class="input-group date">
+			        				<input type="text" autocomplete="off" class="form-control" id="reqTglKawin" name="reqTglKawin" value="<?=$reqTglKawin?>" />
+			        				<div class="input-group-append">
+			        					<span class="input-group-text">
+			        						<i class="la la-calendar"></i>
+			        					</span>
+			        				</div>
+			        			</div>
+		        			</div>
+		        		</div>
+		        		<div class="form-group row">
+		        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+			        			PNS
+			        		</label>
+		        			<div style="margin-left: 10px;">
+		        				<input type="checkbox" name="reqPNS"  id="reqPNS" class="form-control" style="width: 20px;" value="1" <? if($reqPNS == 1) echo 'checked'?> >
+		        			</div>
+		        		</div>
+		        		<div id='reqNIPField' class="form-group row" <? if($reqPNS != 1) echo 'style="display:none"'?> >
+		        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+			        			NIP(PNS)
+			        		</label>
+		        			<div class="col-lg-10 col-sm-12">
+		        				<input type="text" class="form-control" name="reqNIP" id="reqNIP" value="<?=$reqNIP?>" />
+		        			</div>
+		        		</div>
+		        		<div class="form-group row">
+		        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+			        			Pendidikan
+			        		</label>
+		        			<div class="col-lg-10 col-sm-12">
+		        				<select class="form-control" id="reqPendidikan" name="reqPendidikan">
+		        					 <? while($pendidikan->nextRow()){?>
+					                    <option value="<?=$pendidikan->getField('PENDIDIKAN_ID')?>" <? if($reqPendidikan == $pendidikan->getField('PENDIDIKAN_ID')) echo 'selected';?>><?=$pendidikan->getField('NAMA')?></option>
+					                <? }?>
+		        				</select>
+		        			</div>
+		        		</div>
+		        		<div class="form-group row">
+		        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+			        			Pekerjaan
+			        		</label>
+		        			<div class="col-lg-10 col-sm-12">
+		        				<input type="text" class="form-control" name="reqPekerjaan" id="reqPekerjaan" value="<?=$reqPekerjaan?>" />
+		        			</div>
+		        		</div>
+		        		<div class="form-group row">
+		        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+			        			Tunjangan
+			        		</label>
+		        			<div style="margin-left: 10px;">
+		        				<input type="checkbox" name="reqTunjangan" id='reqTunjangan' class="form-control" style="width: 20px;" value="1" <? if($reqTunjangan == 1) echo 'checked'?>>
+		        			</div>
+		        		</div>
+		        		<div class="form-group row">
+		        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+			        			Sudah Dibayar
+			        		</label>
+		        			<div style="margin-left: 10px;">
+		        				<input type="checkbox" name="reqSudahDibayar" id='reqSudahDibayar' class="form-control" style="width: 20px;" value="1" <? if($reqSudahDibayar == 1) echo 'checked'?> >
+		        			</div>
+		        		</div>
+		        		<div class="form-group row">
+		        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+			        			Bulan Dibayar
+			        		</label>
+		        			<div class="col-lg-4 col-sm-12">
+		        				<input type="text" class="form-control" name="reqBulanDibayar" id="reqBulanDibayar" value="<?=$reqBulanDibayar?>" />
+		        			</div>
+		        		</div>
+
+		        		<div class="card-footer">
+			        		<div class="row">
+			        			<div class="col-lg-9">
+			        				<input type="hidden" name="reqMode" value="<?=$reqMode?>">
+			        				<input type="hidden" name="reqTempValidasiId" value="<?=$reqTempValidasiId?>">
+			        				<button type="submit" id="ktloginformsubmitbutton"  class="btn btn-primary font-weight-bold mr-2">Simpan</button>
+			        			</div>
+			        		</div>
+			        	</div>
+					</div>
+
+					<div id="Paris" class="w3-container w3-border city" style="display:none">
+					    <div class="card-title">
+		                    <h3 class="card-label">Kartu Pegawai</h3>
+		                </div>
+					    <!-- <p>Paris is the capital of France.</p>  -->
+					</div>
 	        	</div>
 	        </form>
         </div>
@@ -405,3 +382,31 @@ $readonly = "readonly";
         openAdd(pageUrl);
     }
 </script> -->
+
+<script>
+	function openCity(evt, cityName) {
+	  var i, x, tablinks;
+	  x = document.getElementsByClassName("city");
+	  for (i = 0; i < x.length; i++) {
+	    x[i].style.display = "none";
+	  }
+	  tablinks = document.getElementsByClassName("tablink");
+	  for (i = 0; i < x.length; i++) {
+	    tablinks[i].className = tablinks[i].className.replace(" w3-red", "");
+	  }
+	  document.getElementById(cityName).style.display = "block";
+	  evt.currentTarget.className += " w3-red";
+	}
+
+	$("#reqPNS").change(function(){
+		var pns = $("#reqPNS:checked").length;
+		document.getElementById("reqNIP").value = '';
+
+		if(pns==1){
+			$("#reqNIPField").show();				
+		}
+		else{
+		    $("#reqNIPField").hide();			
+		}
+	});
+</script>
