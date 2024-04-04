@@ -185,5 +185,96 @@ class sertifikat_profesi_json extends CI_Controller {
 		header('Content-Type: application/json');
 		echo json_encode( $result, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);	
 	}
+
+	function add()
+	{
+		$this->load->model("base/SertifikatProfesi");
+
+		$reqId= $this->input->post("reqId");
+		$reqRowId= $this->input->post("reqRowId");
+		$reqMode= $this->input->post("reqMode");
+
+		$reqNama= $this->input->post("reqNama");
+		$reqNomor= $this->input->post("reqNomor");
+		$reqSertifikat= $this->input->post("reqSertifikat");
+		$reqTanggal= $this->input->post("reqTanggal");
+		$reqLembaga= $this->input->post("reqLembaga");
+		
+
+		$sertifikat = new SertifikatProfesi();
+	
+
+		$sertifikat->setField('PEGAWAI_ID', $reqId);
+		$sertifikat->setField('NAMA', $reqNama);
+		$sertifikat->setField('NOMOR', $reqNomor);
+		$sertifikat->setField('LEMBAGA', $reqLembaga);
+		$sertifikat->setField('SERTIFIKAT', $reqSertifikat);
+		$sertifikat->setField('TANGGAL', dateToDBCheck($reqTanggal));
+
+
+		$sertifikat->setField('SERTIFIKAT_PROFESI_ID', $reqRowId);
+
+		$reqSimpan= "";
+		if ($reqMode == "insert")
+		{
+
+			$sertifikat->setField("LAST_CREATE_USER", $adminusernama);
+			$sertifikat->setField("LAST_CREATE_DATE", "NOW()");	
+			$sertifikat->setField("LAST_CREATE_SATKER", $userSatkerId);
+	
+			if($sertifikat->insert())
+			{
+				$reqSimpan= 1;
+			}
+		}
+		else
+		{	
+			$sertifikat->setField("LAST_UPDATE_USER", $adminusernama);
+			$sertifikat->setField("LAST_UPDATE_DATE", "NOW()");	
+			$sertifikat->setField("LAST_UPDATE_SATKER", $userSatkerId);
+			if($sertifikat->update())
+			{
+				$reqSimpan= 1;
+			}
+		}
+
+
+		if($reqSimpan == 1)
+		{
+			echo json_response(200, $reqRowId."-Data berhasil disimpan.");
+		}
+		else
+		{
+			echo json_response(400, "Data gagal disimpan");
+		}
+				
+	}
+
+
+	function delete()
+	{
+		$this->load->model("base/SertifikatProfesi");
+		$set = new SertifikatProfesi();
+		
+		$reqRowId =  $this->input->get('reqRowId');
+		$reqMode =  $this->input->get('reqMode');
+
+		$set->setField("SERTIFIKAT_PROFESI_ID", $reqRowId);
+		$reqSimpan="";
+		if($set->delete())
+		{
+			$reqSimpan=1;
+		}
+
+		if($reqSimpan == 1 )
+		{
+			echo json_response(200, 'Data berhasil dihapus');
+		}
+		else
+		{
+			echo json_response(400, 'Data gagal dihapus');
+		}
+
+	}
 }
 ?>
