@@ -1,13 +1,129 @@
 <? 
-  include_once(APPPATH.'/models/Entity.php');
+  	include_once(APPPATH.'/models/Entity.php');
+  	include_once(APPPATH.'/models/base/DbLog.php');
 
-  class SuamiIstri extends Entity{ 
+  	class SuamiIstri extends Entity{ 
 
-		var $query;
+	var $query;
 
     function SuamiIstri()
-		{
+	{
       $this->Entity(); 
+    }
+
+    function setlogdata($infotable, $infoaksi, $query)
+    {
+    	$setlog= new DbLog();
+    	$setlog->insert($infotable, $infoaksi, $query);
+    }
+	
+
+    function insert()
+	{
+		/*Auto-generate primary key(s) by next max value (integer) */
+		$this->setField("SUAMI_ISTRI_ID", $this->getNextId("SUAMI_ISTRI_ID","SUAMI_ISTRI")); 
+
+		$str = "INSERT INTO SUAMI_ISTRI
+		(
+			SUAMI_ISTRI_ID, PEGAWAI_ID, PENDIDIKAN_ID, NAMA, TEMPAT_LAHIR, TANGGAL_LAHIR, TANGGAL_KAWIN, KARTU, STATUS_PNS
+			, NIP_PNS, PEKERJAAN, STATUS_TUNJANGAN, STATUS_BAYAR, BULAN_BAYAR, FOTO, STATUS,JENIS_KELAMIN
+			, LAST_CREATE_USER, LAST_CREATE_DATE, LAST_CREATE_SATKER
+		)
+		VALUES
+		(
+			".$this->getField("SUAMI_ISTRI_ID")."
+			, '".$this->getField("PEGAWAI_ID")."'
+			, '".$this->getField("PENDIDIKAN_ID")."'
+			, '".$this->getField("NAMA")."'
+			, '".$this->getField("TEMPAT_LAHIR")."'
+			, ".$this->getField("TANGGAL_LAHIR")."
+			, ".$this->getField("TANGGAL_KAWIN")."
+			, '".$this->getField("KARTU")."'
+			, '".$this->getField("STATUS_PNS")."'
+			, '".$this->getField("NIP_PNS")."'
+			, '".$this->getField("PEKERJAAN")."'
+			, '".$this->getField("STATUS_TUNJANGAN")."'
+			, '".$this->getField("STATUS_BAYAR")."'
+			, ".$this->getField("BULAN_BAYAR")."
+			, '".$this->getField("FOTO")."'
+			, 1
+			, '".$this->getField("JENIS_KELAMIN")."'
+			, '".$this->getField("LAST_CREATE_USER")."'
+			, ".$this->getField("LAST_CREATE_DATE")."
+			, '".$this->getField("LAST_CREATE_SATKER")."'
+		)";
+		$this->id= $this->getField("SUAMI_ISTRI_ID");	
+		$this->query = $str;
+
+			// echo $str;exit;
+
+
+		// untuk buat log data
+		// parse pertama sesuai nama table
+		// parse ke dua sesuai aksi
+		$this->setlogdata("SUAMI_ISTRI", "INSERT", $str);
+
+		return $this->execQuery($str);
+    }
+
+    function update()
+	{
+		$str = "UPDATE SUAMI_ISTRI
+		SET    
+			PEGAWAI_ID= '".$this->getField("PEGAWAI_ID")."'
+			, PENDIDIKAN_ID= '".$this->getField("PENDIDIKAN_ID")."'
+			, NAMA= '".$this->getField("NAMA")."'
+			, TEMPAT_LAHIR= '".$this->getField("TEMPAT_LAHIR")."'
+			, TANGGAL_LAHIR= ".$this->getField("TANGGAL_LAHIR")."
+			, TANGGAL_KAWIN= ".$this->getField("TANGGAL_KAWIN")."
+			, KARTU= '".$this->getField("KARTU")."'
+			, STATUS_PNS= '".$this->getField("STATUS_PNS")."'
+			, NIP_PNS= '".$this->getField("NIP_PNS")."'
+			, PEKERJAAN= '".$this->getField("PEKERJAAN")."'
+			, STATUS_TUNJANGAN= '".$this->getField("STATUS_TUNJANGAN")."'
+			, STATUS_BAYAR= '".$this->getField("STATUS_BAYAR")."'
+			, BULAN_BAYAR= ".$this->getField("BULAN_BAYAR")."
+			, FOTO= '".$this->getField("FOTO")."'
+			, JENIS_KELAMIN= '".$this->getField("JENIS_KELAMIN")."'
+			, LAST_UPDATE_USER= '".$this->getField("LAST_UPDATE_USER")."'
+			, LAST_UPDATE_DATE= ".$this->getField("LAST_UPDATE_DATE")."
+			, LAST_UPDATE_SATKER= '".$this->getField("LAST_UPDATE_SATKER")."'
+		WHERE SUAMI_ISTRI_ID= '".$this->getField("SUAMI_ISTRI_ID")."'
+		";
+		$this->query = $str;
+
+		// untuk buat log data
+		// parse pertama sesuai nama table
+		// parse ke dua sesuai aksi
+		$this->setlogdata("SUAMI_ISTRI", "UPDATE", $str);
+
+		return $this->execQuery($str);
+    }
+
+    
+	function update_nikah_riwayat()
+	{
+		$str = "UPDATE SUAMI_ISTRI
+		SET    
+			NAMA= '".$this->getField("NAMA")."'
+			, STATUS_PNS= '".$this->getField("STATUS_PNS")."'
+			, NIP_PNS= '".$this->getField("NIP_PNS")."'
+			, PEKERJAAN= '".$this->getField("PEKERJAAN")."'
+			, SK_CERAI_TANGGAL= ".$this->getField("SK_CERAI_TANGGAL")."
+			, SK_CERAI_TMT= ".$this->getField("SK_CERAI_TMT")."
+			, SK_CERAI= '".$this->getField("SK_CERAI")."'
+			, STATUS= 0
+		WHERE SUAMI_ISTRI_ID= '".$this->getField("SUAMI_ISTRI_ID")."'
+		"; 
+		$this->query = $str;
+		// echo $str;
+
+		// untuk buat log data
+		// parse pertama sesuai nama table
+		// parse ke dua sesuai aksi
+		$this->setlogdata("SUAMI_ISTRI", "UPDATE", $str);
+
+		return $this->execQuery($str);
     }
 
     function selectByParams($paramsArray=array(),$limit=-1,$from=-1, $statement='', $sOrder="")
