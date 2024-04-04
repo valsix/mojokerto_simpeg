@@ -64,7 +64,7 @@ $reqTahunAktif= date("Y");
 						<a class="" href="app/index/pegawai">Data Pegawai</a>
 					</li>
 					<li class="breadcrumb-item text-muted">
-						<a class="" href="app/index/pak?reqId=<?=$reqId?>">Kinerja</a>
+						<a class="" href="app/index/pak?reqId=<?=$reqId?>">Pak</a>
 					</li>
 					<li class="breadcrumb-item text-muted">
 						<a class="text-muted">Halaman Input</a>
