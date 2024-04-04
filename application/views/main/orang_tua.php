@@ -1,7 +1,7 @@
 <?
 include_once("functions/personal.func.php");
 
-$this->load->model("base/Pegawai");
+$this->load->model("base/OrangTua");
 $this->load->model("base/Core");
 
 $userpegawaimode= $this->userpegawaimode;
@@ -14,92 +14,42 @@ else
 
 $reqId= $this->input->get('reqId');
 
-$pegawai= new Pegawai();
-$pegawai->selectByParams(array("p.PEGAWAI_ID" => $reqId)); 
-$pegawai->firstRow();
-// echo $pegawai->query; exit;
+$ayah = new OrangTua();
+$ayah->selectByParams(array("a.PEGAWAI_ID" => $reqId,"JENIS_KELAMIN" => L),-1,-1, '');
+// echo $ayah->query;exit;
+$ayah->firstRow();
 
-$reqNIP1				= $pegawai->getField('NIP_LAMA');
-$reqNIP2				= $pegawai->getField('NIP_BARU');
-$reqNama				= $pegawai->getField('NAMA');
-$reqTipePegawai		= $pegawai->getField('TIPE_PEGAWAI_ID');
-$reqGelarDepan			= $pegawai->getField('GELAR_DEPAN');
-$reqGelarBelakang		= $pegawai->getField('GELAR_BELAKANG');
-$reqStatusPegawai		= $pegawai->getField('STATUS_PEGAWAI');
-$reqTempatLahir		= $pegawai->getField('TEMPAT_LAHIR');
-$reqTanggalLahir		= dateToPageCheck($pegawai->getField('TANGGAL_LAHIR'));
-$reqTglPensiun			= dateToPageCheck($pegawai->getField('TANGGAL_PENSIUN'));
-$reqTglPindah			= dateToPageCheck($pegawai->getField('TANGGAL_PINDAH'));
-$reqKeteranganPindah	= $pegawai->getField('KETERANGAN_PINDAH');
-$reqJenisKelamin		= $pegawai->getField('JENIS_KELAMIN');
-$reqJenisPegawai		= $pegawai->getField('JENIS_PEGAWAI_ID');
-$reqKeterangan			= $pegawai->getField('KETERANGAN_PINDAH');
-$reqStatusPernikahan	= $pegawai->getField('STATUS_KAWIN');
-$reqKartuPegawai		= $pegawai->getField('KARTU_PEGAWAI');
-$reqSukuBangsa			= $pegawai->getField('SUKU_BANGSA');
-$reqGolDarah			= $pegawai->getField('GOLONGAN_DARAH');
-$reqAkses				= $pegawai->getField('ASKES');
-$reqTaspen				= $pegawai->getField('TASPEN');
-$reqAlamat				= $pegawai->getField('ALAMAT');
-$reqNPWP				= $pegawai->getField('NPWP');
-$reqNIK				= $pegawai->getField('NIK');
-$reqRT					= $pegawai->getField('RT');
-$reqRW					= $pegawai->getField('RW');
-$reqEmail				= $pegawai->getField('EMAIL');
-$reqPropinsi			= $pegawai->getField('PROPINSI_ID');
-$reqKabupaten			= $pegawai->getField('KABUPATEN_ID');
-$reqKecamatan			= $pegawai->getField('KECAMATAN_ID');
-$reqDesa				= $pegawai->getField('KELURAHAN_ID');
-$reqBank				= $pegawai->getField('BANK_ID');
-$reqNoRekening			= $pegawai->getField('NO_REKENING');
-$reqPangkatTerkahir	= $pegawai->getField('GOL_RUANG');
-$reqTMTPangkat			= $pegawai->getField('TMT_PANGKAT');
-$reqJabatanTerkahir	= $pegawai->getField('JABATAN');
-$reqTMTJabatan			= $pegawai->getField('TMT_JABATAN');
-$reqPendidikanTerakhir	= $pegawai->getField('PENDIDIKAN');
-$reqJurusanTerakhir	= $pegawai->getField('JURUSAN');
-$reqTahunLulus			= $pegawai->getField('TAHUN');
-$reqGambar				= $pegawai->getField('FOTO_BLOB');
-$reqAgamaId			= $pegawai->getField('AGAMA_ID');
-$reqTelepon			= $pegawai->getField('TELEPON');
-$reqKodePos			= $pegawai->getField('KODEPOS');
-$reqKedudukanId		= $pegawai->getField('KEDUDUKAN_ID');
-$reqSatkerId		= $pegawai->getField('SATKER_FULL');
+$reqIdAyah				= (int)$ayah->getField("ORANG_TUA_ID");
+$reqNamaAyah			= $ayah->getField('NAMA');
+$reqTempatLahirAyah	= $ayah->getField('TEMPAT_LAHIR');
+$reqTglLahirAyah		= dateToPageCheck($ayah->getField('TANGGAL_LAHIR'));
+$reqUsiaAyah			= $ayah->getField('');
+$reqPekerjaanAyah 		= $ayah->getField('PEKERJAAN');
+$reqAlamatAyah			= $ayah->getField('ALAMAT');
+$reqPropinsiAyah		= $ayah->getField('PROPINSI_ID');
+$reqKabupatenAyah		= $ayah->getField('KABUPATEN_ID');
+$reqKecamatanAyah		= $ayah->getField('KECAMATAN_ID');
+$reqDesaAyah			= $ayah->getField('KELURAHAN_ID');
+$reqKodePosAyah		= $ayah->getField('KODEPOS');
+$reqTeleponAyah		= $ayah->getField('TELEPON');
 
-$reqNikPns				= $pegawai->getField('KTP_PNS');
-$reqDrh				= $pegawai->getField('DRH');
-$reqNomorKK				= $pegawai->getField('KK');
-$reqKtpPasangan				= $pegawai->getField('KTP_PASANGAN');
-$reqTugasTambahan			= $pegawai->getField('TUGAS_TAMBAHAN_NEW');
-$reqJenisMapelId			= $pegawai->getField('JENIS_MAPEL_ID');
-$data = $pegawai->getField('FOTO_BLOB');
-$data_karpeg= $pegawai->getField('DOSIR_KARPEG');
-$data_askes= $pegawai->getField('DOSIR_ASKES');
-$data_taspen= $pegawai->getField('DOSIR_TASPEN');
-$data_npwp= $pegawai->getField('DOSIR_NPWP');
-			
-$reqGambarTmp   		= $pegawai->getField('FOTO_BLOB');
-$reqGambarSetengah		= $pegawai->getField('FOTO_BLOB_OTHER');
-$reqGambarTmpSetengah	= $pegawai->getField('FOTO_BLOB_OTHER');
+$ibu	= new OrangTua();
+$ibu->selectByParams(array("a.PEGAWAI_ID" => $reqId,"JENIS_KELAMIN" => P),-1,-1, '');
+$ibu->firstRow();
 
-
-$agama= new Core();
-$agama->selectByParamsAgama(); 
-
-$bank= new Core();
-$bank->selectByParamsBank(); 
-
-$tipepegawai= new Core();
-$tipepegawai->selectByParamsTipePegawai(); 
-
-$status_pegawai= new Core();
-$status_pegawai->selectByParamsStatusPegawai(); 
-
-$jenis_pegawai= new Core();
-$jenis_pegawai->selectByParamsJenisPegawai(); 
-
-$kedudukan= new Core();
-$kedudukan->selectByParamsKedudukan(); 
+$reqIdIbu				= (int)$ibu->getField("ORANG_TUA_ID");
+$reqNamaIbu			= $ibu->getField('NAMA');
+$reqTempatLahirIbu		= $ibu->getField('TEMPAT_LAHIR');
+$reqTglLahirIbu		= dateToPageCheck($ibu->getField('TANGGAL_LAHIR'));
+$reqUsiaIbu			= $ibu->getField('');
+$reqPekerjaanIbu		= $ibu->getField('PEKERJAAN');
+$reqAlamatIbu			= $ibu->getField('ALAMAT');
+$reqPropinsiIbu		= $ibu->getField('PROPINSI_ID');
+$reqKabupatenIbu		= $ibu->getField('KABUPATEN_ID');
+$reqKecamatanIbu		= $ibu->getField('KECAMATAN_ID');
+$reqDesaIbu			= $ibu->getField('KELURAHAN_ID');
+$reqKodePosIbu			= $ibu->getField('KODEPOS');
+$reqTeleponIbu			= $ibu->getField('TELEPON');
 
 $propinsi= new Core();
 
@@ -186,7 +136,7 @@ $readonly = "readonly";
 	        				<div class="form-group row">
 			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Nama</label>
 			        			<div class="col-lg-9 col-sm-12">
-			        				<input type="text" class="form-control"  name="reqGelarDepan" id="reqGelarDepan" value="<?=$reqGelarDepan?>" />
+			        				<input type="text" class="form-control"  name="reqNamaAyah" id="reqNamaAyah" value="<?=$reqNamaAyah?>" />
 			        			</div>
 			        		</div>
 			        	</div>
@@ -194,7 +144,7 @@ $readonly = "readonly";
 	        				<div class="form-group row">
 			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Nama</label>
 			        			<div class="col-lg-9 col-sm-12">
-			        				<input type="text" class="form-control"  name="reqGelarBelakang" id="reqGelarBelakang" value="<?=$reqGelarBelakang?>" />
+			        				<input type="text" class="form-control"  name="reqNamaIbu" id="reqNamaIbu" value="<?=$reqNamaIbu?>" />
 			        			</div>
 			        		</div>
 			        	</div>
@@ -207,7 +157,7 @@ $readonly = "readonly";
 				        			Tempat Lahir
 				        		</label>
 			        			<div class="col-lg-9 col-sm-12">
-			        				<input type="text" class="form-control"  name="reqTempatLahir" id="reqTempatLahir" value="<?=$reqTempatLahir?>" />
+			        				<input type="text" class="form-control"  name="reqTempatLahirAyah" id="reqTempatLahirAyah" value="<?=$reqTempatLahirAyah?>" />
 			        			</div>
 			        		</div>
 			        	</div>
@@ -217,7 +167,7 @@ $readonly = "readonly";
 				        			Tempat Lahir
 				        		</label>
 			        			<div class="col-lg-9 col-sm-12">
-			        				<input type="text" class="form-control"  name="reqTempatLahir" id="reqTempatLahir" value="<?=$reqTempatLahir?>" />
+			        				<input type="text" class="form-control"  name="reqTempatLahirIbu" id="reqTempatLahirIbu" value="<?=$reqTempatLahirIbu?>" />
 			        			</div>
 			        		</div>
 			        	</div>
@@ -231,7 +181,7 @@ $readonly = "readonly";
 				        		</label>
 			        			<div class="col-lg-9 col-sm-12">
 			        				<div class="input-group date">
-				        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTanggalLahir" value="<?=$reqTanggalLahir?>" />
+				        				<input type="text" autocomplete="off" class="form-control" id="reqTglLahirAyah" name="reqTglLahirAyah" value="<?=$reqTglLahirAyah?>" />
 				        				<div class="input-group-append">
 				        					<span class="input-group-text">
 				        						<i class="la la-calendar"></i>
@@ -249,7 +199,7 @@ $readonly = "readonly";
 				        		</label>
 			        			<div class="col-lg-9 col-sm-12">
 			        				<div class="input-group date">
-				        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTanggalLahir" value="<?=$reqTanggalLahir?>" />
+				        				<input type="text" autocomplete="off" class="form-control" id="reqTglLahirIbu" name="reqTglLahirIbu" value="<?=$reqTglLahirIbu?>" />
 				        				<div class="input-group-append">
 				        					<span class="input-group-text">
 				        						<i class="la la-calendar"></i>
@@ -266,7 +216,7 @@ $readonly = "readonly";
 	        				<div class="form-group row">
 			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Usia</label>
 			        			<div class="col-lg-9 col-sm-12">
-			        				<input type="text" class="form-control"  name="reqGelarDepan" id="reqGelarDepan" value="<?=$reqGelarDepan?>" />
+			        				<input type="text" class="form-control"  name="reqUsiaAyah" id="reqUsiaAyah" value="<?=$reqUsiaAyah?>" />
 			        			</div>
 			        		</div>
 			        	</div>
@@ -274,7 +224,7 @@ $readonly = "readonly";
 	        				<div class="form-group row">
 			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Usia</label>
 			        			<div class="col-lg-9 col-sm-12">
-			        				<input type="text" class="form-control"  name="reqGelarBelakang" id="reqGelarBelakang" value="<?=$reqGelarBelakang?>" />
+			        				<input type="text" class="form-control"  name="reqUsiaIbu" id="reqUsiaIbu" value="<?=$reqUsiaIbu?>" />
 			        			</div>
 			        		</div>
 			        	</div>
@@ -285,7 +235,7 @@ $readonly = "readonly";
 	        				<div class="form-group row">
 			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Pekerjaan</label>
 			        			<div class="col-lg-9 col-sm-12">
-			        				<input type="text" class="form-control"  name="reqGelarDepan" id="reqGelarDepan" value="<?=$reqGelarDepan?>" />
+			        				<input type="text" class="form-control"  name="reqPekerjaanAyah" id="reqPekerjaanAyah" value="<?=$reqPekerjaanAyah?>" />
 			        			</div>
 			        		</div>
 			        	</div>
@@ -293,7 +243,7 @@ $readonly = "readonly";
 	        				<div class="form-group row">
 			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Pekerjaan</label>
 			        			<div class="col-lg-9 col-sm-12">
-			        				<input type="text" class="form-control"  name="reqGelarBelakang" id="reqGelarBelakang" value="<?=$reqGelarBelakang?>" />
+			        				<input type="text" class="form-control"  name="reqPekerjaanIbu" id="reqPekerjaanIbu" value="<?=$reqPekerjaanIbu?>" />
 			        			</div>
 			        		</div>
 			        	</div>
@@ -304,7 +254,7 @@ $readonly = "readonly";
 	        				<div class="form-group row">
 			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Alamat</label>
 			        			<div class="col-lg-9 col-sm-12">
-			        				<textarea class="form-control"  name="reqGelarBelakang" id="reqGelarBelakang" ></textarea>
+			        				<textarea class="form-control"  name="reqAlamatAyah" id="reqAlamatAyah" ><?=$reqAlamatAyah?></textarea>
 			        			</div>
 			        		</div>
 			        	</div>
@@ -312,7 +262,7 @@ $readonly = "readonly";
 	        				<div class="form-group row">
 			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Alamat</label>
 			        			<div class="col-lg-9 col-sm-12">
-			        				<textarea class="form-control"  name="reqGelarBelakang" id="reqGelarBelakang" ></textarea>
+			        				<textarea class="form-control"  name="reqAlamatIbu" id="reqAlamatIbu" ><?=$reqAlamatIbu?></textarea>
 			        			</div>
 			        		</div>
 			        	</div>
@@ -323,14 +273,14 @@ $readonly = "readonly";
 	        				<div class="form-group row">
 			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Propinsi</label>
 			        			<div class="col-lg-9 col-sm-12">
-			        				<select class="form-control" id='reqPropinsi' name='reqPropinsi'>
-			        					<option value="" <?if($reqPropinsi=='') echo 'selected' ?> disabled></option>
+			        				<select class="form-control" id='reqPropinsi' name='reqPropinsiAyah'>
+			        					<option value="" <?if($reqPropinsiAyah=='') echo 'selected' ?> disabled></option>
 										<?
 										$propinsi->selectByParamsPropinsi(); 
 										while($propinsi->nextRow())
 										 {
 										?>
-											<option value="<?=$propinsi->getField('PROPINSI_ID')?>" <? if($propinsi->getField('PROPINSI_ID') == $reqPropinsi) echo 'selected' ?>>
+											<option value="<?=$propinsi->getField('PROPINSI_ID')?>" <? if($propinsi->getField('PROPINSI_ID') == $reqPropinsiAyah) echo 'selected' ?>>
 					                        	<?=$propinsi->getField('NAMA')?>
 					                        </option>
 					                    <?
@@ -345,14 +295,14 @@ $readonly = "readonly";
 	        				<div class="form-group row">
 			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Propinsi</label>
 			        			<div class="col-lg-9 col-sm-12">
-			        				<select class="form-control" id='reqPropinsiIbu' name='reqPropinsi'>
-			        					<option value="" <?if($reqPropinsi=='') echo 'selected' ?> disabled></option>
+			        				<select class="form-control" id='reqPropinsiIbu' name='reqPropinsiIbu'>
+			        					<option value="" <?if($reqPropinsiIbu=='') echo 'selected' ?> disabled></option>
 										<?
 										$propinsi->selectByParamsPropinsi();
 										while($propinsi->nextRow())
 										 {
 										?>
-											<option value="<?=$propinsi->getField('PROPINSI_ID')?>" <? if($propinsi->getField('PROPINSI_ID') == $reqPropinsi) echo 'selected' ?>>
+											<option value="<?=$propinsi->getField('PROPINSI_ID')?>" <? if($propinsi->getField('PROPINSI_ID') == $reqPropinsiIbu) echo 'selected' ?>>
 					                        	<?=$propinsi->getField('NAMA')?>
 					                        </option>
 					                    <?
@@ -370,14 +320,14 @@ $readonly = "readonly";
 	        				<div class="form-group row">
 			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Kabupaten</label>
 			        			<div class="col-lg-9 col-sm-12">
-			        				<select class="form-control" id='reqKabupaten' name='reqKabupaten'>
-			        					<option value="" <?if($reqKabupaten=='') echo 'selected' ?> disabled></option>
+			        				<select class="form-control" id='reqKabupaten' name='reqKabupatenAyah'>
+			        					<option value="" <?if($reqKabupatenAyah=='') echo 'selected' ?> disabled></option>
 										<?
-										$kabupaten->selectByParamsKabupaten(array('PROPINSI_ID'=>$reqPropinsi)); 
+										$kabupaten->selectByParamsKabupaten(array('PROPINSI_ID'=>$reqPropinsiAyah)); 
 										while($kabupaten->nextRow())
 										 {
 										?>
-											<option value="<?=$kabupaten->getField('KABUPATEN_ID')?>" <? if($kabupaten->getField('KABUPATEN_ID') == $reqKabupaten) echo 'selected' ?>>
+											<option value="<?=$kabupaten->getField('KABUPATEN_ID')?>" <? if($kabupaten->getField('KABUPATEN_ID') == $reqKabupatenAyah) echo 'selected' ?>>
 					                        	<?=$kabupaten->getField('NAMA')?>
 					                        </option>
 					                    <?
@@ -391,14 +341,14 @@ $readonly = "readonly";
 	        				<div class="form-group row">
 			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Kabupaten</label>
 			        			<div class="col-lg-9 col-sm-12">
-			        				<select class="form-control" id='reqKabupaten' name='reqKabupaten'>
-			        					<option value="" <?if($reqKabupaten=='') echo 'selected' ?> disabled></option>
+			        				<select class="form-control" id='reqKabupatenIbu' name='reqKabupatenIbu'>
+			        					<option value="" <?if($reqKabupatenIbu=='') echo 'selected' ?> disabled></option>
 										<?
-										$kabupaten->selectByParamsKabupaten(array('PROPINSI_ID'=>$reqPropinsi)); 
+										$kabupaten->selectByParamsKabupaten(array('PROPINSI_ID'=>$reqPropinsiIbu)); 
 										while($kabupaten->nextRow())
 										 {
 										?>
-											<option value="<?=$kabupaten->getField('KABUPATEN_ID')?>" <? if($kabupaten->getField('KABUPATEN_ID') == $reqKabupaten) echo 'selected' ?>>
+											<option value="<?=$kabupaten->getField('KABUPATEN_ID')?>" <? if($kabupaten->getField('KABUPATEN_ID') == $reqKabupatenIbu) echo 'selected' ?>>
 					                        	<?=$kabupaten->getField('NAMA')?>
 					                        </option>
 					                    <?
@@ -415,14 +365,14 @@ $readonly = "readonly";
 	        				<div class="form-group row">
 			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Kecamatan</label>
 			        			<div class="col-lg-9 col-sm-12">
-			        				<select class="form-control" id="reqKecamatan" name="reqKecamatan">
-			        					<option value="" <?if($reqKecamatan=='') echo 'selected' ?> disabled></option>
+			        				<select class="form-control" id="reqKecamatan" name="reqKecamatanAyah">
+			        					<option value="" <?if($reqKecamatanAyah=='') echo 'selected' ?> disabled></option>
 										<?
-										$kecamatan->selectByParamsKecamatan(array('PROPINSI_ID'=>$reqPropinsi, 'KABUPATEN_ID'=>$reqKabupaten)); 
+										$kecamatan->selectByParamsKecamatan(array('PROPINSI_ID'=>$reqPropinsiAyah, 'KABUPATEN_ID'=>$reqKabupatenAyah)); 
 										while($kecamatan->nextRow())
 										 {
 										?>
-											<option value="<?=$kecamatan->getField('KECAMATAN_ID')?>" <? if($kecamatan->getField('KECAMATAN_ID') == $reqKecamatan) echo 'selected' ?>>
+											<option value="<?=$kecamatan->getField('KECAMATAN_ID')?>" <? if($kecamatan->getField('KECAMATAN_ID') == $reqKecamatanAyah) echo 'selected' ?>>
 					                        	<?=$kecamatan->getField('NAMA')?>
 					                        </option>
 					                    <?
@@ -436,14 +386,14 @@ $readonly = "readonly";
 	        				<div class="form-group row">
 			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Kecamatan</label>
 			        			<div class="col-lg-9 col-sm-12">
-			        				<select class="form-control" id="reqKecamatanIbu" name="reqKecamatan">
-			        					<option value="" <?if($reqKecamatan=='') echo 'selected' ?> disabled></option>
+			        				<select class="form-control" id="reqKecamatanIbu" name="reqKecamatanIbu">
+			        					<option value="" <?if($reqKecamatanIbu=='') echo 'selected' ?> disabled></option>
 										<?
-										$kecamatan->selectByParamsKecamatan(array('PROPINSI_ID'=>$reqPropinsi, 'KABUPATEN_ID'=>$reqKabupaten)); 
+										$kecamatan->selectByParamsKecamatan(array('PROPINSI_ID'=>$reqPropinsiIbu, 'KABUPATEN_ID'=>$reqKabupatenIbu)); 
 										while($kecamatan->nextRow())
 										 {
 										?>
-											<option value="<?=$kecamatan->getField('KECAMATAN_ID')?>" <? if($kecamatan->getField('KECAMATAN_ID') == $reqKecamatan) echo 'selected' ?>>
+											<option value="<?=$kecamatan->getField('KECAMATAN_ID')?>" <? if($kecamatan->getField('KECAMATAN_ID') == $reqKecamatanIbu) echo 'selected' ?>>
 					                        	<?=$kecamatan->getField('NAMA')?>
 					                        </option>
 					                    <?
@@ -460,14 +410,14 @@ $readonly = "readonly";
 	        				<div class="form-group row">
 			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Desa</label>
 			        			<div class="col-lg-9 col-sm-12">
-			        				<select class="form-control" id="reqKelurahan" name="reqDesa">
-			        					<option value="" <?if($reqKelurahan=='') echo 'selected' ?> disabled></option>
+			        				<select class="form-control" id="reqKelurahan" name="reqDesaAyah">
+			        					<option value="" <?if($reqDesaAyah=='') echo 'selected' ?> disabled></option>
 										<?
-										$kelurahan->selectByParamsKelurahan(array('PROPINSI_ID'=>$reqPropinsiId, 'KABUPATEN_ID'=>$reqKabupatenId,'KECAMATAN_ID'=>$reqKecamatanId)); 
+										$kelurahan->selectByParamsKelurahan(array('PROPINSI_ID'=>$reqPropinsiAyah, 'KABUPATEN_ID'=>$reqKabupatenAyah,'KECAMATAN_ID'=>$reqKecamatanAyah)); 
 										while($kelurahan->nextRow())
 										 {
 										?>
-											<option value="<?=$kelurahan->getField('KELURAHAN_ID')?>" <? if($kelurahan->getField('KELURAHAN_ID') == $reqKelurahan) echo 'selected' ?>>
+											<option value="<?=$kelurahan->getField('KELURAHAN_ID')?>" <? if($kelurahan->getField('KELURAHAN_ID') == $reqDesaAyah) echo 'selected' ?>>
 					                        	<?=$kelurahan->getField('NAMA')?>
 					                        </option>
 					                    <?
@@ -482,14 +432,14 @@ $readonly = "readonly";
 	        				<div class="form-group row">
 			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Desa</label>
 			        			<div class="col-lg-9 col-sm-12">
-			        				<select class="form-control" id="reqKelurahanIbu" name="reqDesa">
-			        					<option value="" <?if($reqKelurahan=='') echo 'selected' ?> disabled></option>
+			        				<select class="form-control" id="reqKelurahanIbu" name="reqDesaIbu">
+			        					<option value="" <?if($reqDesaIbu=='') echo 'selected' ?> disabled></option>
 										<?
-										$kelurahan->selectByParamsKelurahan(array('PROPINSI_ID'=>$reqPropinsiId, 'KABUPATEN_ID'=>$reqKabupatenId,'KECAMATAN_ID'=>$reqKecamatanId)); 
+										$kelurahan->selectByParamsKelurahan(array('PROPINSI_ID'=>$reqPropinsiIbu, 'KABUPATEN_ID'=>$reqKabupatenIbu,'KECAMATAN_ID'=>$reqKecamatanIbu));
 										while($kelurahan->nextRow())
 										 {
 										?>
-											<option value="<?=$kelurahan->getField('KELURAHAN_ID')?>" <? if($kelurahan->getField('KELURAHAN_ID') == $reqKelurahan) echo 'selected' ?>>
+											<option value="<?=$kelurahan->getField('KELURAHAN_ID')?>" <? if($kelurahan->getField('KELURAHAN_ID') == $reqDesaIbu) echo 'selected' ?>>
 					                        	<?=$kelurahan->getField('NAMA')?>
 					                        </option>
 					                    <?
@@ -508,7 +458,7 @@ $readonly = "readonly";
 				        			Kode Pos 
 				        		</label>
 				        		<div class="col-lg-9 col-sm-12">
-			        				<input type="text" class="form-control"  name="reqKodePos" id="reqKodePos" value="<?=$reqKodePos?>" />
+			        				<input type="text" class="form-control"  name="reqKodePosAyah" id="reqKodePosAyah" value="<?=$reqKodePosAyah?>" />
 			        			</div>
 			        		</div>
 		        		</div>
@@ -518,7 +468,7 @@ $readonly = "readonly";
 				        			Kode Pos 
 				        		</label>
 				        		<div class="col-lg-9 col-sm-12">
-			        				<input type="text" class="form-control"  name="reqKodePos" id="reqKodePos" value="<?=$reqKodePos?>" />
+			        				<input type="text" class="form-control"  name="reqKodePosIbu" id="reqKodePosIbu" value="<?=$reqKodePosIbu?>" />
 			        			</div>
 			        		</div>
 		        		</div>
@@ -531,7 +481,7 @@ $readonly = "readonly";
 				        			Telepon
 				        		</label>
 				        		<div class="col-lg-9 col-sm-12">
-			        				<input type="text" class="form-control"  name="reqKodePos" id="reqKodePos" value="<?=$reqKodePos?>" />
+			        				<input type="text" class="form-control"  name="reqTeleponAyah" id="reqTeleponAyah" value="<?=$reqTeleponAyah?>" />
 			        			</div>
 			        		</div>
 		        		</div>
@@ -541,7 +491,7 @@ $readonly = "readonly";
 				        			Telepon
 				        		</label>
 				        		<div class="col-lg-9 col-sm-12">
-			        				<input type="text" class="form-control"  name="reqKodePos" id="reqKodePos" value="<?=$reqKodePos?>" />
+			        				<input type="text" class="form-control"  name="reqTeleponIbu" id="reqTeleponIbu" value="<?=$reqTeleponIbu?>" />
 			        			</div>
 			        		</div>
 		        		</div>
