@@ -1,7 +1,7 @@
 <?
 include_once("functions/personal.func.php");
 
-$this->load->model("base/Pegawai");
+$this->load->model("base/TambahanMasaKerja");
 
 $userpegawaimode= $this->userpegawaimode;
 $adminuserid= $this->adminuserid;
@@ -12,37 +12,37 @@ else
     $reqPegawaiId= $this->pegawaiId;
 
 $reqId= $this->input->get('reqId');
+$reqRowId= $this->input->get('reqRowId');
 
-$set= new Pegawai();
-// $skpns->selectByParams(array("PEGAWAI_ID" => $reqPegawaiId), -1,-1,'');
-// $skpns->firstRow();
+
+$tamb_masa_kerja= new TambahanMasaKerja();
+$tamb_masa_kerja->selectByParams(array("PEGAWAI_ID" => $reqId), -1,-1,'');
+
+// echo $tamb_masa_kerja->query;exit;
+$tamb_masa_kerja->firstRow();
 			   
-// $reqPejabatPenetapan			= $skpns->getField('PEJABAT_PENETAP_ID');
-// $reqNamaPejabatPenetap			= $skpns->getField('NAMA_PENETAP');
-// $reqNIPPejabatPenetap			= $skpns->getField('NIP_PENETAP');
-// $reqNoSuratKeputusan			= $skpns->getField('NO_SK');
-// $reqTanggalSuratKeputusan		= dateToPageCheck($skpns->getField('TANGGAL_SK'));
-// $reqTerhitungMulaiTanggal		= dateToPageCheck($skpns->getField('TMT_PNS'));
-// $reqNoDiklatPrajabatan			= $skpns->getField('NO_PRAJAB');
-// $reqTanggalDiklatPrajabatan	= dateToPageCheck($skpns->getField('TANGGAL_PRAJAB'));
-// $reqNoSuratUjiKesehatan		= $skpns->getField('NO_UJI_KESEHATAN');
-// $reqTanggalSuratUjiKesehatan	= dateToPageCheck($skpns->getField('TANGGAL_UJI_KESEHATAN'));
-// $reqGolRuang					= $skpns->getField('PANGKAT_ID');
-// $reqPengambilanSumpah			= $skpns->getField('SUMPAH');
-// $reqSKPNSId					= (int)$skpns->getField('SK_PNS_ID');
-// $reqTanggalSumpah				= $skpns->getField('TANGGAL_SUMPAH');
-// $reqNoSuratjiKesehatan			= $skpns->getField('NO_UJI_KESEHATAN');
-// $reqNoDiklatPrajabatan			= $skpns->getField('NO_PRAJAB');
-// $reqTh 						= $skpns->getField('MASA_KERJA_TAHUN');
-// $reqBl 						= $skpns->getField('MASA_KERJA_BULAN');
-
-// $reqNoBeritaAcara				= $skpns->getField('NOMOR_BERITA_ACARA');
-// $reqTanggalBeritaAcara			= dateToPageCheck($skpns->getField('TANGGAL_BERITA_ACARA'));
-// $reqKeteranganLPJ				= $skpns->getField('KETERANGAN_LPJ');
+$reqRowId			= (int)$tamb_masa_kerja->getField('TAMBAHAN_MASA_KERJA_ID');
+$reqNoSK				= $tamb_masa_kerja->getField('NO_SK');
+$reqTglSK				= dateToPageCheck($tamb_masa_kerja->getField('TANGGAL_SK'));
+$reqTMTSK				= dateToPageCheck($tamb_masa_kerja->getField('TMT_SK'));
+$reqTambahanMasaKerja	= $tamb_masa_kerja->getField('TAMBAHAN_MASA_KERJA_ID');
+$reqMasaKerja			= $tamb_masa_kerja->getField('TAMBAHAN_MASA_KERJA_ID');
+$reqThTMK				= $tamb_masa_kerja->getField('TAHUN_TAMBAHAN');
+$reqThMK				= $tamb_masa_kerja->getField('TAHUN_BARU');
+$reqBlTMK				= $tamb_masa_kerja->getField('BULAN_TAMBAHAN');
+$reqBlMK				= $tamb_masa_kerja->getField('BULAN_BARU');
 
 
+if(empty($reqRowId))
+{
+	$reqMode="insert";
+}
+else
+{
+	$reqMode="update";
+
+}
 // echo $reqTmtJabatan;exit;
-$reqMode="update";
 // $reqMode="insert";
 $readonly = "readonly";
 ?>
@@ -77,7 +77,7 @@ $readonly = "readonly";
 						<a class="" href="app/index/pegawai">Data Pegawai</a>
 					</li>
 					<li class="breadcrumb-item text-muted">
-						<a class="text-muted">SK PNS</a>
+						<a class="text-muted">Tambahan Masa Kerja</a>
 					</li>
 				</ul>
 			</div>
@@ -95,180 +95,78 @@ $readonly = "readonly";
                     <span class="card-icon">
                         <i class="flaticon2-notepad text-primary"></i>
                     </span>
-                    <h3 class="card-label">SK PNS</h3>
+                    <h3 class="card-label">Tambahan Masa Kerja</h3>
                 </div>
             </div>
             <form class="form" id="ktloginform" method="POST" enctype="multipart/form-data">
 	        	<div class="card-body">
 	        		<div class="form-group row">
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			Pejabat Penetapan
+		        			No. SK
 		        		</label>
-	        			<div class="col-lg-10 col-sm-12">
-	        				<select class="form-control" id="reqPejabatPenetapan" name="reqPejabatPenetapan">
-	        					<option></option>
-	        				</select>
+		        		<div class="col-lg-10 col-sm-12">
+		        			<input type="text" style="width:150px" class="form-control" name="reqNoSK" value="<?=$reqNoSK?>" required title="No SK harus diisi" />
 	        			</div>
 	        		</div>
 	        		<div class="form-group row">
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			Nama Pejabat Penetap
+		        			Tgl. SK
 		        		</label>
-	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" name="reqNamaPejabatPenetap" id="reqNamaPejabatPenetap" value="<?=$reqNamaPejabatPenetap?>" />
+	        			<div class="col-lg-4 col-sm-12">
+	        				<input type="text" style="width:150px"  class="form-control" name="reqTglSK" id="reqTglSK" maxlength="10" value="<?=$reqTglSK?>" required />
 	        			</div>
 	        		</div>
 	        		<div class="form-group row">
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			NIP Pejabat Penetap
+		        			TMT SK
 		        		</label>
-	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" name="reqNIPPejabatPenetap" id="reqNIPPejabatPenetap" value="<?=$reqNIPPejabatPenetap?>" />
+	        			<div class="col-lg-4 col-sm-12">
+	        				<input type="text" style="width:150px"  class="form-control" name="reqTMTSK" id="reqTMTSK" maxlength="10" value="<?=$reqTMTSK?>" required />
 	        			</div>
 	        		</div>
 	        		<div class="form-group row">
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			No. Surat Keputusan
+		        			Tambahan Masa Kerja
 		        		</label>
-	        			<div class="col-lg-4 col-sm-12">
-	        				<input type="text" class="form-control" name="reqNoSuratKeputusan" id="reqNoSuratKeputusan" value="<?=$reqNoSuratKeputusan?>" />
-	        			</div>
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			Tanggal Surat Keputusan
-		        		</label>
-	        			<div class="col-lg-4 col-sm-12">
-	        				<div class="input-group date">
-		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTanggalSuratKeputusan" value="<?=$reqTanggalSuratKeputusan?>" />
-		        				<div class="input-group-append">
-		        					<span class="input-group-text">
-		        						<i class="la la-calendar"></i>
-		        					</span>
-		        				</div>
-		        			</div>
-	        			</div>
-	        		</div>
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			Terhitung Mulai Tanggal
-		        		</label>
-	        			<div class="col-lg-4 col-sm-12">
-	        				<div class="input-group date">
-		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTerhitungMulaiTanggal" value="<?=$reqTerhitungMulaiTanggal?>" />
-		        				<div class="input-group-append">
-		        					<span class="input-group-text">
-		        						<i class="la la-calendar"></i>
-		        					</span>
-		        				</div>
-		        			</div>
-	        			</div>
-	        		</div>
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			No. Berita Acara
-		        		</label>
-	        			<div class="col-lg-4 col-sm-12">
-	        				<input type="text" class="form-control" name="reqNoBeritaAcara" id="reqNoBeritaAcara" value="<?=$reqNoBeritaAcara?>" />
-	        			</div>
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			Tanggal Berita Acara
-		        		</label>
-	        			<div class="col-lg-4 col-sm-12">
-	        				<div class="input-group date">
-		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTanggalBeritaAcara" value="<?=$reqTanggalBeritaAcara?>" />
-		        				<div class="input-group-append">
-		        					<span class="input-group-text">
-		        						<i class="la la-calendar"></i>
-		        					</span>
-		        				</div>
-		        			</div>
-	        			</div>
-	        		</div>
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			No. Diklat Prajabatan
-		        		</label>
-	        			<div class="col-lg-4 col-sm-12">
-	        				<input type="text" class="form-control" name="reqNoDiklatPrajabatan" id="reqNoDiklatPrajabatan" value="<?=$reqNoDiklatPrajabatan?>" />
-	        			</div>
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			Tanggal Diklat Prajabatan
-		        		</label>
-	        			<div class="col-lg-4 col-sm-12">
-	        				<div class="input-group date">
-		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTanggalDiklatPrajabatan" value="<?=$reqTanggalDiklatPrajabatan?>" />
-		        				<div class="input-group-append">
-		        					<span class="input-group-text">
-		        						<i class="la la-calendar"></i>
-		        					</span>
-		        				</div>
-		        			</div>
-	        			</div>
-	        		</div>
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			No. Surat Uji Kesehatan
-		        		</label>
-	        			<div class="col-lg-4 col-sm-12">
-	        				<input type="text" class="form-control" name="reqNoSuratUjiKesehatan" id="reqNoSuratUjiKesehatan" value="<?=$reqNoSuratUjiKesehatan?>" />
-	        			</div>
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			Tanggal Surat Uji Kesehatan
-		        		</label>
-	        			<div class="col-lg-4 col-sm-12">
-	        				<div class="input-group date">
-		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTanggalSuratUjiKesehatan" value="<?=$reqTanggalSuratUjiKesehatan?>" />
-		        				<div class="input-group-append">
-		        					<span class="input-group-text">
-		        						<i class="la la-calendar"></i>
-		        					</span>
-		        				</div>
-		        			</div>
-	        			</div>
-	        		</div>
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			Pengkat/Gol.Ruang
-		        		</label>
-	        			<div class="col-lg-8 col-sm-12">
-	        				<select class="form-control" id="reqGolRuang" name="reqGolRuang">
-	        					<option></option>
-	        				</select>
-	        			</div>
-	        		</div>
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			Pengambilan Sumpah
+		        		<label class="col-form-label text-right col-lg-1 col-sm-12">
+		        			Th
 		        		</label>
 	        			<div class="col-lg-1 col-sm-12">
-	        				<input type="checkbox" class="form-control" name="reqPengambilanSumpah" id="reqPengambilanSumpah" value="<?=$reqPengambilanSumpah?>" />
+	        				<input type="text" class="form-control" name="reqThTMK" id="reqThTMK" value="<?=$reqThTMK?>" />
+	        			</div>
+	        			<label class="col-form-label text-right col-lg-1 col-sm-12">
+		        			Bl
+		        		</label>
+	        			<div class="col-lg-1 col-sm-12">
+	        				<input type="text" class="form-control" name="reqBlTMK" id="reqBlTMK" value="<?=$reqBlTMK?>" />
 	        			</div>
 	        		</div>
+
 	        		<div class="form-group row">
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			Latihan Pra Jabatan(LPJ)
+		        			Masa Kerja
 		        		</label>
-	        			<div class="col-lg-4 col-sm-12">
-	        				<input type="text" class="form-control" name="reqKeteranganLPJ" id="reqKeteranganLPJ" value="<?=$reqKeteranganLPJ?>" />
+		        		<label class="col-form-label text-right col-lg-1 col-sm-12">
+		        			Th
+		        		</label>
+	        			<div class="col-lg-1 col-sm-12">
+	        				<input type="text" class="form-control" name="reqThMK" id="reqThMK" value="<?=$reqThMK?>" />
+	        			</div>
+	        			<label class="col-form-label text-right col-lg-1 col-sm-12">
+		        			Bl
+		        		</label>
+	        			<div class="col-lg-1 col-sm-12">
+	        				<input type="text" class="form-control" name="reqBlMK" id="reqBlMK" value="<?=$reqBlMK?>" />
 	        			</div>
 	        		</div>
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Masa Kerja </label>
-	        			<div class="col-lg-1 col-sm-12">
-	        				<input type="text" class="form-control" name="tempTh" id="tempTh" value="<?=$tempTh?>" />
-	        			</div>
-	        			<label class="col-form-label">Tahun </label>
-	        			<div class="col-lg-1 col-sm-12">
-	        				<input type="text" class="form-control" name="tempBl" id="tempBl" value="<?=$tempBl?>" />
-	        			</div>
-	        			<label class="col-form-label">Bulan</label>
-	        			
-	        		</div>
+	        		
 	        	</div>
 	        	<div class="card-footer">
 	        		<div class="row">
 	        			<div class="col-lg-9">
 	        				<input type="hidden" name="reqMode" value="<?=$reqMode?>">
-	        				<input type="hidden" name="reqTempValidasiId" value="<?=$reqTempValidasiId?>">
+	        				<input type="hidden" name="reqId" value="<?=$reqId?>">
+	        				<input type="hidden" name="reqRowId" value="<?=$reqRowId?>">
 	        				<button type="submit" id="ktloginformsubmitbutton"  class="btn btn-primary font-weight-bold mr-2">Simpan</button>
 	        			</div>
 	        		</div>
@@ -285,20 +183,16 @@ $readonly = "readonly";
 		// $('[data-toggle="tooltip"]').tooltip()
 	})
 
-	$('#ktagamaid').select2({
-		placeholder: "Pilih agama"
-	});
 
-	$('#ktsatuankerjad').select2({
-		placeholder: "Pilih Satuan Kerja"
-	});
-	
-	$('#ktjeniskelamin').select2({
-		placeholder: "Pilih jenis kelamin"
+	$("#reqThMK, #reqBlMK, #reqThTMK, #reqBlTMK, #reqTglSK, #reqTMTSK").keypress(function(e) {
+		if( e.which!=8 && e.which!=0 && (e.which<48 || e.which>57))
+		{
+		return false;
+		}
 	});
 
 	arrows= {leftArrow: '<i class="la la-angle-left"></i>', rightArrow: '<i class="la la-angle-right"></i>'};
-	$('#kttanggallahir').datepicker({
+	$('#reqTglSK, #reqTMTSK').datepicker({
 		todayHighlight: true
 		, autoclose: true
 		, orientation: "bottom left"
@@ -310,7 +204,7 @@ $readonly = "readonly";
 	var _buttonSpinnerClasses = 'spinner spinner-right spinner-white pr-15';
 	jQuery(document).ready(function() {
 		var form = KTUtil.getById('ktloginform');
-		var formSubmitUrl = "json-data/info_data_json/indentitaspegawai";
+		var formSubmitUrl = "json-main/masa_kerja_json/add";
 		var formSubmitButton = KTUtil.getById('ktloginformsubmitbutton');
 		if (!form) {
 			return;
@@ -359,17 +253,30 @@ $readonly = "readonly";
 					success: function (response) {
 			        	// console.log(response); return false;
 			        	// Swal.fire("Good job!", "You clicked the button!", "success");
-			        	Swal.fire({
-			        		text: response.message,
-			        		icon: "success",
-			        		buttonsStyling: false,
-			        		confirmButtonText: "Ok",
-			        		customClass: {
-			        			confirmButton: "btn font-weight-bold btn-light-primary"
-			        		}
-			        	}).then(function() {
-			        		document.location.href = "app/index/pegawai_data";
-			        	});
+			        	data= response.message;
+			        	data= data.split("-");
+			        	rowid= data[0];
+			        	infodata= data[1];
+
+			        	if(rowid == "xxx")
+                        {
+                            Swal.fire("Error", infodata, "error");
+                        }
+                        else
+                        {
+                            Swal.fire({
+                                text: infodata,
+                                icon: "success",
+                                buttonsStyling: false,
+                                confirmButtonText: "Ok",
+                                customClass: {
+                                    confirmButton: "btn font-weight-bold btn-light-primary"
+                                }
+                            }).then(function() {
+                                document.location.href = "app/index/tambah_masa_kerja?reqId=<?=$reqId?>";
+                                // window.location.reload();
+                            });
+                        }
 			        },
 			        error: function(xhr, status, error) {
 			        	var err = JSON.parse(xhr.responseText);
@@ -395,13 +302,5 @@ $readonly = "readonly";
 		});
 	});
 
-</script>
 
-<!-- <button onclick="tes()">tesss</button>
-<script>
-    function tes() {
-        // pageUrl= "app/loadUrl/main/pegawai_data";
-        pageUrl= "iframe/index/pegawai_data";
-        openAdd(pageUrl);
-    }
-</script> -->
+</script>
