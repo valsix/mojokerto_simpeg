@@ -109,29 +109,55 @@ $arrsatkerdata= $this->sessdatatree;
 
                     <div class="dropdown dropdown-inline mr-2">
                         <button class="filter btn btn-light-primary pull-right">Filter <i class="fa fa-caret-down" aria-hidden="true"></i></button>
+                        <a class="filter btn btn-light-primary pull-right" id='btnAdd'>Tambah </a>
+                        <a class="filter btn btn-light-primary pull-right" id='btnUbahData'>Ubah</a>
+                        <a class="filter btn btn-light-primary pull-right" id='btnDelete'>Hapus </a>
 
                         <button type="button" class="btn btn-light-primary font-weight-bolder dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="svg-icon svg-icon-md"></span>Aksi
+                            <span class="svg-icon svg-icon-md"></span>Cetak
                         </button>
 
                         <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
                             <ul class="navi flex-column navi-hover py-2">
                                 <li class="navi-item">
-                                    <a id="btnAdd" class="navi-link">
-                                        <span class="navi-icon"><i class="la la-plus"></i></span>
-                                        <span class="navi-text">Tambah</span>
+                                    <a id="" class="navi-link">
+                                        <span class="navi-text">FIP 01</span>
                                     </a>
                                 </li>
                                 <li class="navi-item">
-                                    <a id="btnUbahData" class="navi-link">
-                                        <span class="navi-icon"><i class="la la-edit"></i></span>
-                                        <span class="navi-text">Ubah</span>
+                                    <a id="" class="navi-link">
+                                        <!-- <span class="navi-icon"><i class="la la-edit"></i></span> -->
+                                        <span class="navi-text">FIP 02</span>
                                     </a>
                                 </li>
                                 <li class="navi-item">
-                                    <a  id="btnDelete" class="navi-link">
-                                        <span class="navi-icon"><i class="la la-trash"></i></span>
-                                        <span class="navi-text">Hapus</span>
+                                    <a  id="" class="navi-link">
+                                        <span class="navi-text">Biodata Lengkap</span>
+                                    </a>
+                                </li>
+                                <li class="navi-item">
+                                    <a  id="" class="navi-link">
+                                        <span class="navi-text">Biodata Singkat</span>
+                                    </a>
+                                </li>
+                                <li class="navi-item">
+                                    <a  id="" class="navi-link">
+                                        <span class="navi-text">Model C</span>
+                                    </a>
+                                </li>
+                                <li class="navi-item">
+                                    <a  id="" class="navi-link">
+                                        <span class="navi-text">SPMT</span>
+                                    </a>
+                                </li>
+                                <li class="navi-item">
+                                    <a  id="" class="navi-link">
+                                        <span class="navi-text">Cetak</span>
+                                    </a>
+                                </li>
+                                <li class="navi-item">
+                                    <a  id="" class="navi-link">
+                                        <span class="navi-text">CetakPegawai</span>
                                     </a>
                                 </li>
                             </ul>
