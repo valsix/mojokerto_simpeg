@@ -63,17 +63,104 @@ class info_data_json extends CI_Controller {
 
 	function indentitaspegawai()
 	{
-		// $this->load->model("base-data/Pegawai");
+		$this->load->model("base/Pegawai");
 
-		/*$reqMode= $this->input->post("reqMode");
-		
-		$set= new Pegawai();
-		$set->setField("LAST_CREATE_USER", "");
-		$set->setField('PEGAWAI_ID', $reqPegawaiId);
-		$reqNama= str_replace("\'", "''", $reqNama);	
-		$set->setField('NAMA', setQuote($reqNama));
-		$set->setField('STATUS_PEGAWAI', ValToNullDB($reqStatusPegawai));
-		$set->setField('TANGGAL_LAHIR', dateToDBCheck($reqTanggalLahir));
+		// reqNIP1
+		// reqNIP2
+		// reqNama
+		$reqPegawaiId= $this->input->post("reqPegawaiId");
+
+		$reqGelarDepan= $this->input->post("reqGelarDepan");
+		$reqGelarBelakang= $this->input->post("reqGelarBelakang");
+		$reqTempatLahir= $this->input->post("reqTempatLahir");
+		$reqTanggalLahir= $this->input->post("reqTanggalLahir");
+		$reqJenisKelamin= $this->input->post("reqJenisKelamin");
+		$reqAgama= $this->input->post("reqAgama");
+		$reqStatusPernikahan= $this->input->post("reqStatusPernikahan");
+		$reqSukuBangsa= $this->input->post("reqSukuBangsa");
+		$reqGolDarah= $this->input->post("reqGolDarah");
+		$reqTelepon= $this->input->post("reqTelepon");
+		$reqEmail= $this->input->post("reqEmail");
+		$reqAlamat= $this->input->post("reqAlamat");
+		$reqRT= $this->input->post("reqRT");
+		$reqRW= $this->input->post("reqRW");
+		$reqKodePos= $this->input->post("reqKodePos");
+		$reqPropinsi= $this->input->post("reqPropinsi");
+		$reqKabupaten= $this->input->post("reqKabupaten");
+		$reqKecamatan= $this->input->post("reqKecamatan");
+		$reqDesa= $this->input->post("reqDesa");
+		$reqBank= $this->input->post("reqBank");
+		$reqNoRekening= $this->input->post("reqNoRekening");
+		// $reqPangkatTerkahir= $this->input->post("reqPangkatTerkahir");
+		// $reqJabatanTerkahir= $this->input->post("reqJabatanTerkahir");
+		$reqSatkerId= $this->input->post("reqSatkerId");
+		$reqTipePegawai= $this->input->post("reqTipePegawai");
+		$reqTugasTambahan= $this->input->post("reqTugasTambahan");
+		$reqStatusPegawai= $this->input->post("reqStatusPegawai");
+		$reqTglPensiun= $this->input->post("reqTglPensiun");
+		$reqJenisPegawai= $this->input->post("reqJenisPegawai");
+		$reqKedudukanId= $this->input->post("reqKedudukanId");
+		$reqKartuPegawai= $this->input->post("reqKartuPegawai");
+		$reqAkses= $this->input->post("reqAkses");
+		$reqTaspen= $this->input->post("reqTaspen");
+		$reqNPWP= $this->input->post("reqNPWP");
+		$reqNIK= $this->input->post("reqNIK");
+		// $reqTahunLulus= $this->input->post("reqTahunLulus");
+		$reqNikPns= $this->input->post("reqNikPns");
+		$reqNomorKK= $this->input->post("reqNomorKK");
+		$reqKtpPasangan= $this->input->post("reqKtpPasangan");
+		// $reqTMTPangkat= $this->input->post("reqTMTPangkat");
+		// $reqTMTJabatan= $this->input->post("reqTMTJabatan");
+		$reqDrh= $this->input->post("reqDrh");
+
+		$reqMode= $this->input->post("reqMode");
+
+
+		$set= new Pegawai();	
+		$set->setField("PEGAWAI_ID", $reqPegawaiId);
+
+		$set->setField("GELAR_DEPAN", $reqGelarDepan);
+		$set->setField("GELAR_BELAKANG", $reqGelarBelakang);
+		$set->setField("TEMPAT_LAHIR", $reqTempatLahir);
+		$set->setField("TANGGAL_LAHIR", dateToDBCheck($reqTanggalLahir));
+		$set->setField("JENIS_KELAMIN", $reqJenisKelamin);
+		$set->setField("AGAMA_ID", ValToNullDB($reqAgama));
+		$set->setField("STATUS_KAWIN", $reqStatusPernikahan);
+		$set->setField("SUKU_BANGSA", $reqSukuBangsa);
+		$set->setField("GOLONGAN_DARAH", $reqGolDarah);
+		$set->setField("TELEPON", $reqTelepon);
+		$set->setField("EMAIL", $reqEmail);
+		$set->setField("ALAMAT", $reqAlamat);
+		$set->setField("RT", $reqRT);
+		$set->setField("RW", $reqRW);
+		$set->setField("KODEPOS", $reqKodePos);
+		$set->setField("PROPINSI_ID", ValToNullDB($reqPropinsi));
+		$set->setField("KABUPATEN_ID", ValToNullDB($reqKabupaten));
+		$set->setField("KECAMATAN_ID", ValToNullDB($reqKecamatan));
+		$set->setField("KELURAHAN_ID", ValToNullDB($reqDesa));
+		$set->setField("BANK_ID", ValToNullDB($reqBank));
+		$set->setField("NO_REKENING", $reqNoRekening);
+		// $set->setField("", $reqPangkatTerkahir);
+		// $set->setField("", $reqJabatanTerkahir);
+		$set->setField("SATKER_ID", ValToNullDB($reqSatkerId));
+		$set->setField("TIPE_PEGAWAI_ID", ValToNullDB($reqTipePegawai));
+		$set->setField("TUGAS_TAMBAHAN_NEW", $reqTugasTambahan);
+		$set->setField("STATUS_PEGAWAI", $reqStatusPegawai);
+		$set->setField("TANGGAL_PENSIUN", dateToDBCheck($reqTglPensiun));
+		$set->setField("JENIS_PEGAWAI_ID", ValToNullDB($reqJenisPegawai));
+		$set->setField("KEDUDUKAN_ID", ValToNullDB($reqKedudukanId));
+		$set->setField("KARTU_PEGAWAI", $reqKartuPegawai);
+		$set->setField("ASKES", $reqAkses);
+		$set->setField("TASPEN", $reqTaspen);
+		$set->setField("NPWP", $reqNPWP);
+		$set->setField("NIK", $reqNIK);
+		// $set->setField("", $reqTahunLulus);
+		$set->setField("KTP_PNS", $reqNikPns);
+		$set->setField("KK", $reqNomorKK);
+		$set->setField("KTP_PASANGAN", $reqKtpPasangan);
+		// $set->setField("", $reqTMTPangkat);
+		// $set->setField("", $reqTMTJabatan);
+		$set->setField("DRH", setQuote($reqDrh));
 
 		$reqSimpan="";
 	
@@ -91,9 +178,9 @@ class info_data_json extends CI_Controller {
 			{
 				$reqSimpan = 1;
 			}
-		}*/
+		}
 
-		$reqSimpan="1";
+		// $reqSimpan="1";
 		if($reqSimpan == 1 )
 		{
 			echo json_response(200, 'Data berhasil disimpan');

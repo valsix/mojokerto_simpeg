@@ -64,7 +64,8 @@ $reqAgamaId			= $pegawai->getField('AGAMA_ID');
 $reqTelepon			= $pegawai->getField('TELEPON');
 $reqKodePos			= $pegawai->getField('KODEPOS');
 $reqKedudukanId		= $pegawai->getField('KEDUDUKAN_ID');
-$reqSatkerId		= $pegawai->getField('SATKER_FULL');
+$reqSatkerNama		= $pegawai->getField('SATKER_FULL');
+$reqSatkerId		= $pegawai->getField('SATKER_ID');
 
 $reqNikPns				= $pegawai->getField('KTP_PNS');
 $reqDrh				= $pegawai->getField('DRH');
@@ -117,6 +118,11 @@ $kelurahan->selectByParamsKelurahan(array('PROPINSI_ID'=>$reqPropinsiId, 'KABUPA
 $reqMode="update";
 // $reqMode="insert";
 $readonly = "readonly";
+
+$arrsatkertree= $this->sesstree;
+$arrsatkerdata= $this->sessdatatree;
+
+// print_r($arrsatkertree);exit();
 ?>
 <!-- <style type="text/css">
 	   select[readonly].select2-hidden-accessible + .select2-container {
@@ -139,6 +145,10 @@ $readonly = "readonly";
 <!-- <link href="lib/bootstrap-3.3.7/dist/css/bootstrap.min.css" rel="stylesheet"> -->
 <link href="lib/bootstrap-3.3.7/docs/examples/navbar/navbar.css" rel="stylesheet">
 <!-- <script src="lib/bootstrap-3.3.7/dist/js/bootstrap.min.js"></script> -->
+
+<link href="lib/select2totreemaster/src/select2totree.css" rel="stylesheet">
+<script src="lib/select2/select2.min.js"></script>
+<script src="lib/select2totreemaster/src/select2totree.js"></script>
 
 <div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
 	<div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
@@ -251,8 +261,8 @@ $readonly = "readonly";
 			        			<div class="col-lg-9 col-sm-12">
 			        				<select class="form-control" id='reqJenisKelamin' name='reqJenisKelamin'>
 			        					<option <?if ($reqJenisKelamin==''){echo "selected";}?> disabled> Pilih Jenis Kelamin</option>
-			        					<option <?if ($reqJenisKelamin=='L'){echo "selected";}?>> Laki laki</option>
-			        					<option <?if ($reqJenisKelamin=='P'){echo "selected";}?>> Perempuan</option>
+			        					<option value="L" <?if ($reqJenisKelamin=='L'){echo "selected";}?>> Laki laki</option>
+			        					<option value="P" <?if ($reqJenisKelamin=='P'){echo "selected";}?>> Perempuan</option>
 			        				</select>
 			        			</div>
 			        		</div>
@@ -532,7 +542,7 @@ $readonly = "readonly";
 	        				<div class="form-group row">
 			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Pangkat Terakhir</label>
 			        			<div class="col-lg-9 col-sm-12">
-			        				<input type="text" class="form-control"  name="reqPangkatTerkahir" id="reqPangkatTerkahir" value="<?=$reqPangkatTerkahir?>" />
+			        				<input type="text" class="form-control"  name="reqPangkatTerkahir" id="reqPangkatTerkahir" value="<?=$reqPangkatTerkahir?>" readonly style="background-color: #F3F6F9;" />
 			        			</div>
 			        		</div>
 			        	</div>
@@ -540,7 +550,7 @@ $readonly = "readonly";
 	        				<div class="form-group row">
 			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Jabatan Terakhir</label>
 			        			<div class="col-lg-9 col-sm-12">
-			        				<input type="text" class="form-control"  name="reqJabatanTerkahir" id="reqJabatanTerkahir" value="<?=$reqJabatanTerkahir?>" />
+			        				<input type="text" class="form-control"  name="reqJabatanTerkahir" id="reqJabatanTerkahir" value="<?=$reqJabatanTerkahir?>" readonly style="background-color: #F3F6F9;" />
 			        			</div>
 			        		</div>
 			        	</div>
@@ -552,7 +562,10 @@ $readonly = "readonly";
 			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Satuan Kerja</label>
 			        			<div class="col-lg-9 col-sm-12">
 			        				<!-- <textarea  class="form-control" name="reqSatuanKerjaNama"  id="reqSatkerNama"></textarea> -->
-			        				<input type="text" class="form-control" name="reqSatuanKerjaNama"  id="reqSatkerNama">
+			        				<!-- <input type="text" class="form-control" name="reqSatuanKerjaNama"  id="reqSatkerNama"> -->
+			        				<select class="form-control" id="reqSatkerId" name="reqSatkerId">
+			                            <option value=""></option>
+			                        </select>
 			        			</div>
 			        		</div>
 			        	</div>
@@ -715,7 +728,7 @@ $readonly = "readonly";
 			        		<div class="form-group row">
 			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Tahun Lulus</label>
 			        			<div class="col-lg-9 col-sm-12">
-			        				<input type="text" class="form-control"  name="reqTahunLulus" id="reqTahunLulus" value="<?=$reqTahunLulus?>" />
+			        				<input type="text" class="form-control"  name="reqTahunLulus" id="reqTahunLulus" value="<?=$reqTahunLulus?>" readonly style="background-color: #F3F6F9;" />
 			        			</div>
 			        		</div>
 	        			</div>
@@ -754,7 +767,7 @@ $readonly = "readonly";
 			        			<label class="col-form-label text-right col-lg-3 col-sm-12">TMT Pangkat</label>
 			        			<div class="col-lg-9 col-sm-12">
 			        				<div class="input-group date">
-				        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTMTPangkat" value="<?=$reqTMTPangkat?>" />
+				        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTMTPangkat" value="<?=$reqTMTPangkat?>" readonly style="background-color: #F3F6F9;" />
 				        				<div class="input-group-append">
 				        					<span class="input-group-text">
 				        						<i class="la la-calendar"></i>
@@ -769,7 +782,7 @@ $readonly = "readonly";
 			        			<label class="col-form-label text-right col-lg-3 col-sm-12">TMT Jabatan</label>
 			        			<div class="col-lg-9 col-sm-12">
 			        				<div class="input-group date">
-				        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTMTJabatan" value="<?=$reqTMTJabatan?>" />
+				        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTMTJabatan" value="<?=$reqTMTJabatan?>" readonly style="background-color: #F3F6F9;" />
 				        				<div class="input-group-append">
 				        					<span class="input-group-text">
 				        						<i class="la la-calendar"></i>
@@ -799,6 +812,7 @@ $readonly = "readonly";
 	        		<div class="row">
 	        			<div class="col-lg-9">
 	        				<input type="hidden" name="reqMode" value="<?=$reqMode?>">
+	        				<input type="hidden" name="reqPegawaiId" value="<?=$reqId?>">
 	        				<input type="hidden" name="reqTempValidasiId" value="<?=$reqTempValidasiId?>">
 	        				<button type="submit" id="ktloginformsubmitbutton"  class="btn btn-primary font-weight-bold mr-2">Simpan</button>
 	        			</div>
@@ -899,7 +913,7 @@ $readonly = "readonly";
 			        			confirmButton: "btn font-weight-bold btn-light-primary"
 			        		}
 			        	}).then(function() {
-			        		document.location.href = "app/index/pegawai_data";
+			        		document.location.href = "app/index/pegawai";
 			        	});
 			        },
 			        error: function(xhr, status, error) {
@@ -924,6 +938,27 @@ $readonly = "readonly";
 				KTUtil.scrollTop();
 			});
 		});
+		
+
+		<?
+	    if(empty($arrsatkertree))
+	    {
+	    ?>
+	    arrsatkertree= [];
+	    arrsatkerdata= [];
+	    <?
+	    }
+	    else
+	    {
+	    ?>
+	    arrsatkertree= JSON.parse('<?=JSON_encode($arrsatkertree)?>');
+	    arrsatkerdata= JSON.parse('<?=JSON_encode($arrsatkerdata)?>');
+	    <?
+	    }
+	    ?>
+
+		$("#reqSatkerId").select2ToTree({treeData: {dataArr: arrsatkertree, dftVal:"<?=$reqSatkerId?>"}, maximumSelectionLength: 3, placeholder: 'Pilih salah satu data'});
+
 	});
 
 </script>

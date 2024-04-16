@@ -10,6 +10,55 @@ class Pegawai extends Entity{
 		$this->Entity(); 
 	}
 
+	function update()
+	{
+		$str = "		
+		UPDATE PEGAWAI
+		SET    
+		GELAR_DEPAN= '".$this->getField("GELAR_DEPAN")."'
+		, GELAR_BELAKANG= '".$this->getField("GELAR_BELAKANG")."'
+		, TEMPAT_LAHIR= '".$this->getField("TEMPAT_LAHIR")."'
+		, TANGGAL_LAHIR= ".$this->getField("TANGGAL_LAHIR")."
+		, JENIS_KELAMIN= '".$this->getField("JENIS_KELAMIN")."'
+		, AGAMA_ID= ".$this->getField("AGAMA_ID")."
+		, STATUS_KAWIN= ".$this->getField("STATUS_KAWIN")."
+		, SUKU_BANGSA= '".$this->getField("SUKU_BANGSA")."'
+		, GOLONGAN_DARAH= '".$this->getField("GOLONGAN_DARAH")."'
+		, TELEPON= '".$this->getField("TELEPON")."'
+		, EMAIL= '".$this->getField("EMAIL")."'
+		, ALAMAT= '".$this->getField("ALAMAT")."'
+		, RT= '".$this->getField("RT")."'
+		, RW= '".$this->getField("RW")."'
+		, KODEPOS= '".$this->getField("KODEPOS")."'
+		, PROPINSI_ID= ".$this->getField("PROPINSI_ID")."
+		, KABUPATEN_ID= ".$this->getField("KABUPATEN_ID")."
+		, KECAMATAN_ID= ".$this->getField("KECAMATAN_ID")."
+		, KELURAHAN_ID= ".$this->getField("KELURAHAN_ID")."
+		, BANK_ID= ".$this->getField("BANK_ID")."
+		, NO_REKENING= '".$this->getField("NO_REKENING")."'
+		, SATKER_ID= ".$this->getField("SATKER_ID")."
+		, TIPE_PEGAWAI_ID= ".$this->getField("TIPE_PEGAWAI_ID")."
+		, TUGAS_TAMBAHAN_NEW= '".$this->getField("TUGAS_TAMBAHAN_NEW")."'
+		, STATUS_PEGAWAI= '".$this->getField("STATUS_PEGAWAI")."'
+		, TANGGAL_PENSIUN= ".$this->getField("TANGGAL_PENSIUN")."
+		, JENIS_PEGAWAI_ID= ".$this->getField("JENIS_PEGAWAI_ID")."
+		, KEDUDUKAN_ID= ".$this->getField("KEDUDUKAN_ID")."
+		, KARTU_PEGAWAI= '".$this->getField("KARTU_PEGAWAI")."'
+		, ASKES= '".$this->getField("ASKES")."'
+		, TASPEN= '".$this->getField("TASPEN")."'
+		, NPWP= '".$this->getField("NPWP")."'
+		, NIK= '".$this->getField("NIK")."'
+		, KTP_PNS= '".$this->getField("KTP_PNS")."'
+		, KK= '".$this->getField("KK")."'
+		, KTP_PASANGAN= '".$this->getField("KTP_PASANGAN")."'
+		, DRH= '".$this->getField("DRH")."'
+		WHERE PEGAWAI_ID= '".$this->getField("PEGAWAI_ID")."'
+		";
+		$this->query = $str;
+		// echo $str;exit();
+		return $this->execQuery($str);
+    }
+
 	function callDUK()
 	{
         $str = "
