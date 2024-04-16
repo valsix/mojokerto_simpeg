@@ -107,6 +107,28 @@ class combo_json extends CI_Controller {
 		echo json_encode( $result, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);	
 	}
 
+	function jenishukuman()
+	{
+		$this->load->model("base/Core");
+
+		$jenis_hukuman= new Core();
+
+		$reqTingkat= $this->input->get('reqTingkat');
+
+		$jenis_hukuman->selectByParamsJenisHukuman(array('TINGKAT_HUKUMAN_ID'=>$reqTingkat),-1,-1);
+		$kab = array();
+		$i=0;
+		while($jenis_hukuman->nextRow()){
+			$kab[$i]['jenis_hukuman_id'] = $jenis_hukuman->getField('JENIS_HUKUMAN_ID');
+			$kab[$i]['jenis_hukuman'] = $jenis_hukuman->getField('JENIS_HUKUMAN');
+			$i++;
+		}
+		header('Content-Type: application/json');
+
+		echo json_encode( $kab, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);	
+
+	}
+
 
 
 }
