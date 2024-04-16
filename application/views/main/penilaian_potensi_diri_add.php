@@ -1,7 +1,7 @@
 <?
 include_once("functions/personal.func.php");
 
-$this->load->model("base/PengalamanKerja");
+$this->load->model("base/PenilaianPotensiDiri");
 
 $userpegawaimode= $this->userpegawaimode;
 $adminuserid= $this->adminuserid;
@@ -14,19 +14,32 @@ else
 $reqId= $this->input->get('reqId');
 $reqRowId= $this->input->get('reqRowId');
 
-$pengalaman= new PengalamanKerja();
-$pengalaman->selectByParams(array('PENGALAMAN_ID'=>$reqRowId));
-$pengalaman->firstRow();
-$reqPengalamanId = $pengalaman->getField('PENGALAMAN_ID');
-$reqInstansi 			= $pengalaman->getField('NAMA');
-$reqJabatan = $pengalaman->getField('JABATAN');
-$reqTglMulaiKerja = dateToPageCheck($pengalaman->getField('TANGGAL_KERJA'));
-$reqMasaKerjaTh = $pengalaman->getField('MASA_KERJA_TAHUN');
-$reqMasaKerjaBl = $pengalaman->getField('MASA_KERJA_BULAN');
-// echo $reqTmtJabatan;exit;
-$reqMode="update";
-// $reqMode="insert";
-$readonly = "readonly";
+if(empty($reqRowId))
+{
+	$reqMode="insert";
+}
+else
+{
+
+	$potensi_diri = new PenilaianPotensiDiri();
+	$potensi_diri->selectByParams(array('POTENSI_DIRI_ID'=>$reqRowId));
+	// echo $penilaian_potensi_diri->query;exit;
+	$potensi_diri->firstRow();
+	$reqRowId					= $potensi_diri->getField('POTENSI_DIRI_ID');
+	$reqPOTENSI_DIRI_ID = $potensi_diri->getField('POTENSI_DIRI_ID');
+	$reqTahun = $potensi_diri->getField('TAHUN');
+	$reqTanggungJawab = $potensi_diri->getField('TANGGUNG_JAWAB');
+	$reqMotivasi = $potensi_diri->getField('MOTIVASI');
+	$reqMinat = $potensi_diri->getField('MINAT');
+
+	// echo $reqTmtJabatan;exit;
+	$reqMode="update";
+
+}
+
+	
+
+
 ?>
 
 <!-- Bootstrap core CSS -->
@@ -43,7 +56,7 @@ $readonly = "readonly";
 						<a class="" href="app/index/pegawai">Data Pegawai</a>
 					</li>
 					<li class="breadcrumb-item text-muted">
-						<a class="" href="app/index/pengalaman_kerja?reqId=<?=$reqId?>">Pengalaman Kerja</a>
+						<a class="" href="app/index/penilaian_potensi_diri?reqId=<?=$reqId?>">Penilaian Potensi Diri</a>
 					</li>
 					<li class="breadcrumb-item text-muted">
 						<a class="text-muted">Halaman Input</a>
@@ -69,50 +82,41 @@ $readonly = "readonly";
             </div>
             <form class="form" id="ktloginform" method="POST" enctype="multipart/form-data">
 	        	<div class="card-body">
+	        		
 	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			Tanggal Mulai Kerja
-		        		</label>
-	        			<div class="col-lg-10 col-sm-12">
-	        				<div class="input-group date">
-		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTglMulaiKerja" value="<?=$reqTglMulaiKerja?>" />
-		        				<div class="input-group-append">
-		        					<span class="input-group-text">
-		        						<i class="la la-calendar"></i>
-		        					</span>
-		        				</div>
-		        			</div>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Tahun</label>
+	        			<div class="col-lg-4 col-sm-12">
+	        				<input type="text" style="width:150px" <?=$read?> class="form-control" name="reqTahun" id="reqTahun" value="<?=$reqTahun?>" title="Tahun harus diisi" required />
 	        			</div>
 	        		</div>
+
 	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Instansi</label>
-	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" name="reqInstansi" id="reqInstansi" value="<?=$reqInstansi?>" />
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Tanggung Jawab</label>
+	        			<div class="col-lg-6 col-sm-12">
+	        				<textarea <?=$disabled?> class="form-control" name="reqTanggungJawab" cols="35"> <?=$reqTanggungJawab?></textarea>
 	        			</div>
 	        		</div>
+
 	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Jabatan</label>
-	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" name="reqJabatan" id="reqJabatan" value="<?=$reqJabatan?>" />
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Motivasi</label>
+	        			<div class="col-lg-6 col-sm-12">
+	        				<textarea <?=$disabled?> class="form-control" name="reqMotivasi"><?=$reqMotivasi?></textarea>
 	        			</div>
 	        		</div>
+
 	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Masa Kerja (Th)</label>
-	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" name="reqMasaKerjaTh" id="reqMasaKerjaTh" value="<?=$reqMasaKerjaTh?>" />
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Minat Bidang Tugas</label>
+	        			<div class="col-lg-6 col-sm-12">
+	        				<textarea <?=$disabled?> class="form-control" title="Minat bidang tugas harus diisi" name="reqMinat" cols="35"> <?=$reqMinat?></textarea>
 	        			</div>
 	        		</div>
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Masa Kerja (Bln)</label>
-	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" name="reqMasaKerjaBl" id="reqMasaKerjaBl" value="<?=$reqMasaKerjaBl?>" />
-	        			</div>
-	        		</div>
+
 	        		<div class="card-footer">
 	        		<div class="row">
 	        			<div class="col-lg-9">
 	        				<input type="hidden" name="reqMode" value="<?=$reqMode?>">
-	        				<input type="hidden" name="reqTempValidasiId" value="<?=$reqTempValidasiId?>">
+	        				<input type="hidden" name="reqId" value="<?=$reqId?>">
+	        				<input type="hidden" name="reqRowId" value="<?=$reqRowId?>">
 	        				<button type="submit" id="ktloginformsubmitbutton" class="btn btn-light-success"><i class="fa fa-save" aria-hidden="true"></i> Simpan</button>
 	        			</div>
 	        		</div>
@@ -130,10 +134,19 @@ $readonly = "readonly";
 		// $('[data-toggle="tooltip"]').tooltip()
 	})
 
+	$("#reqTahun").keypress(function(e) {
+		if( e.which!=8 && e.which!=0 && (e.which<48 || e.which>57))
+		{
+			return false;
+		}
+	});
+
+
+
 	var _buttonSpinnerClasses = 'spinner spinner-right spinner-white pr-15';
 	jQuery(document).ready(function() {
 		var form = KTUtil.getById('ktloginform');
-		var formSubmitUrl = "json-data/info_data_json/indentitaspegawai";
+		var formSubmitUrl = "json-main/penilaian_potensi_diri_json/add";
 		var formSubmitButton = KTUtil.getById('ktloginformsubmitbutton');
 		if (!form) {
 			return;
@@ -182,17 +195,30 @@ $readonly = "readonly";
 					success: function (response) {
 			        	// console.log(response); return false;
 			        	// Swal.fire("Good job!", "You clicked the button!", "success");
-			        	Swal.fire({
-			        		text: response.message,
-			        		icon: "success",
-			        		buttonsStyling: false,
-			        		confirmButtonText: "Ok",
-			        		customClass: {
-			        			confirmButton: "btn font-weight-bold btn-light-primary"
-			        		}
-			        	}).then(function() {
-			        		document.location.href = "app/index/pegawai_data";
-			        	});
+			        	data= response.message;
+			        	data= data.split("-");
+			        	rowid= data[0];
+			        	infodata= data[1];
+
+			        	if(rowid == "xxx")
+                        {
+                            Swal.fire("Error", infodata, "error");
+                        }
+                        else
+                        {
+                            Swal.fire({
+                                text: infodata,
+                                icon: "success",
+                                buttonsStyling: false,
+                                confirmButtonText: "Ok",
+                                customClass: {
+                                    confirmButton: "btn font-weight-bold btn-light-primary"
+                                }
+                            }).then(function() {
+                                document.location.href = "app/index/penilaian_potensi_diri?reqId=<?=$reqId?>";
+                                // window.location.reload();
+                            });
+                        }
 			        },
 			        error: function(xhr, status, error) {
 			        	var err = JSON.parse(xhr.responseText);
@@ -218,14 +244,5 @@ $readonly = "readonly";
 		});
 	});
 
-	arrows= {leftArrow: '<i class="la la-angle-left"></i>', rightArrow: '<i class="la la-angle-right"></i>'};
-	$('#kttanggallahir').datepicker({
-		todayHighlight: true
-		, autoclose: true
-		, orientation: "bottom left"
-		, clearBtn: true
-		, format: 'dd-mm-yyyy'
-		, templates: arrows
-	});
 
 </script>

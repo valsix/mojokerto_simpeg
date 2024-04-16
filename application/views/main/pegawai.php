@@ -120,7 +120,7 @@ $arrsatkerdata= $this->sessdatatree;
                         <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
                             <ul class="navi flex-column navi-hover py-2">
                                 <li class="navi-item">
-                                    <a id="" class="navi-link">
+                                    <a id="btnLembarFIP01Row" class="navi-link">
                                         <span class="navi-text">FIP 01</span>
                                     </a>
                                 </li>
@@ -293,6 +293,54 @@ jQuery(document).ready(function() {
 
         varurl= "app/index/pegawai_data_fip?reqId="+vpilihid;
         document.location.href = varurl;
+    });
+
+    $("#btnLembarFIP01Row").on("click", function () {
+        btnid= $(this).attr('id');
+
+        if(valinfoid == "")
+        {
+            Swal.fire({
+                text: "Pilih salah satu data Riwayat terlebih dahulu.",
+                icon: "error",
+                buttonsStyling: false,
+                confirmButtonText: "Ok",
+                customClass: {
+                    confirmButton: "btn font-weight-bold btn-light-primary"
+                }
+            });
+            return false;
+        }
+        else{
+            vpilihid= valinfoid;
+            varurl= "app/loadUrl/main/cetakfip1?reqId="+vpilihid;
+            // window.open(varurl, 'window name', 'window settings');
+            window.open(varurl, '_blank');
+        }
+    });
+
+    $("#btnLembarFIP02Row").on("click", function () {
+        btnid= $(this).attr('id');
+
+        if(valinfoid == "")
+        {
+            Swal.fire({
+                text: "Pilih salah satu data Riwayat terlebih dahulu.",
+                icon: "error",
+                buttonsStyling: false,
+                confirmButtonText: "Ok",
+                customClass: {
+                    confirmButton: "btn font-weight-bold btn-light-primary"
+                }
+            });
+            return false;
+        }
+        else{
+            vpilihid= valinfoid;
+            varurl= "app/loadUrl/main/cetakfip2?reqId="+vpilihid;
+            // window.open(varurl, 'window name', 'window settings');
+            window.open(varurl, '_blank');
+        }
     });
 
     $("#triggercari").on("click", function () {

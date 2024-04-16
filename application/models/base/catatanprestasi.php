@@ -10,6 +10,67 @@ class CatatanPrestasi extends Entity{
 		$this->Entity(); 
 	}
 
+	function insert()
+	{
+		/*Auto-generate primary key(s) by next max value (integer) */
+		$this->setField("PRESTASI_KERJA_ID", $this->getNextId("PRESTASI_KERJA_ID","PRESTASI_KERJA")); 
+
+		$str = "INSERT INTO PRESTASI_KERJA (
+				   PRESTASI_KERJA_ID, PEGAWAI_ID, KETERANGAN, 
+				   NAMA, NO_SK, TANGGAL_SK, PEJABAT_PENETAP,
+				   TAHUN, PEJABAT_PENETAP_ID, LAST_CREATE_USER, LAST_CREATE_DATE, LAST_CREATE_SATKER) 
+				VALUES (
+				  ".$this->getField("PRESTASI_KERJA_ID").",
+				  '".$this->getField("PEGAWAI_ID")."',
+				  '".$this->getField("KETERANGAN")."',
+				  '".$this->getField("NAMA")."',
+				  '".$this->getField("NO_SK")."',
+				  ".$this->getField("TANGGAL_SK").",
+				  '".$this->getField("PEJABAT_PENETAP")."',
+				  '".$this->getField("TAHUN")."',
+				  '".$this->getField("PEJABAT_PENETAP_ID")."',				 
+				  '".$this->getField("LAST_CREATE_USER")."',
+				  ".$this->getField("LAST_CREATE_DATE").",
+				  '".$this->getField("LAST_CREATE_SATKER")."'
+				)"; 
+				
+		$this->query = $str;
+		return $this->execQuery($str);
+    }
+
+    function update()
+	{
+		/*Auto-generate primary key(s) by next max value (integer) */
+		$str = "
+				UPDATE PRESTASI_KERJA
+				SET    
+					   PEGAWAI_ID       = '".$this->getField("PEGAWAI_ID")."',
+					   KETERANGAN    = '".$this->getField("KETERANGAN")."',
+					   NAMA             = '".$this->getField("NAMA")."',
+					   NO_SK     = '".$this->getField("NO_SK")."',
+					   TANGGAL_SK    = ".$this->getField("TANGGAL_SK").",
+					   TAHUN    = '".$this->getField("TAHUN")."',
+					   PEJABAT_PENETAP= '".$this->getField("PEJABAT_PENETAP")."',
+					   PEJABAT_PENETAP_ID    = '".$this->getField("PEJABAT_PENETAP_ID")."',
+					  LAST_UPDATE_USER	= '".$this->getField("LAST_UPDATE_USER")."',
+					  LAST_UPDATE_DATE	= ".$this->getField("LAST_UPDATE_DATE").",
+					  LAST_UPDATE_SATKER	= '".$this->getField("LAST_UPDATE_SATKER")."'
+				WHERE  PRESTASI_KERJA_ID          = '".$this->getField("PRESTASI_KERJA_ID")."'
+				"; 
+				$this->query = $str;
+		return $this->execQuery($str);
+    }
+
+    function delete()
+	{
+        $str = "DELETE FROM PRESTASI_KERJA
+                WHERE 
+                  PRESTASI_KERJA_ID = '".$this->getField("PRESTASI_KERJA_ID")."'"; 
+				  
+		$this->query = $str;
+        return $this->execQuery($str);
+    }
+
 	function selectByParams($paramsArray=array(),$limit=-1,$from=-1, $statement='')
 	{
 		$str = "SELECT PRESTASI_KERJA_ID, PEGAWAI_ID, KETERANGAN, 

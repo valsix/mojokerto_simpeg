@@ -1,5 +1,6 @@
 <? 
 include_once(APPPATH.'/models/Entity.php');
+include_once(APPPATH.'/models/base/DbLog.php');
 
 class Hukuman extends Entity{ 
 
@@ -9,6 +10,100 @@ class Hukuman extends Entity{
 	{
 		$this->Entity(); 
 	}
+
+	function setlogdata($infotable, $infoaksi, $query)
+    {
+    	$setlog= new DbLog();
+    	$setlog->insert($infotable, $infoaksi, $query);
+    }
+	
+
+	function insert()
+	{
+		/*Auto-generate primary key(s) by next max value (integer) */
+		$this->setField("HUKUMAN_ID", $this->getNextId("HUKUMAN_ID","HUKUMAN")); 
+
+		$str = "INSERT INTO HUKUMAN
+		(
+			HUKUMAN_ID, PEGAWAI_ID, PEJABAT_PENETAP_ID, JENIS_HUKUMAN_ID, NO_SK, TANGGAL_SK, PEJABAT_PENETAP
+			, TMT_SK, KETERANGAN, BERLAKU, TINGKAT_HUKUMAN_ID, PERATURAN_ID
+			, TANGGAL_MULAI, TANGGAL_AKHIR, LAST_CREATE_USER, LAST_CREATE_DATE, LAST_CREATE_SATKER
+		) 
+		VALUES
+		(
+			".$this->getField("HUKUMAN_ID")."
+			, '".$this->getField("PEGAWAI_ID")."'
+			, '".$this->getField("PEJABAT_PENETAP_ID")."'
+			, '".$this->getField("JENIS_HUKUMAN_ID")."'
+			, '".$this->getField("NO_SK")."'
+			, ".$this->getField("TANGGAL_SK")."
+			, '".$this->getField("PEJABAT_PENETAP")."'
+			, ".$this->getField("TMT_SK")."
+			, '".$this->getField("KETERANGAN")."'
+			, '".$this->getField("BERLAKU")."'
+			, '".$this->getField("TINGKAT_HUKUMAN_ID")."'
+			, ".$this->getField("PERATURAN_ID")."
+			, ".$this->getField("TANGGAL_MULAI")."
+			, ".$this->getField("TANGGAL_AKHIR")."
+			, '".$this->getField("LAST_CREATE_USER")."'
+			, ".$this->getField("LAST_CREATE_DATE")."
+			, '".$this->getField("LAST_CREATE_SATKER")."'
+		)";
+
+		// echo $str;exit;
+				
+		$this->query = $str;
+		$this->id= $this->getField("HUKUMAN_ID");
+
+		// untuk buat log data
+		$this->setlogdata("HUKUMAN", "INSERT", $str);
+
+		return $this->execQuery($str);
+    }
+
+    function update()
+	{
+		$str = "UPDATE HUKUMAN
+		SET    
+			PEGAWAI_ID= '".$this->getField("PEGAWAI_ID")."'
+			, PEJABAT_PENETAP= '".$this->getField("PEJABAT_PENETAP")."'
+			, PEJABAT_PENETAP_ID= '".$this->getField("PEJABAT_PENETAP_ID")."'
+			, JENIS_HUKUMAN_ID= '".$this->getField("JENIS_HUKUMAN_ID")."'
+			, TINGKAT_HUKUMAN_ID= '".$this->getField("TINGKAT_HUKUMAN_ID")."'
+			, PERATURAN_ID= ".$this->getField("PERATURAN_ID")."
+			, NO_SK= '".$this->getField("NO_SK")."'
+			, TANGGAL_SK= ".$this->getField("TANGGAL_SK")."
+			, TMT_SK= ".$this->getField("TMT_SK")."
+			, KETERANGAN= '".$this->getField("KETERANGAN")."'
+			, BERLAKU= '".$this->getField("BERLAKU")."'
+			, TANGGAL_MULAI= ".$this->getField("TANGGAL_MULAI")."
+			, TANGGAL_AKHIR= ".$this->getField("TANGGAL_AKHIR")."
+			, LAST_UPDATE_USER= '".$this->getField("LAST_UPDATE_USER")."'
+			, LAST_UPDATE_DATE= ".$this->getField("LAST_UPDATE_DATE")."
+			, LAST_UPDATE_SATKER= '".$this->getField("LAST_UPDATE_SATKER")."'
+		WHERE HUKUMAN_ID= '".$this->getField("HUKUMAN_ID")."'
+		"; 
+		$this->query = $str;
+
+		// echo $str;exit;
+
+		// untuk buat log data
+		$this->setlogdata("HUKUMAN", "UPDATE", $str);
+
+		return $this->execQuery($str);
+    }
+
+    function delete()
+	{
+        $str = "DELETE FROM HUKUMAN
+                WHERE HUKUMAN_ID = '".$this->getField("HUKUMAN_ID")."'";
+		$this->query = $str;
+
+		// parse ke dua sesuai aksi
+		$this->setlogdata("HUKUMAN", "DELETE", $str);
+
+        return $this->execQuery($str);
+    }
 
 	function selectByParams($paramsArray=array(),$limit=-1,$from=-1, $statement='')
 	{

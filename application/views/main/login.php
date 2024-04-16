@@ -1,7 +1,9 @@
 <?
 $this->load->library("crfs_protect"); $csrf = new crfs_protect('_crfs_login');
-$username= "198611162007011001";
-// $username= "";
+
+// $username= "bag_pemerintahan";
+$username= "admin";
+$pass= "admin";
 
 $sessinfopesan= $this->sessinfopesan;
 ?>
@@ -59,7 +61,7 @@ $sessinfopesan= $this->sessinfopesan;
                                         <input class="form-control h-auto form-control-solid py-4 px-8" type="text" placeholder="NIP Baru" name="reqUser" autocomplete="off" value="<?=$username?>" />
                                     </div>
                                     <div class="form-group mb-5">
-                                        <input class="form-control h-auto form-control-solid py-4 px-8" type="password" placeholder="Password" name="reqPasswd" value="<?=$username?>" />
+                                        <input class="form-control h-auto form-control-solid py-4 px-8" type="password" placeholder="Password" name="reqPasswd" value="<?=$pass?>" />
                                     </div>
 
                                     <?

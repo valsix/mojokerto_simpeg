@@ -10,94 +10,56 @@ class kauth {
         $CI->load->driver('session');
     }
 
-    public function cekuseradminlogin($username,$credential) {
+    public function cekuserloginpersonal($username,$credential) {
+
+        if(preg_match('/[\'^£$%&*()}{@#~?><>,|=+¬-]/', $username))
+        {
+            return "Username dan password salah.";
+        }
+
         $CI =& get_instance();
         $configdata= $CI->config;
         $configvlxsessfolder= $configdata->config["vlxsessfolder"];
 
-        $CI->load->model("base-data/Users");
+        $CI->load->model("base/Users");
         $users = new Users();
         $users->selectbyloginadmin($username, md5($credential));
-        //echo $users->query;exit;
-        
-        if($users->firstRow())
-        { 
-            $CI->session->set_userdata("adminuserid".$configvlxsessfolder, $users->getField("USER_LOGIN_ID"));
-            $CI->session->set_userdata("adminuserloginnama".$configvlxsessfolder, $users->getField("LOGIN_USER"));
-            $CI->session->set_userdata("adminusernama".$configvlxsessfolder, $users->getField("LOGIN_USER_NAMA"));
-			$CI->session->set_userdata("userlevel".$configvlxsessfolder, $users->getField("USER_GROUP_ID"));
-            $CI->session->set_userdata("userSatkerId".$configvlxsessfolder, $users->getField("SATKER_ID"));
-
-            if($users->getField("USER_LOGIN_ID") == "")
-                return "Username dan password salah.";
-            else
-                return "1";
-        }
-        else
-            return "Username dan password salah.";
-    }
-
-    public function unsetcekuseradminlogin() {
-        $CI =& get_instance();
-        $configdata= $CI->config;
-        $configvlxsessfolder= $configdata->config["vlxsessfolder"];
-
-        $CI->session->unset_userdata("adminuserid".$configvlxsessfolder);
-        $CI->session->unset_userdata("adminuserloginnama".$configvlxsessfolder);
-        $CI->session->unset_userdata("adminusernama".$configvlxsessfolder);
-        $CI->session->unset_userdata("adminuseraksesappmenu".$configvlxsessfolder);
-        $CI->session->unset_userdata("userpegawaimode".$configvlxsessfolder);
-		$CI->session->unset_userdata("userlevel".$configvlxsessfolder);
-        $CI->session->unset_userdata("userSatkerId".$configvlxsessfolder);
-    }
-
-    // public function cekuserloginpersonal($username,$credential) {
-
-    //     $CI =& get_instance();
-    //     $configdata= $CI->config;
-    //     $configvlxsessfolder= $configdata->config["vlxsessfolder"];
-
-    //     $CI->load->model("base-data/Users");
-    //     $users = new Users();
-    //     $users->selectbyloginpegawai($username, md5($credential));
-    //     // echo $users->query; exit;
-        
-    //     if($users->firstRow())
-    //     { 
-    //          $CI->session->set_userdata("userpegawaiId".$configvlxsessfolder, $users->getField("PEGAWAI_ID"));
-    //          $CI->session->set_userdata("userpegawaiNama".$configvlxsessfolder, str_replace("'", "", $users->getField("NAMA")));
-			
-	// 		if($users->getField("PEGAWAI_ID") == "")
-    //         {
-    //              return "0";
-    //         }
-    //         else 
-    //         {
-    //             return "1";  
-    //         }
-    //     }
-    //     else
-    //         return "Username atau password salah.";
-    // }
-
-    public function cekuserloginpersonal($loginadminid) {
-
-        $CI =& get_instance();
-        $configdata= $CI->config;
-        $configvlxsessfolder= $configdata->config["vlxsessfolder"];
-
-        $CI->load->model("base-data/Users");
-        $users = new Users();
-        $users->selectbyloginadminnew($loginadminid);
+        // echo $users->query;exit;
         // echo $users->query; exit;
         
         if($users->firstRow())
-        { 
-            $CI->session->set_userdata("adminuserid".$configvlxsessfolder, $users->getField("user_app_id"));
-            $CI->session->set_userdata("adminuserloginnama".$configvlxsessfolder, $users->getField("NAMA"));
+        {
+            $CI->session->set_userdata("adminuserloginnama".$configvlxsessfolder, $users->getField("USER_LOGIN"));
             $CI->session->set_userdata("adminusernama".$configvlxsessfolder, $users->getField("NAMA"));
-            // $CI->session->set_userdata("userlevel".$configvlxsessfolder, $users->getField("USER_GROUP_ID"));
-            // $CI->session->set_userdata("userSatkerId".$configvlxsessfolder, $users->getField("SATKER_ID"));
+            $CI->session->set_userdata("adminusergroupid".$configvlxsessfolder, $users->getField("USER_GROUP_ID"));
+            $CI->session->set_userdata("adminuserpegawaiid".$configvlxsessfolder, $users->getField("PEGAWAI_ID"));
+            $vsatkerid= $users->getField("SATKER_ID");
+            $CI->session->set_userdata("adminsatkerid".$configvlxsessfolder, $vsatkerid);
+
+            $arrparam= ["satkerid"=>$vsatkerid];
+            $CI->load->library('globalsatuankerja');
+            $vgl= new globalsatuankerja();
+            $arrtreesatuankerja= $vgl->getsatuankerjatree($arrparam);
+            $arrdatasatuankerja= $vgl->getsatuankerjadata($arrparam);
+
+            $CI->session->set_userdata('sesstree'.$configvlxsessfolder, $arrtreesatuankerja);
+            $CI->session->set_userdata('sessdatatree'.$configvlxsessfolder, $arrdatasatuankerja);
+
+            $CI->session->set_userdata("adminuserid".$configvlxsessfolder, $users->getField("USER_APP_ID"));
+            $CI->session->set_userdata("adminuserPegawaiProses".$configvlxsessfolder, $users->getField("PEGAWAI_PROSES"));
+            $CI->session->set_userdata("adminuserDUKProses".$configvlxsessfolder, $users->getField("DUK_PROSES"));
+            $CI->session->set_userdata("adminuserKGBProses".$configvlxsessfolder, $users->getField("KGB_PROSES"));
+            $CI->session->set_userdata("adminuserKPProses".$configvlxsessfolder, $users->getField("KP_PROSES"));
+            $CI->session->set_userdata("adminuserPensiunProses".$configvlxsessfolder, $users->getField("PENSIUN_PROSES"));
+            $CI->session->set_userdata("adminuserAnjabProses".$configvlxsessfolder, $users->getField("ANJAB_PROSES"));
+            $CI->session->set_userdata("adminuserMutasiProses".$configvlxsessfolder, $users->getField("MUTASI_PROSES"));
+            $CI->session->set_userdata("adminuserHukumanProses".$configvlxsessfolder, $users->getField("HUKUMAN_PROSES"));
+            $CI->session->set_userdata("adminuserMasterProses".$configvlxsessfolder, $users->getField("MASTER_PROSES"));
+            $CI->session->set_userdata("adminuserLihatProses".$configvlxsessfolder, $users->getField("LIHAT_PROSES"));
+            $CI->session->set_userdata("adminuserBidangPembinaan".$configvlxsessfolder, $users->getField("BIDANG_PEMBINAAN"));
+            $CI->session->set_userdata("adminuserBidangDokumentasi".$configvlxsessfolder, $users->getField("BIDANG_DOKUMENTASI"));
+            $CI->session->set_userdata("adminuserBidangPendidikan".$configvlxsessfolder, $users->getField("BIDANG_PENDIDIKAN"));
+            $CI->session->set_userdata("adminuserBidangMutasi".$configvlxsessfolder, $users->getField("BIDANG_MUTASI"));
 
             return "1";  
         }
@@ -109,28 +71,28 @@ class kauth {
         $CI =& get_instance();
         $configdata= $CI->config;
         $configvlxsessfolder= $configdata->config["vlxsessfolder"];
-
-        $CI->session->unset_userdata("userpegawaiId".$configvlxsessfolder);
-        $CI->session->unset_userdata("userpegawaiNama".$configvlxsessfolder);
-    }
-
-    public function setadminpegawai($id) {
-        $CI =& get_instance();
-        $configdata= $CI->config;
-        $configvlxsessfolder= $configdata->config["vlxsessfolder"];
-
-        // $CI->session->set_userdata("userpegawaiId".$configvlxsessfolder, $id);
-        $CI->session->set_userdata("userpegawaimode".$configvlxsessfolder, $id);
-
-    }
-
-    public function unsetadminpegawai() {
-        $CI =& get_instance();
-        $configdata= $CI->config;
-        $configvlxsessfolder= $configdata->config["vlxsessfolder"];
-
-        // $CI->session->unset_userdata("userpegawaiId".$configvlxsessfolder);
-        $CI->session->unset_userdata("userpegawaimode".$configvlxsessfolder);
+        
+        $CI->session->unset_userdata("adminuserid".$configvlxsessfolder);
+        $CI->session->unset_userdata("adminuserloginnama".$configvlxsessfolder);
+        $CI->session->unset_userdata("adminusernama".$configvlxsessfolder);
+        $CI->session->unset_userdata("adminusergroupid".$configvlxsessfolder);
+        $CI->session->unset_userdata("adminsatkerid".$configvlxsessfolder);
+        $CI->session->unset_userdata("sesstree".$configvlxsessfolder);
+        $CI->session->unset_userdata("sessdatatree".$configvlxsessfolder);
+        $CI->session->unset_userdata("adminuserPegawaiProses".$configvlxsessfolder);
+        $CI->session->unset_userdata("adminuserDUKProses".$configvlxsessfolder);
+        $CI->session->unset_userdata("adminuserKGBProses".$configvlxsessfolder);
+        $CI->session->unset_userdata("adminuserKPProses".$configvlxsessfolder);
+        $CI->session->unset_userdata("adminuserPensiunProses".$configvlxsessfolder);
+        $CI->session->unset_userdata("adminuserAnjabProses".$configvlxsessfolder);
+        $CI->session->unset_userdata("adminuserMutasiProses".$configvlxsessfolder);
+        $CI->session->unset_userdata("adminuserHukumanProses".$configvlxsessfolder);
+        $CI->session->unset_userdata("adminuserMasterProses".$configvlxsessfolder);
+        $CI->session->unset_userdata("adminuserLihatProses".$configvlxsessfolder);
+        $CI->session->unset_userdata("adminuserBidangPembinaan".$configvlxsessfolder);
+        $CI->session->unset_userdata("adminuserBidangDokumentasi".$configvlxsessfolder);
+        $CI->session->unset_userdata("adminuserBidangPendidikan".$configvlxsessfolder);
+        $CI->session->unset_userdata("adminuserBidangMutasi".$configvlxsessfolder);
     }
 
 }

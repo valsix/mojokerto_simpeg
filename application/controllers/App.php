@@ -13,57 +13,43 @@ class App extends CI_Controller {
 		parent::__construct();
 		//kauth
 
-		session_start();
-		
 		$CI =& get_instance();
 		$configdata= $CI->config;
         $configvlxsessfolder= $configdata->config["vlxsessfolder"];
-		$reqPegawaiHard=$this->input->get('reqPegawaiHard');
 
         $redirectlogin= "";
-        if(!empty($_SESSION["vuserpegawaimode".$configvlxsessfolder]) && !empty($this->session->userdata("adminuserid".$configvlxsessfolder)))
+        if(!empty($this->session->userdata("adminuserid".$configvlxsessfolder)))
         {
-        	$this->session->set_userdata("userpegawaimode".$configvlxsessfolder, $_SESSION["vuserpegawaimode".$configvlxsessfolder]);
-        	$redirectlogin= "";
+        	$redirectlogin= $this->session->userdata("adminuserid".$configvlxsessfolder);
         }
 
-		if(!empty($this->session->userdata("userpegawaiId".$configvlxsessfolder)) && !empty($redirectlogin))
-		{
-        	$redirectlogin= "";
-        }
-
-        if(!empty($reqPegawaiHard)){
-        	$redirectlogin= "";
-        }
-        // echo $redirectlogin."xx".$this->session->userdata("userpegawaimode".$configvlxsessfolder)."xx".$this->session->userdata("adminuserid".$configvlxsessfolder)."xx".$_SESSION["vuserpegawaimode".$configvlxsessfolder];exit;
-        // echo $redirectlogin."xx".$this->session->userdata("userpegawaiId".$configvlxsessfolder);exit;
-
-        if(!empty($redirectlogin))
+        if(empty($redirectlogin))
 		{
 			redirect('login');
 		}
 
-		$this->pegawaiId= $this->session->userdata("userpegawaiId".$configvlxsessfolder);
-		$this->userpegawaiNama= $this->session->userdata("userpegawaiNama".$configvlxsessfolder);
-		// echo $this->userpegawaiNama; exit;
-		$this->userstatuspegId= $this->session->userdata("userstatuspegId".$configvlxsessfolder);
-		$this->userpegawaimode= $this->session->userdata("userpegawaimode".$configvlxsessfolder);
-
 		$this->adminuserid= $this->session->userdata("adminuserid".$configvlxsessfolder);
-		$this->adminusernama= $this->session->userdata("adminusernama".$configvlxsessfolder);
 		$this->adminuserloginnama= $this->session->userdata("adminuserloginnama".$configvlxsessfolder);
-		$this->adminuseraksesappmenu= $this->session->userdata("adminuseraksesappmenu".$configvlxsessfolder);
-
-		$this->userlevel= $this->session->userdata("userlevel".$configvlxsessfolder);
-
-		$this->session->set_userdata("sesstree", $_SESSION["sesstree"]);
-		$this->sesstree= $_SESSION["sesstree"];
-		$this->session->set_userdata("sessdatatree", $_SESSION["sessdatatree"]);
-		$this->sessdatatree= $_SESSION["sessdatatree"];
-
-        if(!empty($reqPegawaiHard)){
-        	$this->userpegawaimode=$reqPegawaiHard;
-        }
+		$this->adminusernama= $this->session->userdata("adminusernama".$configvlxsessfolder);
+		$this->adminusergroupid= $this->session->userdata("adminusergroupid".$configvlxsessfolder);
+		$this->adminuserpegawaiid= $this->session->userdata("adminuserpegawaiid".$configvlxsessfolder);
+		$this->adminsatkerid= $this->session->userdata("adminsatkerid".$configvlxsessfolder);
+		$this->sesstree= $this->session->userdata("sesstree".$configvlxsessfolder);
+		$this->sessdatatree= $this->session->userdata("sessdatatree".$configvlxsessfolder);
+		$this->adminuserPegawaiProses= $this->session->userdata("adminuserPegawaiProses".$configvlxsessfolder);
+		$this->adminuserDUKProses= $this->session->userdata("adminuserDUKProses".$configvlxsessfolder);
+		$this->adminuserKGBProses= $this->session->userdata("adminuserKGBProses".$configvlxsessfolder);
+		$this->adminuserKPProses= $this->session->userdata("adminuserKPProses".$configvlxsessfolder);
+		$this->adminuserPensiunProses= $this->session->userdata("adminuserPensiunProses".$configvlxsessfolder);
+		$this->adminuserAnjabProses= $this->session->userdata("adminuserAnjabProses".$configvlxsessfolder);
+		$this->adminuserMutasiProses= $this->session->userdata("adminuserMutasiProses".$configvlxsessfolder);
+		$this->adminuserHukumanProses= $this->session->userdata("adminuserHukumanProses".$configvlxsessfolder);
+		$this->adminuserMasterProses= $this->session->userdata("adminuserMasterProses".$configvlxsessfolder);
+		$this->adminuserLihatProses= $this->session->userdata("adminuserLihatProses".$configvlxsessfolder);
+		$this->adminuserBidangPembinaan= $this->session->userdata("adminuserBidangPembinaan".$configvlxsessfolder);
+		$this->adminuserBidangDokumentasi= $this->session->userdata("adminuserBidangDokumentasi".$configvlxsessfolder);
+		$this->adminuserBidangPendidikan= $this->session->userdata("adminuserBidangPendidikan".$configvlxsessfolder);
+		$this->adminuserBidangMutasi= $this->session->userdata("adminuserBidangMutasi".$configvlxsessfolder);
 	}
 	
 	public function index()
@@ -86,7 +72,7 @@ class App extends CI_Controller {
 		);
 		// print_r($view);exit;
 
-		if($pg == "home")
+		/*if($pg == "home")
 		{
 			$this->load->library('globalsatuankerja');
 
@@ -101,7 +87,7 @@ class App extends CI_Controller {
 			$this->session->set_userdata('sessdatatree'.$configvlxsessfolder, $arrdatasatuankerja);
 			$_SESSION["sessdatatree"]= $arrdatasatuankerja;
 			// print_r($_SESSION["sessdatatree"]);exit;
-		}
+		}*/
 		
 		$this->load->view('main/index', $data);
 	}

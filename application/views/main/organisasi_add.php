@@ -1,7 +1,7 @@
 <?
 include_once("functions/personal.func.php");
 
-$this->load->model("base/PengalamanKerja");
+$this->load->model("base/Organisasi");
 
 $userpegawaimode= $this->userpegawaimode;
 $adminuserid= $this->adminuserid;
@@ -14,19 +14,34 @@ else
 $reqId= $this->input->get('reqId');
 $reqRowId= $this->input->get('reqRowId');
 
-$pengalaman= new PengalamanKerja();
-$pengalaman->selectByParams(array('PENGALAMAN_ID'=>$reqRowId));
-$pengalaman->firstRow();
-$reqPengalamanId = $pengalaman->getField('PENGALAMAN_ID');
-$reqInstansi 			= $pengalaman->getField('NAMA');
-$reqJabatan = $pengalaman->getField('JABATAN');
-$reqTglMulaiKerja = dateToPageCheck($pengalaman->getField('TANGGAL_KERJA'));
-$reqMasaKerjaTh = $pengalaman->getField('MASA_KERJA_TAHUN');
-$reqMasaKerjaBl = $pengalaman->getField('MASA_KERJA_BULAN');
-// echo $reqTmtJabatan;exit;
-$reqMode="update";
-// $reqMode="insert";
-$readonly = "readonly";
+if(empty($reqRowId))
+{
+	$reqMode="insert";
+}
+else
+{
+
+	$organisasi_riwayat = new Organisasi();
+	$organisasi_riwayat->selectByParams(array('ORGANISASI_RIWAYAT_ID'=>$reqRowId));
+	// echo $organisasi->query;exit;
+	$organisasi_riwayat->firstRow();
+	$reqRowId					= $organisasi_riwayat->getField('ORGANISASI_RIWAYAT_ID');
+	$reqORGANISASI_RIWAYAT_ID = $organisasi_riwayat->getField('ORGANISASI_RIWAYAT_ID');
+	$reqJabatan 			= $organisasi_riwayat->getField('JABATAN');
+	$reqNamaOrganisasi 		= $organisasi_riwayat->getField('NAMA');
+	$reqAwal 		= dateToPageCheck($organisasi_riwayat->getField('TANGGAL_AWAL'));
+	$reqAkhir 		= dateToPageCheck($organisasi_riwayat->getField('TANGGAL_AKHIR'));
+	$reqPimpinan		= $organisasi_riwayat->getField('PIMPINAN');
+	$reqTempat		= $organisasi_riwayat->getField('TEMPAT');
+
+	// echo $reqTmtJabatan;exit;
+	$reqMode="update";
+
+}
+
+	
+
+
 ?>
 
 <!-- Bootstrap core CSS -->
@@ -43,7 +58,7 @@ $readonly = "readonly";
 						<a class="" href="app/index/pegawai">Data Pegawai</a>
 					</li>
 					<li class="breadcrumb-item text-muted">
-						<a class="" href="app/index/pengalaman_kerja?reqId=<?=$reqId?>">Pengalaman Kerja</a>
+						<a class="" href="app/index/organisasi?reqId=<?=$reqId?>">Organisasi</a>
 					</li>
 					<li class="breadcrumb-item text-muted">
 						<a class="text-muted">Halaman Input</a>
@@ -69,50 +84,56 @@ $readonly = "readonly";
             </div>
             <form class="form" id="ktloginform" method="POST" enctype="multipart/form-data">
 	        	<div class="card-body">
+	        		
 	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			Tanggal Mulai Kerja
-		        		</label>
-	        			<div class="col-lg-10 col-sm-12">
-	        				<div class="input-group date">
-		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTglMulaiKerja" value="<?=$reqTglMulaiKerja?>" />
-		        				<div class="input-group-append">
-		        					<span class="input-group-text">
-		        						<i class="la la-calendar"></i>
-		        					</span>
-		        				</div>
-		        			</div>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Nama Organisasi</label>
+	        			<div class="col-lg-6 col-sm-12">
+	        				<input type="text"  <?=$read?> class="form-control" name="reqNamaOrganisasi" id="reqNamaOrganisasi" value="<?=$reqNamaOrganisasi?>" title="Nama organisasi harus diisi" required />
 	        			</div>
 	        		</div>
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Instansi</label>
-	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" name="reqInstansi" id="reqInstansi" value="<?=$reqInstansi?>" />
-	        			</div>
-	        		</div>
+
 	        		<div class="form-group row">
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Jabatan</label>
-	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" name="reqJabatan" id="reqJabatan" value="<?=$reqJabatan?>" />
+	        			<div class="col-lg-6 col-sm-12">
+	        				<input type="text"  name="reqJabatan" class="form-control"  <?=$read?> value="<?=$reqJabatan?>" title="Jabatan harus diisi" required />
 	        			</div>
 	        		</div>
+
 	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Masa Kerja (Th)</label>
-	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" name="reqMasaKerjaTh" id="reqMasaKerjaTh" value="<?=$reqMasaKerjaTh?>" />
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Awal</label>
+	        			<div class="col-lg-6 col-sm-12">
+	        				<input type="text" style="width:100px" <?=$read?> id="reqAwal" class="form-control" name="reqAwal" maxlength="10"  value="<?=$reqAwal?>" />
 	        			</div>
 	        		</div>
+
 	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Masa Kerja (Bln)</label>
-	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" name="reqMasaKerjaBl" id="reqMasaKerjaBl" value="<?=$reqMasaKerjaBl?>" />
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Akhir</label>
+	        			<div class="col-lg-6 col-sm-12">
+	        				<input type="text" style="width:100px" <?=$read?> id="reqAkhir" class="form-control" name="reqAkhir" maxlength="10"  value="<?=$reqAkhir?>" />
 	        			</div>
 	        		</div>
+
+
+	        		<div class="form-group row">
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Pimpinan</label>
+	        			<div class="col-lg-6 col-sm-12">
+	        				<input type="text"  <?=$read?> id="reqPimpinan" class="form-control" name="reqPimpinan" maxlength="10"  value="<?=$reqPimpinan?>" />
+	        			</div>
+	        		</div>
+
+	        		<div class="form-group row">
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Tempat</label>
+	        			<div class="col-lg-6 col-sm-12">
+	        				<input type="text" <?=$read?> id="reqTempat" class="form-control" name="reqTempat" maxlength="10"  value="<?=$reqTempat?>" />
+	        			</div>
+	        		</div>
+
 	        		<div class="card-footer">
 	        		<div class="row">
 	        			<div class="col-lg-9">
 	        				<input type="hidden" name="reqMode" value="<?=$reqMode?>">
-	        				<input type="hidden" name="reqTempValidasiId" value="<?=$reqTempValidasiId?>">
+	        				<input type="hidden" name="reqId" value="<?=$reqId?>">
+	        				<input type="hidden" name="reqRowId" value="<?=$reqRowId?>">
 	        				<button type="submit" id="ktloginformsubmitbutton" class="btn btn-light-success"><i class="fa fa-save" aria-hidden="true"></i> Simpan</button>
 	        			</div>
 	        		</div>
@@ -130,10 +151,31 @@ $readonly = "readonly";
 		// $('[data-toggle="tooltip"]').tooltip()
 	})
 
+
+	$("#reqAwal, #reqAkhir").keypress(function(e) {
+		if( e.which!=8 && e.which!=0 && (e.which<48 || e.which>57))
+		{
+			return false;
+		}
+	});
+
+
+	arrows= {leftArrow: '<i class="la la-angle-left"></i>', rightArrow: '<i class="la la-angle-right"></i>'};
+	$('#reqAwal,#reqAkhir').datepicker({
+		todayHighlight: true
+		, autoclose: true
+		, orientation: "bottom left"
+		, clearBtn: true
+		, format: 'dd-mm-yyyy'
+		, templates: arrows
+	});
+
+
+
 	var _buttonSpinnerClasses = 'spinner spinner-right spinner-white pr-15';
 	jQuery(document).ready(function() {
 		var form = KTUtil.getById('ktloginform');
-		var formSubmitUrl = "json-data/info_data_json/indentitaspegawai";
+		var formSubmitUrl = "json-main/organisasi_json/add";
 		var formSubmitButton = KTUtil.getById('ktloginformsubmitbutton');
 		if (!form) {
 			return;
@@ -182,17 +224,30 @@ $readonly = "readonly";
 					success: function (response) {
 			        	// console.log(response); return false;
 			        	// Swal.fire("Good job!", "You clicked the button!", "success");
-			        	Swal.fire({
-			        		text: response.message,
-			        		icon: "success",
-			        		buttonsStyling: false,
-			        		confirmButtonText: "Ok",
-			        		customClass: {
-			        			confirmButton: "btn font-weight-bold btn-light-primary"
-			        		}
-			        	}).then(function() {
-			        		document.location.href = "app/index/pegawai_data";
-			        	});
+			        	data= response.message;
+			        	data= data.split("-");
+			        	rowid= data[0];
+			        	infodata= data[1];
+
+			        	if(rowid == "xxx")
+                        {
+                            Swal.fire("Error", infodata, "error");
+                        }
+                        else
+                        {
+                            Swal.fire({
+                                text: infodata,
+                                icon: "success",
+                                buttonsStyling: false,
+                                confirmButtonText: "Ok",
+                                customClass: {
+                                    confirmButton: "btn font-weight-bold btn-light-primary"
+                                }
+                            }).then(function() {
+                                document.location.href = "app/index/organisasi?reqId=<?=$reqId?>";
+                                // window.location.reload();
+                            });
+                        }
 			        },
 			        error: function(xhr, status, error) {
 			        	var err = JSON.parse(xhr.responseText);
@@ -218,14 +273,5 @@ $readonly = "readonly";
 		});
 	});
 
-	arrows= {leftArrow: '<i class="la la-angle-left"></i>', rightArrow: '<i class="la la-angle-right"></i>'};
-	$('#kttanggallahir').datepicker({
-		todayHighlight: true
-		, autoclose: true
-		, orientation: "bottom left"
-		, clearBtn: true
-		, format: 'dd-mm-yyyy'
-		, templates: arrows
-	});
 
 </script>

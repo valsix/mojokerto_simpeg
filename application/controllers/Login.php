@@ -29,15 +29,15 @@ class login extends CI_Controller
 		$configdata= $CI->config;
         $configvlxsessfolder= $configdata->config["vlxsessfolder"];
 
-		
-		// if(!empty($this->pegawaiId))
-		// {
-		// 	redirect('app');
-		// }
-
 		$this->session->set_userdata('sessinfopesan'.$configvlxsessfolder, "");
 		$data['pesan']="";
-		$this->load->view('main/login', $data);
+
+		$pg= "login";
+		$data = array(
+			'content' => $this->load->view("main/".$pg,$view,TRUE),
+			'pg' => $pg
+		);
+		$this->load->view('main/index', $data);
 	}
 
 	function action()
