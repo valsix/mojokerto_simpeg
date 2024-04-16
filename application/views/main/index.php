@@ -5,6 +5,8 @@ include_once("functions/date.func.php");
 $this->load->model("base-data/InfoData");
 $this->load->library('globalmenu');
 
+$adminusernama= $this->adminusernama;
+
 $userpegawaimode= $this->userpegawaimode;
 $adminuserid= $this->adminuserid;
 $reqId= $this->input->get('reqId');
@@ -149,8 +151,10 @@ $arrcarimenuparent= $vfpeg->cariparentmenu($arrparam);
             <div class="d-flex flex-row flex-column-fluid page">
 
                 <?
-                // echo $pg ;
-                if($pg == "login"){} else { ?>
+                if($pg == "login"){}
+                else 
+                {
+                ?>
                 <div class="aside aside-left aside-fixed d-flex flex-column flex-row-auto" id="kt_aside">
 
                     <div class="brand flex-column-auto" id="kt_brand">
@@ -174,7 +178,11 @@ $arrcarimenuparent= $vfpeg->cariparentmenu($arrparam);
                         </button>
                     </div>
 
-                    <?if ($pg=='pegawai_data_fip' || $pg=='lokasi_kerja'|| $pg=='pengalaman_kerja'|| $pg=='pengalaman_kerja_add'|| $pg=='sk_pns'|| $pg=='sk_cpns'|| $pg=='riwayat_pangkat'|| $pg=='riwayat_jabatan'|| $pg=='riwayat_tugas_tambahan'|| $pg=='riwayat_gaji'|| $pg=='pendidikan_umum'|| $pg=='pelatihan_kepemimpinan'|| $pg=='pelatihan_fungsional'|| $pg=='diklat_lpj'|| $pg=='pelatihan_teknis'|| $pg=='seminar_workshop'|| $pg=='pelatihan_non_klasikal'|| $pg=='orang_tua'|| $pg=='mertua'|| $pg=='suami_istri'|| $pg=='anak'|| $pg=='saudara'|| $pg=='organisasi'|| $pg=='penghargaan'|| $pg=='penilaian_potensi_diri'|| $pg=='catatan_prestasi'|| $pg=='hukuman'|| $pg=='cuti'|| $pg=='tambah_masa_kerja'|| $pg=='ijin_belajar'|| $pg=='sertifikat_pendidikan'|| $pg=='sertifikat_prestasi'|| $pg=='pak'|| $pg=='skp'|| $pg=='kinerja'|| $pg=='komparasi_data'|| $pg=='penguasaan_bahasa'|| $pg=='nikah'|| $pg=='riwayat_pangkat_add'|| $pg=='riwayat_jabatan_add'|| $pg=='riwayat_tugas_tambahan_add'|| $pg=='riwayat_gaji_add'|| $pg=='pendidikan_umum_add'|| $pg=='pelatihan_kepemimpinan_add'|| $pg=='pelatihan_fungsional_add'|| $pg=='diklat_lpj_add'|| $pg=='pelatihan_teknis_add'|| $pg=='seminar_workshop_add'|| $pg=='pelatihan_non_klasikal_add'|| $pg=='orang_tua'|| $pg=='mertua'|| $pg=='suami_istri'|| $pg=='anak_add'|| $pg=='saudara_add'|| $pg=='organisasi_add'|| $pg=='penghargaan_add'|| $pg=='penilaian_potensi_diri_add'|| $pg=='catatan_prestasi_add'|| $pg=='hukuman_add'|| $pg=='cuti_add'|| $pg=='tambah_masa_kerja_add'|| $pg=='ijin_belajar_add'|| $pg=='sertifikat_pendidikan_add'|| $pg=='sertifikat_prestasi_add'|| $pg=='pak_add'|| $pg=='skp_add'|| $pg=='kinerja_add'|| $pg=='komparasi_data_add'|| $pg=='penguasaan_bahasa_add'|| $pg=='nikah_add'){?>                    
+                    <?
+                    $arrmenupegawaidetil= array("pegawai_data_fip", "lokasi_kerja", "pengalaman_kerja", "pengalaman_kerja_add", "sk_pns", "sk_cpns", "riwayat_pangkat", "riwayat_pangkat_add", "riwayat_jabatan", "riwayat_jabatan_add", "riwayat_tugas_tambahan", "riwayat_tugas_tambahan_add", "riwayat_gaji", "riwayat_gaji_add", "pendidikan_umum", "pendidikan_umum_add", "pelatihan_kepemimpinan", "pelatihan_kepemimpinan_add", "pelatihan_fungsional", "pelatihan_fungsional_add", "diklat_lpj", "diklat_lpj_add", "pelatihan_teknis", "pelatihan_teknis_add", "seminar_workshop", "seminar_workshop_add", "pelatihan_non_klasikal", "pelatihan_non_klasikal_add", "orang_tua", "mertua", "suami_istri", "anak", "anak_add", "saudara", "saudara_add", "organisasi", "organisasi_add", "penghargaan", "penghargaan_add", "penilaian_potensi_diri", "penilaian_potensi_diri_add", "catatan_prestasi", "catatan_prestasi_add", "hukuman", "hukuman_add", "cuti", "cuti_add", "tambah_masa_kerja", "tambah_masa_kerja_add", "ijin_belajar", "ijin_belajar_add", "sertifikat_pendidikan", "sertifikat_pendidikan_add", "sertifikat_prestasi", "sertifikat_prestasi_add", "pak", "pak_add", "skp", "skp_add", "kinerja", "kinerja_add", "komparasi_data", "komparasi_data_add", "penguasaan_bahasa", "penguasaan_bahasa_add", "nikah", "nikah_add");
+                    if(in_array($pg, $arrmenupegawaidetil))
+                    {
+                    ?>
                         <div class="aside-menu-wrapper flex-column-fluid" id="kt_aside_menu_wrapper">
                             <!--begin::Menu Container-->
                             <div id="kt_aside_menu" class="aside-menu my-4" data-menu-vertical="1" data-menu-scroll="1" data-menu-dropdown-timeout="500" style="border: 0px solid red; margin-top: 0px !important; margin-bottom: 0px !important;">
@@ -415,18 +423,16 @@ $arrcarimenuparent= $vfpeg->cariparentmenu($arrparam);
                                             <i class="menu-arrow"></i>
                                         </a>
                                     </li>
-                                    <!-- <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover" <?if($pg=='komparasi_data'){?>style="background-color: #EE9D01;"<?}?>>
-                                        <a href="app/index/komparasi_data?reqId=<?=$reqId?>" class="menu-link menu-toggle">
-                                            <span class="menu-text">Komparasi Data SIMPEG & SIASN</span>
-                                            <i class="menu-arrow"></i>
-                                        </a>
-                                    </li> -->
                                 </ul>
                             </div>
                         </div>
-                    <?} else{?>
+                    <?
+                    }
+                    else
+                    {
+                    ?>
                         <div class="aside-menu-wrapper flex-column-fluid" id="kt_aside_menu_wrapper">
-                            <!--begin::Menu Container-->
+
                             <div id="kt_aside_menu" class="aside-menu my-4" data-menu-vertical="1" data-menu-scroll="1" data-menu-dropdown-timeout="500" style="border: 0px solid red; margin-top: 0px !important; margin-bottom: 0px !important;">
                                 <!--begin::Menu Nav-->
                                 <ul class="menu-nav">
@@ -520,238 +526,38 @@ $arrcarimenuparent= $vfpeg->cariparentmenu($arrparam);
                                             <i class="menu-arrow"></i>
                                         </a>
                                     </li>
-                                        
-
-                                        <? /* ?>
-                                        <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover">
-
-                                            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                                                <span class="menu-text">Data Utama</span>
-                                                <i class="menu-arrow"></i>
-                                                <!-- <i class="fa fa-address-book" aria-hidden="true"></i> -->
-                                            </a>
-                                            <div class="menu-submenu">
-                                                <i class="menu-arrow"></i>
-                                                <ul class="menu-subnav">
-                                                    <li class="menu-item menu-item-parent" aria-haspopup="true">
-                                                        <span class="menu-link">
-                                                            <span class="menu-text">Data Utama</span>
-                                                        </span>
-                                                    </li>
-
-                                                                                    <li class="menu-item " aria-haspopup="true">
-                                            <a href="app/index/pegawai_data" class="menu-link">
-                                                <i class="menu-bullet menu-bullet-line">
-                                                    <span></span>
-                                                </i>
-                                                <span class="menu-text">Identitas Pegawai</span>
-                                            </a>
-                                        </li>
-                                                                                    
-                                                </ul>
-                                            </div>
-                                        </li>
-                                                                        <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover">
-
-                                            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                                                <span class="menu-text">Data Riwayat</span>
-                                                <i class="menu-arrow"></i>
-                                                <!-- <i class="fa fa-address-book" aria-hidden="true"></i> -->
-                                            </a>
-                                            <div class="menu-submenu">
-                                                <i class="menu-arrow"></i>
-                                                <ul class="menu-subnav">
-                                                    <li class="menu-item menu-item-parent" aria-haspopup="true">
-                                                        <span class="menu-link">
-                                                            <span class="menu-text">Data Riwayat</span>
-                                                        </span>
-                                                    </li>
-
-                                                                                    <li class="menu-item " aria-haspopup="true">
-                                            <a href="app/index/pegawai_pendidikan_umum" class="menu-link">
-                                                <i class="menu-bullet menu-bullet-line">
-                                                    <span></span>
-                                                </i>
-                                                <span class="menu-text">Pendidikan Umum</span>
-                                            </a>
-                                        </li>
-                                                                        <li class="menu-item " aria-haspopup="true">
-                                            <a href="app/index/pegawai_skp" class="menu-link">
-                                                <i class="menu-bullet menu-bullet-line">
-                                                    <span></span>
-                                                </i>
-                                                <span class="menu-text">SKP</span>
-                                            </a>
-                                        </li>
-                                                                        <li class="menu-item " aria-haspopup="true">
-                                            <a href="app/index/pegawai_huknis" class="menu-link">
-                                                <i class="menu-bullet menu-bullet-line">
-                                                    <span></span>
-                                                </i>
-                                                <span class="menu-text">Riwayat Huknis</span>
-                                            </a>
-                                        </li>
-                                                                        <li class="menu-item " aria-haspopup="true">
-                                            <a href="app/index/pegawai_assesment" class="menu-link">
-                                                <i class="menu-bullet menu-bullet-line">
-                                                    <span></span>
-                                                </i>
-                                                <span class="menu-text">Riwayat Assesment</span>
-                                            </a>
-                                        </li>
-                                                                        <li class="menu-item " aria-haspopup="true">
-                                            <a href="app/index/pegawai_penghargaan" class="menu-link">
-                                                <i class="menu-bullet menu-bullet-line">
-                                                    <span></span>
-                                                </i>
-                                                <span class="menu-text">Riwayat Penghargaan</span>
-                                            </a>
-                                        </li>
-                                                                                    
-                                                </ul>
-                                            </div>
-                                        </li>
-                                        <? */ ?>
-                                        
-
-                                    </ul>
-
-                                    <? /* ?>
-                                <ul class="menu-nav" style="display: none;">
-
-                                    <?
-                                    function getMenuByParent($id_induk, $arrMenu, $tempParentNama, $formulaid, $rencanasuksesiid, $pg, $reqPegawaiHard)
-                                    {
-                                        $arrayKey= [];
-                                        $arrayKey= in_array_column($id_induk, "MENU_PARENT_ID", $arrMenu);
-                                        if(!empty($arrayKey))
-                                        {
-                                            for($index_detil=0; $index_detil < count($arrayKey); $index_detil++)
-                                            {
-                                                $index_row= $arrayKey[$index_detil];
-                                                $tempMenuId= $arrMenu[$index_row]["MENU_ID"];
-                                                $arrMenu[$index_row]["MENU_PARENT_ID"];
-                                                $tempNama= $arrMenu[$index_row]["NAMA"];
-                                                $tempLinkFile= $arrMenu[$index_row]["LINK_FILE"];
-                                                $tempAkses= $arrMenu[$index_row]["AKSES"];
-                                                $tempJumlahChild= $arrMenu[$index_row]["JUMLAH_CHILD"];
-                                                $tempJumlahMenu= $arrMenu[$index_row]["JUMLAH_MENU"];
-                                                $tempJumlahDisable= $arrMenu[$index_row]["JUMLAH_DISABLE"];
-                                                $tempInfoNama= $tempParentNama.";".$tempNama;
-
-                                                $menuopen= "";
-                                                if($pg == $tempLinkFile)
-                                                    $menuopen= "menu-item-open";
-
-                                                if(!empty($formulaid))
-                                                    $tempLinkFile.= "?formulaid=".$formulaid."&reqPegawaiHard=".$reqPegawaiHard;
-                                                else if(!empty($rencanasuksesiid))
-                                                    $tempLinkFile.= "?rencanasuksesiid=".$rencanasuksesiid;
-                                    ?>
-                                    <li class="menu-item <?=$menuopen?>" aria-haspopup="true">
-                                        <a href="app/index/<?=$tempLinkFile?>" class="menu-link">
-                                            <i class="menu-bullet menu-bullet-line">
-                                                <span></span>
-                                            </i>
-                                            <span class="menu-text"><?=$tempNama?></span>
-                                        </a>
-                                    </li>
-                                    <?
-                                            }
-                                        }
-                                    }
-                                    ?>
-
-                                    <?
-                                    $arrayKey= [];
-                                    $arrayKey= in_array_column("0", "MENU_PARENT_ID", $arrMenu);
-                                    // print_r($arrayKey);exit;
-                                    if(!empty($arrayKey))
-                                    {
-                                        for($index_detil=0; $index_detil < count($arrayKey); $index_detil++)
-                                        {
-                                            $index_row= $arrayKey[$index_detil];
-                                            $tempMenuId= $arrMenu[$index_row]["MENU_ID"];
-                                            $arrMenu[$index_row]["MENU_PARENT_ID"];
-                                            $tempNama= $arrMenu[$index_row]["NAMA"];
-                                            $tempLinkFile= $arrMenu[$index_row]["LINK_FILE"];
-                                            $tempAkses= $arrMenu[$index_row]["AKSES"];
-                                            $tempJumlahChild= $arrMenu[$index_row]["JUMLAH_CHILD"];
-                                            $tempJumlahMenu= $arrMenu[$index_row]["JUMLAH_MENU"];
-                                            $tempJumlahDisable= $arrMenu[$index_row]["JUMLAH_DISABLE"];
-
-                                            $menuopen= "";
-                                            // if($index_detil == 0 && $pg == "home")
-                                            if($tempMenuId == $arrcarimenuparent)
-                                                $menuopen= "menu-item-open";
-
-                                            // .$menuopen.$pg
-                                            // $arrayKey= in_array_column($id_induk, "MENU_PARENT_ID", $arrMenu);
-                                    ?>
-                                    <li class="menu-item menu-item-submenu <?=$menuopen?> menu-item-here" aria-haspopup="true" data-menu-toggle="hover">
-
-                                        <a href="javascript:void(0);" class="menu-link menu-toggle">
-                                            <span class="menu-text"><?=$tempNama?></span>
-                                            <i class="menu-arrow"></i>
-                                            <!-- <i class="fa fa-address-book" aria-hidden="true"></i> -->
-                                        </a>
-                                        <div class="menu-submenu">
-                                            <i class="menu-arrow"></i>
-                                            <ul class="menu-subnav">
-                                                <li class="menu-item menu-item-parent" aria-haspopup="true">
-                                                    <span class="menu-link">
-                                                        <span class="menu-text"><?=$tempNama?></span>
-                                                    </span>
-                                                </li>
-
-                                                <?
-                                                if($tempJumlahChild > 0)
-                                                {
-                                                    getMenuByParent($tempMenuId, $arrMenu, $tempNama, $formulaid, $rencanasuksesiid, $pg, $reqPegawaiHard);
-                                                ?>
-                                                <?
-                                                }
-                                                ?>
-
-                                            </ul>
-                                        </div>
-                                    </li>
-                                    <?
-                                        }
-                                    }
-                                    ?>
                                 </ul>
-                                <? */ ?>
-                                <!--end::Menu Nav-->
+
                             </div>
-                            <!--end::Menu Container-->
+
                         </div>
-                        <!--end::Aside Menu-->
-                    <?}?>
+
+                    <?
+                    }
+                    ?>
                 </div>
-                <? } ?>
-                <!--end::Aside-->
-                <!--begin::Wrapper-->
+                <? 
+                } 
+                ?>
+
                 <div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper" <? if($pg == "login"){ ?> style="padding-left: 0px;"<? } ?>>
-                    
 
                     <div id="kt_header" class="header header-fixed">
                         <div class="container-fluid d-flex align-items-stretch justify-content-between">
                             <div class="logo-header"><img src="images/logo-aplikasi-hide.png" height="70"></div>
                             <?
-                            if($pg == "login"){} else { 
+                            if($pg == "login"){} 
+                            else 
+                            { 
                             ?>
-                            <!-- <div class="area-pencarian-header">
-                                <i class="fa fa-search" aria-hidden="true"></i>
-                                <input type="text" class="form-control" placeholder="Pencarian Nama Pegawai">
-                            </div> -->
-                            <? } ?>
-                            
+                            <? 
+                            }
+                            ?>
 
                             <div class="header-menu-wrapper header-menu-wrapper-left" id="kt_header_menu_wrapper">
                                 <?
-                                // echo $pg ;
-                                if($pg == "pegawai_data_fip"){ 
+                                if($pg == "pegawai_data_fip")
+                                {
                                 ?>
                                 <div class="area-menu-fip">
                                     <nav class="navbar navbar-default">
@@ -833,13 +639,17 @@ $arrcarimenuparent= $vfpeg->cariparentmenu($arrparam);
                                         </div>
                                     </nav>    
                                 </div>
-                                <? } ?>
+                                <? 
+                                }
+                                ?>
                                 <div class="header-menu header-menu-mobile header-menu-layout-default"></div>
                             </div>
+
                             <?
-                            if($pg == "login"){} else { 
+                            if($pg == "login"){}
+                            else
+                            { 
                             ?>
-                            
                             <div class="topbar">
                                 <div class="topbar-item">
                                     <div class="xxxtes btn btn-icon btn-icon-mobile w-auto btn-clean d-flex align-items-center btn-lg px-2" id="kt_quick_user_toggle">
@@ -847,36 +657,32 @@ $arrcarimenuparent= $vfpeg->cariparentmenu($arrparam);
                                         <span class="text-dark-50 font-weight-bolder font-size-base d-none d-md-inline mr-3"><?=$reqNama?></span>
                                         <span class="symbol symbol-lg-35 symbol-25 symbol-light-success">
                                             <span class="symbol-label font-size-h5 font-weight-bold">
-                                            <!--     <?=$reqLogo?> -->
                                                 <i class="fa fa-user" aria-hidden="true" style="color: #FFFFFF;"></i>
                                             </span>
                                         </span>
                                     </div>
                                 </div>
                             </div>
-                            <? } ?>
+                            <? 
+                            }
+                            ?>
                         </div>
                     </div>
 
                     <div class="content d-flex flex-column flex-column-fluid" id="kt_content" style="background: url(images/bg-login.jpg); background-size: 100% 100%; padding-bottom: 0px;">
                         <?=$content?>
                     </div>
-                    <!--end::Content-->
-                    <!--begin::Footer-->
+
                     <div class="footer bg-white py-4 d-flex flex-lg-column" id="kt_footer">
-                        <!--begin::Container-->
                         <div class="container-fluid d-flex flex-column flex-md-row align-items-center justify-content-between">
-                            <!--begin::Copyright-->
                             <div class="text-dark order-2 order-md-1">
                                 <span class="text-muted font-weight-bold mr-2">© 2024</span>
                                 <a class="text-dark-75 text-hover-primary">Pemerintah Kabupaten Mojokerto</a>
                             </div>
-                            <!--end::Copyright-->
                         </div>
-                        <!--end::Container-->
                     </div>
-                    <!--end::Footer-->
                 </div>
+
                 <!--end::Wrapper-->
             </div>
             <!--end::Page-->
@@ -917,7 +723,7 @@ $arrcarimenuparent= $vfpeg->cariparentmenu($arrparam);
                         <i class="symbol-badge bg-success"></i>
                     </div>
                     <div class="d-flex flex-column">
-                        <a href="#" class="font-weight-bold font-size-h5 text-dark-75 text-hover-primary"><?=$reqNama?></a>
+                        <a href="#" class="font-weight-bold font-size-h5 text-dark-75 text-hover-primary"><?=$adminusernama?></a>
                         <div class="text-muted mt-1"><?=$reqSatker?></div>
                         <div class="navi mt-2">
                             <a href="#" class="navi-item">
@@ -939,15 +745,11 @@ $arrcarimenuparent= $vfpeg->cariparentmenu($arrparam);
                                 </span>
                             </a>
                             <?
-                            if(!empty($reqPegawaiId))
+                            if(!empty($adminuserid))
                             {
-                                if(!empty($userpegawaimode) && !empty($adminuserid)){}
-                                else
-                                {
                             ?>
-                            <a href="app/logout" class="btn btn-sm btn-light-primary font-weight-bolder py-2 px-5">Sign Out</a>
+                            <a href="login/logout" class="btn btn-sm btn-light-primary font-weight-bolder py-2 px-5">Sign Out</a>
                             <?
-                                }
                             }
                             else
                             {
@@ -959,13 +761,11 @@ $arrcarimenuparent= $vfpeg->cariparentmenu($arrparam);
                         </div>
                     </div>
                 </div>
-                <!--end::Header-->
-                <!--begin::Separator-->
+
                 <div class="separator separator-dashed mt-8 mb-5"></div>
-                <!--end::Separator-->
-                <!--begin::Nav-->
+
                 <div class="navi navi-spacer-x-0 p-0">
-                    <!--begin::Item-->
+
                     <a class="navi-item">
                         <div class="navi-link">
                             <div class="navi-text">
@@ -981,37 +781,6 @@ $arrcarimenuparent= $vfpeg->cariparentmenu($arrparam);
             <!--end::Content-->
         </div>
         <!-- end::User Panel-->
-
-        <?
-        if(!empty($reqPegawaiId))
-        {
-        ?> 
-        <script type="text/javascript">
-            function setkembali()
-            {
-                $.ajax({
-                    url: "admin/unsetpegawai",
-                    processData: false,
-                    contentType: false,
-                    type: 'GET',
-                    dataType: 'json',
-                    success: function (response) {
-                        // console.log(response); return false;
-                        document.location.href = "admin/index";
-                    },
-                    error: function(xhr, status, error) {
-                        // var err = JSON.parse(xhr.responseText);
-                        // Swal.fire("Error", err.message, "error");
-                    },
-                    complete: function () {
-                        KTUtil.btnRelease(formSubmitButton);
-                    }
-                });
-            }
-        </script>
-        <?
-        }
-        ?>
 
     </body>
 </html>
