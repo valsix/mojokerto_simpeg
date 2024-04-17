@@ -1,7 +1,13 @@
 <?
 include_once("functions/personal.func.php");
 
-$this->load->model("base/PengalamanKerja");
+$this->load->model("base/CatatanPrestasi");
+$this->load->model("base/TingkatHukuman");
+$this->load->model("base/JenisHukuman");
+$this->load->model("base/PejabatPenetap");
+
+
+
 
 $userpegawaimode= $this->userpegawaimode;
 $adminuserid= $this->adminuserid;
@@ -14,19 +20,54 @@ else
 $reqId= $this->input->get('reqId');
 $reqRowId= $this->input->get('reqRowId');
 
-$pengalaman= new PengalamanKerja();
-$pengalaman->selectByParams(array('PENGALAMAN_ID'=>$reqRowId));
-$pengalaman->firstRow();
-$reqPengalamanId = $pengalaman->getField('PENGALAMAN_ID');
-$reqInstansi 			= $pengalaman->getField('NAMA');
-$reqJabatan = $pengalaman->getField('JABATAN');
-$reqTglMulaiKerja = dateToPageCheck($pengalaman->getField('TANGGAL_KERJA'));
-$reqMasaKerjaTh = $pengalaman->getField('MASA_KERJA_TAHUN');
-$reqMasaKerjaBl = $pengalaman->getField('MASA_KERJA_BULAN');
-// echo $reqTmtJabatan;exit;
-$reqMode="update";
-// $reqMode="insert";
-$readonly = "readonly";
+
+$tingkat_catatan_prestasi = new TingkatHukuman();
+$jenis_catatan_prestasi = new JenisHukuman();
+$pejabat_penetap = new PejabatPenetap();
+
+
+
+
+
+if(empty($reqRowId))
+{
+	$reqMode="insert";
+}
+else
+{
+
+	$prestasi = new CatatanPrestasi();
+	$prestasi->selectByParams(array('PRESTASI_KERJA_ID'=>$reqRowId));
+	// echo $cuti->query;exit;
+	$prestasi->firstRow();
+	$reqRowId					= $prestasi->getField('PRESTASI_KERJA_ID');
+	if( $prestasi->getField('PEJABAT_PENETAP_ID')==''){
+		$reqStatus='baru';
+		$reqDisplayBaru='';
+		$reqDisplay='none';
+	}else{
+		$reqDisplayBaru='none';
+		$reqDisplay='';
+	}
+	$reqPjPenetapNama= $prestasi->getField('PEJABAT_PENETAP');
+	$reqPjPenetapId= $prestasi->getField('PEJABAT_PENETAP_ID');
+
+	$reqPRESTASI_KERJA_ID = $prestasi->getField('PRESTASI_KERJA_ID');
+	$reqTahun 			= $prestasi->getField('TAHUN');
+	$reqPrestasi = $prestasi->getField('NAMA');
+	$reqTglSK = dateToPageCheck($prestasi->getField('TANGGAL_SK'));
+	$reqNoSK				= $prestasi->getField('NO_SK');
+	$reqPejabatPenetap				= $prestasi->getField('PEJABAT_PENETAP_ID');
+	$reqKeterangan				= $prestasi->getField('KETERANGAN');
+
+	// echo $reqTmtJabatan;exit;
+	$reqMode="update";
+
+}
+
+	
+
+
 ?>
 
 <!-- Bootstrap core CSS -->
@@ -43,7 +84,7 @@ $readonly = "readonly";
 						<a class="" href="app/index/pegawai">Data Pegawai</a>
 					</li>
 					<li class="breadcrumb-item text-muted">
-						<a class="" href="app/index/pengalaman_kerja?reqId=<?=$reqId?>">Pengalaman Kerja</a>
+						<a class="" href="app/index/catatan_prestasi?reqId=<?=$reqId?>">Catatan Prestasi</a>
 					</li>
 					<li class="breadcrumb-item text-muted">
 						<a class="text-muted">Halaman Input</a>
@@ -70,49 +111,67 @@ $readonly = "readonly";
             <form class="form" id="ktloginform" method="POST" enctype="multipart/form-data">
 	        	<div class="card-body">
 	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			Tanggal Mulai Kerja
-		        		</label>
-	        			<div class="col-lg-10 col-sm-12">
-	        				<div class="input-group date">
-		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTglMulaiKerja" value="<?=$reqTglMulaiKerja?>" />
-		        				<div class="input-group-append">
-		        					<span class="input-group-text">
-		        						<i class="la la-calendar"></i>
-		        					</span>
-		        				</div>
-		        			</div>
+	        			<label  class="col-form-label text-right col-lg-2 col-sm-12">Tahun</label>
+	        			<div class="col-lg-3 col-sm-12">
+	        				<input type="text" style="width:100px" id="reqTahun" name="reqTahun" <?=$read?> value="<?=$reqTahun?>" title="Tahun harus diisi" required class="form-control" /></td>
 	        			</div>
 	        		</div>
 	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Instansi</label>
-	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" name="reqInstansi" id="reqInstansi" value="<?=$reqInstansi?>" />
+	        			<label  class="col-form-label text-right col-lg-2 col-sm-12">Prestasi</label>
+	        			<div class="col-lg-3 col-sm-12">
+	        				<input type="text" id="reqTahun" name="reqPrestasi" <?=$read?> value="<?=$reqPrestasi?>"class="form-control" /></td>
+	        			</div>
+	        		</div>
+	        		
+	        		<div class="form-group row">
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">No. SK</label>
+	        			<div class="col-lg-4 col-sm-12">
+	        				<input type="text" style="width:250px" <?=$read?> class="form-control" name="reqNoSK" value="<?=$reqNoSK?>" title="No SK harus diisi" class="required" />
+	        			</div>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Tgl SK</label>
+	        			<div class="col-lg-4 col-sm-12">
+	        				<input type="text" style="width:100px" <?=$read?> id="reqTglSK" class="form-control" name="reqTglSK" maxlength="10"  value="<?=$reqTglSK?>" />
 	        			</div>
 	        		</div>
 	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Jabatan</label>
-	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" name="reqJabatan" id="reqJabatan" value="<?=$reqJabatan?>" />
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Pejabat Penetap</label>
+	        			<div class="col-lg-6 col-sm-12">
+				        	<input type="hidden" id="reqStatusPejabatPenetap" name="reqStatusPejabatPenetap" value="<?=$reqStatus?>" />
+			                <div id="baru_status" style="display:<?=$reqDisplayBaru?>">
+			            	<input type="text" style="width:225px;" id="reqPjPenetap_Baru" class="form-control" name="reqPjPenetap_Baru" <?=$read?> value="<?=$reqPjPenetapNama?>" />
+			                <? if($disabled == ''){?>
+			                	<img src="images/button_cancel.png" style="cursor:pointer" id="image_cancel" onclick="ShowHiddenId('')">
+			                <? }?>
+			                </div>
+			                
+			                <div id="select_status" style="display:<?=$reqDisplay?>">
+			            	<? $pejabat_penetap->selectByParams(array());?>
+			                <select <?=$disabled?> name="reqPjPenetap" id="reqPjPenetap" class="form-control">
+			                    <? while($pejabat_penetap->nextRow()){?>
+			                        <option value="<?=$pejabat_penetap->getField('PEJABAT_PENETAP_ID')?>" <? if($reqPjPenetapId == $pejabat_penetap->getField('PEJABAT_PENETAP_ID')) echo 'selected';?>><?=$pejabat_penetap->getField('JABATAN')?></option>
+			                    <? }?>
+			                </select>
+			                <? if($disabled == ''){?>
+			                	<img src="images/add.png" style="cursor:pointer" title="Tambah Data" id="image_add" height="15" width="15" onclick="ShowHiddenId('baru')">
+			                <? }?>
+			                </div>
 	        			</div>
 	        		</div>
+
 	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Masa Kerja (Th)</label>
-	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" name="reqMasaKerjaTh" id="reqMasaKerjaTh" value="<?=$reqMasaKerjaTh?>" />
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Keterangan</label>
+	        			<div class="col-lg-6 col-sm-12">
+	        				<textarea <?=$disabled?> class="form-control" name="reqKeterangan" cols="35"> <?=$reqKeterangan?></textarea>
 	        			</div>
 	        		</div>
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Masa Kerja (Bln)</label>
-	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" name="reqMasaKerjaBl" id="reqMasaKerjaBl" value="<?=$reqMasaKerjaBl?>" />
-	        			</div>
-	        		</div>
+
+
 	        		<div class="card-footer">
 	        		<div class="row">
 	        			<div class="col-lg-9">
 	        				<input type="hidden" name="reqMode" value="<?=$reqMode?>">
-	        				<input type="hidden" name="reqTempValidasiId" value="<?=$reqTempValidasiId?>">
+	        				<input type="hidden" name="reqId" value="<?=$reqId?>">
+	        				<input type="hidden" name="reqRowId" value="<?=$reqRowId?>">
 	        				<button type="submit" id="ktloginformsubmitbutton" class="btn btn-light-success"><i class="fa fa-save" aria-hidden="true"></i> Simpan</button>
 	        			</div>
 	        		</div>
@@ -125,15 +184,49 @@ $readonly = "readonly";
 
 <script type="text/javascript">
 
+	$("#reqTglSK,#reqTahun").keypress(function(e) {
+		if( e.which!=8 && e.which!=0 && (e.which<48 || e.which>57))
+		{
+			return false;
+		}
+	});
+
+	function ShowHiddenId(status){
+		if(status=='baru'){
+			document.getElementById('baru_status').style.display = '';
+			document.getElementById('select_status').style.display = 'none';
+			document.getElementById('image_cancel').style.display = '';
+		}else{
+			document.getElementById('baru_status').style.display = 'none';
+			document.getElementById('select_status').style.display = '';
+		}
+		document.getElementById('reqStatusPejabatPenetap').value = status;
+	}
+
 	$(function () {
 		$("[rel=tooltip]").tooltip({ placement: 'right'});
-		// $('[data-toggle="tooltip"]').tooltip()
+		document.getElementById('image_cancel').style.display = 'none';
+		document.getElementById('baru_status').style.display = 'none';
+		document.getElementById('select_status').style.display = '';
+		document.getElementById('image_add').style.display = '';
 	})
+
+
+	arrows= {leftArrow: '<i class="la la-angle-left"></i>', rightArrow: '<i class="la la-angle-right"></i>'};
+	$('#reqTglSK').datepicker({
+		todayHighlight: true
+		, autoclose: true
+		, orientation: "bottom left"
+		, clearBtn: true
+		, format: 'dd-mm-yyyy'
+		, templates: arrows
+	});
+
 
 	var _buttonSpinnerClasses = 'spinner spinner-right spinner-white pr-15';
 	jQuery(document).ready(function() {
 		var form = KTUtil.getById('ktloginform');
-		var formSubmitUrl = "json-data/info_data_json/indentitaspegawai";
+		var formSubmitUrl = "json-main/catatan_prestasi_json/add";
 		var formSubmitButton = KTUtil.getById('ktloginformsubmitbutton');
 		if (!form) {
 			return;
@@ -182,17 +275,30 @@ $readonly = "readonly";
 					success: function (response) {
 			        	// console.log(response); return false;
 			        	// Swal.fire("Good job!", "You clicked the button!", "success");
-			        	Swal.fire({
-			        		text: response.message,
-			        		icon: "success",
-			        		buttonsStyling: false,
-			        		confirmButtonText: "Ok",
-			        		customClass: {
-			        			confirmButton: "btn font-weight-bold btn-light-primary"
-			        		}
-			        	}).then(function() {
-			        		document.location.href = "app/index/pegawai_data";
-			        	});
+			        	data= response.message;
+			        	data= data.split("-");
+			        	rowid= data[0];
+			        	infodata= data[1];
+
+			        	if(rowid == "xxx")
+                        {
+                            Swal.fire("Error", infodata, "error");
+                        }
+                        else
+                        {
+                            Swal.fire({
+                                text: infodata,
+                                icon: "success",
+                                buttonsStyling: false,
+                                confirmButtonText: "Ok",
+                                customClass: {
+                                    confirmButton: "btn font-weight-bold btn-light-primary"
+                                }
+                            }).then(function() {
+                                document.location.href = "app/index/catatan_prestasi?reqId=<?=$reqId?>";
+                                // window.location.reload();
+                            });
+                        }
 			        },
 			        error: function(xhr, status, error) {
 			        	var err = JSON.parse(xhr.responseText);
@@ -218,14 +324,5 @@ $readonly = "readonly";
 		});
 	});
 
-	arrows= {leftArrow: '<i class="la la-angle-left"></i>', rightArrow: '<i class="la la-angle-right"></i>'};
-	$('#kttanggallahir').datepicker({
-		todayHighlight: true
-		, autoclose: true
-		, orientation: "bottom left"
-		, clearBtn: true
-		, format: 'dd-mm-yyyy'
-		, templates: arrows
-	});
 
 </script>
