@@ -42,5 +42,26 @@ class RiwayatJabatan extends Entity{
 		$this->query = $str;
 		return $this->selectLimit($str,$limit,$from); 
     }
+
+    function getCountByParams($paramsArray=array(), $statement='')
+	{
+		$str = "
+				SELECT COUNT(1) AS ROWCOUNT 
+				FROM JABATAN_RIWAYAT a
+                LEFT JOIN  ESELON B ON a.ESELON_ID = B.ESELON_ID
+				LEFT JOIN  JABATAN_FUNGSIONAL C ON a.JABATAN_FUNGSIONAL_ID = C.JABATAN_FUNGSIONAL_ID
+                WHERE 1 = 1".$statement; 
+		foreach ($paramsArray as $key => $val)
+		{
+			$str .= " AND $key = '$val' ";
+		}
+		$this->query = $str;
+		// echo $str;exit;
+		$this->select($str); 
+		if($this->firstRow()) 
+			return $this->getField("ROWCOUNT"); 
+		else 
+			return 0;  
+    }
 } 
 ?>

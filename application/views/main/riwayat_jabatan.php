@@ -16,7 +16,7 @@ $arrtabledata= array(
     , array("label"=>"Tgl. SK", "field"=> "TANGGAL_SK", "display"=>"1",  "width"=>"")
     , array("label"=>"Nama Jabatan", "field"=> "NAMA", "display"=>"",  "width"=>"")
     , array("label"=>"TMT Mutasi", "field"=> "TMT_JABATAN", "display"=>"",  "width"=>"")
-    , array("label"=>"Pejabat Penetap", "field"=> "ESELON", "display"=>"",  "width"=>"")
+    , array("label"=>"Pejabat Penetap", "field"=> "PEJABAT_PENETAP", "display"=>"",  "width"=>"")
     , array("label"=>"Eselon", "field"=> "TMT_ESELON", "display"=>"",  "width"=>"")
     , array("label"=>"TMT Eselon", "field"=> "TMT_JABATAN_FUNGSIONAL", "display"=>"",  "width"=>"")
     , array("label"=>"TMT Jabatan Fungsional", "field"=> "TMT_JABATAN_FUNGSIONAL", "display"=>"",  "width"=>"")

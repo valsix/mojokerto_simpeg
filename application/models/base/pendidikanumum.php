@@ -27,5 +27,24 @@ class PendidikanUmum extends Entity{
 		$this->query = $str;
 		return $this->selectLimit($str,$limit,$from);
     }
+
+    function getCountByParams($paramsArray=array(), $statement='')
+	{
+		$str = "
+				SELECT COUNT(1) AS ROWCOUNT 
+				FROM PENDIDIKAN_RIWAYAT a, PENDIDIKAN b 
+				WHERE a.PENDIDIKAN_ID = b.PENDIDIKAN_ID ".$statement; 
+		foreach ($paramsArray as $key => $val)
+		{
+			$str .= " AND $key = '$val' ";
+		}
+		$this->query = $str;
+		// echo $str;exit;
+		$this->select($str); 
+		if($this->firstRow()) 
+			return $this->getField("ROWCOUNT"); 
+		else 
+			return 0;  
+    }
 } 
 ?>
