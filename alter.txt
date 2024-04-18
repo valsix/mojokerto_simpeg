@@ -2,7 +2,7 @@ create schema opt authorization postgres;
 
 --alter table pangkat_riwayat alter column pangkat_riwayat_id type numeric using cast(pangkat_riwayat_id as numeric);
 
-alter table pegawai add column pangkat_riwayat_id numeric, add column pangkat_awal_riwayat_id numeric, add column gaji_riwayat_id numeric, add column jabatan_riwayat_id numeric, add column jabatan_tambahan_id numeric, add column pendidikan_riwayat_id numeric, add column hukuman_id numeric, add column diklat_struktural_id numeric;
+alter table pegawai add column pangkat_riwayat_id numeric, add column pangkat_awal_riwayat_id numeric, add column gaji_riwayat_id numeric, add column jabatan_riwayat_id numeric, add column jabatan_tambahan_id numeric, add column pendidikan_riwayat_id numeric, add column hukuman_id numeric, add column diklat_struktural_id numeric, add column diklat_fungsional_id numeric, add column diklat_teknis_id numeric, add column penghargaan_id numeric, add column anak_id numeric, add column suami_istri_id numeric, add column cuti_id numeric;
 
 alter table pegawai add column format_nip_baru character varying;
 alter table pegawai add column vnama_lengkap character varying;
@@ -196,6 +196,151 @@ from
 (
 	select a.pegawai_id, a.diklat_struktural_id
 	from opt.diklat_struktural_terakhir_riwayat a
+	where 1=1
+) as aggr
+where u.pegawai_id = aggr.pegawai_id;
+
+create or replace view opt.diklat_fungsional_terakhir_riwayat as 
+select
+a.diklat_fungsional_id, a.pegawai_id
+from
+(
+	select a.diklat_fungsional_id, a.pegawai_id
+	, row_number () over ( partition by a.pegawai_id order by a.tanggal_sttpp desc ) urut
+	from diklat_fungsional a
+) a
+where urut = 1
+order by a.pegawai_id
+;
+
+update pegawai as u
+set
+diklat_fungsional_id= aggr.diklat_fungsional_id
+from
+(
+	select a.pegawai_id, a.diklat_fungsional_id
+	from opt.diklat_fungsional_terakhir_riwayat a
+	where 1=1
+) as aggr
+where u.pegawai_id = aggr.pegawai_id;
+
+create or replace view opt.diklat_teknis_terakhir_riwayat as 
+select
+a.diklat_teknis_id, a.pegawai_id
+from
+(
+	select a.diklat_teknis_id, a.pegawai_id
+	, row_number () over ( partition by a.pegawai_id order by a.tanggal_sttpp desc ) urut
+	from diklat_teknis a
+) a
+where urut = 1
+order by a.pegawai_id
+;
+
+update pegawai as u
+set
+diklat_teknis_id= aggr.diklat_teknis_id
+from
+(
+	select a.pegawai_id, a.diklat_teknis_id
+	from opt.diklat_teknis_terakhir_riwayat a
+	where 1=1
+) as aggr
+where u.pegawai_id = aggr.pegawai_id;
+
+create or replace view opt.penghargaan_terakhir_riwayat as 
+select
+a.penghargaan_id, a.pegawai_id
+from
+(
+	select a.penghargaan_id, a.pegawai_id
+	, row_number () over ( partition by a.pegawai_id order by a.tanggal_sk desc ) urut
+	from penghargaan a
+) a
+where urut = 1
+order by a.pegawai_id
+;
+
+update pegawai as u
+set
+penghargaan_id= aggr.penghargaan_id
+from
+(
+	select a.pegawai_id, a.penghargaan_id
+	from opt.penghargaan_terakhir_riwayat a
+	where 1=1
+) as aggr
+where u.pegawai_id = aggr.pegawai_id;
+
+create or replace view opt.anak_terakhir_riwayat as 
+select
+a.anak_id, a.pegawai_id
+from
+(
+	select a.anak_id, a.pegawai_id
+	, row_number () over ( partition by a.pegawai_id order by a.tanggal_lahir desc ) urut
+	from anak a
+) a
+where urut = 1
+order by a.pegawai_id
+;
+
+update pegawai as u
+set
+anak_id= aggr.anak_id
+from
+(
+	select a.pegawai_id, a.anak_id
+	from opt.anak_terakhir_riwayat a
+	where 1=1
+) as aggr
+where u.pegawai_id = aggr.pegawai_id;
+
+create or replace view opt.cuti_terakhir_riwayat as 
+select
+a.cuti_id, a.pegawai_id
+from
+(
+	select a.cuti_id, a.pegawai_id
+	, row_number () over ( partition by a.pegawai_id order by a.tanggal_mulai desc ) urut
+	from cuti a
+) a
+where urut = 1
+order by a.pegawai_id
+;
+
+update pegawai as u
+set
+cuti_id= aggr.cuti_id
+from
+(
+	select a.pegawai_id, a.cuti_id
+	from opt.cuti_terakhir_riwayat a
+	where 1=1
+) as aggr
+where u.pegawai_id = aggr.pegawai_id;
+
+create or replace view opt.suami_istri_terakhir_riwayat as 
+select
+a.suami_istri_id, a.pegawai_id
+from
+(
+	select a.suami_istri_id, a.pegawai_id
+	, row_number () over ( partition by a.pegawai_id order by a.tanggal_kawin desc ) urut
+	from suami_istri a
+	where status = 1
+) a
+where urut = 1
+order by a.pegawai_id
+;
+
+update pegawai as u
+set
+suami_istri_id= aggr.suami_istri_id
+from
+(
+	select a.pegawai_id, a.suami_istri_id
+	from opt.suami_istri_terakhir_riwayat a
 	where 1=1
 ) as aggr
 where u.pegawai_id = aggr.pegawai_id;

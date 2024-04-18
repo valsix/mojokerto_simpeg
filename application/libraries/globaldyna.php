@@ -82,6 +82,76 @@ class globaldyna
 					, array("label"=>"Masa Kerja", "field"=> "MASA_KERJA_PANGKAT", "n"=> "B.MASA_KERJA_PANGKAT", "display"=>"", "width"=>"")
 				)
 			)
+			, array
+			(
+				"group"=>"Jabatan"
+				, "data"=> array(
+					array("label"=>"Jabatan", "field"=> "JABATAN_NAMA", "n"=> "C.JABATAN_NAMA", "display"=>"", "width"=>"")
+					, array("label"=>"Eselon", "field"=> "JABATAN_ESELON", "n"=> "C.JABATAN_ESELON", "display"=>"", "width"=>"")
+					, array("label"=>"TMT Eselon", "field"=> "TMT_ESELON", "n"=> "C.TMT_ESELON", "display"=>"", "width"=>"")
+					, array("label"=>"TMT Jabatan", "field"=> "TMT_JABATAN", "n"=> "C.TMT_JABATAN", "display"=>"", "width"=>"")
+					, array("label"=>"Nomor SK Jabatan", "field"=> "NO_SK_JABATAN", "n"=> "C.NO_SK_JABATAN", "display"=>"", "width"=>"")
+					, array("label"=>"Tanggal SK Jabatan", "field"=> "TANGGAL_SK_JABATAN", "n"=> "C.TANGGAL_SK_JABATAN", "display"=>"", "width"=>"")
+					, array("label"=>"Pejabat Penetap Jabatan", "field"=> "JABATAN_PENETAP_JABATAN", "n"=> "C.JABATAN_PENETAP_JABATAN", "display"=>"", "width"=>"")
+				)
+			)
+			, array
+			(
+				"group"=>"Pendidikan"
+				, "data"=> array(
+					array("label"=>"Pendidikan", "field"=> "PENDIDIKAN", "n"=> "F.PENDIDIKAN", "display"=>"", "width"=>"")
+					, array("label"=>"Jurusan", "field"=> "JURUSAN_PENDIDIKAN", "n"=> "F.JURUSAN_PENDIDIKAN", "display"=>"", "width"=>"")
+					, array("label"=>"Nama Sekolah", "field"=> "NAMA_SEKOLAH_PENDIDIKAN", "n"=> "F.NAMA_SEKOLAH_PENDIDIKAN", "display"=>"", "width"=>"")
+					, array("label"=>"Tempat Sekolah", "field"=> "TEMPAT_PENDIDIKAN", "n"=> "F.TEMPAT_PENDIDIKAN", "display"=>"", "width"=>"")
+					, array("label"=>"Kepala Sekolah", "field"=> "KEPALA_PENDIDIKAN", "n"=> "F.KEPALA_PENDIDIKAN", "display"=>"", "width"=>"")
+					, array("label"=>"Nomor STTB", "field"=> "NO_STTB_PENDIDIKAN", "n"=> "F.NO_STTB_PENDIDIKAN", "display"=>"", "width"=>"")
+					, array("label"=>"Tanggal STTB", "field"=> "TANGGAL_STTB_PENDIDIKAN", "n"=> "F.TANGGAL_STTB_PENDIDIKAN", "display"=>"", "width"=>"")
+				)
+			)
+			, array
+			(
+				"group"=>"Penghargaan"
+				, "data"=> array(
+					array("label"=>"Nomor SK Penghargaan", "field"=> "NO_SK_PENGHARGAAN", "n"=> "A5.NO_SK_PENGHARGAAN", "display"=>"", "width"=>"")
+					, array("label"=>"Tanggal SK Penghargaan", "field"=> "TANGGAL_SK_PENGHARGAAN", "n"=> "A5.TANGGAL_SK_PENGHARGAAN", "display"=>"", "width"=>"")
+					, array("label"=>"Nama Penghargaan", "field"=> "NAMA_PENGHARGAAN", "n"=> "A5.NAMA_PENGHARGAAN", "display"=>"", "width"=>"")
+					, array("label"=>"Penghargaan Dari", "field"=> "PENGHARGAAN_DARI", "n"=> "A5.PENGHARGAAN_DARI", "display"=>"", "width"=>"")
+					, array("label"=>"Tahun Penghargaan", "field"=> "TAHUN_PENGHARGAAN", "n"=> "A5.TAHUN_PENGHARGAAN", "display"=>"", "width"=>"")
+				)
+			)
+			, array
+			(
+				"group"=>"Diklat Fungsional"
+				, "data"=> array(
+					array("label"=>"Nama Diklat Fungsional", "field"=> "NAMA_FUNGSIONAL", "n"=> "A6.NAMA_FUNGSIONAL", "display"=>"", "width"=>"")
+					, array("label"=>"Tempat Diklat Fungsional", "field"=> "TEMPAT_FUNGSIONAL", "n"=> "A6.TEMPAT_FUNGSIONAL", "display"=>"", "width"=>"")
+					, array("label"=>"Penyelenggara Diklat Fungsional", "field"=> "PENYELENGGARA_FUNGSIONAL", "n"=> "A6.PENYELENGGARA_FUNGSIONAL", "display"=>"", "width"=>"")
+					, array("label"=>"Angkatan Diklat Fungsional", "field"=> "ANGKATAN_FUNGSIONAL", "n"=> "A6.ANGKATAN_FUNGSIONAL", "display"=>"", "width"=>"")
+					, array("label"=>"Tahun Diklat Fungsional", "field"=> "TAHUN_FUNGSIONAL", "n"=> "A6.TAHUN_FUNGSIONAL", "display"=>"", "width"=>"")
+				)
+			)
+			, array
+			(
+				"group"=>"Diklat Teknis"
+				, "data"=> array(
+					array("label"=>"Nama Diklat Teknis", "field"=> "NAMA_TEKNIS", "n"=> "A7.NAMA_TEKNIS", "display"=>"", "width"=>"")
+					, array("label"=>"Tempat Diklat Teknis", "field"=> "TEMPAT_TEKNIS", "n"=> "A7.TEMPAT_TEKNIS", "display"=>"", "width"=>"")
+					, array("label"=>"Penyelenggara Diklat Teknis", "field"=> "PENYELENGGARA_TEKNIS", "n"=> "A7.PENYELENGGARA_TEKNIS", "display"=>"", "width"=>"")
+					, array("label"=>"Angkatan Diklat Teknis", "field"=> "ANGKATAN_TEKNIS", "n"=> "A7.ANGKATAN_TEKNIS", "display"=>"", "width"=>"")
+					, array("label"=>"Tahun Diklat Teknis", "field"=> "TAHUN_TEKNIS", "n"=> "A7.TAHUN_TEKNIS", "display"=>"", "width"=>"")
+				)
+			)
+			, array
+			(
+				"group"=>"Diklat Struktural"
+				, "data"=> array(
+					array("label"=>"Nama Diklat Struktural", "field"=> "NAMA_STRUKTURAL", "n"=> "A8.NAMA_STRUKTURAL", "display"=>"", "width"=>"")
+					, array("label"=>"Tempat Diklat Struktural", "field"=> "TEMPAT_STRUKTURAL", "n"=> "A8.TEMPAT_STRUKTURAL", "display"=>"", "width"=>"")
+					, array("label"=>"Penyelenggara Diklat Struktural", "field"=> "PENYELENGGARA_STRUKTURAL", "n"=> "A8.PENYELENGGARA_STRUKTURAL", "display"=>"", "width"=>"")
+					, array("label"=>"Angkatan Diklat Struktural", "field"=> "ANGKATAN_STRUKTURAL", "n"=> "A8.ANGKATAN_STRUKTURAL", "display"=>"", "width"=>"")
+					, array("label"=>"Tahun Diklat Struktural", "field"=> "TAHUN_STRUKTURAL", "n"=> "A8.TAHUN_STRUKTURAL", "display"=>"", "width"=>"")
+				)
+			)
 		);
 		return $vreturn;
 	}
