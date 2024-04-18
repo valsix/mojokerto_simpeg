@@ -70,7 +70,7 @@ DESCRIPTION			:
 	
 	
 	public function getNextId($idName,$tableName,$filter=""){
-		$str = "SELECT MAX($idName::int) nilai FROM $tableName ";
+		$str = "SELECT MAX($idName::bigint) nilai FROM $tableName ";
 		if($filter != "")
 			$str = $str . " WHERE $filter";		
 			$query = $this->db->query($str);

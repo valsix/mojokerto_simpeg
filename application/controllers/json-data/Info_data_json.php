@@ -65,10 +65,11 @@ class info_data_json extends CI_Controller {
 	{
 		$this->load->model("base/Pegawai");
 
-		// reqNIP1
-		// reqNIP2
-		// reqNama
 		$reqPegawaiId= $this->input->post("reqPegawaiId");
+
+		$reqNIP1= $this->input->post("reqNIP1");
+		$reqNIP2= $this->input->post("reqNIP2");
+		$reqNama= $this->input->post("reqNama");
 
 		$reqGelarDepan= $this->input->post("reqGelarDepan");
 		$reqGelarBelakang= $this->input->post("reqGelarBelakang");
@@ -86,9 +87,25 @@ class info_data_json extends CI_Controller {
 		$reqRW= $this->input->post("reqRW");
 		$reqKodePos= $this->input->post("reqKodePos");
 		$reqPropinsi= $this->input->post("reqPropinsi");
+
 		$reqKabupaten= $this->input->post("reqKabupaten");
+		$reqKabupatenarr=explode("*", $reqKabupaten);
+		if (is_array($reqKabupatenarr)) {
+			$reqKabupaten= $reqKabupatenarr[0];
+		}
+
 		$reqKecamatan= $this->input->post("reqKecamatan");
+		$reqKecamatanarr=explode("*", $reqKecamatan);
+		if (is_array($reqKecamatanarr)) {
+			$reqKecamatan= $reqKecamatanarr[0];
+		}
+
 		$reqDesa= $this->input->post("reqDesa");
+		$reqDesaarr=explode("*", $reqDesa);
+		if (is_array($reqDesaarr)) {
+			$reqDesa= $reqDesaarr[0];
+		}		
+
 		$reqBank= $this->input->post("reqBank");
 		$reqNoRekening= $this->input->post("reqNoRekening");
 		// $reqPangkatTerkahir= $this->input->post("reqPangkatTerkahir");
@@ -119,6 +136,10 @@ class info_data_json extends CI_Controller {
 		$set= new Pegawai();	
 		$set->setField("PEGAWAI_ID", $reqPegawaiId);
 
+		$set->setField("NIP_LAMA", $reqNIP1);
+		$set->setField("NIP_BARU", $reqNIP2);
+		$set->setField("NAMA", setQuote($reqNama));
+
 		$set->setField("GELAR_DEPAN", $reqGelarDepan);
 		$set->setField("GELAR_BELAKANG", $reqGelarBelakang);
 		$set->setField("TEMPAT_LAHIR", $reqTempatLahir);
@@ -142,7 +163,7 @@ class info_data_json extends CI_Controller {
 		$set->setField("NO_REKENING", $reqNoRekening);
 		// $set->setField("", $reqPangkatTerkahir);
 		// $set->setField("", $reqJabatanTerkahir);
-		$set->setField("SATKER_ID", ValToNullDB($reqSatkerId));
+		$set->setField("SATKER_ID", $reqSatkerId);
 		$set->setField("TIPE_PEGAWAI_ID", ValToNullDB($reqTipePegawai));
 		$set->setField("TUGAS_TAMBAHAN_NEW", $reqTugasTambahan);
 		$set->setField("STATUS_PEGAWAI", $reqStatusPegawai);
@@ -168,7 +189,7 @@ class info_data_json extends CI_Controller {
 		{
 			if($set->insert())
 			{
-				$reqPegawaiId= $set->pegawai_id;
+				$reqPegawaiId= $set->id;
 				$reqSimpan = 1;
 			}
 		}

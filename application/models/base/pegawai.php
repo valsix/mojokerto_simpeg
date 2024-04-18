@@ -10,6 +10,72 @@ class Pegawai extends Entity{
 		$this->Entity(); 
 	}
 
+	function insert()
+	{
+		/*Auto-generate primary key(s) by next max value (integer) */
+		$this->setField("PEGAWAI_ID", $this->getNextId("PEGAWAI_ID","PEGAWAI"));
+
+		$str = "
+		INSERT INTO PEGAWAI
+		(
+			PEGAWAI_ID, NIP_LAMA, NIP_BARU, NAMA, GELAR_DEPAN, GELAR_BELAKANG, TEMPAT_LAHIR
+			, TANGGAL_LAHIR, JENIS_KELAMIN, AGAMA_ID, STATUS_KAWIN, SUKU_BANGSA, GOLONGAN_DARAH
+			, TELEPON, EMAIL, ALAMAT, RT, RW, KODEPOS, PROPINSI_ID, KABUPATEN_ID, KECAMATAN_ID
+			, KELURAHAN_ID, BANK_ID, NO_REKENING, SATKER_ID, TIPE_PEGAWAI_ID, TUGAS_TAMBAHAN_NEW
+			, STATUS_PEGAWAI, TANGGAL_PENSIUN, JENIS_PEGAWAI_ID, KEDUDUKAN_ID, KARTU_PEGAWAI, ASKES
+			, TASPEN, NPWP, NIK, KTP_PNS, KK, KTP_PASANGAN, DRH
+		) 
+		VALUES
+		(
+			'".$this->getField("PEGAWAI_ID")."'
+			, '".$this->getField("NIP_LAMA")."'
+			, '".$this->getField("NIP_BARU")."'
+			, '".$this->getField("NAMA")."'
+			, '".$this->getField("GELAR_DEPAN")."'
+			, '".$this->getField("GELAR_BELAKANG")."'
+			, '".$this->getField("TEMPAT_LAHIR")."'
+			, ".$this->getField("TANGGAL_LAHIR")."
+			, '".$this->getField("JENIS_KELAMIN")."'
+			, ".$this->getField("AGAMA_ID")."
+			, '".$this->getField("STATUS_KAWIN")."'
+			, '".$this->getField("SUKU_BANGSA")."'
+			, '".$this->getField("GOLONGAN_DARAH")."'
+			, '".$this->getField("TELEPON")."'
+			, '".$this->getField("EMAIL")."'
+			, '".$this->getField("ALAMAT")."'
+			, '".$this->getField("RT")."'
+			, '".$this->getField("RW")."'
+			, '".$this->getField("KODEPOS")."'
+			, ".$this->getField("PROPINSI_ID")."
+			, ".$this->getField("KABUPATEN_ID")."
+			, ".$this->getField("KECAMATAN_ID")."
+			, ".$this->getField("KELURAHAN_ID")."
+			, ".$this->getField("BANK_ID")."
+			, '".$this->getField("NO_REKENING")."'
+			, '".$this->getField("SATKER_ID")."'
+			, ".$this->getField("TIPE_PEGAWAI_ID")."
+			, '".$this->getField("TUGAS_TAMBAHAN_NEW")."'
+			, '".$this->getField("STATUS_PEGAWAI")."'
+			, ".$this->getField("TANGGAL_PENSIUN")."
+			, ".$this->getField("JENIS_PEGAWAI_ID")."
+			, ".$this->getField("KEDUDUKAN_ID")."
+			, '".$this->getField("KARTU_PEGAWAI")."'
+			, '".$this->getField("ASKES")."'
+			, '".$this->getField("TASPEN")."'
+			, '".$this->getField("NPWP")."'
+			, '".$this->getField("NIK")."'
+			, '".$this->getField("KTP_PNS")."'
+			, '".$this->getField("KK")."'
+			, '".$this->getField("KTP_PASANGAN")."'
+			, '".$this->getField("DRH")."'
+		)
+		"; 	
+		// echo $str;exit();
+		$this->id = $this->getField("PEGAWAI_ID");
+		$this->query = $str;
+		return $this->execQuery($str);
+    }
+
 	function update()
 	{
 		$str = "		
@@ -36,7 +102,7 @@ class Pegawai extends Entity{
 		, KELURAHAN_ID= ".$this->getField("KELURAHAN_ID")."
 		, BANK_ID= ".$this->getField("BANK_ID")."
 		, NO_REKENING= '".$this->getField("NO_REKENING")."'
-		, SATKER_ID= ".$this->getField("SATKER_ID")."
+		, SATKER_ID= '".$this->getField("SATKER_ID")."'
 		, TIPE_PEGAWAI_ID= ".$this->getField("TIPE_PEGAWAI_ID")."
 		, TUGAS_TAMBAHAN_NEW= '".$this->getField("TUGAS_TAMBAHAN_NEW")."'
 		, STATUS_PEGAWAI= '".$this->getField("STATUS_PEGAWAI")."'
