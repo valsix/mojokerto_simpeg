@@ -240,7 +240,7 @@ $objWorksheet->setCellValue("n".($no+16),$OrangTua->getField('NAMA_KABUPATEN'))-
 $objWorksheet->setCellValue("n".($no+17),$OrangTua->getField('NAMA_PROPINSI'))->mergeCells('n'.($no+17).':t'.($no+17));
 $objWorksheet->setCellValue("n".($no+18),$OrangTua->getField('KODEPOS'))->mergeCells('n'.($no+18).':t'.($no+18));
 
-$no=$no+22;
+$no=$no+23;
 $this->load->model("base/SuamiIstri");
 $SuamiIstri= new SuamiIstri();
 $SuamiIstri->selectByParams(array("a.PEGAWAI_ID" => $reqId),-1,-1, '');
@@ -248,15 +248,169 @@ $SuamiIstri->selectByParams(array("a.PEGAWAI_ID" => $reqId),-1,-1, '');
 $SuamiIstri->firstRow();
 if($SuamiIstri->getField('NAMA')!=''){
 	$objWorksheet->insertNewRowBefore($no,1);
-	// $objWorksheet->removeRow($no+1);
-	$objWorksheet->setCellValue("f".$no,'1');
+// echo $no;exit;
+	$objWorksheet->setCellValue("a".$no,'1');
 	$objWorksheet->setCellValue("b".$no,$SuamiIstri->getField('NAMA'))->mergeCells('b'.$no.':d'.$no);
 	$objWorksheet->setCellValue("e".$no,$SuamiIstri->getField('TEMPAT_LAHIR').','.$SuamiIstri->getField('TANGGAL_LAHIR'))->mergeCells('e'.$no.':h'.$no);
 	$objWorksheet->setCellValue("i".$no,$SuamiIstri->getField('NMPENDIDIKAN'))->mergeCells('i'.$no.':k'.$no);
 	$objWorksheet->setCellValue("l".$no,$SuamiIstri->getField('TANGGAL_KAWIN'))->mergeCells('l'.$no.':n'.$no);
 	$objWorksheet->setCellValue("o".$no,$SuamiIstri->getField('STATUS_TUNJANGAN'))->mergeCells('o'.$no.':p'.$no);
 	$objWorksheet->setCellValue("q".$no,$SuamiIstri->getField('PEKERJAAN'))->mergeCells('q'.$no.':t'.$no);
+	$objWorksheet->removeRow($no+1);
 }
+
+$this->load->model("base/Anak");
+$Anak= new Anak();
+$allrecord = $Anak->getCountByParams(array('PEGAWAI_ID'=>$reqId));
+if($allrecord!=0){
+	$objWorksheet->removeRow($no+5);
+	$objWorksheet->insertNewRowBefore($no+5, $allrecord);
+	$no=$no+5;
+}
+else{
+	$no=$no+6;
+}
+$urut=1;
+$Anak->selectByParams(array('PEGAWAI_ID'=>$reqId));
+// echo $Anak->query; exit;
+while($Anak->nextRow()){
+	$objWorksheet->setCellValue("a".$no,$urut);
+	$objWorksheet->setCellValue("b".$no,$Anak->getField('NAMA'))->mergeCells('b'.$no.':d'.$no);
+	$objWorksheet->setCellValue("e".$no,$Anak->getField('TEMPAT_LAHIR').'/'.$Anak->getField('TANGGAL_LAHIR'))->mergeCells('e'.$no.':h'.$no);
+	$objWorksheet->setCellValue("i".$no,$Anak->getField('JENIS_KELAMIN'));
+	$objWorksheet->setCellValue("j".$no,$Anak->getField('KELUARGA'))->mergeCells('j'.$no.':k'.$no);
+	$objWorksheet->setCellValue("l".$no,$Anak->getField('TUNJANGAN'))->mergeCells('l'.$no.':n'.$no);
+	$objWorksheet->setCellValue("o".$no,$Anak->getField('NMPENDIDIKAN'))->mergeCells('o'.$no.':p'.$no);
+	$objWorksheet->setCellValue("q".$no,$Anak->getField('PEKERJAAN'))->mergeCells('q'.$no.':t'.$no);
+	$no++;
+	$urut++;
+} 
+
+$this->load->model("base/Organisasi");
+$set= new Organisasi();
+$allrecord = $set->getCountByParams(array('PEGAWAI_ID'=>$reqId));
+if($allrecord!=0){
+	$objWorksheet->removeRow($no+5);
+	$objWorksheet->insertNewRowBefore($no+5, $allrecord);
+	$no=$no+5;
+}
+else{
+	$no=$no+6;
+}
+$urut=1;
+$set->selectByParams(array('PEGAWAI_ID'=>$reqId));
+// echo $Anak->query; exit;
+while($set->nextRow()){
+	$objWorksheet->setCellValue("a".$no,$urut);
+	$objWorksheet->setCellValue("b".$no,$set->getField('NAMA'))->mergeCells('b'.$no.':e'.$no);
+	$objWorksheet->setCellValue("f".$no,$set->getField('JABATAN'))->mergeCells('f'.$no.':j'.$no);
+	$objWorksheet->setCellValue("k".$no,$set->getField('TANGGAL_AWAL').'-'.$set->getField('TANGGAL_AKHIR'))->mergeCells('k'.$no.':m'.$no);
+	$objWorksheet->setCellValue("n".$no,$set->getField('PIMPINAN'))->mergeCells('n'.$no.':p'.$no);
+	$objWorksheet->setCellValue("q".$no,$set->getField('TEMPAT'))->mergeCells('q'.$no.':t'.$no);
+	$no++;
+	$urut++;
+} 
+
+$this->load->model("base/Penghargaan");
+$set= new Penghargaan();
+$allrecord = $set->getCountByParams(array('PEGAWAI_ID'=>$reqId));
+if($allrecord!=0){
+	$objWorksheet->removeRow($no+5);
+	$objWorksheet->insertNewRowBefore($no+5, $allrecord);
+	$no=$no+5;
+}
+else{
+	$no=$no+6;
+}
+$urut=1;
+$set->selectByParams(array('PEGAWAI_ID'=>$reqId));
+// echo $set->query; exit;
+while($set->nextRow()){
+	$objWorksheet->setCellValue("a".$no,$urut);
+	$objWorksheet->setCellValue("b".$no,$set->getField('NAMA'))->mergeCells('b'.$no.':e'.$no);
+	$objWorksheet->setCellValue("f".$no,$set->getField('NO_SK'))->mergeCells('f'.$no.':i'.$no);
+	$objWorksheet->setCellValue("j".$no,$set->getField('TANGGAL_SK'))->mergeCells('j'.$no.':l'.$no);
+	$objWorksheet->setCellValue("m".$no,$set->getField('NMPEJABATPENETAP'))->mergeCells('m'.$no.':q'.$no);
+	$objWorksheet->setCellValue("r".$no,$set->getField('TAHUN'))->mergeCells('r'.$no.':t'.$no);
+	$no++;
+	$urut++;
+} 
+
+$this->load->model("base/Hukuman");
+$set= new Hukuman();
+$allrecord = $set->getCountByParams(array('PEGAWAI_ID'=>$reqId));
+if($allrecord!=0){
+	$objWorksheet->removeRow($no+21);
+	$objWorksheet->insertNewRowBefore($no+21, $allrecord);
+	$no=$no+21;
+}
+else{
+	$no=$no+22;
+}
+$urut=1;
+$set->selectByParams(array('PEGAWAI_ID'=>$reqId));
+// echo $set->query; exit;
+while($set->nextRow()){
+	$objWorksheet->setCellValue("a".$no,$urut);
+	$objWorksheet->setCellValue("b".$no,$set->getField('NMJENISHUKUMAN'))->mergeCells('b'.$no.':g'.$no);
+	$objWorksheet->setCellValue("h".$no,$set->getField('NO_SK'))->mergeCells('h'.$no.':l'.$no);
+	$objWorksheet->setCellValue("m".$no,$set->getField('TANGGAL_SK'))->mergeCells('m'.$no.':o'.$no);
+	$objWorksheet->setCellValue("p".$no,$set->getField('NMPEJABATPENETAP'))->mergeCells('p'.$no.':t'.$no);
+	$no++;
+	$urut++;
+} 
+
+
+$this->load->model("base/Cuti");
+$set= new Cuti();
+$allrecord = $set->getCountByParams(array('PEGAWAI_ID'=>$reqId));
+if($allrecord!=0){
+	$objWorksheet->removeRow($no+5);
+	$objWorksheet->insertNewRowBefore($no+5, $allrecord);
+	$no=$no+5;
+}
+else{
+	$no=$no+6;
+}
+$urut=1;
+$set->selectByParams(array('PEGAWAI_ID'=>$reqId));
+// echo $set->query; exit;
+while($set->nextRow()){
+	$objWorksheet->setCellValue("a".$no,$urut);
+	$exptgl=explode('-', $set->getField('TANGGAL_PERMOHONAN'));
+
+	$objWorksheet->setCellValue("b".$no,$exptgl[0])->mergeCells('b'.$no.':c'.$no);
+	$objWorksheet->setCellValue("d".$no,$set->getField('NMCUTI'))->mergeCells('d'.$no.':g'.$no);
+	$objWorksheet->setCellValue("h".$no,$set->getField('NO_SURAT'))->mergeCells('h'.$no.':l'.$no);
+	$objWorksheet->setCellValue("m".$no,$set->getField('TANGGAL_SURAT'))->mergeCells('m'.$no.':o'.$no);
+	$objWorksheet->setCellValue("p".$no,$set->getField('TANGGAL_MULAI').'-'.$set->getField('TANGGAL_SELESAI'))->mergeCells('p'.$no.':q'.$no);
+	$objWorksheet->setCellValue("r".$no,$set->getField('KETERANGAN'))->mergeCells('r'.$no.':t'.$no);
+	$no++;
+	$urut++;
+} 
+
+$this->load->model("base/PenguasaanBahasa");
+$set= new PenguasaanBahasa();
+$allrecord = $set->getCountByParams(array('PEGAWAI_ID'=>$reqId));
+if($allrecord!=0){
+	$objWorksheet->removeRow($no+11);
+	$objWorksheet->insertNewRowBefore($no+11, $allrecord);
+	$no=$no+11;
+}
+else{
+	$no=$no+12;
+}
+$urut=1;
+$set->selectByParams(array('PEGAWAI_ID'=>$reqId));
+// echo $set->query; exit;
+while($set->nextRow()){
+	$objWorksheet->setCellValue("a".$no,$urut);
+	$objWorksheet->setCellValue("b".$no,$set->getField('NMJENIS'))->mergeCells('b'.$no.':i'.$no);
+	$objWorksheet->setCellValue("j".$no,$set->getField('NAMA'))->mergeCells('j'.$no.':o'.$no);
+	$objWorksheet->setCellValue("p".$no,$set->getField('MAMPU'))->mergeCells('p'.$no.':t'.$no);
+	$no++;
+	$urut++;
+} 
 
 $currencyFormat= '_(Rp* #,##0_);_(Rp* (#,##0);_(Rp* "-"_);_(@_)';
 $objWriter = PHPExcel_IOFactory::createWriter($objPHPexcel, 'Excel5');

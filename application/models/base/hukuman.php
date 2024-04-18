@@ -12,10 +12,10 @@ class Hukuman extends Entity{
 	}
 
 	function setlogdata($infotable, $infoaksi, $query)
-    {
-    	$setlog= new DbLog();
-    	$setlog->insert($infotable, $infoaksi, $query);
-    }
+    	{
+	    	$setlog= new DbLog();
+	    	$setlog->insert($infotable, $infoaksi, $query);
+    	}
 	
 
 	function insert()
@@ -59,9 +59,9 @@ class Hukuman extends Entity{
 		$this->setlogdata("HUKUMAN", "INSERT", $str);
 
 		return $this->execQuery($str);
-    }
+    	}
 
-    function update()
+    	function update()
 	{
 		$str = "UPDATE HUKUMAN
 		SET    
@@ -91,19 +91,19 @@ class Hukuman extends Entity{
 		$this->setlogdata("HUKUMAN", "UPDATE", $str);
 
 		return $this->execQuery($str);
-    }
+    	}
 
-    function delete()
+    	function delete()
 	{
-        $str = "DELETE FROM HUKUMAN
-                WHERE HUKUMAN_ID = '".$this->getField("HUKUMAN_ID")."'";
-		$this->query = $str;
+	        $str = "DELETE FROM HUKUMAN
+	                WHERE HUKUMAN_ID = '".$this->getField("HUKUMAN_ID")."'";
+			$this->query = $str;
 
-		// parse ke dua sesuai aksi
-		$this->setlogdata("HUKUMAN", "DELETE", $str);
+			// parse ke dua sesuai aksi
+			$this->setlogdata("HUKUMAN", "DELETE", $str);
 
-        return $this->execQuery($str);
-    }
+	        return $this->execQuery($str);
+	}
 
 	function selectByParams($paramsArray=array(),$limit=-1,$from=-1, $statement='')
 	{
@@ -138,6 +138,25 @@ class Hukuman extends Entity{
 		// echo $statement;exit;
 				
 		return $this->selectLimit($str,$limit,$from); 
-    }
+    	}
+
+    	function getCountByParams($paramsArray=array(), $statement='')
+	{
+		$str = "
+			SELECT COUNT(1) AS ROWCOUNT 
+			FROM HUKUMAN WHERE 1=1 ".$statement; 
+				
+		foreach ($paramsArray as $key => $val)
+		{
+			$str .= " AND $key = '$val' ";
+		}
+		$this->query = $str;
+		// echo $str;exit;
+		$this->select($str); 
+		if($this->firstRow()) 
+			return $this->getField("ROWCOUNT"); 
+		else 
+			return 0;  
+    	}
 } 
 ?>

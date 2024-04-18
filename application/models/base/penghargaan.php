@@ -103,5 +103,24 @@ class Penghargaan extends Entity{
 				
 		return $this->selectLimit($str,$limit,$from); 
     }
+
+    function getCountByParams($paramsArray=array(), $statement='')
+		{
+		$str = "
+				SELECT COUNT(1) AS ROWCOUNT 
+				FROM PENGHARGAAN WHERE 1=1 ".$statement; 
+				
+		foreach ($paramsArray as $key => $val)
+		{
+			$str .= " AND $key = '$val' ";
+		}
+		$this->query = $str;
+		// echo $str;exit;
+		$this->select($str); 
+		if($this->firstRow()) 
+			return $this->getField("ROWCOUNT"); 
+		else 
+			return 0;  
+    }
 } 
 ?>
