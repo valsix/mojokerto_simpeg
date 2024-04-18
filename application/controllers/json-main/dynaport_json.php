@@ -40,6 +40,10 @@ class dynaport_json extends CI_Controller {
 
 		$this->session->set_userdata("dynaorder", $_SESSION["dynaorder"]);
 		$this->dynaorder= $_SESSION["dynaorder"];
+
+		$this->session->set_userdata("dynawhere", $_SESSION["dynawhere"]);
+		$this->dynawhere= $_SESSION["dynawhere"];
+		
 	}
 
 	function array_value_recursive($key, array $arr){
@@ -54,7 +58,10 @@ class dynaport_json extends CI_Controller {
 	{
 		$this->load->library('globaldyna');
 		$vdyna= new globaldyna();
-		$arrfield= $vdyna->getinfofiled();
+		$arrfield= $vdyna->getinfofield();
+		$arrselect= $vdyna->getinfoselect();
+		$arroperator= $vdyna->getinfooperator();
+
 		$arrcolomfield= array_column($arrfield, 'data');
 
 		$arrdatafield= [];
@@ -65,6 +72,15 @@ class dynaport_json extends CI_Controller {
 		}
 
 		$vasc= $this->input->post("vasc");
+		$vtr= $this->input->post("vtr");
+		$visifield= $this->input->post("visifield");
+		$visioperator= $this->input->post("visioperator");
+		$visivalue= $this->input->post("visivalue");
+
+		$arrisifield= explode("***", $visifield);
+		$arrisioperator= explode("***", $visioperator);
+		$arrisivalue= explode("***", $visivalue);
+
 		$dynaorder= $vorder= "";
 		$arrasc= explode("***", $vasc);
 		// print_r($arrasc);exit;
@@ -89,7 +105,81 @@ class dynaport_json extends CI_Controller {
 		$this->session->set_userdata('dynaorder'.$this->configvlxsessfolder, $dynaorder);
 		$_SESSION["dynaorder"]= $dynaorder;
 
-		return 1;
+		$arrtablehide= array(
+			array("label"=>"sorderdefault", "field"=> "SORDERDEFAULT", "display"=>"1", "width"=>"")
+			, array("label"=>"fieldid", "field"=> "PEGAWAI_ID", "display"=>"1", "width"=>"")
+		);
+
+		$vreturn["arrtablehide"]= $arrtablehide;
+		$vreturn["vtr"]= $vtr;
+
+		$operatorwhere= "";
+		foreach ($arrisifield as $k => $v)
+		{
+			$wherefield= "";
+			$infocarikey= $v;
+			$arrcheck= in_array_column($infocarikey, "opt", $arrselect);
+			// print_r($arrcheck);exit;
+			if(!empty($arrcheck))
+			{
+				// set field
+				$keyindex= $arrcheck[0];
+				$vupper= $arrselect[$keyindex]["upper"];
+				$vn= $arrselect[$keyindex]["n"];
+				$vmode= $arrselect[$keyindex]["mode"];
+				if(!empty($vupper))
+					$wherefield= "UPPER(".$vn.")";
+				else if($vmode == "date")
+				{
+					$wherefield= "TO_DATE(TO_CHAR(".$vn.", 'YYYY-MM-DD'), 'YYYY/MM/DD')";
+				}
+				else
+					$wherefield= $vn;
+
+				$infocarikey= $arrisioperator[$k];
+				$arrcheck= in_array_column($infocarikey, "opt", $arroperator);
+				$keyindex= $arrcheck[0];
+				// set operator
+				$wherefield.= " ".$arroperator[$keyindex]["n"];
+
+				// set value
+				$valueisi= $arrisivalue[$k];
+				if(!empty($vupper))
+					$valueisi= strtoupper($valueisi);
+
+				// untuk like
+				if($infocarikey == 7)
+				{
+					$wherefield.= "'%".$valueisi."%'";
+				}
+				else
+				{
+					if($vmode == "date")
+					{
+						$wherefield.= "TO_DATE('".dateToPageCheck($valueisi)."','YYYY/MM/DD')";
+					}
+					else
+					{
+						$wherefield.= "'".$valueisi."'";
+					}
+				}
+			}
+
+			if(!empty($wherefield))
+			{
+				$vwhere= $wherefield;
+				$operatorwhere= getconcatseparator($operatorwhere, $vwhere, " AND ");
+			}
+		}
+
+		if(!empty($operatorwhere))
+		{
+			$operatorwhere= " AND ".$operatorwhere;
+		}
+		$this->session->set_userdata('dynawhere'.$this->configvlxsessfolder, $operatorwhere);
+		$_SESSION["dynawhere"]= $operatorwhere;
+		
+		echo json_encode( $vreturn, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
 	}
 
 	function json()
@@ -133,7 +223,7 @@ class dynaport_json extends CI_Controller {
 				$statement.= " AND A.SATKER_ID LIKE '".$reqId."%' ";
 		}
 
-		$statement.= " AND A.SATKER_ID LIKE '01%' ";
+		// $statement.= " AND A.SATKER_ID LIKE '01%' ";
 
 		if($reqSearch == "")
 			$reqSearch.= " AND A.STATUS_PEGAWAI IN (1, 2)";
@@ -159,12 +249,19 @@ class dynaport_json extends CI_Controller {
 
 		// $sOrder= "ORDER BY C.ESELON_ID ASC, A.TUGAS_TAMBAHAN_NEW ASC, B.PANGKAT_ID DESC, B.TMT_PANGKAT ASC";
 		$sOrder= $this->dynaorder;
+		$dynawhere= $this->dynawhere;
+		if(!empty($dynawhere))
+		{
+			$statement .= $dynawhere;
+		}
+		
 		// $statement .= " AND A.PEGAWAI_ID IN (995865801606, 995865800180, 235164100003, 235162000001)";
 
 		$searhjson= " AND (UPPER(B.GOL_RUANG) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(TEMPAT_LAHIR) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(NAMA) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(A.NAMA) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(A.NIP_LAMA) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(A.NIP_BARU) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(AMBIL_FORMAT_NIP_BARU(NIP_BARU)) LIKE '%".strtoupper($_GET['sSearch'])."%' ) ";
 
 		$set->selectmonitoring(array(), $dsplyRange, $dsplyStart, $statement, $sOrder);
 		
+		// $cekquery= 1;
 		if(!empty($cekquery)){
 			echo $set->query;exit;
 		}

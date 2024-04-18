@@ -5,15 +5,14 @@ $arrtabledata= array(
     , array("label"=>"fieldid", "field"=> "PEGAWAI_ID", "display"=>"1", "width"=>"")
 );
 
-$arrtablehide= array(
-	array("label"=>"sorderdefault", "field"=> "SORDERDEFAULT", "display"=>"1", "width"=>"")
-    , array("label"=>"fieldid", "field"=> "PEGAWAI_ID", "display"=>"1", "width"=>"")
-);
-
 $this->load->library('globaldyna');
 $vdyna= new globaldyna();
-$arrfield= $vdyna->getinfofiled();
+$arrfield= $vdyna->getinfofield();
+$arrselect= $vdyna->getinfoselect();
+$arroperator= $vdyna->getinfooperator();
 // print_r($arrfield);exit;
+
+$arrsatkertree= $this->sesstree;
 ?>
 <style type="text/css">
 	   select[readonly].select2-hidden-accessible + .select2-container {
@@ -119,7 +118,7 @@ $arrfield= $vdyna->getinfofiled();
 							<!-- The custom context menu -->
 							<div id="wrapper" class="menu2">
 								<ul id="menu">
-									<li><a class="option2 appendbtn">Tambah</a></li>
+									<li><a style="cursor: pointer;" class="tambahoption appendbtn">Tambah</a></li>
 								</ul>
 							</div>
 						</div>
@@ -191,7 +190,7 @@ $arrfield= $vdyna->getinfofiled();
 				    });
 
 				    // select all the option elements
-				    const options2 = document.querySelectorAll(".option2"); 
+				    const options2 = document.querySelectorAll(".tambahoption"); 
 				  </script>
 
         	</div>
@@ -228,7 +227,10 @@ $arrfield= $vdyna->getinfofiled();
 
 <!-- DATATABLE -->
 <a href="#" id="triggercari" style="display:none" title="triggercari">triggercari</a>
-<!-- <input type="text" id="arrtablehide" /> -->
+
+<link href="lib/select2totreemaster/src/select2totree.css" rel="stylesheet">
+<script src="lib/select2/select2.min.js"></script>
+<script src="lib/select2totreemaster/src/select2totree.js"></script>
 
 <script type="text/javascript">
 var datanewtable;
@@ -244,6 +246,8 @@ var valinfovalidasiid = '';
 var valinfovalidasihapusid = '';
 
 var arrfield= <?php echo json_encode($arrfield); ?>;
+var arrselect= <?php echo json_encode($arrselect); ?>;
+var arroperator= <?php echo json_encode($arroperator); ?>;
 
 $(function () {
 	$("[rel=tooltip]").tooltip({ placement: 'right'});
@@ -254,39 +258,27 @@ $('#ktagamaid').select2({
 	placeholder: "Pilih agama"
 });
 
-$('#ktsatuankerjad').select2({
-	placeholder: "Pilih Satuan Kerja"
-});
-
-$('#ktjeniskelamin').select2({
-	placeholder: "Pilih jenis kelamin"
-});
-
-arrows= {leftArrow: '<i class="la la-angle-left"></i>', rightArrow: '<i class="la la-angle-right"></i>'};
-$('#kttanggallahir').datepicker({
-	todayHighlight: true
-	, autoclose: true
-	, orientation: "bottom left"
-	, clearBtn: true
-	, format: 'dd-mm-yyyy'
-	, templates: arrows
-});
-
 var formSubmitButton;
 var vparam;
 var _buttonSpinnerClasses = 'spinner spinner-right spinner-white pr-15';
 let arrtablehide;
 let infonewdata;
-// $("#arrtablehide").attr("value", <?php echo json_encode($arrtablehide); ?>); 
+
+const uniqId = (() => {
+    let i = 0;
+    return () => {
+        return i++;
+    }
+})();
 
 jQuery(document).ready(function() {
 
 	$(".fieldoption").click(function() {
- 		valueHtml= $(this).html();
+ 		vfieldoption= $(this).html();
 
  		vstr= ''
  		+'<div class="item">'
- 			+'<div class="fieldnamaoption nama">'+valueHtml+'</div>'
+ 			+'<div class="fieldnamaoption nama">'+vfieldoption+'</div>'
 	 		+'<div class="urutan">'
 	 			+'<select class="fieldselectoption form-control">'
 	 				+'<option value="Asc">Asc</option>'
@@ -301,9 +293,151 @@ jQuery(document).ready(function() {
  		$(".appendfield").append(vstr);
  	});
 
- 	$(".option2").click(function() {
- 		var valueHtml2 = $(this).html();
- 		$(".appendoperasi").append('<div class="item item-operasi"><div class="nama"><select class=form-control><option>NIP</option><option>NIP Baru</option></select></div><div class="operasi"><select class=form-control><option>=</option><option>!=</option></select></div><div class="isi"><input class=form-control></div><div class="aksi"><i class="fa fa-times-circle" aria-hidden="true" onclick="$(this).parent().parent().remove();"></i></div></div>');
+ 	$(".tambahoption").click(function() {
+ 		vuniq= uniqId();
+
+ 		vstr= ''
+ 		+'<div class="item item-operasi">'
+ 		;
+
+ 		// console.log(arrselect);
+ 		if(Array.isArray(arrselect) && arrselect.length)
+ 		{
+ 			vstr+= ''
+ 			+'<div class="nama">'
+		 		+'<select id="optnama'+vuniq+'" class="form-control">';
+
+ 			$.each(arrselect, function( i, v) {
+ 				// console.log(v);
+ 				flabel= v["label"];
+ 				fopt= v["opt"];
+
+ 				vstr+= '<option value="'+fopt+'">'+flabel+'</option>';
+ 			});
+ 			vstr+= '</select>'
+ 			+'</div>';
+
+ 			vstr+= '<div class="operasi">'
+	 			+'<select id="optoperasi'+vuniq+'" class="form-control">'
+		 			$.each(arroperator, function( i, v) {
+		 				// console.log(v);
+		 				flabel= v["label"];
+		 				fopt= v["opt"];
+
+		 				vstr+= '<option value="'+fopt+'">'+flabel+'</option>';
+		 			});
+	 		vstr+= '</select>'
+ 			+'</div>'
+ 			+'<div id="dividisi'+vuniq+'" class="isi">'
+ 				+'<input id="isitext'+vuniq+'" class="form-control" />'
+ 			+'</div>'
+ 			+'<div class="aksi">'
+ 				+'<i class="fa fa-times-circle" aria-hidden="true" onclick="$(this).parent().parent().remove();"></i>'
+ 			+'</div>';
+ 		}
+ 		vstr+= '</div>';
+ 		// console.log(vstr);
+ 		$(".appendoperasi").append(vstr);
+
+ 		$('[id^="optnama"]').on("change", function () {
+ 			infoval= $(this).val();
+ 			infoid= $(this).attr('id');
+ 			infoid= infoid.replace("optnama", "");
+ 			// console.log(infoval+"-"+infoid);
+
+ 			vselectdata= [];
+ 			vmode= "";
+ 			arrmode= arrselect.filter(item => item.opt === infoval);
+ 			if(Array.isArray(arrmode) && arrmode.length)
+ 			{
+ 				arrmode= arrmode[0];
+ 				vmode= arrmode["mode"];
+ 				vselectdata= arrmode["vdata"];
+ 			}
+ 			// console.log(vmode);
+
+ 			vdivisi= "";
+ 			$('#dividisi'+infoid).empty();
+ 			if(vmode == "select")
+ 			{
+ 				vdivisi+= '<select id="isitext'+vuniq+'" class="form-control">'
+ 				$.each(vselectdata, function( i, v) {
+	 				// console.log(v);
+	 				fopt= v["id"];
+	 				flabel= v["text"];
+
+	 				vdivisi+= '<option value="'+fopt+'">'+flabel+'</option>';
+	 			});
+ 				vdivisi+= '</select>';
+ 				// console.log(vselectdata);
+ 			}
+ 			else if(vmode == "date")
+ 			{
+ 				vdivisi+= '<div class="input-group date">'
+	 				+'<input id="isitext'+infoid+'" type="text" autocomplete="off" class="dynatanggal form-control" />'
+					+'<div class="input-group-append">'
+						+'<span class="input-group-text">'
+							+'<i class="la la-calendar"></i>'
+						+'</span>'
+					+'</div>'
+				+'</div>'
+				;
+ 			}
+ 			else if(vmode == "satker")
+ 			{
+ 				vdivisi+= '<div class="input-group date">'
+ 				+'<select id="isitext'+vuniq+'" class="form-control"><option value=""></option></select>';
+ 				+'</div>'
+				;
+ 			}
+ 			else
+ 			{
+ 				vdivisi= '<input id="isitext'+infoid+'" class="form-control" />';
+ 			}
+ 			$('#dividisi'+infoid).append(vdivisi);
+
+ 			if(vmode == "date")
+ 			{
+ 				arrows= {leftArrow: '<i class="la la-angle-left"></i>', rightArrow: '<i class="la la-angle-right"></i>'};
+				$('.dynatanggal').datepicker({
+					todayHighlight: true
+					, autoclose: true
+					, orientation: "bottom left"
+					, clearBtn: true
+					, format: 'dd-mm-yyyy'
+					, templates: arrows
+				});
+ 			}
+ 			else if(vmode == "satker")
+ 			{
+ 				<?
+			    if(empty($arrsatkertree))
+			    {
+			    ?>
+			    arrsatkertree= [];
+			    arrsatkerdata= [];
+			    <?
+			    }
+			    else
+			    {
+			    ?>
+			    arrsatkertree= JSON.parse('<?=JSON_encode($arrsatkertree)?>');
+			    arrsatkerdata= JSON.parse('<?=JSON_encode($arrsatkerdata)?>');
+			    <?
+			    }
+			    ?>
+
+ 				$('#isitext'+infoid).select2ToTree({treeData: {dataArr: arrsatkertree, dftVal:""}, maximumSelectionLength: 3, placeholder: 'Pilih salah satu data'});
+ 			}
+ 			else if(vmode == "numeric")
+ 			{
+ 				$('#isitext'+infoid).bind('keyup paste', function(){
+					// this.value = this.value.replace(/[^0-9]/g, '');
+					this.value = this.value.replace(/[^0-9\.]/g, '');
+				});
+ 			}
+ 		});
+
  	});
 
     var jsonurl= "json-main/dynaport_json/json";
@@ -362,8 +496,6 @@ jQuery(document).ready(function() {
     		voption= $(this).html();
     		vtr+= "<th>"+voption+"</th>";
 
-    		// fieldselectoption
-
     		if(voption !== "")
     		{
 	    		varrcheckdata= arrfield.flatMap(it => Object.values(it.data)).filter(item => item.label === voption);
@@ -391,7 +523,6 @@ jQuery(document).ready(function() {
     		}
 
     	});
-    	vtr+= "</tr>";
     	// console.log(infonewdata);
 
     	if(voption == "")
@@ -408,37 +539,78 @@ jQuery(document).ready(function() {
 	    	return false;
     	}
 
-    	// arrtablehide= $("#arrtablehide").val();
+    	formSubmitButton= KTUtil.getById("caridyna");
+    	KTUtil.btnWait(formSubmitButton, _buttonSpinnerClasses, "Please wait");
+
+    	visifield= "";
+    	visioperator= "";
+    	visivalue= "";
+    	$('[id^="optnama"]').each(function(){
+    		infoval= $(this).val();
+ 			infoid= $(this).attr('id');
+ 			infoid= infoid.replace("optnama", "");
+ 			// console.log(infoval+"-"+infoid);
+
+ 			if(visifield == "")
+ 				visifield= infoval;
+ 			else
+ 				visifield= visifield+"***"+infoval;
+
+ 			vinfodetil= $("#optoperasi"+infoid).val();
+ 			if(visioperator == "")
+ 				visioperator= vinfodetil;
+ 			else
+ 				visioperator= visioperator+"***"+vinfodetil;
+
+ 			vinfodetil= $("#isitext"+infoid).val();
+ 			if(visivalue == "")
+ 				visivalue= vinfodetil;
+ 			else
+ 				visivalue= visivalue+"***"+vinfodetil;
+ 		});
+
     	$.ajax({
 		    url: "json-main/dynaport_json/setatribut",
 		    method: "POST",
 		    data: {
 		        vasc: vasc
+		        , visifield: visifield
+		        , visioperator: visioperator
+		        , visivalue: visivalue
+		        , vtr: vtr
 		    }
 		    , beforeSend: function () {
-		    	arrtablehide= <?php echo json_encode($arrtablehide); ?>;
-		    	// console.log(arrtablehide);
-
-		    	arrtablehide.forEach(function (item, index) {
-		    		var infodetil= {};
-		            infodetil.label= item["label"];
-		            infodetil.field= item["field"];
-		            infodetil.width= item["width"];
-		            infodetil.display= item["display"];
-		            infonewdata.push(infodetil);
-		    	});
-		    	console.log(infonewdata);
 		    }
 		    ,
 		    success: function (response) {
 		    	// console.log(response);return false;
+		    	response= $.parseJSON(response);
+		    	arrtablehide= response["arrtablehide"];
+		    	vtr= response["vtr"];
 
-		    	$('#'+infotableid).DataTable().destroy();
+		    	// console.log(arrtablehide);
+		    	arrtablehide.forEach(function (item, index) {
+		    		var infodetil= {};
+		    		vitemlabel= item["label"];
+		            infodetil.label= vitemlabel;
+		            infodetil.field= item["field"];
+		            infodetil.width= item["width"];
+		            infodetil.display= item["display"];
+		            infonewdata.push(infodetil);
+
+		            vtr+= "<th>"+vitemlabel+"</th>";
+		    	});
+		    	vtr+= "</tr>";
+		    	// console.log(infonewdata);console.log(vtr);
+
+		    	// $('#'+infotableid).DataTable().responsive.recalc();
+		    	if ($.fn.DataTable.isDataTable('#'+infotableid)) {
+		    		$('#'+infotableid).DataTable().clear().destroy();
+		    	}
+		    	
+		    	// $('#'+infotableid).DataTable().destroy();
 		    	$('#'+infotableid+' thead').empty();
 		    	$('#'+infotableid+' thead').append(vtr);
-
-		    	formSubmitButton= KTUtil.getById("caridyna");
-		    	KTUtil.btnWait(formSubmitButton, _buttonSpinnerClasses, "Please wait");
 		    	
 		    	var jsonurl= "json-main/dynaport_json/json?m=1";
 		    	ajaxserverselectsingle.init(infotableid, jsonurl, infonewdata);

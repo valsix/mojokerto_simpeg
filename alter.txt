@@ -360,7 +360,7 @@ declare
 vreturn character varying;
 begin
 	select
-	substr(vnip, 0, 8) || ' ' || substr(vnip, 9, 6) || ' ' || substr(vnip, 15, 1) || ' ' || substr(vnip, 16, 3) vnip
+	substr(vnip, 1, 8) || ' ' || substr(vnip, 9, 6) || ' ' || substr(vnip, 15, 1) || ' ' || substr(vnip, 16, 3) vnip
 	into vreturn;
 	
 	return vreturn;
