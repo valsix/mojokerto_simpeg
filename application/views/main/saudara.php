@@ -14,7 +14,7 @@ $arrtabledata= array(
     array("label"=>"Nama", "field"=> "NAMA", "display"=>"",  "width"=>"")
     , array("label"=>"Tempat Lahir", "field"=> "TEMPAT_LAHIR", "display"=>"",  "width"=>"")
     , array("label"=>"Tgl Lahir", "field"=> "TANGGAL_LAHIR", "display"=>"",  "width"=>"")
-    , array("label"=>"Usia", "field"=> "USIA", "display"=>"",  "width"=>"")
+    // , array("label"=>"Usia", "field"=> "USIA", "display"=>"",  "width"=>"")
     , array("label"=>"Jenis Kelamin", "field"=> "JENIS_KELAMIN", "display"=>"",  "width"=>"")
     , array("label"=>"Pekerjaan", "field"=> "PEKERJAAN", "display"=>"",  "width"=>"")
     , array("label"=>"Alamat", "field"=> "ALAMAT", "display"=>"",  "width"=>"")
@@ -226,7 +226,7 @@ jQuery(document).ready(function() {
         }
         else
         {
-            urlAjax= "json-data/info_data_json/jsondiklatteknisdelete?&reqDetilId="+valinfoid;
+            urlAjax= "json-main/saudara_json/delete?&reqRowId="+valinfoid;
             swal.fire({
                 title: 'Apakah anda yakin untuk hapus data?',
                 type: 'warning',
@@ -256,7 +256,7 @@ jQuery(document).ready(function() {
                                 showConfirmButton: false,
                                 timer: 2000
                             }).then(function() {
-                                document.location.href = "app/index/pegawai_diklat_teknis?formulaid=<?=$formulaid?>";
+                                document.location.href = "app/index/saudara?reqId=<?=$reqId?>";
                             });
                         },
                         complete: function() {
