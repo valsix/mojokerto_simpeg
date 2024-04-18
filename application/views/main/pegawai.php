@@ -131,7 +131,7 @@ $arrsatkerdata= $this->sessdatatree;
                                     </a>
                                 </li>
                                 <li class="navi-item">
-                                    <a  id="" class="navi-link">
+                                    <a  id="btnBiodataLengkap" class="navi-link">
                                         <span class="navi-text">Biodata Lengkap</span>
                                     </a>
                                 </li>
@@ -338,6 +338,30 @@ jQuery(document).ready(function() {
         else{
             vpilihid= valinfoid;
             varurl= "app/loadUrl/main/cetakfip2?reqId="+vpilihid;
+            // window.open(varurl, 'window name', 'window settings');
+            window.open(varurl, '_blank');
+        }
+    });
+
+    $("#btnBiodataLengkap").on("click", function () {
+        btnid= $(this).attr('id');
+
+        if(valinfoid == "")
+        {
+            Swal.fire({
+                text: "Pilih salah satu data Riwayat terlebih dahulu.",
+                icon: "error",
+                buttonsStyling: false,
+                confirmButtonText: "Ok",
+                customClass: {
+                    confirmButton: "btn font-weight-bold btn-light-primary"
+                }
+            });
+            return false;
+        }
+        else{
+            vpilihid= valinfoid;
+            varurl= "app/loadUrl/main/cetakbiodatalengkap?reqId="+vpilihid;
             // window.open(varurl, 'window name', 'window settings');
             window.open(varurl, '_blank');
         }
