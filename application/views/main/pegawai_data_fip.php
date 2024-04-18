@@ -112,12 +112,18 @@ $kecamatan= new Core();
 $kecamatan->selectByParamsKecamatan(array('PROPINSI_ID'=>$reqPropinsi, 'KABUPATEN_ID'=>$reqKabupaten)); 
 
 $kelurahan= new Core();
-$kelurahan->selectByParamsKelurahan(array('PROPINSI_ID'=>$reqPropinsiId, 'KABUPATEN_ID'=>$reqKabupatenId,'KECAMATAN_ID'=>$reqKecamatanId)); 
+$kelurahan->selectByParamsKelurahan(array('PROPINSI_ID'=>$reqPropinsi, 'KABUPATEN_ID'=>$reqKabupaten,'KECAMATAN_ID'=>$reqKecamatan)); 
 
 // echo $reqTmtJabatan;exit;
-$reqMode="update";
-// $reqMode="insert";
-$readonly = "readonly";
+// $reqMode="update";
+$reqMode="insert";
+$readonly = "";
+
+if (!empty($reqId)) 
+{
+	$reqMode="update";
+	$readonly = 'readonly style="background-color: #F3F6F9;"';
+}
 
 $arrsatkertree= $this->sesstree;
 $arrsatkerdata= $this->sessdatatree;
@@ -187,11 +193,11 @@ $arrsatkerdata= $this->sessdatatree;
 	        				<div class="form-group row">
 			        			<label class="col-form-label text-right col-lg-3 col-sm-12">NIP</label>
 			        			<div class="col-lg-4 col-sm-12">
-			        				<input type="text" class="form-control" readonly style="background-color: #F3F6F9;" name="reqNIP1" id="reqNIP1" value="<?=$reqNIP1?>" />
+			        				<input type="text" class="form-control" <?=$readonly?> name="reqNIP1" id="reqNIP1" value="<?=$reqNIP1?>" />
 			        			</div>
 			        			<label class="col-form-label ">/</label>
 			        			<div class="col-lg-4 col-sm-12">
-			        				<input type="text" class="form-control" readonly style="background-color: #F3F6F9;" name="reqNIP2" id="reqNIP2" value="<?=$reqNIP2?>" />
+			        				<input type="text" class="form-control" <?=$readonly?> name="reqNIP2" id="reqNIP2" value="<?=$reqNIP2?>" />
 			        			</div>
 			        		</div>
 			        	</div>
@@ -199,7 +205,7 @@ $arrsatkerdata= $this->sessdatatree;
 	        				<div class="form-group row">
 			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Nama</label>
 			        			<div class="col-lg-9 col-sm-12">
-			        				<input type="text" class="form-control" readonly style="background-color: #F3F6F9;" name="reqNama" id="reqNama" value="<?=$reqNama?>" />
+			        				<input type="text" class="form-control" <?=$readonly?> name="reqNama" id="reqNama" value="<?=$reqNama?>" />
 			        			</div>
 			        		</div>
 			        	</div>
@@ -460,7 +466,7 @@ $arrsatkerdata= $this->sessdatatree;
 										<?while($kelurahan->nextRow())
 										 {
 										?>
-											<option value="<?=$kelurahan->getField('KELURAHAN_ID')?>" <? if($kelurahan->getField('KELURAHAN_ID') == $reqKelurahan) echo 'selected' ?>>
+											<option value="<?=$kelurahan->getField('KELURAHAN_ID')?>" <? if($kelurahan->getField('KELURAHAN_ID') == $reqDesa) echo 'selected' ?>>
 					                        	<?=$kelurahan->getField('NAMA')?>
 					                        </option>
 					                    <?
@@ -802,7 +808,7 @@ $arrsatkerdata= $this->sessdatatree;
 			        	</div>
 	        			<div class="col-md-10">
 	        				<div class="col-lg-12 col-sm-12">
-		        				<textarea class="form-control" id='reqDrh' name="reqDrh" style="height: 90px;"></textarea>
+		        				<textarea class="form-control" id='reqDrh' name="reqDrh" style="height: 90px;"><?=$reqDrh?></textarea>
 		        			</div>
 			        	</div>
 	        		</div>
