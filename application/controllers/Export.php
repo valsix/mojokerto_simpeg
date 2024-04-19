@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 include_once("functions/image.func.php");
 include_once("functions/string.func.php");
 
-class Iframe extends CI_Controller {
+class Export extends CI_Controller {
 	
 	function __construct() {
 		parent::__construct();
@@ -23,6 +23,18 @@ class Iframe extends CI_Controller {
 		{
 			redirect('login');
 		}
+
+		$this->session->set_userdata("dynatr", $_SESSION["dynatr"]);
+		$this->dynatr= $_SESSION["dynatr"];
+
+		$this->session->set_userdata("dynafield", $_SESSION["dynafield"]);
+		$this->dynafield= $_SESSION["dynafield"];
+
+		$this->session->set_userdata("dynaorder", $_SESSION["dynaorder"]);
+		$this->dynaorder= $_SESSION["dynaorder"];
+
+		$this->session->set_userdata("dynawhere", $_SESSION["dynawhere"]);
+		$this->dynawhere= $_SESSION["dynawhere"];
 	}
 	
 	public function index()
@@ -40,7 +52,7 @@ class Iframe extends CI_Controller {
 			'pg' => $pg
 		);	
 		
-		$this->load->view('iframe/index', $data);
+		$this->load->view('export/index', $data);
 	}
 
 	public function loadUrl()

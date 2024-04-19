@@ -38,6 +38,12 @@ class dynaport_json extends CI_Controller {
 		$this->adminusergroupid= $this->session->userdata("adminusergroupid".$configvlxsessfolder);
 		$this->adminuserpegawaiid= $this->session->userdata("adminuserpegawaiid".$configvlxsessfolder);
 
+		$this->session->set_userdata("dynatr", $_SESSION["dynatr"]);
+		$this->dynatr= $_SESSION["dynatr"];
+
+		$this->session->set_userdata("dynafield", $_SESSION["dynafield"]);
+		$this->dynatr= $_SESSION["dynafield"];
+
 		$this->session->set_userdata("dynaorder", $_SESSION["dynaorder"]);
 		$this->dynaorder= $_SESSION["dynaorder"];
 
@@ -81,6 +87,7 @@ class dynaport_json extends CI_Controller {
 		$arrisioperator= explode("***", $visioperator);
 		$arrisivalue= explode("***", $visivalue);
 
+		$dynafield= [];
 		$dynaorder= $vorder= "";
 		$arrasc= explode("***", $vasc);
 		// print_r($arrasc);exit;
@@ -91,11 +98,17 @@ class dynaport_json extends CI_Controller {
 			$arrcheck= in_array_column($infocarikey, "field", $arrdatafield);
 			if(!empty($arrcheck))
 			{
+				// untuk cetakan
+				array_push($dynafield, $infocarikey);
+
 				$idx= $arrcheck[0];
 				$vfield= $arrdatafield[$idx]["n"];
 				$vorder= getconcatseparator($vorder, $vfield, ", ")." ".$corder[1];
 			}
 		}
+
+		$this->session->set_userdata('dynafield'.$this->configvlxsessfolder, $dynafield);
+		$_SESSION["dynafield"]= $dynafield;
 
 		if(!empty($vorder))
 		{
@@ -112,6 +125,9 @@ class dynaport_json extends CI_Controller {
 
 		$vreturn["arrtablehide"]= $arrtablehide;
 		$vreturn["vtr"]= $vtr;
+
+		$this->session->set_userdata('dynatr'.$this->configvlxsessfolder, $vtr);
+		$_SESSION["dynatr"]= $vtr;
 
 		$operatorwhere= "";
 		foreach ($arrisifield as $k => $v)

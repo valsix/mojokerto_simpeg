@@ -201,7 +201,7 @@ $arrsatkertree= $this->sesstree;
 		        		<button id="caridyna" class="btn btn-light-primary">
 		        			<i class="fa fa-search" aria-hidden="true"></i> Cari
 		        		</button>
-		        		<button class="btn btn-light-warning"><i class="fa fa-print" aria-hidden="true"></i> Cetak</button>
+		        		<button id="btncetak" class="btn btn-light-warning"><i class="fa fa-print" aria-hidden="true"></i> Cetak</button>
 	        		</div>
 	        	</div>
         	</div>
@@ -485,6 +485,11 @@ jQuery(document).ready(function() {
             jsonurl= "json-main/dynaport_json/json";
             datanewtable.DataTable().ajax.url(jsonurl).load();
         }
+    });
+
+    $("#btncetak").click(function() {
+    	newWindow = window.open("export/index/dynaport_cetak", 'Cetak');
+    	newWindow.focus();
     });
 
     $("#caridyna").click(function() {
