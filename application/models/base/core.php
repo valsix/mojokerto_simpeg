@@ -298,5 +298,24 @@ class Core extends Entity{
 				
 		return $this->selectLimit($str,$limit,$from); 
     }
+
+    function selectByParamsTingkatHukuman($paramsArray=array(),$limit=-1,$from=-1, $statement='')
+	{
+		$str = "
+		SELECT A.*
+		FROM tingkat_hukuman A
+		WHERE 'PAKBONG' = 'PAKBONG'
+		";						
+		
+		while(list($key,$val) = each($paramsArray))
+		{
+			$str .= " AND $key = '$val' ";
+		}
+		
+		$str .= $statement." ORDER BY JENIS_HUKUMAN_ID ASC";
+		$this->query = $str;
+				
+		return $this->selectLimit($str,$limit,$from); 
+    }
 } 
 ?>

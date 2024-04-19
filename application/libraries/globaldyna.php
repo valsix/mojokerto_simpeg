@@ -152,6 +152,82 @@ class globaldyna
 					, array("label"=>"Tahun Diklat Struktural", "field"=> "TAHUN_STRUKTURAL", "n"=> "A8.TAHUN_STRUKTURAL", "display"=>"", "width"=>"")
 				)
 			)
+			, array
+			(
+				"group"=>"Hukuman"
+				, "data"=> array(
+					array("label"=>"No SK Hukuman", "field"=> "NO_SK_HUKUMAN", "n"=> "G.NO_SK_HUKUMAN", "display"=>"", "width"=>"")
+					, array("label"=>"Tgl SK Hukuman", "field"=> "TANGGAL_SK_HUKUMAN", "n"=> "G.TANGGAL_SK_HUKUMAN", "display"=>"", "width"=>"")
+					, array("label"=>"Pejabat Penetap Hukuman", "field"=> "PEJABAT_PENETAP_HUKUMAN", "n"=> "G.PEJABAT_PENETAP_HUKUMAN", "display"=>"", "width"=>"")
+					, array("label"=>"Permasalahan", "field"=> "PERMASALAHAN", "n"=> "G.PERMASALAHAN", "display"=>"", "width"=>"")
+					, array("label"=>"TMT SK Hukuman", "field"=> "TMT_SK_HUKUMAN", "n"=> "G.TMT_SK_HUKUMAN", "display"=>"", "width"=>"")
+					, array("label"=>"Tingkat Hukuman", "field"=> "NAMA_TINGKAT_HUKUMAN", "n"=> "G.NAMA_TINGKAT_HUKUMAN", "display"=>"", "width"=>"")
+					, array("label"=>"Jenis Hukuman", "field"=> "NAMA_JENIS_HUKUMAN", "n"=> "G.NAMA_JENIS_HUKUMAN", "display"=>"", "width"=>"")
+				)
+			)
+			, array
+			(
+				"group"=>"Anak"
+				, "data"=> array(
+					array("label"=>"Nama Anak", "field"=> "NAMA_ANAK", "n"=> "A9.NAMA_ANAK", "display"=>"", "width"=>"")
+					, array("label"=>"Tempat Lahir Anak", "field"=> "TEMPAT_LAHIR_ANAK", "n"=> "A9.TEMPAT_LAHIR_ANAK", "display"=>"", "width"=>"")
+					, array("label"=>"Tgl Lahir Anak", "field"=> "TANGGAL_LAHIR_ANAK", "n"=> "A9.TANGGAL_LAHIR_ANAK", "display"=>"", "width"=>"")
+					, array("label"=>"Jenis Kelamin Anak", "field"=> "JENIS_KELAMIN_ANAK", "n"=> "A9.JENIS_KELAMIN_ANAK", "display"=>"", "width"=>"")
+					, array("label"=>"Status Keluarga Anak", "field"=> "STATUS_KELUARGA_NAMA", "n"=> "A9.STATUS_KELUARGA_NAMA", "display"=>"", "width"=>"")
+					, array("label"=>"Bln Dibayar", "field"=> "AWAL_BAYAR_ANAK", "n"=> "A9.AWAL_BAYAR_ANAK", "display"=>"", "width"=>"")
+					, array("label"=>"Bln Akhir Dibayar", "field"=> "AKHIR_BAYAR_ANAK", "n"=> "A9.AKHIR_BAYAR_ANAK", "display"=>"", "width"=>"")
+				)
+			)
+			, array
+			(
+				"group"=>"Istri/Suami"
+				, "data"=> array(
+					array("label"=>"Nama Istri/Suami", "field"=> "NAMA_SUAMI", "n"=> "A10.NAMA_SUAMI", "display"=>"", "width"=>"")
+					, array("label"=>"Tempat Lahir Istri/Suami", "field"=> "TEMPAT_LAHIR_SUAMI", "n"=> "A10.TEMPAT_LAHIR_SUAMI", "display"=>"", "width"=>"")
+					, array("label"=>"Tgl Lahir Istri/Suami", "field"=> "TANGGAL_LAHIR_SUAMI", "n"=> "A10.TANGGAL_LAHIR_SUAMI", "display"=>"", "width"=>"")
+					, array("label"=>"Tgl Kawin", "field"=> "TANGGAL_KAWIN_SUAMI", "n"=> "A10.TANGGAL_KAWIN_SUAMI", "display"=>"", "width"=>"")
+					, array("label"=>"Tingkat Pendidikan", "field"=> "TINGKAT_PENDIDIKAN_SUAMI", "n"=> "A10.TINGKAT_PENDIDIKAN_SUAMI", "display"=>"", "width"=>"")
+					, array("label"=>"NIP PNS", "field"=> "NIP_PNS_SUAMI", "n"=> "A10.NIP_PNS_SUAMI", "display"=>"", "width"=>"")
+					, array("label"=>"Pekerjaan", "field"=> "PEKERJAAN_SUAMI", "n"=> "A10.PEKERJAAN_SUAMI", "display"=>"", "width"=>"")
+					, array("label"=>"Karcis/Karsu", "field"=> "KARTU_SUAMI", "n"=> "A10.KARTU_SUAMI", "display"=>"", "width"=>"")
+				)
+			)
+			, array
+			(
+				"group"=>"Cuti"
+				, "data"=> array(
+					array("label"=>"Tahun Cuti", "field"=> "TAHUN_CUTI", "n"=> "A11.TAHUN_CUTI", "display"=>"", "width"=>"")
+					, array("label"=>"Jenis Cuti", "field"=> "JENIS_CUTI", "n"=> "A11.JENIS_CUTI", "display"=>"", "width"=>"")
+					, array("label"=>"No Surat Cuti", "field"=> "NO_SURAT_CUTI", "n"=> "A11.NO_SURAT_CUTI", "display"=>"", "width"=>"")
+					, array("label"=>"Tgl Surat Cuti", "field"=> "TANGGAL_SURAT_CUTI", "n"=> "A11.TANGGAL_SURAT_CUTI", "display"=>"", "width"=>"")
+					, array("label"=>"Lama Cuti", "field"=> "LAMA_CUTI", "n"=> "A11.LAMA_CUTI", "display"=>"", "width"=>"")
+					, array("label"=>"Keterangan Cuti", "field"=> "KETERANGAN_CUTI", "n"=> "A11.KETERANGAN_CUTI", "display"=>"", "width"=>"")
+				)
+			)
+			, array
+			(
+				"group"=>"SK CPNS"
+				, "data"=> array(
+					array("label"=>"No SK CPNS", "field"=> "NO_SK_CPNS", "n"=> "SCP.NO_SK_CPNS", "display"=>"", "width"=>"")
+					, array("label"=>"Tgl SK CPNS", "field"=> "TANGGAL_SK_CPNS", "n"=> "SCP.TANGGAL_SK_CPNS", "display"=>"", "width"=>"")
+					, array("label"=>"TMT CPNS", "field"=> "TMT_CPNS", "n"=> "SCP.TMT_CPNS", "display"=>"", "width"=>"")
+					, array("label"=>"Pejabat Penetap CPNS", "field"=> "PEJABAT_PENETAP_CPNS", "n"=> "SCP.PEJABAT_PENETAP_CPNS", "display"=>"", "width"=>"")
+					, array("label"=>"Golongan Ruang CPNS", "field"=> "GOL_RUANG_CPNS", "n"=> "SCP.GOL_RUANG_CPNS", "display"=>"", "width"=>"")
+					, array("label"=>"Tgl Tugas CPNS", "field"=> "TANGGAL_TUGAS_CPNS", "n"=> "SCP.TANGGAL_TUGAS_CPNS", "display"=>"", "width"=>"")
+				)
+			)
+			, array
+			(
+				"group"=>"SK PNS"
+				, "data"=> array(
+					array("label"=>"No SK PNS", "field"=> "NO_SK_PNS", "n"=> "SPN.NO_SK_PNS", "display"=>"", "width"=>"")
+					, array("label"=>"Tgl SK PNS", "field"=> "TANGGAL_SK_PNS", "n"=> "SPN.TANGGAL_SK_PNS", "display"=>"", "width"=>"")
+					, array("label"=>"TMT PNS", "field"=> "TMT_PNS", "n"=> "SPN.TMT_PNS", "display"=>"", "width"=>"")
+					, array("label"=>"Pejabat Penetap PNS", "field"=> "PEJABAT_PENETAP_PNS", "n"=> "SPN.PEJABAT_PENETAP_PNS", "display"=>"", "width"=>"")
+					, array("label"=>"Golongan Ruang PNS", "field"=> "GOL_RUANG_PNS", "n"=> "SPN.GOL_RUANG_PNS", "display"=>"", "width"=>"")
+					, array("label"=>"Tgl Sumpah PNS", "field"=> "TANGGAL_SUMPAH_PNS", "n"=> "SPN.TANGGAL_SUMPAH_PNS", "display"=>"", "width"=>"")
+				)
+			)
 		);
 		return $vreturn;
 	}
@@ -201,6 +277,61 @@ class globaldyna
 			array_push($arragama, $arrdata);
 		}
 
+		$arrpangkat= [];
+		$set= new Core();
+		$set->selectByParamsPangkat();
+		while($set->nextRow())
+		{
+			$arrdata= [];
+			$arrdata["id"]= $set->getField("PANGKAT_ID");
+			$arrdata["text"]= $set->getField("KODE");
+			array_push($arrpangkat, $arrdata);
+		}
+
+		$arreselon= [];
+		$set= new Core();
+		$set->selectByParamsEselon();
+		while($set->nextRow())
+		{
+			$arrdata= [];
+			$arrdata["id"]= $set->getField("ESELON_ID");
+			$arrdata["text"]= $set->getField("NAMA");
+			array_push($arreselon, $arrdata);
+		}
+
+		$arrpendidikan= [];
+		$set= new Core();
+		$set->selectByParamsPendidikan();
+		while($set->nextRow())
+		{
+			$arrdata= [];
+			$arrdata["id"]= $set->getField("PENDIDIKAN_ID");
+			$arrdata["text"]= $set->getField("NAMA");
+			array_push($arrpendidikan, $arrdata);
+		}
+
+		$arrdiklat= [];
+		$set= new Core();
+		$set->selectByParamsDiklat();
+		while($set->nextRow())
+		{
+			$arrdata= [];
+			$arrdata["id"]= $set->getField("DIKLAT_ID");
+			$arrdata["text"]= $set->getField("NAMA");
+			array_push($arrdiklat, $arrdata);
+		}
+
+		$arrtingkathukuman= [];
+		$set= new Core();
+		$set->selectByParamsDiklat();
+		while($set->nextRow())
+		{
+			$arrdata= [];
+			$arrdata["id"]= $set->getField("TINGKAT_HUKUMAN_ID");
+			$arrdata["text"]= $set->getField("NAMA");
+			array_push($arrtingkathukuman, $arrdata);
+		}
+
 		$arrstatuskawin= [];
 		$arrdata= [];
 		$arrdata["id"]= "1";
@@ -237,7 +368,52 @@ class globaldyna
 		$arrdata["text"]= "O";
 		array_push($arrgoldarah, $arrdata);
 
+		$arrpenghargaan= [];
+		$arrdata= [];
+		$arrdata["id"]= "1";
+		$arrdata["text"]= "Satya Lencana Karya Satya X (Perunggu)";
+		array_push($arrpenghargaan, $arrdata);
+		$arrdata= [];
+		$arrdata["id"]= "2";
+		$arrdata["text"]= "Satya Lencana Karya Satya XX (Perak)";
+		array_push($arrpenghargaan, $arrdata);
+		$arrdata= [];
+		$arrdata["id"]= "3";
+		$arrdata["text"]= "Satya Lencana Karya Satya XXX (Emas)";
+		array_push($arrpenghargaan, $arrdata);
+
+		$arrjeniscuti= [];
+		$arrdata= [];
+		$arrdata["id"]= "1";
+		$arrdata["text"]= "Cuti Tahunan";
+		array_push($arrjeniscuti, $arrdata);
+		$arrdata= [];
+		$arrdata["id"]= "2";
+		$arrdata["text"]= "Cuti Besar";
+		array_push($arrjeniscuti, $arrdata);
+		$arrdata= [];
+		$arrdata["id"]= "3";
+		$arrdata["text"]= "Cuti Sakit";
+		array_push($arrjeniscuti, $arrdata);
+		$arrdata= [];
+		$arrdata["id"]= "4";
+		$arrdata["text"]= "Cuti Bersalin";
+		array_push($arrjeniscuti, $arrdata);
+		$arrdata= [];
+		$arrdata["id"]= "5";
+		$arrdata["text"]= "CTLN";
+		array_push($arrjeniscuti, $arrdata);
+		$arrdata= [];
+		$arrdata["id"]= "6";
+		$arrdata["text"]= "Perpanjangan CTLN";
+		array_push($arrjeniscuti, $arrdata);
+		$arrdata= [];
+		$arrdata["id"]= "7";
+		$arrdata["text"]= "Cuti Menikah";
+		array_push($arrjeniscuti, $arrdata);
+
 		$vreturn= array(
+			// pegawai
 			array("label"=>"NIP", "n"=> "A.NIP_LAMA", "opt"=>"1", "upper"=>"", "mode"=>"")
 			// , array("label"=>"NIP Baru", "n"=> "A.FORMAT_NIP_BARU", "upper"=>"1", "opt"=>"2", "mode"=>"")
 			, array("label"=>"NIP Baru", "n"=> "A.NIP_BARU", "upper"=>"", "opt"=>"2", "mode"=>"")
@@ -254,25 +430,84 @@ class globaldyna
 			, array("label"=>"Status Kawin", "n"=> "A.STATUS_KAWIN", "opt"=>"13", "upper"=>"", "mode"=>"select", "vdata"=>$arrstatuskawin)
 			, array("label"=>"Suku Bangsa", "n"=> "A.SUKU_BANGSA", "opt"=>"14", "upper"=>"1", "mode"=>"")
 			, array("label"=>"Gol Darah", "n"=> "A.GOLONGAN_DARAH", "opt"=>"15", "upper"=>"", "mode"=>"select", "vdata"=>$arrgoldarah)
-			, array("label"=>"Satker", "n"=> "A.SATKER_ID", "opt"=>"100", "upper"=>"", "mode"=>"satker")
+
+			// pangkat
+			, array("label"=>"Gol. Ruang Pangkat", "n"=> "B.PANGKAT_ID", "opt"=>"16", "upper"=>"", "mode"=>"select", "vdata"=>$arrpangkat)
+			, array("label"=>"TMT Pangkat", "n"=> "B.TANGGAL_SK_PANGKAT", "opt"=>"17", "upper"=>"", "mode"=>"date")
+			, array("label"=>"Masa Kerja Tahun Pangkat", "n"=> "B.MASA_KERJA_TAHUN_PANGKAT", "opt"=>"18", "upper"=>"", "mode"=>"numeric")
+			, array("label"=>"Masa Kerja Bulan Pangkat", "n"=> "B.MASA_KERJA_BULAN_PANGKAT", "opt"=>"19", "upper"=>"", "mode"=>"numeric")
+
+			// jabatan
+			, array("label"=>"Nama Jabatan", "n"=> "C.JABATAN_NAMA", "opt"=>"20", "upper"=>"1", "mode"=>"")
+			, array("label"=>"Eselon Jabatan", "n"=> "C.ESELON_ID", "opt"=>"21", "upper"=>"", "mode"=>"select", "vdata"=>$arreselon)
+			, array("label"=>"TMT Eselon", "n"=> "C.TMT_ESELON", "opt"=>"22", "upper"=>"", "mode"=>"date")
+			, array("label"=>"TMT Jabatan", "n"=> "C.TMT_JABATAN", "opt"=>"23", "upper"=>"", "mode"=>"date")
+			, array("label"=>"Nomor SK Jabatan", "n"=> "C.NO_SK_JABATAN", "opt"=>"24", "upper"=>"1", "mode"=>"")
+			, array("label"=>"Tanggal SK Jabatan", "n"=> "C.TANGGAL_SK_JABATAN", "opt"=>"25", "upper"=>"", "mode"=>"date")
+
+			// satker
+			, array("label"=>"Satker", "n"=> "A.SATKER_ID", "opt"=>"26", "upper"=>"", "mode"=>"satker")
+
+			// pendidikan
+			, array("label"=>"Pendidikan", "n"=> "F.PENDIDIKAN_ID", "opt"=>"27", "upper"=>"", "mode"=>"select", "vdata"=>$arrpendidikan)
+			, array("label"=>"Jurusan Pendidikan", "n"=> "F.JURUSAN_PENDIDIKAN", "opt"=>"28", "upper"=>"1", "mode"=>"")
+			, array("label"=>"Nama Sekolah", "n"=> "F.NAMA_SEKOLAH_PENDIDIKAN", "opt"=>"29", "upper"=>"1", "mode"=>"")
+			, array("label"=>"Tempat Sekolah", "n"=> "F.TEMPAT_PENDIDIKAN", "opt"=>"30", "upper"=>"1", "mode"=>"")
+			, array("label"=>"Nomor STTB", "n"=> "F.NO_STTB_PENDIDIKAN", "opt"=>"31", "upper"=>"1", "mode"=>"")
+			, array("label"=>"Tanggal STTB", "n"=> "F.TANGGAL_STTB_PENDIDIKAN", "opt"=>"32", "upper"=>"", "mode"=>"date")
+
+			// penghargaan
+			, array("label"=>"Penghargaan", "n"=> "A5.NAMA_PENGHARGAAN_KODE", "opt"=>"33", "upper"=>"", "mode"=>"select", "vdata"=>$arrpenghargaan)
+			, array("label"=>"Nomor SK Penghargaan", "n"=> "A5.NO_SK_PENGHARGAAN", "opt"=>"34", "upper"=>"1", "mode"=>"")
+			, array("label"=>"Tanggal SK Penghargaan", "n"=> "A5.TANGGAL_SK_PENGHARGAAN", "opt"=>"35", "upper"=>"", "mode"=>"date")
+			, array("label"=>"Tahun Penghargaan", "n"=> "A5.TAHUN_PENGHARGAAN", "opt"=>"36", "upper"=>"", "mode"=>"numeric")
+
+			// diklat fungsional
+			, array("label"=>"Nama Diklat Fungsional", "n"=> "A6.NAMA_FUNGSIONAL", "opt"=>"37", "upper"=>"1", "mode"=>"")
+			, array("label"=>"Tempat Diklat Fungsional", "n"=> "A6.TEMPAT_FUNGSIONAL", "opt"=>"38", "upper"=>"1", "mode"=>"")
+			, array("label"=>"Penyelenggara Diklat Fungsional", "n"=> "A6.PENYELENGGARA_FUNGSIONAL", "opt"=>"39", "upper"=>"1", "mode"=>"")
+			, array("label"=>"Angkatan Diklat Fungsional", "n"=> "A6.ANGKATAN_FUNGSIONAL", "opt"=>"40", "upper"=>"1", "mode"=>"")
+			, array("label"=>"Tahun Diklat Fungsional", "n"=> "A6.TAHUN_FUNGSIONAL", "opt"=>"41", "upper"=>"", "mode"=>"numeric")
+
+			// diklat teknis
+			, array("label"=>"Nama Diklat Teknis", "n"=> "A7.NAMA_TEKNIS", "opt"=>"42", "upper"=>"1", "mode"=>"")
+			, array("label"=>"Tempat Diklat Teknis", "n"=> "A7.TEMPAT_TEKNIS", "opt"=>"43", "upper"=>"1", "mode"=>"")
+			, array("label"=>"Penyelenggara Diklat Teknis", "n"=> "A7.PENYELENGGARA_TEKNIS", "opt"=>"44", "upper"=>"1", "mode"=>"")
+			, array("label"=>"Angkatan Diklat Teknis", "n"=> "A7.ANGKATAN_TEKNIS", "opt"=>"45", "upper"=>"1", "mode"=>"")
+			, array("label"=>"Tahun Diklat Teknis", "n"=> "A7.TAHUN_TEKNIS", "opt"=>"46", "upper"=>"", "mode"=>"numeric")
+
+			// diklat struktural
+			, array("label"=>"Nama Diklat Struktural", "n"=> "A8.DIKLAT_ID", "opt"=>"47", "upper"=>"", "mode"=>"select", "vdata"=>$arrdiklat)
+			, array("label"=>"Tempat Diklat Struktural", "n"=> "A8.TEMPAT_STRUKTURAL", "opt"=>"48", "upper"=>"1", "mode"=>"")
+			, array("label"=>"Penyelenggara Diklat Struktural", "n"=> "A8.PENYELENGGARA_STRUKTURAL", "opt"=>"49", "upper"=>"1", "mode"=>"")
+			, array("label"=>"Angkatan Diklat Struktural", "n"=> "A8.ANGKATAN_STRUKTURAL", "opt"=>"50", "upper"=>"1", "mode"=>"")
+			, array("label"=>"Tahun Diklat Struktural", "n"=> "A8.TAHUN_STRUKTURAL", "opt"=>"51", "upper"=>"", "mode"=>"numeric")
+
+			// hukuman
+			, array("label"=>"No SK Hukuman", "n"=> "G.NO_SK_HUKUMAN", "opt"=>"52", "upper"=>"1", "mode"=>"")
+			, array("label"=>"Tgl SK Hukuman", "n"=> "G.TANGGAL_SK_HUKUMAN", "opt"=>"53", "upper"=>"", "mode"=>"numeric")
+			, array("label"=>"Pejabat Penetap Hukuman", "n"=> "G.PEJABAT_PENETAP_HUKUMAN", "opt"=>"54", "upper"=>"1", "mode"=>"")
+			, array("label"=>"TMT SK Hukuman", "n"=> "G.TMT_SK_HUKUMAN", "opt"=>"55", "upper"=>"", "mode"=>"numeric")
+			, array("label"=>"Tingkat Hukuman", "n"=> "A.TINGKAT_HUKUMAN_ID", "opt"=>"56", "upper"=>"", "mode"=>"select", "vdata"=>$arrtingkathukuman)
+			, array("label"=>"Tahun Hukuman", "n"=> "G.TAHUN_HUKUMAN", "opt"=>"57", "upper"=>"", "mode"=>"numeric")
+
+			// cuti
+			, array("label"=>"Jenis Cuti", "n"=> "A11.JENIS_CUTI_ID", "opt"=>"58", "upper"=>"", "mode"=>"select", "vdata"=>$arrjeniscuti)
+			, array("label"=>"Lama Cuti", "n"=> "A11.LAMA_CUTI", "opt"=>"59", "upper"=>"", "mode"=>"numeric")
+
+			// cpns
+			, array("label"=>"TMT CPNS", "n"=> "SCP.TMT_CPNS", "opt"=>"60", "upper"=>"", "mode"=>"date")
+			, array("label"=>"Tgl Tugas CPNS", "n"=> "SCP.TANGGAL_TUGAS_CPNS", "opt"=>"61", "upper"=>"", "mode"=>"date")
+
+			// pns
+			, array("label"=>"TMT PNS", "n"=> "SPN.TMT_PNS", "opt"=>"62", "upper"=>"", "mode"=>"date")
+
 		);
 		return $vreturn;
 	}
 
-/*	
-	<option value="Alamat">Alamat</option>
-	<option value="Telepon">Telepon</option>
-	<option value="Kode Pos">Kode Pos</option>
-	<option value="Status Pegawai">Status Pegawai</option>
-	<option value="NIK">NIK</option>
-	<option value="Karpeg">Karpeg</option>
-	<option value="Askes">Askes</option>
-	<option value="Taspen">Taspen</option>
-	<option value="Tipe Pegawai">Tipe Pegawai</option>
-	<option value="Jenis Pegawai">Jenis Pegawai</option>
-	<option value="Kedudukan Pegawai">Kedudukan Pegawai</option>
-	<option value="TMT Pensiun">TMT Pensiun</option>
-
-	<option value="Golongan Ruang">Golongan Ruang</option><option value="TMT Pangkat">TMT Pangkat</option><option value="Masa Kerja">Masa Kerja</option><option value="Jabatan">Jabatan</option><option value="Eselon">Eselon</option><option value="TMT Eselon">TMT Eselon</option><option value="TMT Jabatan">TMT Jabatan</option><option value="Nomor SK Jabatan">Nomor SK Jabatan</option><option value="Tanggal SK Jabatan">Tanggal SK Jabatan</option><option value="Satker">Satker</option><option value="Pendidikan">Pendidikan</option><option value="Jurusan">Jurusan</option><option value="Nama Sekolah">Nama Sekolah</option><option value="Tempat Sekolah">Tempat Sekolah</option><option value="Nomor STTB">Nomor STTB</option><option value="Tanggal STTB">Tanggal STTB</option><option value="Penghargaan">Penghargaan</option><option value="Nomor SK Penghargaan">Nomor SK Penghargaan</option><option value="Tanggal SK Penghargaan">Tanggal SK Penghargaan</option><option value="Tahun Penghargaan">Tahun Penghargaan</option><option value="Nama Diklat Fungsional">Nama Diklat Fungsional</option><option value="Tempat Diklat Fungsional">Tempat Diklat Fungsional</option><option value="Penyelenggara Diklat Fungsional">Penyelenggara Diklat Fungsional</option><option value="Angkatan Diklat Fungsional">Angkatan Diklat Fungsional</option><option value="Tahun Diklat Fungsional">Tahun Diklat Fungsional</option><option value="Nama Diklat Teknis">Nama Diklat Teknis</option><option value="Tempat Diklat Teknis">Tempat Diklat Teknis</option><option value="Penyelenggara Diklat Teknis">Penyelenggara Diklat Teknis</option><option value="Angkatan Diklat Teknis">Angkatan Diklat Teknis</option><option value="Tahun Diklat Teknis">Tahun Diklat Teknis</option><option value="Nama Diklat Teknis">Nama Diklat Teknis</option><option value="Tempat Diklat Teknis">Tempat Diklat Teknis</option><option value="Penyelenggara Diklat Teknis">Penyelenggara Diklat Teknis</option><option value="Angkatan Diklat Teknis">Angkatan Diklat Teknis</option><option value="Tahun Diklat Teknis">Tahun Diklat Teknis</option><option value="No SK Hukuman">No SK Hukuman</option><option value="Tgl SK Hukuman">Tgl SK Hukuman</option><option value="Pejabat Penetap Hukuman">Pejabat Penetap Hukuman</option><option value="TMT SK Hukuman">TMT SK Hukuman</option><option value="Tingkat Hukuman">Tingkat Hukuman</option><option value="Tahun Hukuman">Tahun Hukuman</option>  <option value="Jenis Cuti">Jenis Cuti</option><option value="Lama Cuti">Lama Cuti</option><option value="TMT CPNS">TMT CPNS</option><option value="Tgl. Tugas CPNS">Tgl. Tugas CPNS</option><option value="TMT PNS">TMT PNS</option>*/
-	
+	// , array("label"=>"Nama", "n"=> "A.VNAMA_LENGKAP", "opt"=>"3", "upper"=>"1", "mode"=>"")
+	// , array("label"=>"Tahun", "n"=> "A.TANGGAL_LAHIR", "opt"=>"10", "upper"=>"", "mode"=>"numeric")
+	// , array("label"=>"Tanggal", "n"=> "A.TANGGAL_LAHIR", "opt"=>"8", "upper"=>"", "mode"=>"date")
+	// , array("label"=>"Agama", "n"=> "A.AGAMA_ID", "opt"=>"12", "upper"=>"", "mode"=>"select", "vdata"=>$arragama)	
 }
