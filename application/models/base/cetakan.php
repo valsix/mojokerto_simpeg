@@ -115,5 +115,35 @@ class Cetakan extends Entity{
 		$this->query = $str;
 		return $this->selectLimit($str,$limit,$from); 
     }
+
+    function getCountByParamsSuamiIstriAnak($paramsArray=array(), $statement='')
+	{
+		$str = "SELECT COUNT(PEGAWAI_ID) AS ROWCOUNT FROM LIHATSUAMIISTRIANAK WHERE 1 = 1".$statement; 
+	
+		foreach ($paramsArray as $key => $val)
+		{
+			$str .= " AND $key = '$val' ";
+		}
+		$this->query = $str;
+		// echo $str;exit;
+		$this->select($str); 
+		if($this->firstRow()) 
+			return $this->getField("ROWCOUNT"); 
+		else 
+			return 0;  
+    }
+
+    function selectByParamsSuamiIstriAnak($paramsArray=array(),$limit=-1,$from=-1, $statement='')
+	{
+		$str = "SELECT * FROM LIHATSUAMIISTRIANAK WHERE 1 = 1 ".$statement; 
+		while(list($key,$val) = each($paramsArray))
+		{
+			$str .= " AND $key = '$val' ";
+		}
+		
+		$str .= $statement." ";
+		$this->query = $str;
+		return $this->selectLimit($str,$limit,$from); 
+    }
 } 
 ?>

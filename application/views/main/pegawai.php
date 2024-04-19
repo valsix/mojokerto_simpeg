@@ -136,12 +136,12 @@ $arrsatkerdata= $this->sessdatatree;
                                     </a>
                                 </li>
                                 <li class="navi-item">
-                                    <a  id="" class="navi-link">
+                                    <a  id="btnBiodataSingkat" class="navi-link">
                                         <span class="navi-text">Biodata Singkat</span>
                                     </a>
                                 </li>
                                 <li class="navi-item">
-                                    <a  id="" class="navi-link">
+                                    <a  id="btnModelC" class="navi-link">
                                         <span class="navi-text">Model C</span>
                                     </a>
                                 </li>
@@ -362,6 +362,54 @@ jQuery(document).ready(function() {
         else{
             vpilihid= valinfoid;
             varurl= "app/loadUrl/main/cetakbiodatalengkap?reqId="+vpilihid;
+            // window.open(varurl, 'window name', 'window settings');
+            window.open(varurl, '_blank');
+        }
+    });
+
+    $("#btnBiodataSingkat").on("click", function () {
+        btnid= $(this).attr('id');
+
+        if(valinfoid == "")
+        {
+            Swal.fire({
+                text: "Pilih salah satu data Riwayat terlebih dahulu.",
+                icon: "error",
+                buttonsStyling: false,
+                confirmButtonText: "Ok",
+                customClass: {
+                    confirmButton: "btn font-weight-bold btn-light-primary"
+                }
+            });
+            return false;
+        }
+        else{
+            vpilihid= valinfoid;
+            varurl= "app/loadUrl/main/cetakbiodatasingkat?reqId="+vpilihid;
+            // window.open(varurl, 'window name', 'window settings');
+            window.open(varurl, '_blank');
+        }
+    });
+
+    $("#btnModelC").on("click", function () {
+        btnid= $(this).attr('id');
+
+        if(valinfoid == "")
+        {
+            Swal.fire({
+                text: "Pilih salah satu data Riwayat terlebih dahulu.",
+                icon: "error",
+                buttonsStyling: false,
+                confirmButtonText: "Ok",
+                customClass: {
+                    confirmButton: "btn font-weight-bold btn-light-primary"
+                }
+            });
+            return false;
+        }
+        else{
+            vpilihid= valinfoid;
+            varurl= "app/loadUrl/main/CetakModel?reqId="+vpilihid;
             // window.open(varurl, 'window name', 'window settings');
             window.open(varurl, '_blank');
         }
