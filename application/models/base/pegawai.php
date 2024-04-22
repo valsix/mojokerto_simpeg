@@ -162,6 +162,42 @@ class Pegawai extends Entity{
 		return $this->selectLimit($str,$limit,$from); 
     }
 
+    function selectByParamsDUKCetak($paramsArray=array(),$limit=-1,$from=-1, $statement='')
+	{
+		$str = "
+		SELECT 
+			A.SATKER_ID, A.DUK, A.PEGAWAI_ID, A.NIP_LAMA, A.NIP_BARU NIP_BARU, A.NAMA, A.TEMPAT_LAHIR, A.TANGGAL_LAHIR
+			, A.JENIS_KELAMIN, A.STATUS_PEGAWAI, A.GOL_RUANG, A.TMT_PANGKAT
+			, A.JABATAN, A.TMT_JABATAN, A.ESELON, A.TMT_ESELON, A.MASA_KERJA_TAHUN, A.MASA_KERJA_BULAN, A.DIKLAT_STRUKTURAL
+			, A.TAHUN_DIKLAT, A.JUMLAH_DIKLAT_STRUKTURAL || '/' || A.JUMLAH_DIKLAT_NONSTRUKTURAL JUMLAH_DIKLAT
+			, A.PENDIDIKAN, A.TAHUN_LULUS, A.NAMA_SEKOLAH, A.USIA, A.AGAMA,
+			(select tanggal_mulai|| '/' || tanggal_selesai || '/' || JUMLAH_JAM from DIKLAT_STRUKTURAL x where a.pegawai_id=x.pegawai_id order by tanggal_mulai desc limit 1 ) DIKLAT_STRUKTURAL_DETIL
+		FROM duk A
+		--LEFT JOIN satker B ON A.SATKER_ID = B.SATKER_ID
+		LEFT JOIN (
+			SELECT DIKLAT_STRUKTURAL_ID, PEGAWAI_ID, TEMPAT, 
+				   PENYELENGGARA, ANGKATAN, TAHUN, 
+				   NO_STTPP, TANGGAL_MULAI, TANGGAL_SELESAI, 
+				   TANGGAL_STTPP, JUMLAH_JAM, a.DIKLAT_ID,
+				   (SELECT x.NAMA FROM DIKLAT x WHERE x.DIKLAT_ID = a.DIKLAT_ID) NAMADIKLAT, FOTO_BLOB
+				FROM DIKLAT_STRUKTURAL a WHERE 1=1
+		) C ON A.PEGAWAI_ID = C.PEGAWAI_ID
+		--INNER JOIN pegawai C ON A.PEGAWAI_ID = C.PEGAWAI_ID
+		WHERE 1 = 1
+ 		"; 
+		
+		while(list($key,$val) = each($paramsArray))
+		{
+			$str .= " AND $key = '$val' ";
+		}
+	
+		$str .= $statement." ORDER BY a.DIKLAT_STRUKTURAL";
+		$this->query = $str;
+		// echo $str;exit;
+		
+		return $this->selectLimit($str,$limit,$from); 
+    }
+
 	function selectmonitoring($paramsArray=array(),$limit=-1,$from=-1, $statement='', $orderby='')
 	{
 		$str = "

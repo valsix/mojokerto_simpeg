@@ -1,34 +1,29 @@
 <?php 
-include_once("../WEB-INF/classes/utils/UserLogin.php");
-include_once("../WEB-INF/classes/base/Pegawai.php");
-include_once("../WEB-INF/classes/base/DiklatStruktural.php");
-include_once("../WEB-INF/classes/base/Satker.php");
-include_once("../WEB-INF/classes/base/PangkatRiwayat.php");
-include_once("../WEB-INF/classes/base/PendidikanRiwayat.php");
-include_once("../WEB-INF/classes/base/JabatanRiwayat.php");
-include_once("../WEB-INF/functions/date.func.php");
-include_once("../WEB-INF/functions/default.func.php");
-require_once "excel/class.writeexcel_workbookbig.inc.php";
-require_once "excel/class.writeexcel_worksheet.inc.php";
+require_once "lib/excel/class.writeexcel_workbookbig.inc.php";
+require_once "lib/excel/class.writeexcel_worksheet.inc.php";
 
 /* create objects */
+
+
+$this->load->model("base/Pegawai");
+$this->load->model("base/SatuanKerja");
+$this->load->model("base/RiwayatPangkat");
+$this->load->model("base/PelatihanKepemimpinan");
+
 $pegawai = new Pegawai();
-$satker	= new Satker();
-$pangkatriwayat = new PangkatRiwayat();
+$satker	= new SatuanKerja();
+$pangkatriwayat = new RiwayatPangkat();
+$PelatihanKepemimpinan = new PelatihanKepemimpinan();
 
 //set_time_limit(3);
 ini_set("memory_limit","500M");
 ini_set('max_execution_time', 520);
 
-$reqId = httpFilterGet("reqId");
-$reqTipePegawaiId = httpFilterGet("reqTipePegawaiId");
-$reqBulan = httpFilterGet("reqBulan");
-$reqTahun = httpFilterGet("reqTahun");
-$reqPangkatId= httpFilterGet("reqPangkatId");
-
 $reqId= $this->input->get('reqId');
 $reqTipePegawaiId= $this->input->get('reqTipePegawaiId');
 $reqPangkatId= $this->input->get('reqPangkatId');
+$reqBulan= $this->input->get('reqBulan');
+$reqTahun= $this->input->get('reqTahun');
 
 if($reqPangkatId ==''){}
 else{
@@ -43,8 +38,9 @@ else{
 $tempReqId= "";
 if($userLogin->userSatkerId == "")//kondisi login sebagai admin
 {	
-	if($reqId == "")
-		$statement .= " AND SATKER_ID_GENERATE IS NULL ";
+	if($reqId == ""){
+		// $statement .= " AND SATKER_ID_GENERATE IS NULL ";
+	}
 	else
 	{
 		$tempReqId= $reqId;
@@ -80,8 +76,8 @@ else
 	$reqKeterangan= $satker->getField("NAMA");
 }
 	
-$pegawai->selectByParamsDUK(array(),-1,-1, $statement);
-
+$pegawai->selectByParamsDUKCetak(array(),-1,-1, $statement);
+// echo $pegawai->query;exit;
 $fname = tempnam("/tmp", "cetak_duk.xls");
 $workbook = & new writeexcel_workbookbig($fname);
 $worksheet = &$workbook->addworksheet();
@@ -430,13 +426,15 @@ while($pegawai->nextRow())
 	$worksheet->write($row, 7, $pegawai->getField('DIKLAT_STRUKTURAL'),$text_format_left);
 	$worksheet->write($row, 8, $pegawai->getField('TAHUN_DIKLAT') ,$text_format_center_top);	
 	
-	$set= new DiklatStruktural();
-	$set->selectByParamsTerakhir(array("PEGAWAI_ID"=>$pegawai->getField("PEGAWAI_ID")));
-	$set->firstRow();
-	$temp_jml_diklat_struktural= $set->getField("JUMLAH_JAM");
-	unset($set);
-	//$worksheet->write($row, 9, $pegawai->getField('JUMLAH_JAM_DIKLAT_STRUKTURAL') ,$text_format_center_top);
-	$worksheet->write($row, 9, $temp_jml_diklat_struktural ,$text_format_center_top);
+	$explode=explode('/',$pegawai->getField('DIKLAT_STRUKTURAL_DETIL'));
+	// print_r($explode);exit;
+	// $set= new PelatihanKepemimpinan();
+	// $set->selectByParams(array("PEGAWAI_ID"=>$pegawai->getField("PEGAWAI_ID")));
+	// $set->firstRow();
+	// $temp_jml_diklat_struktural= $set->getField("JUMLAH_JAM");
+	// unset($set);
+	// //$worksheet->write($row, 9, $pegawai->getField('JUMLAH_JAM_DIKLAT_STRUKTURAL') ,$text_format_center_top);
+	$worksheet->write($row, 9, $explode[2] ,$text_format_center_top);
 	
 	$worksheet->write($row, 10, $pegawai->getField('MASA_KERJA_TAHUN') ,$text_format_center_top);
 	$worksheet->write($row, 11, $pegawai->getField('MASA_KERJA_BULAN') ,$text_format_center_top);

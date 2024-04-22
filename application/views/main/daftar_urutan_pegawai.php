@@ -338,6 +338,16 @@ jQuery(document).ready(function() {
         
     });
 
+    $('#btnCetak').on('click', function () {
+        reqBulan= $("#reqBulan").val();
+        reqTahun= $("#reqTahun").val();
+        reqTipePegawaiId= $("#reqTipePegawaiId").val();
+        reqPangkatId= $("#reqPangkatId").val();
+        varurl= "export/index/cetakduk?reqId=<?=$reqId?>&reqBulan="+reqBulan+"&reqTahun="+reqTahun+"&reqTipePegawaiId="+reqTipePegawaiId+"&reqPangkatId="+reqPangkatId;
+        // window.open(varurl, 'window name', 'window settings');
+        window.open(varurl, '_blank');
+    });
+
     <?
     if(empty($arrsatkertree))
     {
