@@ -335,5 +335,26 @@ DESCRIPTION			:
 			return $id;  
     }
 
+    function selectByParamsUrutanPegawai($paramsArray=array(),$limit=-1,$from=-1, $statement='')
+		{
+			$str = "SELECT 
+					  PEGAWAI_ID, SATKER_ID, NIP_LAMA, 
+					  NIP_BARU, NAMA, USIA_TAHUN, TEMPAT_LAHIR, JENIS_KELAMIN, 
+					  NMGOLRUANG, GOL_RUANG, ESELON, JABATAN, TMT_PANGKAT, TMT_JABATAN, TANGGAL_LAHIR, AGAMA,
+					  TELEPON, ALAMAT, PENDIDIKAN
+	                FROM URUTAN_PEGAWAI A
+	                WHERE 1=1"; 
+			
+			while(list($key,$val) = each($paramsArray))
+			{
+				$str .= " AND $key = '$val' ";
+			}
+			
+			$str .= $statement;
+			$this->query = $str;
+					
+			return $this->selectLimit($str,$limit,$from); 
+	    }
+
   } 
 ?>

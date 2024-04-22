@@ -108,6 +108,10 @@ $arrsatkerdata= $this->sessdatatree;
                             <i class="fa fa-list-alt" aria-hidden="true"></i>
                             Proses
                         </button>
+                        <button type="button" id="btnCetak" class="btn btn-light-primary font-weight-bolder">
+                            <i class="fa fa-list-alt" aria-hidden="true"></i>
+                            Cetak
+                        </button>
                     </div>
 
                     <button class="btn btn-light-primary" onclick="showhidesatker()"><i class="fa fa-sitemap" aria-hidden="true"></i> Satker</button>
@@ -244,6 +248,41 @@ jQuery(document).ready(function() {
 
         varurl= "app/index/pegawai_data_fip?reqId="+vpilihid;
         document.location.href = varurl;
+    });
+
+    $('#btnCetak').on('click', function () {
+
+        reqBulan= $("#reqBulan").val();
+        reqTahun= $("#reqTahun").val();
+
+        btnid= $(this).attr('id');
+
+        if(valinfoid == "")
+        {
+            Swal.fire({
+                text: "Pilih salah satu data Riwayat terlebih dahulu.",
+                icon: "error",
+                buttonsStyling: false,
+                confirmButtonText: "Ok",
+                customClass: {
+                    confirmButton: "btn font-weight-bold btn-light-primary"
+                }
+            });
+            return false;
+        }
+        else{
+            vpilihid= valinfoid;
+            varurl= "export/index/cetakkgb?reqId="+vpilihid+"-"+reqBulan+"-"+reqTahun;
+            // window.open(varurl, 'window name', 'window settings');
+            window.open(varurl, '_blank');
+        }
+
+       
+        reqTipePegawaiId= $("#reqTipePegawaiId").val();
+        reqPangkatId= $("#reqPangkatId").val();
+        varurl= "export/index/cetakkgb?reqId=<?=$reqId?>&reqBulan="+reqBulan+"&reqTahun="+reqTahun+"&reqTipePegawaiId="+reqTipePegawaiId+"&reqPangkatId="+reqPangkatId;
+        // window.open(varurl, 'window name', 'window settings');
+        window.open(varurl, '_blank');
     });
 
     $("#triggercari").on("click", function () {
