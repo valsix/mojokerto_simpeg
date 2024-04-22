@@ -919,7 +919,7 @@ $arrsatkerdata= $this->sessdatatree;
 			        			confirmButton: "btn font-weight-bold btn-light-primary"
 			        		}
 			        	}).then(function() {
-			        		document.location.href = "app/index/pegawai";
+			        		document.location.href = "app/index/pegawai_data_fip?reqId=<?=$reqId?>";
 			        	});
 			        },
 			        error: function(xhr, status, error) {
