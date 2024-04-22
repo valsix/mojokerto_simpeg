@@ -1519,6 +1519,396 @@ create index duk_indexing on duk (satker_id_generate, duk);
 --drop index if exists jabatan_riwayat_indexing;
 --create index jabatan_riwayat_indexing on jabatan_riwayat (eselon_id, tmt_jabatan desc);
 
+--triger
+--====================================================================================================================
+create or replace function opt.pegawai_pangkat_riwayat()
+  returns trigger as
+$body$
+declare
+    vid numeric;
+    vawalid numeric;
+    
+begin
+	if upper(tg_op) = upper('insert') or upper(tg_op) = upper('update') then
+		select pangkat_riwayat_id into vid from opt.pangkat_terakhir_riwayat where pegawai_id = new.pegawai_id;
+		select pangkat_riwayat_id into vawalid from opt.pangkat_awal_riwayat where pegawai_id = new.pegawai_id;
+
+		update pegawai set
+		pangkat_riwayat_id= vid
+		, pangkat_awal_riwayat_id= vawalid
+		where pegawai_id = new.pegawai_id;
+	
+	elsif upper(tg_op) = upper('delete') then
+		select pangkat_riwayat_id into vid from pangkat_terakhir_riwayat where pegawai_id = old.pegawai_id;
+		select pangkat_riwayat_id into vawalid from opt.pangkat_awal_riwayat where pegawai_id = old.pegawai_id;
+
+		update pegawai set
+		pangkat_riwayat_id= vid
+		, pangkat_awal_riwayat_id= vawalid
+		where pegawai_id = old.pegawai_id;
+	end if;
+	return null;
+   
+end;
+$body$
+language plpgsql volatile cost 100;
+alter function opt.pegawai_pangkat_riwayat() owner to postgres;
+
+drop trigger if exists pegawai_pangkat_riwayat_after on pangkat_riwayat;
+create trigger pegawai_pangkat_riwayat_after
+after insert or update
+on pangkat_riwayat
+for each row
+execute procedure opt.pegawai_pangkat_riwayat();
+
+create or replace function opt.pegawai_jabatan_riwayat()
+  returns trigger as
+$body$
+declare
+    vid numeric;
+    
+begin
+	if upper(tg_op) = upper('insert') or upper(tg_op) = upper('update') then
+		select jabatan_riwayat_id into vid from opt.jabatan_terakhir_riwayat where pegawai_id = new.pegawai_id;
+		update pegawai set jabatan_riwayat_id= vid where pegawai_id = new.pegawai_id;
+	
+	elsif upper(tg_op) = upper('delete') then
+		select jabatan_riwayat_id into vid from opt.jabatan_terakhir_riwayat where pegawai_id = old.pegawai_id;
+		update pegawai set jabatan_riwayat_id= vid where pegawai_id = old.pegawai_id;
+	end if;
+	return null;
+   
+end;
+$body$
+language plpgsql volatile cost 100;
+alter function opt.pegawai_jabatan_riwayat() owner to postgres;
+
+drop trigger if exists pegawai_jabatan_riwayat_after on jabatan_riwayat;
+create trigger pegawai_jabatan_riwayat_after
+after insert or update
+on jabatan_riwayat
+for each row
+execute procedure opt.pegawai_jabatan_riwayat();
+
+create or replace function opt.pegawai_jabatan_tambahan()
+  returns trigger as
+$body$
+declare
+    vid numeric;
+    
+begin
+	if upper(tg_op) = upper('insert') or upper(tg_op) = upper('update') then
+		select jabatan_tambahan_id into vid from opt.jabatan_tambahan_terakhir_riwayat where pegawai_id = new.pegawai_id;
+		update pegawai set jabatan_tambahan_id= vid where pegawai_id = new.pegawai_id;
+	
+	elsif upper(tg_op) = upper('delete') then
+		select jabatan_tambahan_id into vid from opt.jabatan_tambahan_terakhir_riwayat where pegawai_id = old.pegawai_id;
+		update pegawai set jabatan_tambahan_id= vid where pegawai_id = old.pegawai_id;
+	end if;
+	return null;
+   
+end;
+$body$
+language plpgsql volatile cost 100;
+alter function opt.pegawai_jabatan_tambahan() owner to postgres;
+
+drop trigger if exists pegawai_jabatan_tambahan_after on jabatan_tambahan;
+create trigger pegawai_jabatan_tambahan_after
+after insert or update
+on jabatan_tambahan
+for each row
+execute procedure opt.pegawai_jabatan_tambahan();
+
+create or replace function opt.pegawai_pendidikan_riwayat()
+  returns trigger as
+$body$
+declare
+    vid numeric;
+    
+begin
+	if upper(tg_op) = upper('insert') or upper(tg_op) = upper('update') then
+		select pendidikan_riwayat_id into vid from opt.pendidikan_terakhir_riwayat where pegawai_id = new.pegawai_id;
+		update pegawai set pendidikan_riwayat_id= vid where pegawai_id = new.pegawai_id;
+	
+	elsif upper(tg_op) = upper('delete') then
+		select pendidikan_riwayat_id into vid from opt.pendidikan_terakhir_riwayat where pegawai_id = old.pegawai_id;
+		update pegawai set pendidikan_riwayat_id= vid where pegawai_id = old.pegawai_id;
+	end if;
+	return null;
+   
+end;
+$body$
+language plpgsql volatile cost 100;
+alter function opt.pegawai_pendidikan_riwayat() owner to postgres;
+
+drop trigger if exists pegawai_pendidikan_riwayat_after on pendidikan_riwayat;
+create trigger pegawai_pendidikan_riwayat_after
+after insert or update
+on pendidikan_riwayat
+for each row
+execute procedure opt.pegawai_pendidikan_riwayat();
+
+create or replace function opt.pegawai_gaji_riwayat()
+  returns trigger as
+$body$
+declare
+    vid numeric;
+    
+begin
+	if upper(tg_op) = upper('insert') or upper(tg_op) = upper('update') then
+		select gaji_riwayat_id into vid from opt.gaji_terakhir_riwayat where pegawai_id = new.pegawai_id;
+		update pegawai set gaji_riwayat_id= vid where pegawai_id = new.pegawai_id;
+	
+	elsif upper(tg_op) = upper('delete') then
+		select gaji_riwayat_id into vid from opt.gaji_terakhir_riwayat where pegawai_id = old.pegawai_id;
+		update pegawai set gaji_riwayat_id= vid where pegawai_id = old.pegawai_id;
+	end if;
+	return null;
+   
+end;
+$body$
+language plpgsql volatile cost 100;
+alter function opt.pegawai_gaji_riwayat() owner to postgres;
+
+drop trigger if exists pegawai_gaji_riwayat_after on gaji_riwayat;
+create trigger pegawai_gaji_riwayat_after
+after insert or update
+on gaji_riwayat
+for each row
+execute procedure opt.pegawai_gaji_riwayat();
+
+create or replace function opt.pegawai_hukuman()
+  returns trigger as
+$body$
+declare
+    vid numeric;
+    
+begin
+	if upper(tg_op) = upper('insert') or upper(tg_op) = upper('update') then
+		select hukuman_id into vid from opt.hukuman_terakhir_riwayat where pegawai_id = new.pegawai_id;
+		update pegawai set hukuman_id= vid where pegawai_id = new.pegawai_id;
+	
+	elsif upper(tg_op) = upper('delete') then
+		select hukuman_id into vid from opt.hukuman_terakhir_riwayat where pegawai_id = old.pegawai_id;
+		update pegawai set hukuman_id= vid where pegawai_id = old.pegawai_id;
+	end if;
+	return null;
+   
+end;
+$body$
+language plpgsql volatile cost 100;
+alter function opt.pegawai_hukuman() owner to postgres;
+
+drop trigger if exists pegawai_hukuman_after on hukuman;
+create trigger pegawai_hukuman_after
+after insert or update
+on hukuman
+for each row
+execute procedure opt.pegawai_hukuman();
+
+create or replace function opt.pegawai_diklat_struktural()
+  returns trigger as
+$body$
+declare
+    vid numeric;
+    
+begin
+	if upper(tg_op) = upper('insert') or upper(tg_op) = upper('update') then
+		select diklat_struktural_id into vid from opt.diklat_struktural_terakhir_riwayat where pegawai_id = new.pegawai_id;
+		update pegawai set diklat_struktural_id= vid where pegawai_id = new.pegawai_id;
+	
+	elsif upper(tg_op) = upper('delete') then
+		select diklat_struktural_id into vid from opt.diklat_struktural_terakhir_riwayat where pegawai_id = old.pegawai_id;
+		update pegawai set diklat_struktural_id= vid where pegawai_id = old.pegawai_id;
+	end if;
+	return null;
+   
+end;
+$body$
+language plpgsql volatile cost 100;
+alter function opt.pegawai_diklat_struktural() owner to postgres;
+
+drop trigger if exists pegawai_diklat_struktural_after on diklat_struktural;
+create trigger pegawai_diklat_struktural_after
+after insert or update
+on diklat_struktural
+for each row
+execute procedure opt.pegawai_diklat_struktural();
+
+create or replace function opt.pegawai_diklat_fungsional()
+  returns trigger as
+$body$
+declare
+    vid numeric;
+    
+begin
+	if upper(tg_op) = upper('insert') or upper(tg_op) = upper('update') then
+		select diklat_fungsional_id into vid from opt.diklat_fungsional_terakhir_riwayat where pegawai_id = new.pegawai_id;
+		update pegawai set diklat_fungsional_id= vid where pegawai_id = new.pegawai_id;
+	
+	elsif upper(tg_op) = upper('delete') then
+		select diklat_fungsional_id into vid from opt.diklat_fungsional_terakhir_riwayat where pegawai_id = old.pegawai_id;
+		update pegawai set diklat_fungsional_id= vid where pegawai_id = old.pegawai_id;
+	end if;
+	return null;
+   
+end;
+$body$
+language plpgsql volatile cost 100;
+alter function opt.pegawai_diklat_fungsional() owner to postgres;
+
+drop trigger if exists pegawai_diklat_fungsional_after on diklat_fungsional;
+create trigger pegawai_diklat_fungsional_after
+after insert or update
+on diklat_fungsional
+for each row
+execute procedure opt.pegawai_diklat_fungsional();
+
+create or replace function opt.pegawai_diklat_teknis()
+  returns trigger as
+$body$
+declare
+    vid numeric;
+    
+begin
+	if upper(tg_op) = upper('insert') or upper(tg_op) = upper('update') then
+		select diklat_teknis_id into vid from opt.diklat_teknis_terakhir_riwayat where pegawai_id = new.pegawai_id;
+		update pegawai set diklat_teknis_id= vid where pegawai_id = new.pegawai_id;
+	
+	elsif upper(tg_op) = upper('delete') then
+		select diklat_teknis_id into vid from opt.diklat_teknis_terakhir_riwayat where pegawai_id = old.pegawai_id;
+		update pegawai set diklat_teknis_id= vid where pegawai_id = old.pegawai_id;
+	end if;
+	return null;
+   
+end;
+$body$
+language plpgsql volatile cost 100;
+alter function opt.pegawai_diklat_teknis() owner to postgres;
+
+drop trigger if exists pegawai_diklat_teknis_after on diklat_teknis;
+create trigger pegawai_diklat_teknis_after
+after insert or update
+on diklat_teknis
+for each row
+execute procedure opt.pegawai_diklat_teknis();
+
+create or replace function opt.pegawai_penghargaan()
+  returns trigger as
+$body$
+declare
+    vid numeric;
+    
+begin
+	if upper(tg_op) = upper('insert') or upper(tg_op) = upper('update') then
+		select penghargaan_id into vid from opt.penghargaan_terakhir_riwayat where pegawai_id = new.pegawai_id;
+		update pegawai set penghargaan_id= vid where pegawai_id = new.pegawai_id;
+	
+	elsif upper(tg_op) = upper('delete') then
+		select penghargaan_id into vid from opt.penghargaan_terakhir_riwayat where pegawai_id = old.pegawai_id;
+		update pegawai set penghargaan_id= vid where pegawai_id = old.pegawai_id;
+	end if;
+	return null;
+   
+end;
+$body$
+language plpgsql volatile cost 100;
+alter function opt.pegawai_penghargaan() owner to postgres;
+
+drop trigger if exists pegawai_penghargaan_after on penghargaan;
+create trigger pegawai_penghargaan_after
+after insert or update
+on penghargaan
+for each row
+execute procedure opt.pegawai_penghargaan();
+
+create or replace function opt.pegawai_anak()
+  returns trigger as
+$body$
+declare
+    vid numeric;
+    
+begin
+	if upper(tg_op) = upper('insert') or upper(tg_op) = upper('update') then
+		select anak_id into vid from opt.anak_terakhir_riwayat where pegawai_id = new.pegawai_id;
+		update pegawai set anak_id= vid where pegawai_id = new.pegawai_id;
+	
+	elsif upper(tg_op) = upper('delete') then
+		select anak_id into vid from opt.anak_terakhir_riwayat where pegawai_id = old.pegawai_id;
+		update pegawai set anak_id= vid where pegawai_id = old.pegawai_id;
+	end if;
+	return null;
+   
+end;
+$body$
+language plpgsql volatile cost 100;
+alter function opt.pegawai_anak() owner to postgres;
+
+drop trigger if exists pegawai_anak_after on anak;
+create trigger pegawai_anak_after
+after insert or update
+on anak
+for each row
+execute procedure opt.pegawai_anak();
+
+create or replace function opt.pegawai_cuti()
+  returns trigger as
+$body$
+declare
+    vid numeric;
+    
+begin
+	if upper(tg_op) = upper('insert') or upper(tg_op) = upper('update') then
+		select cuti_id into vid from opt.cuti_terakhir_riwayat where pegawai_id = new.pegawai_id;
+		update pegawai set cuti_id= vid where pegawai_id = new.pegawai_id;
+	
+	elsif upper(tg_op) = upper('delete') then
+		select cuti_id into vid from opt.cuti_terakhir_riwayat where pegawai_id = old.pegawai_id;
+		update pegawai set cuti_id= vid where pegawai_id = old.pegawai_id;
+	end if;
+	return null;
+   
+end;
+$body$
+language plpgsql volatile cost 100;
+alter function opt.pegawai_cuti() owner to postgres;
+
+drop trigger if exists pegawai_cuti_after on cuti;
+create trigger pegawai_cuti_after
+after insert or update
+on cuti
+for each row
+execute procedure opt.pegawai_cuti();
+
+create or replace function opt.pegawai_suami_istri()
+  returns trigger as
+$body$
+declare
+    vid numeric;
+    
+begin
+	if upper(tg_op) = upper('insert') or upper(tg_op) = upper('update') then
+		select suami_istri_id into vid from opt.suami_istri_terakhir_riwayat where pegawai_id = new.pegawai_id;
+		update pegawai set suami_istri_id= vid where pegawai_id = new.pegawai_id;
+	
+	elsif upper(tg_op) = upper('delete') then
+		select suami_istri_id into vid from opt.suami_istri_terakhir_riwayat where pegawai_id = old.pegawai_id;
+		update pegawai set suami_istri_id= vid where pegawai_id = old.pegawai_id;
+	end if;
+	return null;
+   
+end;
+$body$
+language plpgsql volatile cost 100;
+alter function opt.pegawai_suami_istri() owner to postgres;
+
+drop trigger if exists pegawai_suami_istri_after on suami_istri;
+create trigger pegawai_suami_istri_after
+after insert or update
+on suami_istri
+for each row
+execute procedure opt.pegawai_suami_istri();
+
 --cursor
 --====================================================================================================================
 drop type if exists opt.kp_umum_fungsional_type;
