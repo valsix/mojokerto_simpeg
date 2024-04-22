@@ -146,7 +146,7 @@ $arrsatkerdata= $this->sessdatatree;
                                     </a>
                                 </li>
                                 <li class="navi-item">
-                                    <a  id="" class="navi-link">
+                                    <a  id="btnSPMT" class="navi-link">
                                         <span class="navi-text">SPMT</span>
                                     </a>
                                 </li>
@@ -156,7 +156,7 @@ $arrsatkerdata= $this->sessdatatree;
                                     </a>
                                 </li>
                                 <li class="navi-item">
-                                    <a  id="" class="navi-link">
+                                    <a  id="btnPegawaiExcel" class="navi-link">
                                         <span class="navi-text">CetakPegawai</span>
                                     </a>
                                 </li>
@@ -313,7 +313,7 @@ jQuery(document).ready(function() {
         }
         else{
             vpilihid= valinfoid;
-            varurl= "app/loadUrl/main/cetakfip1?reqId="+vpilihid;
+            varurl= "export/index/cetakfip1?reqId="+vpilihid;
             // window.open(varurl, 'window name', 'window settings');
             window.open(varurl, '_blank');
         }
@@ -337,7 +337,7 @@ jQuery(document).ready(function() {
         }
         else{
             vpilihid= valinfoid;
-            varurl= "app/loadUrl/main/cetakfip2?reqId="+vpilihid;
+            varurl= "export/index/cetakfip2?reqId="+vpilihid;
             // window.open(varurl, 'window name', 'window settings');
             window.open(varurl, '_blank');
         }
@@ -361,7 +361,7 @@ jQuery(document).ready(function() {
         }
         else{
             vpilihid= valinfoid;
-            varurl= "app/loadUrl/main/cetakbiodatalengkap?reqId="+vpilihid;
+            varurl= "export/index/cetakbiodatalengkap?reqId="+vpilihid;
             // window.open(varurl, 'window name', 'window settings');
             window.open(varurl, '_blank');
         }
@@ -385,7 +385,7 @@ jQuery(document).ready(function() {
         }
         else{
             vpilihid= valinfoid;
-            varurl= "app/loadUrl/main/cetakbiodatasingkat?reqId="+vpilihid;
+            varurl= "export/index/cetakbiodatasingkat?reqId="+vpilihid;
             // window.open(varurl, 'window name', 'window settings');
             window.open(varurl, '_blank');
         }
@@ -409,10 +409,42 @@ jQuery(document).ready(function() {
         }
         else{
             vpilihid= valinfoid;
-            varurl= "app/loadUrl/main/CetakModel?reqId="+vpilihid;
+            varurl= "export/index/CetakModel?reqId="+vpilihid;
             // window.open(varurl, 'window name', 'window settings');
             window.open(varurl, '_blank');
         }
+    });
+
+    $("#btnSPMT").on("click", function () {
+        btnid= $(this).attr('id');
+
+        if(valinfoid == "")
+        {
+            Swal.fire({
+                text: "Pilih salah satu data Riwayat terlebih dahulu.",
+                icon: "error",
+                buttonsStyling: false,
+                confirmButtonText: "Ok",
+                customClass: {
+                    confirmButton: "btn font-weight-bold btn-light-primary"
+                }
+            });
+            return false;
+        }
+        else{
+            vpilihid= valinfoid;
+            varurl= "export/index/cetakspmt?reqId="+vpilihid;
+            // window.open(varurl, 'window name', 'window settings');
+            window.open(varurl, '_blank');
+        }
+    });
+
+    $("#btnPegawaiExcel").on("click", function () {
+        reqFilter= $("#filter").val();
+        reqId= $("#reqSatkerId").val();
+        varurl= "export/index/cetakpegawaiexcel?reqId="+reqId+"&reqFilter="+reqFilter;
+        // window.open(varurl, 'window name', 'window settings');
+        window.open(varurl, '_blank');
     });
 
     $("#triggercari").on("click", function () {

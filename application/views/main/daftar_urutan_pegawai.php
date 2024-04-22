@@ -116,6 +116,10 @@ $arrsatkerdata= $this->sessdatatree;
                             <i class="fa fa-list-alt" aria-hidden="true"></i>
                             Proses
                         </button>
+                        <button type="button" id="btnCetak" class="btn btn-light-primary font-weight-bolder">
+                            <i class="fa fa-list-alt" aria-hidden="true"></i>
+                            Cetak
+                        </button>
                     </div>
 
                     <button class="btn btn-light-primary" onclick="showhidesatker()"><i class="fa fa-sitemap" aria-hidden="true"></i> Satker</button>

@@ -145,5 +145,67 @@ class Cetakan extends Entity{
 		$this->query = $str;
 		return $this->selectLimit($str,$limit,$from); 
     }
+
+    function selectByParamsPegawai($paramsArray=array(),$limit=-1,$from=-1, $statement='')
+	{
+		$str = "
+      	SELECT
+      	NIP_LAMA, AMBIL_FORMAT_NIP_BARU(NIP_BARU) NIP_BARU,
+      	(CASE WHEN GELAR_DEPAN IS NULL THEN '' ELSE GELAR_DEPAN || '. ' END) || A.NAMA || 
+		(CASE WHEN GELAR_BELAKANG IS NULL THEN '' ELSE  ', ' || GELAR_BELAKANG END) NAMA,TEMPAT_LAHIR,
+		TANGGAL_LAHIR,JENIS_KELAMIN,
+		(SELECT NAMA FROM STATUS_PEGAWAI X WHERE X.STATUS_PEGAWAI_ID = A.STATUS_PEGAWAI) STATUS_PEGAWAI,
+		B.GOL_RUANG, B.TMT_PANGKAT,C.ESELON,C.JABATAN,C.TMT_JABATAN,D.NAMA AGAMA,A.TELEPON,A.ALAMAT,
+		CASE 
+			when TANGGAL_LAHIR is null then 'tanggal lahir kosong'
+        	WHEN A.TIPE_PEGAWAI_ID = '11' AND ( SUBSTR(cast(C.ESELON_ID as varchar),1,1) = '1' OR SUBSTR(cast(C.ESELON_ID as varchar),1,1) = '2' ) 
+        	THEN '01-' || TO_CHAR(ADD_MONTHS(TANGGAL_LAHIR, (60 * 12) + 1),  'MM-YYYY')
+        	WHEN A.TIPE_PEGAWAI_ID = '21' OR ( A.TIPE_PEGAWAI_ID = '22' AND UPPER(C.JABATAN) LIKE '%DOKTER%' )  
+        	THEN '01-' || TO_CHAR(ADD_MONTHS(TANGGAL_LAHIR, (60 * 12) + 1),  'MM-YYYY')
+        	ELSE '01-' || TO_CHAR(ADD_MONTHS(TANGGAL_LAHIR, (58 * 12) + 1),  'MM-YYYY')
+        END TMT_PENSIUN, PENDIDIKAN, NMJURUSAN, LULUS, E.NAMA SATKER,AMBIL_SATKER_INDUK(A.SATKER_ID) SATKERINDUK
+		FROM PEGAWAI A  
+		LEFT JOIN (
+			SELECT PANGKAT_RIWAYAT_ID, MASA_KERJA_TAHUN, MASA_KERJA_BULAN, TMT_PANGKAT, GOL_RUANG, 
+			PEGAWAI_ID, PANGKAT_ID, KREDIT 
+			FROM PANGKAT_TERAKHIR
+		) B ON A.PEGAWAI_ID = B.PEGAWAI_ID
+		LEFT JOIN (
+			SELECT PEGAWAI_ID, TMT_JABATAN, ESELON, JABATAN, TUNJANGAN, KREDIT, coalesce(ESELON_ID, 99) ESELON_ID
+			FROM JABATAN_TERAKHIR
+		) C ON cast(A.PEGAWAI_ID as varchar) = C.PEGAWAI_ID
+		LEFT JOIN AGAMA D ON  A.AGAMA_ID = D.AGAMA_ID
+		LEFT JOIN (
+			SELECT PENDIDIKAN_RIWAYAT_ID, PEGAWAI_ID, TAHUN LULUS, PENDIDIKAN, PENDIDIKAN_ID, NMJURUSAN, NO_STTB, NAMA_SEKOLAH, KEPALA, TEMPAT, TANGGAL_STTB FROM PENDIDIKAN_TERAKHIR X
+		) F ON A.PEGAWAI_ID = F.PEGAWAI_ID,
+		SATKER E,
+		(
+			SELECT PEGAWAI_ID,
+			CASE WHEN 
+			cast((TO_CHAR(current_date, 'MM')) as int)-cast((TO_CHAR(TANGGAL_LAHIR, 'MM')) as int)<0 
+			THEN 
+			cast(TO_CHAR(current_date, 'YYYY') as int)-cast(TO_CHAR(TANGGAL_LAHIR, 'YYYY')as int)-1
+			ELSE 
+			cast(TO_CHAR(current_date, 'YYYY')as int)-cast(TO_CHAR(TANGGAL_LAHIR, 'YYYY')as int) 
+			END USIA_TAHUN
+			FROM PEGAWAI
+		) Y
+
+		WHERE                     
+		A.SATKER_ID = E.SATKER_ID AND A.PEGAWAI_ID = Y.PEGAWAI_ID
+	 	"; 
+		
+		while(list($key,$val) = each($paramsArray))
+		{
+			$str .= " AND $key = '$val' ";
+		}
+		
+		
+		$str .= $statement." ".$orderby;
+		$this->query = $str;
+		//echo $str;
+				
+		return $this->selectLimit($str,$limit,$from); 
+    }
 } 
 ?>
