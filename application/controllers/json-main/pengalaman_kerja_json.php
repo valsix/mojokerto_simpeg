@@ -217,7 +217,7 @@ class pengalaman_kerja_json extends CI_Controller {
 				$reqSimpan = 1;
 			}
 		}
-		elseif($reqMode == "update")
+		else
 		{
 			if($set->update())
 			{
@@ -228,7 +228,7 @@ class pengalaman_kerja_json extends CI_Controller {
 		$reqSimpan="1";
 		if($reqSimpan == 1 )
 		{
-			echo json_response(200, 'Data berhasil disimpan-'.$reqRowId);
+			echo json_response(200, $reqRowId."-Data berhasil disimpan.");
 		}
 		else
 		{

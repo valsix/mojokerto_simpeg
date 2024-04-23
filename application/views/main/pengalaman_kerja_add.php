@@ -202,7 +202,7 @@ $readonly = "readonly";
                                     confirmButton: "btn font-weight-bold btn-light-primary"
                                 }
                             }).then(function() {
-                                document.location.href = "app/index/hukuman?reqId=<?=$reqId?>";
+                                document.location.href = "app/index/pengalaman_kerja?reqId=<?=$reqId?>";
                                 // window.location.reload();
                             });
                         }

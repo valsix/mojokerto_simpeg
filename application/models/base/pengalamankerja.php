@@ -55,26 +55,16 @@ class PengalamanKerja extends Entity{
     function update()
 	{
 		$str = "
-				UPDATE SKP
+				UPDATE PENGALAMAN
 				SET    
-					   PEGAWAI_ID    = ".$this->getField("PEGAWAI_ID").",
-					   PEJABAT_ID    = ".$this->getField("PEJABAT_ID").",
-					   ATASAN_PEJABAT_ID    = ".$this->getField("ATASAN_PEJABAT_ID").",
-					   TAHUN    = ".$this->getField("TAHUN").",
-					   NILAI    = '".$this->getField("NILAI")."',
-					   ORIENTASI_PELAYANAN    = '".$this->getField("ORIENTASI_PELAYANAN")."',
-					   INTEGRITAS    = '".$this->getField("INTEGRITAS")."',
-					   KOMITMEN    = '".$this->getField("KOMITMEN")."',
-					   DISIPLIN    = '".$this->getField("DISIPLIN")."',
-					   KERJASAMA    = '".$this->getField("KERJASAMA")."',
-					   KEPEMIMPINAN    = '".$this->getField("KEPEMIMPINAN")."',
-					   INISIATIF_KERJA    = '".$this->getField("INISIATIF_KERJA")."',
-					  LAST_UPDATE_USER	= '".$this->getField("LAST_UPDATE_USER")."',
-					  LAST_UPDATE_DATE	= ".$this->getField("LAST_UPDATE_DATE").",
-					  LAST_UPDATE_SATKER	= '".$this->getField("LAST_UPDATE_SATKER")."'
-				WHERE  SKP_ID          = '".$this->getField("SKP_ID")."'
+					   NAMA    = '".$this->getField("NAMA")."',
+					   JABATAN    = '".$this->getField("JABATAN")."',
+					   MASA_KERJA_TAHUN    = ".$this->getField("MASA_KERJA_TAHUN").",
+					   MASA_KERJA_BULAN    = ".$this->getField("MASA_KERJA_BULAN").",
+					   TANGGAL_KERJA    = ".$this->getField("TANGGAL_KERJA")."
+				WHERE  PENGALAMAN_ID          = '".$this->getField("PENGALAMAN_ID")."'
 				"; 
-				$this->query = $str;
+				// $this->query = $str;
 
 				// echo $str;exit;
 		return $this->execQuery($str);
@@ -83,9 +73,9 @@ class PengalamanKerja extends Entity{
 
 	function delete()
 	{
-        $str = "DELETE FROM SKP
+        $str = "DELETE FROM PENGALAMAN
                 WHERE 
-                  SKP_ID = '".$this->getField("SKP_ID")."'"; 
+                  PENGALAMAN_ID = '".$this->getField("PENGALAMAN_ID")."'"; 
 				  
 		$this->query = $str;
         return $this->execQuery($str);
