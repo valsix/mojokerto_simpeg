@@ -309,7 +309,36 @@ DESCRIPTION			:
 			$this->errorMsg = "PESAN ERROR : ";
 		}
 		return $rs;
-    }	
+    }
+
+    function setlogdata($infotable, $infoaksi, $query)
+    {
+	    // echo $query;exit;
+	    $query= str_replace('&', "'||chr(38)||'", $query);
+	    $query= str_replace("'", "'||chr(39)||'", $query);
+	    // echo $query;exit;
+
+	    // echo $this->sessionuser;exit;
+
+	    $strquery = "
+	    INSERT INTO INFO_LOG
+	    (
+	      INFO_TABLE, INFO_AKSI, INFO_QUERY, LAST_USER, LAST_DATE
+	    ) 
+	    VALUES 
+	    (
+	      '".$infotable."'
+	      , '".$infoaksi."'
+	      , '".$query."'
+	      , '".$this->sessionuser."'
+	      , NOW()
+	    )"
+	    ;
+
+	    // $this->query = $strquery;
+	    // echo $strquery;exit;
+	    $this->execQuery($strquery);
+	}
 
   } 
 ?>
