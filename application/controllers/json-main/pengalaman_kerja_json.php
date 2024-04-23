@@ -233,8 +233,20 @@ class pengalaman_kerja_json extends CI_Controller {
 		else
 		{
 			echo json_response(400, 'Data gagal disimpan');
-		}
-				
+		}				
+	}
+
+	function delete()
+	{
+		$this->load->model("base/PengalamanKerja");
+
+		$reqId= $this->input->get("reqDetilId");
+
+		$set= new PengalamanKerja();
+		$set->setField("PENGALAMAN_ID", $reqId);
+		$set->delete();
+
+		echo json_response(200, $reqId.'-Data berhasil Dihapus');
 	}
 }
 ?>

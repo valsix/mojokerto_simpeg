@@ -147,7 +147,7 @@ $readonly = "readonly";
 		        		</label>
 	        			<div class="col-lg-4 col-sm-12">
 	        				<div class="input-group date">
-		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTanggalSuratKeputusan" value="<?=$reqTanggalSuratKeputusan?>" />
+		        				<input type="text" autocomplete="off" class="form-control" id="reqTanggalSuratKeputusan" name="reqTanggalSuratKeputusan" value="<?=$reqTanggalSuratKeputusan?>" />
 		        				<div class="input-group-append">
 		        					<span class="input-group-text">
 		        						<i class="la la-calendar"></i>
@@ -162,7 +162,7 @@ $readonly = "readonly";
 		        		</label>
 	        			<div class="col-lg-4 col-sm-12">
 	        				<div class="input-group date">
-		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTerhitungMulaiTanggal" value="<?=$reqTerhitungMulaiTanggal?>" />
+		        				<input type="text" autocomplete="off" class="form-control" id="reqTerhitungMulaiTanggal" name="reqTerhitungMulaiTanggal" value="<?=$reqTerhitungMulaiTanggal?>" />
 		        				<div class="input-group-append">
 		        					<span class="input-group-text">
 		        						<i class="la la-calendar"></i>
@@ -183,7 +183,7 @@ $readonly = "readonly";
 		        		</label>
 	        			<div class="col-lg-4 col-sm-12">
 	        				<div class="input-group date">
-		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTanggalBeritaAcara" value="<?=$reqTanggalBeritaAcara?>" />
+		        				<input type="text" autocomplete="off" class="form-control" id="reqTanggalBeritaAcara" name="reqTanggalBeritaAcara" value="<?=$reqTanggalBeritaAcara?>" />
 		        				<div class="input-group-append">
 		        					<span class="input-group-text">
 		        						<i class="la la-calendar"></i>
@@ -204,7 +204,7 @@ $readonly = "readonly";
 		        		</label>
 	        			<div class="col-lg-4 col-sm-12">
 	        				<div class="input-group date">
-		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTanggalDiklatPrajabatan" value="<?=$reqTanggalDiklatPrajabatan?>" />
+		        				<input type="text" autocomplete="off" class="form-control" id="reqTanggalDiklatPrajabatan" name="reqTanggalDiklatPrajabatan" value="<?=$reqTanggalDiklatPrajabatan?>" />
 		        				<div class="input-group-append">
 		        					<span class="input-group-text">
 		        						<i class="la la-calendar"></i>
@@ -225,7 +225,7 @@ $readonly = "readonly";
 		        		</label>
 	        			<div class="col-lg-4 col-sm-12">
 	        				<div class="input-group date">
-		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTanggalSuratUjiKesehatan" value="<?=$reqTanggalSuratUjiKesehatan?>" />
+		        				<input type="text" autocomplete="off" class="form-control" id="reqTanggalSuratUjiKesehatan" name="reqTanggalSuratUjiKesehatan" value="<?=$reqTanggalSuratUjiKesehatan?>" />
 		        				<div class="input-group-append">
 		        					<span class="input-group-text">
 		        						<i class="la la-calendar"></i>
@@ -311,7 +311,7 @@ $readonly = "readonly";
 	});
 
 	arrows= {leftArrow: '<i class="la la-angle-left"></i>', rightArrow: '<i class="la la-angle-right"></i>'};
-	$('#kttanggallahir').datepicker({
+	$('#reqTanggalSuratKeputusan,#reqTerhitungMulaiTanggal,#reqTanggalDiklatPrajabatan,#reqTanggalSuratUjiKesehatan,#reqTanggalBeritaAcara').datepicker({
 		todayHighlight: true
 		, autoclose: true
 		, orientation: "bottom left"
@@ -323,7 +323,7 @@ $readonly = "readonly";
 	var _buttonSpinnerClasses = 'spinner spinner-right spinner-white pr-15';
 	jQuery(document).ready(function() {
 		var form = KTUtil.getById('ktloginform');
-		var formSubmitUrl = "json-data/info_data_json/indentitaspegawai";
+		var formSubmitUrl = "json-data/info_data_json/SkPnsAdd";
 		var formSubmitButton = KTUtil.getById('ktloginformsubmitbutton');
 		if (!form) {
 			return;
@@ -381,7 +381,7 @@ $readonly = "readonly";
 			        			confirmButton: "btn font-weight-bold btn-light-primary"
 			        		}
 			        	}).then(function() {
-			        		document.location.href = "app/index/pegawai_data";
+			        		document.location.href = "app/index/sk_pns?reqId=<?=$reqId?>";
 			        	});
 			        },
 			        error: function(xhr, status, error) {

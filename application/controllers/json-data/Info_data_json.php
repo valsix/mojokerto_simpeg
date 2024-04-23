@@ -1612,5 +1612,131 @@ class info_data_json extends CI_Controller {
 
 		return $reqPegawaiId;
 	}
+
+	function skCpnsAdd()
+	{
+		$this->load->model("base/SkCpns");
+
+		$reqSkCpnsId= $this->input->post("reqSkCpnsId");
+		$reqId= $this->input->post("reqId");
+		$reqNoNotaBAKN= $this->input->post("reqNoNotaBAKN");
+		$reqTanggalNotaBAKN= $this->input->post("reqTanggalNotaBAKN");
+		$reqNamaPejabatPenetap= $this->input->post("reqNamaPejabatPenetap");
+		$reqNIPPejabatPenetap= $this->input->post("reqNIPPejabatPenetap");
+		$reqNoSuratKeputusan= $this->input->post("reqNoSuratKeputusan");
+		$reqTanggalSuratKeputusan= $this->input->post("reqTanggalSuratKeputusan");
+		$reqTerhitungMulaiTanggal= $this->input->post("reqTerhitungMulaiTanggal");
+		$reqGolRuang= $this->input->post("reqGolRuang");
+		$reqTanggalTugas= $this->input->post("reqTanggalTugas");
+		$reqTh= $this->input->post("reqTh");
+		$reqBl= $this->input->post("reqBl");
+
+		$set= new SkCpns();
+		$set->setField('PEGAWAI_ID', $reqId);
+		$set->setField('NO_NOTA', $reqNoNotaBAKN);
+		$set->setField('TANGGAL_NOTA', dateToDBCheck($reqTanggalNotaBAKN));
+		$set->setField('NAMA_PENETAP', $reqNamaPejabatPenetap);
+		$set->setField('NIP_PENETAP', $reqNIPPejabatPenetap);
+		$set->setField('NO_SK', $reqNoSuratKeputusan);
+		$set->setField('TANGGAL_SK', dateToDBCheck($reqTanggalSuratKeputusan));
+		$set->setField('TMT_CPNS', dateToDBCheck($reqTerhitungMulaiTanggal));
+		$set->setField('PANGKAT_ID', $reqGolRuang);
+		$set->setField('TANGGAL_TUGAS', dateToDBCheck($reqTanggalTugas));
+		$set->setField('MASA_KERJA_TAHUN', $reqTh);
+		$set->setField('MASA_KERJA_BULAN', $reqBl);
+		$set->setField('SK_CPNS_ID', $reqSkCpnsId);
+
+		$reqSimpan="";
+	
+		if($reqSkCpnsId == "")
+		{
+			if($set->insert())
+			{
+				$reqPegawaiId= $set->pegawai_id;
+				$reqSimpan = 1;
+			}
+		}
+		else
+		{
+			if($set->update())
+			{
+				$reqSimpan = 1;
+			}
+		}
+
+		$reqSimpan="1";
+		if($reqSimpan == 1 )
+		{
+			echo json_response(200, 'Data berhasil disimpan');
+		}
+		else
+		{
+			echo json_response(400, 'Data gagal disimpan');
+		}
+				
+	}
+
+	function SkPnsAdd()
+	{
+		$this->load->model("base/SkCpns");
+
+		$reqSkCpnsId= $this->input->post("reqSkCpnsId");
+		$reqId= $this->input->post("reqId");
+		$reqNoNotaBAKN= $this->input->post("reqNoNotaBAKN");
+		$reqTanggalNotaBAKN= $this->input->post("reqTanggalNotaBAKN");
+		$reqNamaPejabatPenetap= $this->input->post("reqNamaPejabatPenetap");
+		$reqNIPPejabatPenetap= $this->input->post("reqNIPPejabatPenetap");
+		$reqNoSuratKeputusan= $this->input->post("reqNoSuratKeputusan");
+		$reqTanggalSuratKeputusan= $this->input->post("reqTanggalSuratKeputusan");
+		$reqTerhitungMulaiTanggal= $this->input->post("reqTerhitungMulaiTanggal");
+		$reqGolRuang= $this->input->post("reqGolRuang");
+		$reqTanggalTugas= $this->input->post("reqTanggalTugas");
+		$reqTh= $this->input->post("reqTh");
+		$reqBl= $this->input->post("reqBl");
+
+		$set= new SkCpns();
+		$set->setField('PEGAWAI_ID', $reqId);
+		$set->setField('NO_NOTA', $reqNoNotaBAKN);
+		$set->setField('TANGGAL_NOTA', dateToDBCheck($reqTanggalNotaBAKN));
+		$set->setField('NAMA_PENETAP', $reqNamaPejabatPenetap);
+		$set->setField('NIP_PENETAP', $reqNIPPejabatPenetap);
+		$set->setField('NO_SK', $reqNoSuratKeputusan);
+		$set->setField('TANGGAL_SK', dateToDBCheck($reqTanggalSuratKeputusan));
+		$set->setField('TMT_CPNS', dateToDBCheck($reqTerhitungMulaiTanggal));
+		$set->setField('PANGKAT_ID', $reqGolRuang);
+		$set->setField('TANGGAL_TUGAS', dateToDBCheck($reqTanggalTugas));
+		$set->setField('MASA_KERJA_TAHUN', $reqTh);
+		$set->setField('MASA_KERJA_BULAN', $reqBl);
+		$set->setField('SK_CPNS_ID', $reqSkCpnsId);
+
+		$reqSimpan="";
+	
+		if($reqSkCpnsId == "")
+		{
+			if($set->insert())
+			{
+				$reqPegawaiId= $set->pegawai_id;
+				$reqSimpan = 1;
+			}
+		}
+		else
+		{
+			if($set->update())
+			{
+				$reqSimpan = 1;
+			}
+		}
+
+		$reqSimpan="1";
+		if($reqSimpan == 1 )
+		{
+			echo json_response(200, 'Data berhasil disimpan');
+		}
+		else
+		{
+			echo json_response(400, 'Data gagal disimpan');
+		}
+				
+	}
 }
 ?>

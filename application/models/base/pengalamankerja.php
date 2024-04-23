@@ -50,9 +50,9 @@ class PengalamanKerja extends Entity{
 		$this->query = $str;
 		// echo $str;exit;
 		return $this->execQuery($str);
-    }
+  }
 
-    function update()
+  function update()
 	{
 		$str = "
 				UPDATE PENGALAMAN

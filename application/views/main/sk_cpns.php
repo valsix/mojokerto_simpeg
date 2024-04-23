@@ -29,10 +29,9 @@ $reqTanggalSuratKeputusan	= dateToPageCheck($skcpns->getField('TANGGAL_SK'));
 $reqTerhitungMulaiTanggal	= dateToPageCheck($skcpns->getField('TMT_CPNS'));
 $reqGolRuang				= $skcpns->getField('PANGKAT_ID');
 $reqTanggalTugas			= dateToPageCheck($skcpns->getField('TANGGAL_TUGAS'));
-$reqSkcpnsId				= (int)$skcpns->getField('SK_CPNS_ID');
+$reqSkCpnsId			= $skcpns->getField('SK_CPNS_ID');
 $reqTh 					= $skcpns->getField('MASA_KERJA_TAHUN');
 $reqBl 					= $skcpns->getField('MASA_KERJA_BULAN');
-
 $pangkat= new Core();
 $pangkat->selectByParamsPangkat(array());
 // echo $pangkat->query;exit;
@@ -104,7 +103,7 @@ $readonly = "readonly";
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Tanggal Nota BAKN</label>
 	        			<div class="col-lg-10 col-sm-12">
 	        				<div class="input-group date">
-		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTanggalNotaBAKN" value="<?=$reqTanggalNotaBAKN?>" />
+		        				<input type="text" autocomplete="off" class="form-control" id="reqTanggalNotaBAKN" name="reqTanggalNotaBAKN" value="<?=$reqTanggalNotaBAKN?>" />
 		        				<div class="input-group-append">
 		        					<span class="input-group-text">
 		        						<i class="la la-calendar"></i>
@@ -135,7 +134,7 @@ $readonly = "readonly";
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Tanggal Surat Keputusan</label>
 	        			<div class="col-lg-4 col-sm-12">
 	        				<div class="input-group date">
-		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTerhitungMulaiTanggal" value="<?=$reqTerhitungMulaiTanggal?>" />
+		        				<input type="text" autocomplete="off" class="form-control" id="reqTerhitungMulaiTanggal" name="reqTerhitungMulaiTanggal" value="<?=$reqTerhitungMulaiTanggal?>" />
 		        				<div class="input-group-append">
 		        					<span class="input-group-text">
 		        						<i class="la la-calendar"></i>
@@ -146,7 +145,7 @@ $readonly = "readonly";
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Tanggal Surat Keputusan</label>
 	        			<div class="col-lg-4 col-sm-12">
 	        				<div class="input-group date">
-		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTanggalSuratKeputusan" value="<?=$reqTanggalSuratKeputusan?>" />
+		        				<input type="text" autocomplete="off" class="form-control" id="reqTanggalSuratKeputusan" name="reqTanggalSuratKeputusan" value="<?=$reqTanggalSuratKeputusan?>" />
 		        				<div class="input-group-append">
 		        					<span class="input-group-text">
 		        						<i class="la la-calendar"></i>
@@ -169,7 +168,7 @@ $readonly = "readonly";
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Tanggal Tugas</label>
 	        			<div class="col-lg-4 col-sm-12">
 	        				<div class="input-group date">
-		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTanggalTugas" value="<?=$reqTanggalTugas?>" />
+		        				<input type="text" autocomplete="off" class="form-control" id="reqTanggalTugas" name="reqTanggalTugas" value="<?=$reqTanggalTugas?>" />
 		        				<div class="input-group-append">
 		        					<span class="input-group-text">
 		        						<i class="la la-calendar"></i>
@@ -195,6 +194,8 @@ $readonly = "readonly";
 	        		<div class="row">
 	        			<div class="col-lg-9">
 	        				<input type="hidden" name="reqMode" value="<?=$reqMode?>">
+	        				<input type="hidden" name="reqSkCpnsId" value="<?=$reqSkCpnsId?>">
+	        				<input type="hidden" name="reqId" value="<?=$reqId?>">
 	        				<input type="hidden" name="reqTempValidasiId" value="<?=$reqTempValidasiId?>">
 	        				<button type="submit" id="ktloginformsubmitbutton"  class="btn btn-primary font-weight-bold mr-2">Simpan</button>
 	        			</div>
@@ -225,7 +226,7 @@ $readonly = "readonly";
 	});
 
 	arrows= {leftArrow: '<i class="la la-angle-left"></i>', rightArrow: '<i class="la la-angle-right"></i>'};
-	$('#kttanggallahir').datepicker({
+	$('#reqTanggalNotaBAKN,#reqTerhitungMulaiTanggal,#reqTanggalSuratKeputusan,#reqTanggalTugas').datepicker({
 		todayHighlight: true
 		, autoclose: true
 		, orientation: "bottom left"
@@ -237,7 +238,7 @@ $readonly = "readonly";
 	var _buttonSpinnerClasses = 'spinner spinner-right spinner-white pr-15';
 	jQuery(document).ready(function() {
 		var form = KTUtil.getById('ktloginform');
-		var formSubmitUrl = "json-data/info_data_json/indentitaspegawai";
+		var formSubmitUrl = "json-data/info_data_json/skCpnsAdd";
 		var formSubmitButton = KTUtil.getById('ktloginformsubmitbutton');
 		if (!form) {
 			return;
@@ -295,7 +296,7 @@ $readonly = "readonly";
 			        			confirmButton: "btn font-weight-bold btn-light-primary"
 			        		}
 			        	}).then(function() {
-			        		document.location.href = "app/index/pegawai_data";
+			        		document.location.href = "app/index/sk_cpns?reqId=<?=$reqId?>";
 			        	});
 			        },
 			        error: function(xhr, status, error) {

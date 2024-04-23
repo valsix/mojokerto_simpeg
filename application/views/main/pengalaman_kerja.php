@@ -173,21 +173,6 @@ var valinfoid = '';
 var valinfovalidasiid = '';
 var valinfovalidasihapusid = '';
 
-$(function(){
-    var tt = $('#tt').treegrid({
-        url: 'json-main/satuan_kerja_json/treepilih',
-        rownumbers: false,
-        pagination: false,
-        idField: 'ID',
-        treeField: 'NAMA',
-        onBeforeLoad: function(row,param){
-            if (!row) { // load top level rows
-            param.id = 0; // set id=0, indicate to load new page rows
-            }
-        }
-    });
-});
-
 jQuery(document).ready(function() {
     var jsonurl= "json-main/pengalaman_kerja_json/json?reqId=<?=$reqId?>";
     ajaxserverselectsingle.init(infotableid, jsonurl, arrdata);
@@ -231,7 +216,7 @@ jQuery(document).ready(function() {
         }
         else
         {
-            urlAjax= "json-data/info_data_json/jsondiklatteknisdelete?&reqDetilId="+valinfoid;
+            urlAjax= "json-main/pengalaman_kerja_json/delete?&reqDetilId="+valinfoid;
             swal.fire({
                 title: 'Apakah anda yakin untuk hapus data?',
                 type: 'warning',
@@ -261,7 +246,7 @@ jQuery(document).ready(function() {
                                 showConfirmButton: false,
                                 timer: 2000
                             }).then(function() {
-                                document.location.href = "app/index/pegawai_diklat_teknis?formulaid=<?=$formulaid?>";
+                                document.location.href = "app/index/pengalaman_kerja?reqId=<?=$reqId?>";
                             });
                         },
                         complete: function() {

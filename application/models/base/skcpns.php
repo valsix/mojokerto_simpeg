@@ -33,5 +33,60 @@ class SkCpns extends Entity{
 				
 		return $this->selectLimit($str,$limit,$from); 
     }
+
+    function insert()
+	{
+		$this->setField("SK_CPNS_ID", $this->getNextId("SK_CPNS_ID","SK_CPNS")); 
+		$str = "INSERT INTO SK_CPNS (
+				SK_CPNS_ID, PEGAWAI_ID, NO_NOTA, 
+				TANGGAL_NOTA, NAMA_PENETAP,NIP_PENETAP, NO_SK
+				TANGGAL_SK, TMT_CPNS,PANGKAT_ID, TANGGAL_TUGAS
+				MASA_KERJA_TAHUN, MASA_KERJA_BULAN
+				)
+				VALUES (
+				  ".$this->getField("SK_CPNS_ID").",
+				  ".$this->getField("PEGAWAI_ID").",
+				  '".$this->getField("NO_NOTA")."',
+				  '".$this->getField("TANGGAL_NOTA")."',
+				  '".$this->getField("NAMA_PENETAP")."',
+				  '".$this->getField("NIP_PENETAP")."',
+				  '".$this->getField("NO_SK")."',
+				  ".$this->getField("TANGGAL_SK").",
+				  '".$this->getField("TMT_CPNS")."',
+				  '".$this->getField("PANGKAT_ID")."',
+				  ".$this->getField("TANGGAL_TUGAS").",
+				  '".$this->getField("MASA_KERJA_TAHUN")."',
+				  '".$this->getField("MASA_KERJA_BULAN")."'
+				)"; 
+				
+		$this->id= $this->getField("SK_CPNS_ID");
+		$this->query = $str;
+		// echo $str;exit;
+		return $this->execQuery($str);
+  	}
+
+  	function update()
+	{
+		$str = "
+				UPDATE SK_CPNS
+				SET    
+					   NO_NOTA    = '".$this->getField("NO_NOTA")."',
+					   TANGGAL_NOTA    = ".$this->getField("TANGGAL_NOTA").",
+					   NAMA_PENETAP    = '".$this->getField("NAMA_PENETAP")."',
+					   NIP_PENETAP    = '".$this->getField("NIP_PENETAP")."',
+					   NO_SK    = '".$this->getField("NO_SK")."',
+					   TANGGAL_SK    = ".$this->getField("TANGGAL_SK").",
+					   TMT_CPNS    = ".$this->getField("TMT_CPNS").",
+					   PANGKAT_ID    = '".$this->getField("PANGKAT_ID")."',
+					   TANGGAL_TUGAS    = ".$this->getField("TANGGAL_TUGAS").",
+					   MASA_KERJA_TAHUN    = ".$this->getField("MASA_KERJA_TAHUN").",
+					   MASA_KERJA_BULAN    = ".$this->getField("MASA_KERJA_BULAN")."
+				WHERE  SK_CPNS_ID          = '".$this->getField("SK_CPNS_ID")."'
+				"; 
+				$this->query = $str;
+
+				// echo $str;exit;
+		return $this->execQuery($str);
+    }
 } 
 ?>
