@@ -19,26 +19,25 @@
 		INSERT INTO suami_istri
 		(
 			SUAMI_ISTRI_ID, PEGAWAI_ID, PENDIDIKAN_ID, NAMA, TEMPAT_LAHIR, TANGGAL_LAHIR, TANGGAL_KAWIN, KARTU, STATUS_PNS
-			, NIP_PNS, PEKERJAAN, STATUS_TUNJANGAN, STATUS_BAYAR, BULAN_BAYAR, FOTO, STATUS,JENIS_KELAMIN
+			, NIP_PNS, PEKERJAAN, STATUS_TUNJANGAN, STATUS_BAYAR, BULAN_BAYAR, STATUS, JENIS_KELAMIN
 			, LAST_CREATE_USER, LAST_CREATE_DATE, LAST_CREATE_SATKER
 		)
 		VALUES
 		(
 			".$this->getField("SUAMI_ISTRI_ID")."
 			, '".$this->getField("PEGAWAI_ID")."'
-			, '".$this->getField("PENDIDIKAN_ID")."'
+			, ".$this->getField("PENDIDIKAN_ID")."
 			, '".$this->getField("NAMA")."'
 			, '".$this->getField("TEMPAT_LAHIR")."'
 			, ".$this->getField("TANGGAL_LAHIR")."
 			, ".$this->getField("TANGGAL_KAWIN")."
 			, '".$this->getField("KARTU")."'
-			, '".$this->getField("STATUS_PNS")."'
+			, ".$this->getField("STATUS_PNS")."
 			, '".$this->getField("NIP_PNS")."'
 			, '".$this->getField("PEKERJAAN")."'
-			, '".$this->getField("STATUS_TUNJANGAN")."'
-			, '".$this->getField("STATUS_BAYAR")."'
+			, ".$this->getField("STATUS_TUNJANGAN")."
+			, ".$this->getField("STATUS_BAYAR")."
 			, ".$this->getField("BULAN_BAYAR")."
-			, '".$this->getField("FOTO")."'
 			, 1
 			, '".$this->getField("JENIS_KELAMIN")."'
 			, '".$this->getField("LAST_CREATE_USER")."'
@@ -47,13 +46,13 @@
 		)";
 		$this->id= $this->getField("SUAMI_ISTRI_ID");	
 		$this->query = $str;
-
 		// echo $str;exit;
 		
 		// untuk buat log data
 		// parse pertama sesuai nama table
 		// parse ke dua sesuai aksi
 		$this->setlogdata("suami_istri", "INSERT", $str);
+		// , '".$this->getField("FOTO")."'
 
 		return $this->execQuery($str);
     }
@@ -64,25 +63,25 @@
 		UPDATE suami_istri
 		SET    
 			PEGAWAI_ID= '".$this->getField("PEGAWAI_ID")."'
-			, PENDIDIKAN_ID= '".$this->getField("PENDIDIKAN_ID")."'
+			, PENDIDIKAN_ID= ".$this->getField("PENDIDIKAN_ID")."
 			, NAMA= '".$this->getField("NAMA")."'
 			, TEMPAT_LAHIR= '".$this->getField("TEMPAT_LAHIR")."'
 			, TANGGAL_LAHIR= ".$this->getField("TANGGAL_LAHIR")."
 			, TANGGAL_KAWIN= ".$this->getField("TANGGAL_KAWIN")."
 			, KARTU= '".$this->getField("KARTU")."'
-			, STATUS_PNS= '".$this->getField("STATUS_PNS")."'
+			, STATUS_PNS= ".$this->getField("STATUS_PNS")."
 			, NIP_PNS= '".$this->getField("NIP_PNS")."'
 			, PEKERJAAN= '".$this->getField("PEKERJAAN")."'
-			, STATUS_TUNJANGAN= '".$this->getField("STATUS_TUNJANGAN")."'
-			, STATUS_BAYAR= '".$this->getField("STATUS_BAYAR")."'
+			, STATUS_TUNJANGAN= ".$this->getField("STATUS_TUNJANGAN")."
+			, STATUS_BAYAR= ".$this->getField("STATUS_BAYAR")."
 			, BULAN_BAYAR= ".$this->getField("BULAN_BAYAR")."
-			, FOTO= '".$this->getField("FOTO")."'
 			, JENIS_KELAMIN= '".$this->getField("JENIS_KELAMIN")."'
 			, LAST_UPDATE_USER= '".$this->getField("LAST_UPDATE_USER")."'
 			, LAST_UPDATE_DATE= ".$this->getField("LAST_UPDATE_DATE")."
 			, LAST_UPDATE_SATKER= '".$this->getField("LAST_UPDATE_SATKER")."'
 		WHERE SUAMI_ISTRI_ID= '".$this->getField("SUAMI_ISTRI_ID")."'
 		";
+		// , FOTO= '".$this->getField("FOTO")."'
 		$this->query = $str;
 
 		// untuk buat log data

@@ -20,23 +20,23 @@ $suami_istri= new SuamiIstri();
 $suami_istri->selectByParams(array("PEGAWAI_ID" => $reqId, "STATUS"=>1), -1,-1,'');
 $suami_istri->firstRow();
 // echo $suami_istri->query; exit;
-$reqIdSuamiIstri	= (int)$suami_istri->getField('SUAMI_ISTRI_ID');
-$reqNamaSuamiIstri	= $suami_istri->getField('NAMA');
-$reqTempatLahir	= $suami_istri->getField('TEMPAT_LAHIR');
-$reqTglLahir		= dateToPageCheck($suami_istri->getField('TANGGAL_LAHIR'));
-$reqTglKawin		= dateToPageCheck($suami_istri->getField('TANGGAL_KAWIN'));
-$reqPNS			= $suami_istri->getField('STATUS_PNS');
-$reqNIP			= $suami_istri->getField('NIP_PNS');
-$reqPendidikan		= $suami_istri->getField('PENDIDIKAN_ID');
-$reqPekerjaan		= $suami_istri->getField('PEKERJAAN');
-$reqTunjangan		= $suami_istri->getField('STATUS_TUNJANGAN');
-$reqSudahDibayar	= $suami_istri->getField('STATUS_BAYAR');
-$reqBulanDibayar	= dateToPageCheck($suami_istri->getField('BULAN_BAYAR'));
-$reqKartu	= $suami_istri->getField('KARTU');
+$reqIdSuamiIstri= (int)$suami_istri->getField('SUAMI_ISTRI_ID');
+$reqNamaSuamiIstri= $suami_istri->getField('NAMA');
+$reqTempatLahir= $suami_istri->getField('TEMPAT_LAHIR');
+$reqTglLahir= dateToPageCheck($suami_istri->getField('TANGGAL_LAHIR'));
+$reqTglKawin= dateToPageCheck($suami_istri->getField('TANGGAL_KAWIN'));
+$reqPNS= $suami_istri->getField('STATUS_PNS');
+$reqNIP= $suami_istri->getField('NIP_PNS');
+$reqPendidikan= $suami_istri->getField('PENDIDIKAN_ID');
+$reqPekerjaan= $suami_istri->getField('PEKERJAAN');
+$reqTunjangan= $suami_istri->getField('STATUS_TUNJANGAN');
+$reqSudahDibayar= $suami_istri->getField('STATUS_BAYAR');
+$reqBulanDibayar= dateToPageCheck($suami_istri->getField('BULAN_BAYAR'));
+$reqKartu= $suami_istri->getField('KARTU');
 $reqPegawaiId= $suami_istri->getField('PEGAWAI_ID');
 
-$reqFoto			= $suami_istri->getField('FOTO');
-$reqFotoTmp			= $suami_istri->getField('FOTO');
+$reqFoto= $suami_istri->getField('FOTO');
+$reqFotoTmp= $suami_istri->getField('FOTO');
 
 $pendidikan= new Core();
 $pendidikan->selectByParamsPendidikan(); 
@@ -109,14 +109,14 @@ $readonly = "readonly";
 				        <div class="card-title">
 		                    <h3 class="card-label">Suami/Istri</h3>
 		                </div>
-			            <div class="form-group row">
+			            <!-- <div class="form-group row">
 		        			<label class="col-form-label text-right col-lg-2 col-sm-12">
 			        			Foto
 			        		</label>
 		        			<div class="col-lg-4 col-sm-12">
 		        				<input type="file" class="form-control" name="reqNamaPejabatPenetap" id="reqNamaPejabatPenetap" value="<?=$reqNamaPejabatPenetap?>" />
 		        			</div>
-		        		</div>
+		        		</div> -->
 		        		<div class="form-group row">
 		        			<label class="col-form-label text-right col-lg-2 col-sm-12">
 			        			Nama Suami/Istri
@@ -126,51 +126,65 @@ $readonly = "readonly";
 		        			</div>
 		        		</div>
 		        		<div class="form-group row">
-		        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-			        			Tempat Lahir
-			        		</label>
-		        			<div class="col-lg-10 col-sm-12">
-		        				<input type="text" class="form-control" name="reqTempatLahir" id="reqTempatLahir" value="<?=$reqTempatLahir?>" />
-		        			</div>
+		        			<div class="col-md-6">
+		        				<div class="form-group row">
+				        			<label class="col-form-label text-right col-lg-4 col-sm-12">
+					        			Tempat Lahir
+					        		</label>
+				        			<div class="col-lg-8 col-sm-12">
+				        				<input type="text" class="form-control" name="reqTempatLahir" id="reqTempatLahir" value="<?=$reqTempatLahir?>" />
+				        			</div>
+				        		</div>
+				        	</div>
+				        	<div class="col-md-6">
+				        		<div class="form-group row">
+				        			<label class="col-form-label text-right col-lg-4 col-sm-12">
+					        			Kartu
+					        		</label>
+				        			<div class="col-lg-8 col-sm-12">
+				        				<input type="text" class="form-control" name="reqKartu" id="reqKartu" value="<?=$reqKartu?>" />
+				        			</div>
+				        		</div>
+				        	</div>
 		        		</div>
+
 		        		<div class="form-group row">
-		        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-			        			Kartu
-			        		</label>
-		        			<div class="col-lg-10 col-sm-12">
-		        				<input type="text" class="form-control" name="reqKartu" id="reqKartu" value="<?=$reqKartu?>" />
-		        			</div>
+				        	<div class="col-md-6">
+				        		<div class="form-group row">
+				        			<label class="col-form-label text-right col-lg-4 col-sm-12">
+					        			Tgl Lahir
+					        		</label>
+				        			<div class="col-lg-8 col-sm-12">
+				        				<div class="input-group date">
+					        				<input type="text" <?=$read?> autocomplete="off" class="form-control kttanggal" name="reqTglLahir" value="<?=$reqTglLahir?>" />
+					        				<div class="input-group-append">
+					        					<span class="input-group-text">
+					        						<i class="la la-calendar"></i>
+					        					</span>
+					        				</div>
+					        			</div>
+				        			</div>
+				        		</div>
+			        		</div>
+			        		<div class="col-md-6">
+			        			<div class="form-group row">
+			        				<label class="col-form-label text-right col-lg-4 col-sm-12">
+					        			Tgl Kawin
+					        		</label>
+				        			<div class="col-lg-8 col-sm-12">
+				        				<div class="input-group date">
+					        				<input type="text" <?=$read?> autocomplete="off" class="form-control kttanggal" name="reqTglKawin" value="<?=$reqTglKawin?>" />
+					        				<div class="input-group-append">
+					        					<span class="input-group-text">
+					        						<i class="la la-calendar"></i>
+					        					</span>
+					        				</div>
+					        			</div>
+				        			</div>
+				        		</div>
+			        		</div>
 		        		</div>
-		        		<div class="form-group row">
-		        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-			        			Tgl Lahir
-			        		</label>
-		        			<div class="col-lg-4 col-sm-12">
-		        				<div class="input-group date">
-			        				<input type="text" autocomplete="off" class="form-control" id="reqTglLahir" name="reqTglLahir" value="<?=$reqTglLahir?>" />
-			        				<div class="input-group-append">
-			        					<span class="input-group-text">
-			        						<i class="la la-calendar"></i>
-			        					</span>
-			        				</div>
-			        			</div>
-		        			</div>
-		        		</div>
-		        		<div class="form-group row">
-		        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-			        			Tgl Kawin
-			        		</label>
-		        			<div class="col-lg-4 col-sm-12">
-		        				<div class="input-group date">
-			        				<input type="text" autocomplete="off" class="form-control" id="reqTglKawin" name="reqTglKawin" value="<?=$reqTglKawin?>" />
-			        				<div class="input-group-append">
-			        					<span class="input-group-text">
-			        						<i class="la la-calendar"></i>
-			        					</span>
-			        				</div>
-			        			</div>
-		        			</div>
-		        		</div>
+
 		        		<div class="form-group row">
 		        			<label class="col-form-label text-right col-lg-2 col-sm-12">
 			        			PNS
@@ -188,24 +202,30 @@ $readonly = "readonly";
 		        			</div>
 		        		</div>
 		        		<div class="form-group row">
-		        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-			        			Pendidikan
-			        		</label>
-		        			<div class="col-lg-10 col-sm-12">
-		        				<select class="form-control" id="reqPendidikan" name="reqPendidikan">
-		        					 <? while($pendidikan->nextRow()){?>
-					                    <option value="<?=$pendidikan->getField('PENDIDIKAN_ID')?>" <? if($reqPendidikan == $pendidikan->getField('PENDIDIKAN_ID')) echo 'selected';?>><?=$pendidikan->getField('NAMA')?></option>
-					                <? }?>
-		        				</select>
-		        			</div>
-		        		</div>
-		        		<div class="form-group row">
-		        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-			        			Pekerjaan
-			        		</label>
-		        			<div class="col-lg-10 col-sm-12">
-		        				<input type="text" class="form-control" name="reqPekerjaan" id="reqPekerjaan" value="<?=$reqPekerjaan?>" />
-		        			</div>
+		        			<div class="col-md-4">
+				        		<div class="form-group row">
+				        			<label class="col-form-label text-right col-lg-6 col-sm-12">
+					        			Pendidikan
+					        		</label>
+				        			<div class="col-lg-6 col-sm-12">
+				        				<select class="form-control" id="reqPendidikan" name="reqPendidikan">
+				        					 <? while($pendidikan->nextRow()){?>
+							                    <option value="<?=$pendidikan->getField('PENDIDIKAN_ID')?>" <? if($reqPendidikan == $pendidikan->getField('PENDIDIKAN_ID')) echo 'selected';?>><?=$pendidikan->getField('NAMA')?></option>
+							                <? }?>
+				        				</select>
+				        			</div>
+				        		</div>
+				        	</div>
+				        	<div class="col-md-8">
+					        	<div class="form-group row">
+				        			<label class="col-form-label text-right col-lg-4 col-sm-12">
+					        			Pekerjaan
+					        		</label>
+				        			<div class="col-lg-8 col-sm-12">
+				        				<input type="text" class="form-control" name="reqPekerjaan" id="reqPekerjaan" value="<?=$reqPekerjaan?>" />
+				        			</div>
+				        		</div>
+				        	</div>
 		        		</div>
 		        		<div class="form-group row">
 		        			<label class="col-form-label text-right col-lg-2 col-sm-12">
@@ -223,20 +243,27 @@ $readonly = "readonly";
 		        				<input type="checkbox" name="reqSudahDibayar" id='reqSudahDibayar' class="form-control" style="width: 20px;" value="1" <? if($reqSudahDibayar == 1) echo 'checked'?> >
 		        			</div>
 		        		</div>
-		        		<div class="form-group row">
+		        		<div class="form-group row" id="divbulandibayar">
 		        			<label class="col-form-label text-right col-lg-2 col-sm-12">
 			        			Bulan Dibayar
 			        		</label>
 		        			<div class="col-lg-4 col-sm-12">
-		        				<input type="text" class="form-control" name="reqBulanDibayar" id="reqBulanDibayar" value="<?=$reqBulanDibayar?>" />
+		        				<div class="input-group date">
+			        				<input type="text" autocomplete="off" class="form-control kttanggal" id="reqBulanDibayar" name="reqBulanDibayar" value="<?=$reqBulanDibayar?>" />
+			        				<div class="input-group-append">
+			        					<span class="input-group-text">
+			        						<i class="la la-calendar"></i>
+			        					</span>
+			        				</div>
+			        			</div>
 		        			</div>
 		        		</div>
 
 		        		<div class="card-footer">
 			        		<div class="row">
 			        			<div class="col-lg-9">
-			        				<input type="hidden" name="reqMode" value="<?=$reqMode?>">
-			        				<input type="hidden" name="reqTempValidasiId" value="<?=$reqTempValidasiId?>">
+			        				<input type="hidden" name="reqMode" value="<?=$reqMode?>" />
+			        				<input type="hidden" name="reqId" value="<?=$reqId?>" />
 			        				<button type="submit" id="ktloginformsubmitbutton"  class="btn btn-primary font-weight-bold mr-2">Simpan</button>
 			        			</div>
 			        		</div>
@@ -287,7 +314,7 @@ $readonly = "readonly";
 	var _buttonSpinnerClasses = 'spinner spinner-right spinner-white pr-15';
 	jQuery(document).ready(function() {
 		var form = KTUtil.getById('ktloginform');
-		var formSubmitUrl = "json-data/info_data_json/indentitaspegawai";
+		var formSubmitUrl = "json-main/suami_istri_json/add";
 		var formSubmitButton = KTUtil.getById('ktloginformsubmitbutton');
 		if (!form) {
 			return;
@@ -335,18 +362,31 @@ $readonly = "readonly";
 					dataType: 'json',
 					success: function (response) {
 			        	// console.log(response); return false;
-			        	// Swal.fire("Good job!", "You clicked the button!", "success");
-			        	Swal.fire({
-			        		text: response.message,
-			        		icon: "success",
-			        		buttonsStyling: false,
-			        		confirmButtonText: "Ok",
-			        		customClass: {
-			        			confirmButton: "btn font-weight-bold btn-light-primary"
-			        		}
-			        	}).then(function() {
-			        		document.location.href = "app/index/pegawai_data";
-			        	});
+
+			        	data= response.message;
+			        	data= data.split("-");
+			        	rowid= data[0];
+			        	infodata= data[1];
+
+			        	if(rowid == "xxx")
+                        {
+                            Swal.fire("Error", infodata, "error");
+                        }
+                        else
+                        {
+                            Swal.fire({
+                                text: infodata,
+                                icon: "success",
+                                buttonsStyling: false,
+                                confirmButtonText: "Ok",
+                                customClass: {
+                                    confirmButton: "btn font-weight-bold btn-light-primary"
+                                }
+                            }).then(function() {
+                                document.location.href = "app/index/suami_istri?reqId=<?=$reqId?>";
+                                // window.location.reload();
+                            });
+                        }
 			        },
 			        error: function(xhr, status, error) {
 			        	var err = JSON.parse(xhr.responseText);
@@ -370,6 +410,16 @@ $readonly = "readonly";
 				KTUtil.scrollTop();
 			});
 		});
+	});
+
+	arrows= {leftArrow: '<i class="la la-angle-left"></i>', rightArrow: '<i class="la la-angle-right"></i>'};
+	$('.kttanggal').datepicker({
+		todayHighlight: true
+		, autoclose: true
+		, orientation: "bottom left"
+		, clearBtn: true
+		, format: 'dd-mm-yyyy'
+		, templates: arrows
 	});
 
 </script>
@@ -398,15 +448,47 @@ $readonly = "readonly";
 	  evt.currentTarget.className += " w3-red";
 	}
 
+	$("#reqNIPField").hide();
+	<?php
+	if(!empty($reqPNS))
+	{
+	?>
+	$("#reqNIPField").show();
+	<?php
+	}
+	?>
+
 	$("#reqPNS").change(function(){
 		var pns = $("#reqPNS:checked").length;
-		document.getElementById("reqNIP").value = '';
 
 		if(pns==1){
-			$("#reqNIPField").show();				
+			$("#reqNIPField").show();
 		}
 		else{
-		    $("#reqNIPField").hide();			
+		    $("#reqNIPField").hide();
+		    document.getElementById("reqNIP").value = '';
+		}
+	});
+
+	$("#divbulandibayar").hide();
+	<?php
+	if(!empty($reqSudahDibayar))
+	{
+	?>
+	$("#divbulandibayar").show();
+	<?php
+	}
+	?>
+
+	$("#reqSudahDibayar").change(function(){
+		var pns = $("#reqSudahDibayar:checked").length;
+
+		if(pns==1){
+			$("#divbulandibayar").show();				
+		}
+		else{
+		    $("#divbulandibayar").hide();
+		    document.getElementById("reqBulanDibayar").value = '';
 		}
 	});
 </script>
