@@ -3,14 +3,6 @@ include_once("functions/personal.func.php");
 
 $this->load->model("base/PenguasaanBahasa");
 
-$userpegawaimode= $this->userpegawaimode;
-$adminuserid= $this->adminuserid;
-
-if(!empty($userpegawaimode) && !empty($adminuserid))
-    $reqPegawaiId= $userpegawaimode;
-else
-    $reqPegawaiId= $this->pegawaiId;
-
 $reqId= $this->input->get('reqId');
 $reqRowId= $this->input->get('reqRowId');
 
@@ -20,30 +12,22 @@ if(empty($reqRowId))
 }
 else
 {
-
-	$penguasaan_bahasa = new PenguasaanBahasa();
-	$penguasaan_bahasa->selectByParams(array('BAHASA_ID'=>$reqRowId));
-	// echo $penguasaan_bahasa->query;exit;
-	$penguasaan_bahasa->firstRow();
-	$reqRowId					= (int)$penguasaan_bahasa->getField('BAHASA_ID');
-	$reqNamaBahasa 			= $penguasaan_bahasa->getField('NAMA');
-	$reqJenisBahasa 		= $penguasaan_bahasa->getField('JENIS');
-	$reqKemampuanBicara	= $penguasaan_bahasa->getField('KEMAMPUAN');
+	$set = new PenguasaanBahasa();
+	$set->selectByParams(array('BAHASA_ID'=>$reqRowId));
+	// echo $set->query;exit;
+	$set->firstRow();
+	$reqRowId= (int)$set->getField('BAHASA_ID');
+	$reqNamaBahasa= $set->getField('NAMA');
+	$reqJenisBahasa= $set->getField('JENIS');
+	$reqKemampuanBicara= $set->getField('KEMAMPUAN');
 
 	$reqMode="update";
-
 }
-
-	
 $arrTahun= setTahunLoop(3,1);
-
-
 ?>
 
 <!-- Bootstrap core CSS -->
-<!-- <link href="lib/bootstrap-3.3.7/dist/css/bootstrap.min.css" rel="stylesheet"> -->
 <link href="lib/bootstrap-3.3.7/docs/examples/navbar/navbar.css" rel="stylesheet">
-<!-- <script src="lib/bootstrap-3.3.7/dist/js/bootstrap.min.js"></script> -->
 
 <div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
 	<div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">

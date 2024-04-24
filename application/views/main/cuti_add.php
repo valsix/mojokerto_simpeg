@@ -3,14 +3,6 @@ include_once("functions/personal.func.php");
 
 $this->load->model("base/Cuti");
 
-$userpegawaimode= $this->userpegawaimode;
-$adminuserid= $this->adminuserid;
-
-if(!empty($userpegawaimode) && !empty($adminuserid))
-    $reqPegawaiId= $userpegawaimode;
-else
-    $reqPegawaiId= $this->pegawaiId;
-
 $reqId= $this->input->get('reqId');
 $reqRowId= $this->input->get('reqRowId');
 
@@ -20,35 +12,25 @@ if(empty($reqRowId))
 }
 else
 {
-
-	$cuti = new Cuti();
-	$cuti->selectByParams(array('CUTI_ID'=>$reqRowId));
-	// echo $cuti->query;exit;
-	$cuti->firstRow();
-	$reqRowId					= (int)$cuti->getField('CUTI_ID');
-	$reqNoSurat 			= $cuti->getField('NO_SURAT');
-	$reqJenisCuti 		= $cuti->getField('JENIS_CUTI');
-	$reqTanggalPermohonan 		= dateToPageCheck($cuti->getField('TANGGAL_PERMOHONAN'));
-	$reqTanggalSurat 		= dateToPageCheck($cuti->getField('TANGGAL_SURAT'));
-	$reqTanggalMulai 		= dateToPageCheck($cuti->getField('TANGGAL_MULAI'));
-	$reqTanggalSelesai 		= dateToPageCheck($cuti->getField('TANGGAL_SELESAI'));
-	$reqLama		= $cuti->getField('LAMA');
-	$reqKeterangan		= $cuti->getField('KETERANGAN');
-
-	// echo $reqTmtJabatan;exit;
+	$set = new Cuti();
+	$set->selectByParams(array('CUTI_ID'=>$reqRowId));
+	// echo $set->query;exit;
+	$set->firstRow();
+	$reqRowId= (int)$set->getField('CUTI_ID');
+	$reqNoSurat= $set->getField('NO_SURAT');
+	$reqJenisCuti= $set->getField('JENIS_CUTI');
+	$reqTanggalPermohonan= dateToPageCheck($set->getField('TANGGAL_PERMOHONAN'));
+	$reqTanggalSurat= dateToPageCheck($set->getField('TANGGAL_SURAT'));
+	$reqTanggalMulai= dateToPageCheck($set->getField('TANGGAL_MULAI'));
+	$reqTanggalSelesai= dateToPageCheck($set->getField('TANGGAL_SELESAI'));
+	$reqLama= $set->getField('LAMA');
+	$reqKeterangan= $set->getField('KETERANGAN');
 	$reqMode="update";
-
 }
-
-	
-
-
 ?>
 
 <!-- Bootstrap core CSS -->
-<!-- <link href="lib/bootstrap-3.3.7/dist/css/bootstrap.min.css" rel="stylesheet"> -->
 <link href="lib/bootstrap-3.3.7/docs/examples/navbar/navbar.css" rel="stylesheet">
-<!-- <script src="lib/bootstrap-3.3.7/dist/js/bootstrap.min.js"></script> -->
 
 <div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
 	<div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
@@ -107,33 +89,84 @@ else
 	        			</div>
 	        		</div>
 	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Tanggal Surat</label>
-	        			<div class="col-lg-4 col-sm-12">
-	        				<input type="text" style="width:100px" <?=$read?> id="reqTanggalSurat" class="form-control" name="reqTanggalSurat" maxlength="10"  value="<?=$reqTanggalSurat?>" />
-	        			</div>
-	        			<label class="col-form-label text-right col-lg-1 col-sm-12">Tanggal Mulai</label>
-	        			<div class="col-lg-4 col-sm-12">
-	        				<input type="text" style="width:100px" <?=$read?> id="reqTanggalMulai" class="form-control" name="reqTanggalMulai" maxlength="10"  value="<?=$reqTanggalMulai?>" />
-	        			</div>
+	        			<div class="col-md-6">
+	        				<div class="form-group row">
+			        			<label class="col-form-label text-right col-lg-4 col-sm-12">
+				        			Tanggal Surat
+				        		</label>
+			        			<div class="col-lg-8 col-sm-12">
+			        				<div class="input-group date">
+				        				<input type="text" <?=$read?> autocomplete="off" class="form-control kttanggal" name="reqTanggalSurat" value="<?=$reqTanggalSurat?>" />
+				        				<div class="input-group-append">
+				        					<span class="input-group-text">
+				        						<i class="la la-calendar"></i>
+				        					</span>
+				        				</div>
+				        			</div>
+			        			</div>
+			        		</div>
+		        		</div>
+		        		<div class="col-md-6">
+		        			<div class="form-group row">
+			        			<label class="col-form-label text-right col-lg-4 col-sm-12">
+				        			Tanggal Mulai
+				        		</label>
+			        			<div class="col-lg-8 col-sm-12">
+			        				<div class="input-group date">
+				        				<input type="text" <?=$read?> autocomplete="off" class="form-control kttanggal" name="reqTanggalMulai" value="<?=$reqTanggalMulai?>" />
+				        				<div class="input-group-append">
+				        					<span class="input-group-text">
+				        						<i class="la la-calendar"></i>
+				        					</span>
+				        				</div>
+				        			</div>
+			        			</div>
+			        		</div>
+		        		</div>
 	        		</div>
-					<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Tanggal Permohonan</label>
-	        			<div class="col-lg-4 col-sm-12">
-	        				<input type="text" style="width:100px" <?=$read?> id="reqTanggalPermohonan" class="form-control" name="reqTanggalPermohonan" maxlength="10"  value="<?=$reqTanggalPermohonan?>" />
-	        			</div>
-	        			<label class="col-form-label text-right col-lg-1 col-sm-12">Tanggal Selesai</label>
-	        			<div class="col-lg-4 col-sm-12">
-	        				<input type="text" style="width:100px" <?=$read?> id="reqTanggalSelesai" class="form-control" name="reqTanggalSelesai" maxlength="10"  value="<?=$reqTanggalSelesai?>" />
-	        			</div>
+	        		<div class="form-group row">
+			        	<div class="col-md-6">
+			        		<div class="form-group row">
+			        			<label class="col-form-label text-right col-lg-4 col-sm-12">
+				        			Tanggal Permohonan
+				        		</label>
+			        			<div class="col-lg-8 col-sm-12">
+			        				<div class="input-group date">
+				        				<input type="text" <?=$read?> autocomplete="off" class="form-control kttanggal" name="reqTanggalPermohonan" value="<?=$reqTanggalPermohonan?>" />
+				        				<div class="input-group-append">
+				        					<span class="input-group-text">
+				        						<i class="la la-calendar"></i>
+				        					</span>
+				        				</div>
+				        			</div>
+			        			</div>
+			        		</div>
+		        		</div>
+		        		<div class="col-md-6">
+		        			<div class="form-group row">
+		        				<label class="col-form-label text-right col-lg-4 col-sm-12">
+				        			Tanggal Selesai
+				        		</label>
+			        			<div class="col-lg-8 col-sm-12">
+			        				<div class="input-group date">
+				        				<input type="text" <?=$read?> autocomplete="off" class="form-control kttanggal" name="reqTanggalSelesai" value="<?=$reqTanggalSelesai?>" />
+				        				<div class="input-group-append">
+				        					<span class="input-group-text">
+				        						<i class="la la-calendar"></i>
+				        					</span>
+				        				</div>
+				        			</div>
+			        			</div>
+			        		</div>
+		        		</div>
 	        		</div>
 
 	        		<div class="form-group row">
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Lama</label>
 	        			<div class="col-lg-6 col-sm-12">
-	        				<input type="text" style="width:250px" <?=$read?> class="form-control" name="reqLama" value="<?=$reqLama?>" />
+	        				<input type="text" style="width:250px" <?=$read?> class="form-control" id="reqLama" name="reqLama" value="<?=$reqLama?>" />
 	        			</div>
 	        		</div>
-
 
 	        		<div class="form-group row">
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Keterangan</label>
@@ -286,5 +319,14 @@ else
 		});
 	});
 
+	arrows= {leftArrow: '<i class="la la-angle-left"></i>', rightArrow: '<i class="la la-angle-right"></i>'};
+	$('.kttanggal').datepicker({
+		todayHighlight: true
+		, autoclose: true
+		, orientation: "bottom left"
+		, clearBtn: true
+		, format: 'dd-mm-yyyy'
+		, templates: arrows
+	});
 
 </script>
