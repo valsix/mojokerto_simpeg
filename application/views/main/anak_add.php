@@ -1,7 +1,8 @@
 <?
 include_once("functions/personal.func.php");
 
-$this->load->model("base/PengalamanKerja");
+$this->load->model("base/Anak");
+$this->load->model("base/Core");
 
 $userpegawaimode= $this->userpegawaimode;
 $adminuserid= $this->adminuserid;
@@ -14,18 +15,44 @@ else
 $reqId= $this->input->get('reqId');
 $reqRowId= $this->input->get('reqRowId');
 
-$pengalaman= new PengalamanKerja();
-$pengalaman->selectByParams(array('PENGALAMAN_ID'=>$reqRowId));
-$pengalaman->firstRow();
-$reqPengalamanId = $pengalaman->getField('PENGALAMAN_ID');
-$reqInstansi 			= $pengalaman->getField('NAMA');
-$reqJabatan = $pengalaman->getField('JABATAN');
-$reqTglMulaiKerja = dateToPageCheck($pengalaman->getField('TANGGAL_KERJA'));
-$reqMasaKerjaTh = $pengalaman->getField('MASA_KERJA_TAHUN');
-$reqMasaKerjaBl = $pengalaman->getField('MASA_KERJA_BULAN');
-// echo $reqTmtJabatan;exit;
-$reqMode="update";
-// $reqMode="insert";
+if(empty($reqRowId))
+{
+	$reqMode="insert";
+}
+else
+{
+	$reqMode="update";
+	$set= new Anak();
+	$set->selectByParams(array('ANAK_ID'=>$reqRowId));
+	// echo $set->query;exit;
+	$set->firstRow();
+	$reqRowId= $set->getField('ANAK_ID');
+	$reqNama= $set->getField('NAMA');
+	$reqTmpLahir= $set->getField('TEMPAT_LAHIR');
+	$reqTglLahir= dateToPageCheck($set->getField('TANGGAL_LAHIR'));
+	$reqLP= $set->getField('JENIS_KELAMIN');
+	$reqStatus= $set->getField('STATUS_KELUARGA');
+	$reqDapatTunjangan= $set->getField('STATUS_TUNJANGAN');
+	$reqPendidikan= $set->getField('PENDIDIKAN_ID');
+	$reqPekerjaan= $set->getField('PEKERJAAN');
+	$reqMulaiDibayar= dateToPageCheck($set->getField('AWAL_BAYAR'));
+	$reqAkhirDibayar= dateToPageCheck($set->getField('AKHIR_BAYAR'));
+}
+
+$statement="";
+$sOrder=" ORDER BY COALESCE(PANGKAT_MINIMAL,0)";
+$set= new Core();
+$arrpendidikan= [];
+$set->selectByParamsPendidikan(array(), -1,-1,$statement,$sOrder);
+// echo $set->query;exit;
+while($set->nextRow())
+{
+	$arrdata= [];
+	$arrdata["id"]= $set->getField("PENDIDIKAN_ID");
+	$arrdata["text"]= $set->getField("NAMA");
+	array_push($arrpendidikan, $arrdata);
+}
+unset($set);
 $readonly = "readonly";
 ?>
 
@@ -43,7 +70,7 @@ $readonly = "readonly";
 						<a class="" href="app/index/pegawai">Data Pegawai</a>
 					</li>
 					<li class="breadcrumb-item text-muted">
-						<a class="" href="app/index/pengalaman_kerja?reqId=<?=$reqId?>">Pengalaman Kerja</a>
+						<a class="" href="app/index/anak?reqId=<?=$reqId?>">Anak</a>
 					</li>
 					<li class="breadcrumb-item text-muted">
 						<a class="text-muted">Halaman Input</a>
@@ -70,53 +97,155 @@ $readonly = "readonly";
             <form class="form" id="ktloginform" method="POST" enctype="multipart/form-data">
 	        	<div class="card-body">
 	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			Tanggal Mulai Kerja
-		        		</label>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Nama</label>
 	        			<div class="col-lg-10 col-sm-12">
-	        				<div class="input-group date">
-		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTglMulaiKerja" value="<?=$reqTglMulaiKerja?>" />
-		        				<div class="input-group-append">
-		        					<span class="input-group-text">
-		        						<i class="la la-calendar"></i>
-		        					</span>
-		        				</div>
-		        			</div>
+	        				<input type="text" class="form-control" name="reqNama" id="reqNama" value="<?=$reqNama?>" />
 	        			</div>
 	        		</div>
 	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Instansi</label>
-	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" name="reqInstansi" id="reqInstansi" value="<?=$reqInstansi?>" />
-	        			</div>
-	        		</div>
+			        	<div class="col-md-6">
+	        				<div class="form-group row">
+			        			<label class="col-form-label text-right col-lg-4 col-sm-12">Tempat Lahir</label>
+			        			<div class="col-lg-8 col-sm-12">
+			        				<input type="text" class="form-control" name="reqTmpLahir" id="reqTmpLahir" value="<?=$reqTmpLahir?>" />
+			        			</div>
+			        		</div>
+			        	</div>
+			        	<div class="col-md-6">
+	        				<div class="form-group row">
+			        			<label class="col-form-label text-right col-lg-4 col-sm-12">
+				        			Tanggal Lahir
+				        		</label>
+			        			<div class="col-lg-8 col-sm-12">
+			        				<div class="input-group date">
+				        				<input type="text" autocomplete="off" class="form-control kttanggal" name="reqTglLahir" value="<?=$reqTglLahir?>" />
+				        				<div class="input-group-append">
+				        					<span class="input-group-text">
+				        						<i class="la la-calendar"></i>
+				        					</span>
+				        				</div>
+				        			</div>
+			        			</div>
+			        		</div>
+			        	</div>
+			        </div>
 	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Jabatan</label>
-	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" name="reqJabatan" id="reqJabatan" value="<?=$reqJabatan?>" />
-	        			</div>
+	        			<div class="col-md-6">
+	        				<div class="form-group row">
+			        			<label class="col-form-label text-right col-lg-4 col-sm-12">Jenis Kelamin</label>
+			        			<div class="col-lg-8 col-sm-12">
+			        				<select class="form-control" id='reqLP' name='reqLP'>
+			        					<option <?if ($reqLP==''){echo "selected";}?> disabled> Pilih Jenis Kelamin</option>
+			        					<option value="L" <?if ($reqLP=='L'){echo "selected";}?>> Laki laki</option>
+			        					<option value="P" <?if ($reqLP=='P'){echo "selected";}?>> Perempuan</option>
+			        				</select>
+			        			</div>
+			        		</div>
+			        	</div>
+			        	<div class="col-md-6">
+	        				<div class="form-group row">
+			        			<label class="col-form-label text-right col-lg-4 col-sm-12">Tunjangan</label>
+			        			<div class="col-lg-8 col-sm-12">
+			        				<select class="form-control" id='reqDapatTunjangan' name='reqDapatTunjangan'>
+			        					<option value="1" <?if ($reqDapatTunjangan=='1'){echo "selected";}?>> Dapat</option>
+			        					<option value="2" <?if ($reqDapatTunjangan=='2'){echo "selected";}?>> Tidak</option>
+			        				</select>
+			        			</div>
+			        		</div>
+			        	</div>
 	        		</div>
+
 	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Masa Kerja (Th)</label>
-	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" name="reqMasaKerjaTh" id="reqMasaKerjaTh" value="<?=$reqMasaKerjaTh?>" />
-	        			</div>
+	        			<div class="col-md-6">
+	        				<div class="form-group row">
+			        			<label class="col-form-label text-right col-lg-4 col-sm-12">Pendidikan</label>
+			        			<div class="col-lg-8 col-sm-12">
+			        				<select class="form-control select2" id="ktpendidikan" <?=$disabled?> name="reqPendidikan" >
+			        					<option value=""></option>
+			        					<?
+			        					foreach($arrpendidikan as $item) 
+			        					{
+			        						$selectvalid= $item["id"];
+			        						$selectvaltext= $item["text"];
+			        					?>
+			        					<option value="<?=$selectvalid?>" <? if($reqPendidikan == $selectvalid) echo "selected";?>><?=$selectvaltext?></option>
+			        					<?
+			        					}
+			        					?>
+			        				</select>
+			        			</div>
+			        		</div>
+			        	</div>
+			        	<div class="col-md-6">
+			        		<div class="form-group row">
+			        			<label class="col-form-label text-right col-lg-4 col-sm-12">Status</label>
+			        			<div class="col-lg-8 col-sm-12">
+			        				<select class="form-control" id='reqStatus' name='reqStatus'>
+			        					<option value="1" <? if($reqStatus == 1) echo 'selected';?>>Kandung</option>
+			        					<option value="2" <? if($reqStatus == 2) echo 'selected';?>>Tiri</option>
+			        					<option value="3" <? if($reqStatus == 3) echo 'selected';?>>Angkat</option>
+			        				</select>
+			        			</div>
+			        		</div>
+		        		</div>
 	        		</div>
+
 	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Masa Kerja (Bln)</label>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Pekerjaan</label>
 	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" name="reqMasaKerjaBl" id="reqMasaKerjaBl" value="<?=$reqMasaKerjaBl?>" />
+	        				<input type="text" class="form-control" name="reqPekerjaan" id="reqPekerjaan" value="<?=$reqPekerjaan?>" />
 	        			</div>
 	        		</div>
+
+	        		<div class="form-group row">
+			        	<div class="col-md-6">
+	        				<div class="form-group row">
+			        			<label class="col-form-label text-right col-lg-4 col-sm-12">
+				        			Mulai Dibayar
+				        		</label>
+			        			<div class="col-lg-8 col-sm-12">
+			        				<div class="input-group date">
+				        				<input type="text" autocomplete="off" class="form-control kttanggal" name="reqMulaiDibayar" value="<?=$reqMulaiDibayar?>" />
+				        				<div class="input-group-append">
+				        					<span class="input-group-text">
+				        						<i class="la la-calendar"></i>
+				        					</span>
+				        				</div>
+				        			</div>
+			        			</div>
+			        		</div>
+			        	</div>
+			        	<div class="col-md-6">
+	        				<div class="form-group row">
+			        			<label class="col-form-label text-right col-lg-4 col-sm-12">
+				        			Akhir Dibayar
+				        		</label>
+			        			<div class="col-lg-8 col-sm-12">
+			        				<div class="input-group date">
+				        				<input type="text" autocomplete="off" class="form-control kttanggal" name="reqAkhirDibayar" value="<?=$reqAkhirDibayar?>" />
+				        				<div class="input-group-append">
+				        					<span class="input-group-text">
+				        						<i class="la la-calendar"></i>
+				        					</span>
+				        				</div>
+				        			</div>
+			        			</div>
+			        		</div>
+			        	</div>
+			        </div>
+
 	        		<div class="card-footer">
-	        		<div class="row">
-	        			<div class="col-lg-9">
-	        				<input type="hidden" name="reqMode" value="<?=$reqMode?>">
-	        				<input type="hidden" name="reqTempValidasiId" value="<?=$reqTempValidasiId?>">
-	        				<button type="submit" id="ktloginformsubmitbutton" class="btn btn-light-success"><i class="fa fa-save" aria-hidden="true"></i> Simpan</button>
-	        			</div>
-	        		</div>
-	        	</div>
+		        		<div class="row">
+		        			<div class="col-lg-9">
+		        				<input type="hidden" name="reqMode" value="<?=$reqMode?>">
+		        				<input type="hidden" name="reqId" value="<?=$reqId?>">
+		        				<input type="hidden" name="reqRowId" value="<?=$reqRowId?>">
+		        				<input type="hidden" name="reqTempValidasiId" value="<?=$reqTempValidasiId?>">
+		        				<button type="submit" id="ktloginformsubmitbutton" class="btn btn-light-success"><i class="fa fa-save" aria-hidden="true"></i> Simpan</button>
+		        			</div>
+		        		</div>
+		        	</div>
+
 	        	</div>
 	        </form>
         </div>
@@ -133,7 +262,7 @@ $readonly = "readonly";
 	var _buttonSpinnerClasses = 'spinner spinner-right spinner-white pr-15';
 	jQuery(document).ready(function() {
 		var form = KTUtil.getById('ktloginform');
-		var formSubmitUrl = "json-data/info_data_json/indentitaspegawai";
+		var formSubmitUrl = "json-main/anak_json/add";
 		var formSubmitButton = KTUtil.getById('ktloginformsubmitbutton');
 		if (!form) {
 			return;
@@ -143,23 +272,20 @@ $readonly = "readonly";
 			form,
 			{
 				fields: {
-					/*reqEmail: {
+					reqNama: {
 						validators: {
 							notEmpty: {
-								message: 'Email is required'
-							},
-							emailAddress: {
-								message: 'The value is not a valid email address'
+								message: 'Nama is required'
 							}
 						}
 					},
-					reqSatuanKerjaNama: {
+					reqTmpLahir: {
 						validators: {
 							notEmpty: {
-								message: 'Please select an option'
+								message: 'Tempat Lahir is required'
 							}
 						}
-					},*/
+					},
 				},
 				plugins: {
 					trigger: new FormValidation.plugins.Trigger(),
@@ -191,7 +317,7 @@ $readonly = "readonly";
 			        			confirmButton: "btn font-weight-bold btn-light-primary"
 			        		}
 			        	}).then(function() {
-			        		document.location.href = "app/index/pegawai_data";
+			        		document.location.href = "app/index/anak?reqId=<?=$reqId?>";
 			        	});
 			        },
 			        error: function(xhr, status, error) {
@@ -218,8 +344,12 @@ $readonly = "readonly";
 		});
 	});
 
+	$('#ktpendidikan').select2({
+		placeholder: "Pilih Pendidikan"
+	});
+
 	arrows= {leftArrow: '<i class="la la-angle-left"></i>', rightArrow: '<i class="la la-angle-right"></i>'};
-	$('#kttanggallahir').datepicker({
+	$('.kttanggal').datepicker({
 		todayHighlight: true
 		, autoclose: true
 		, orientation: "bottom left"

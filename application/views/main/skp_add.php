@@ -3,14 +3,6 @@ include_once("functions/personal.func.php");
 
 $this->load->model("base/Skp");
 
-$userpegawaimode= $this->userpegawaimode;
-$adminuserid= $this->adminuserid;
-
-if(!empty($userpegawaimode) && !empty($adminuserid))
-    $reqPegawaiId= $userpegawaimode;
-else
-    $reqPegawaiId= $this->pegawaiId;
-
 $reqId= $this->input->get('reqId');
 $reqRowId= $this->input->get('reqRowId');
 
@@ -20,27 +12,25 @@ if(empty($reqRowId))
 }
 else
 {
+	$set = new Skp();
+	$set->selectByParams(array('SKP_ID'=>$reqRowId));
+	$set->firstRow();
+	// echo $set->query;exit; 
 
-	$skp = new Skp();
-	$skp->selectByParams(array('SKP_ID'=>$reqRowId));
-	$skp->firstRow();
-
-	// echo $skp->query;exit; 
-
-	$reqReqId					= (int)$skp->getField('SKP_ID');
-	$reqTahun				= $skp->getField('TAHUN');
-	$reqNilai		= str_replace(".", ",", $skp->getField('NILAI'));
-	$reqOrientasi		= $skp->getField('ORIENTASI_PELAYANAN');
-	$reqIntegritas		= $skp->getField('INTEGRITAS');
-	$reqKomitmen		= $skp->getField('KOMITMEN');
-	$reqDisiplin		= $skp->getField('DISIPLIN');
-	$reqKerjasama		= $skp->getField('KERJASAMA');
-	$reqKepemimpinan		= $skp->getField('KEPEMIMPINAN');
-	$reqPejabatId		= $skp->getField('PEJABAT_ID');
-	$reqAtasanId		= $skp->getField('ATASAN_PEJABAT_ID');
-	$reqPejabat		= $skp->getField('PEJABAT_NIP');
-	$reqAtasan		= $skp->getField('ATASAN_NIP');
-	$reqInisiatif		= $skp->getField('INISIATIF_KERJA');
+	$reqReqId= (int)$set->getField('SKP_ID');
+	$reqTahun= $set->getField('TAHUN');
+	$reqNilai= str_replace(".", ",", $set->getField('NILAI'));
+	$reqOrientasi= $set->getField('ORIENTASI_PELAYANAN');
+	$reqIntegritas= $set->getField('INTEGRITAS');
+	$reqKomitmen= $set->getField('KOMITMEN');
+	$reqDisiplin= $set->getField('DISIPLIN');
+	$reqKerjasama= $set->getField('KERJASAMA');
+	$reqKepemimpinan= $set->getField('KEPEMIMPINAN');
+	$reqPejabatId= $set->getField('PEJABAT_ID');
+	$reqAtasanId= $set->getField('ATASAN_PEJABAT_ID');
+	$reqPejabat= $set->getField('PEJABAT_NIP');
+	$reqAtasan= $set->getField('ATASAN_NIP');
+	$reqInisiatif= $set->getField('INISIATIF_KERJA');
 
 	$reqMode="update";
 
@@ -373,12 +363,12 @@ $readonly = "readonly";
             "</div>";
         return markup;
     }
+
     function pilihPejabat(val) {
     	$("#reqPejabatId").val(val.id);
         // console.log(val);
         return val.text;
     }
-
 
     function tampilAtasan(val) {
         if (val.loading) return val.text;
@@ -389,13 +379,10 @@ $readonly = "readonly";
             "</div>";
         return markup;
     }
+
     function pilihAtasan(val) {
     	$("#reqAtasanId").val(val.id);
         // console.log(val.id);
         return val.text;
     }
-
-
-
-
 </script>

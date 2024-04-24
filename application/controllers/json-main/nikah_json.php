@@ -88,7 +88,7 @@ class nikah_json extends CI_Controller {
 
 		// $sOrder = "";
 		// $set->selectByParams(array(), $dsplyRange, $dsplyStart, $statement." AND (UPPER(B.GOL_RUANG) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(TEMPAT_LAHIR) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(NAMA) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(A.NAMA) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(A.NIP_LAMA) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(A.NIP_BARU) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(AMBIL_FORMAT_NIP_BARU(NIP_BARU)) LIKE '%".strtoupper($_GET['sSearch'])."%' ) ", $sOrder);
-		$statement= " and pegawai_id= '".$reqId."'" ;
+		$statement= " AND A.PEGAWAI_ID= '".$reqId."' AND A.STATUS = 0" ;
 		$set->selectByParams(array(), $dsplyRange, $dsplyStart, $statement, $sOrder);
 		// echo $set->query;exit;
 		

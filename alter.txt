@@ -1,3 +1,13 @@
+alter table info_log alter column last_date type timestamp without time zone using cast(last_date as date);
+
+alter table info_log drop constraint info_log_pkey;
+--alter table info_log add constraint info_log_pkey primary key(info_log_id);
+alter table info_log drop column info_log_id;
+--alter table info_log add column info_log_id integer;
+--alter table info_log alter column info_log_id set not null;
+
+--====================================================================================================================
+
 create schema opt authorization postgres;
 
 --alter table pangkat_riwayat alter column pangkat_riwayat_id type numeric using cast(pangkat_riwayat_id as numeric);

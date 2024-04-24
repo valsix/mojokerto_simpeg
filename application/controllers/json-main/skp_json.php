@@ -12,53 +12,24 @@ class skp_json extends CI_Controller {
 		parent::__construct();
 		//kauth
 
-		session_start();
-		
 		$CI =& get_instance();
 		$configdata= $CI->config;
         $configvlxsessfolder= $configdata->config["vlxsessfolder"];
-		$reqPegawaiHard=$this->input->get('reqPegawaiHard');
 
         $redirectlogin= "";
-        if(!empty($_SESSION["vuserpegawaimode".$configvlxsessfolder]) && !empty($this->session->userdata("adminuserid".$configvlxsessfolder)))
+        if(!empty($this->session->userdata("adminuserid".$configvlxsessfolder)))
         {
-        	$this->session->set_userdata("userpegawaimode".$configvlxsessfolder, $_SESSION["vuserpegawaimode".$configvlxsessfolder]);
-        	$redirectlogin= "";
+        	$redirectlogin= $this->session->userdata("adminuserid".$configvlxsessfolder);
         }
 
-		if(!empty($this->session->userdata("userpegawaiId".$configvlxsessfolder)) && !empty($redirectlogin))
-		{
-        	$redirectlogin= "";
-        }
-
-        if(!empty($reqPegawaiHard)){
-        	$redirectlogin= "";
-        }
-        // echo $redirectlogin."xx".$this->session->userdata("userpegawaimode".$configvlxsessfolder)."xx".$this->session->userdata("adminuserid".$configvlxsessfolder)."xx".$_SESSION["vuserpegawaimode".$configvlxsessfolder];exit;
-        // echo $redirectlogin."xx".$this->session->userdata("userpegawaiId".$configvlxsessfolder);exit;
-
-        if(!empty($redirectlogin))
+        if(empty($redirectlogin))
 		{
 			redirect('login');
 		}
 
-		$this->pegawaiId= $this->session->userdata("userpegawaiId".$configvlxsessfolder);
-		$this->userpegawaiNama= $this->session->userdata("userpegawaiNama".$configvlxsessfolder);
-		// echo $this->userpegawaiNama; exit;
-		$this->userstatuspegId= $this->session->userdata("userstatuspegId".$configvlxsessfolder);
-		$this->userpegawaimode= $this->session->userdata("userpegawaimode".$configvlxsessfolder);
-
 		$this->adminuserid= $this->session->userdata("adminuserid".$configvlxsessfolder);
-		$this->adminusernama= $this->session->userdata("adminusernama".$configvlxsessfolder);
 		$this->adminuserloginnama= $this->session->userdata("adminuserloginnama".$configvlxsessfolder);
-		$this->adminuseraksesappmenu= $this->session->userdata("adminuseraksesappmenu".$configvlxsessfolder);
-
-		$this->userlevel= $this->session->userdata("userlevel".$configvlxsessfolder);
-
-
-        if(!empty($reqPegawaiHard)){
-        	$this->userpegawaimode=$reqPegawaiHard;
-        }
+		$this->adminsatkerid= $this->session->userdata("adminsatkerid".$configvlxsessfolder);
 	}
 
 	function json()
@@ -88,7 +59,7 @@ class skp_json extends CI_Controller {
 
 		$sOrder = "";
 		
-		$statement= "and a.pegawai_id= '".$reqId."'" ;
+		$statement= " AND A.PEGAWAI_ID = '".$reqId."'" ;
 		$set->selectByParams(array(), $dsplyRange, $dsplyStart, $statement, $sOrder);
 		// echo $set->query;exit;
 		
@@ -211,50 +182,48 @@ class skp_json extends CI_Controller {
 		$reqInisiatif	= $this->input->post("reqInisiatif");
 
 
-		// print_r($reqPejabatId);exit;
+		$set= new Skp();
+		$set->setField('PEGAWAI_ID', $reqPegawaiId);
+		$set->setField('PEJABAT_ID', ValToNullDB($reqPejabatId));
+		$set->setField('ATASAN_PEJABAT_ID', ValToNullDB($reqAtasanId));
+		$set->setField('TAHUN', $reqTahun);
+		$set->setField('NILAI', str_replace(",", ".", $reqNilai));
+		$set->setField('ORIENTASI_PELAYANAN', $reqOrientasi);
+		$set->setField('INTEGRITAS', $reqIntegritas);
+		$set->setField('KOMITMEN', $reqKomitmen);
+		$set->setField('DISIPLIN', $reqDisiplin);
+		$set->setField('KERJASAMA', $reqKerjasama);
+		$set->setField('KEPEMIMPINAN', $reqKepemimpinan);
+		$set->setField('INISIATIF_KERJA', $reqInisiatif);
 
-		$skp = new Skp();
-	
+		$set->setField('SKP_ID', $reqRowId);
 		
-		$skp->setField('PEGAWAI_ID', $reqPegawaiId);
-		$skp->setField('PEJABAT_ID', ValToNullDB($reqPejabatId));
-		$skp->setField('ATASAN_PEJABAT_ID', ValToNullDB($reqAtasanId));
-		$skp->setField('TAHUN', $reqTahun);
-		$skp->setField('NILAI', str_replace(",", ".", $reqNilai));
-		$skp->setField('ORIENTASI_PELAYANAN', $reqOrientasi);
-		$skp->setField('INTEGRITAS', $reqIntegritas);
-		$skp->setField('KOMITMEN', $reqKomitmen);
-		$skp->setField('DISIPLIN', $reqDisiplin);
-		$skp->setField('KERJASAMA', $reqKerjasama);
-		$skp->setField('KEPEMIMPINAN', $reqKepemimpinan);
-		$skp->setField('INISIATIF_KERJA', $reqInisiatif);
+		$adminusernama= $this->adminuserloginnama;
+		$userSatkerId= $this->adminsatkerid;
 
-		$skp->setField('SKP_ID', $reqRowId);
-		
 		$reqSimpan= "";
 		if ($reqMode == "insert")
 		{
 
-			$skp->setField("LAST_CREATE_USER", $adminusernama);
-			$skp->setField("LAST_CREATE_DATE", "NOW()");	
-			$skp->setField("LAST_CREATE_SATKER", $userSatkerId);
+			$set->setField("LAST_CREATE_USER", $adminusernama);
+			$set->setField("LAST_CREATE_DATE", "NOW()");	
+			$set->setField("LAST_CREATE_SATKER", $userSatkerId);
 	
-			if($skp->insert())
+			if($set->insert())
 			{
 				$reqSimpan= 1;
 			}
 		}
 		else
 		{	
-			$skp->setField("LAST_UPDATE_USER", $adminusernama);
-			$skp->setField("LAST_UPDATE_DATE", "NOW()");	
-			$skp->setField("LAST_UPDATE_SATKER", $userSatkerId);
-			if($skp->update())
+			$set->setField("LAST_UPDATE_USER", $adminusernama);
+			$set->setField("LAST_UPDATE_DATE", "NOW()");	
+			$set->setField("LAST_UPDATE_SATKER", $userSatkerId);
+			if($set->update())
 			{
 				$reqSimpan= 1;
 			}
 		}
-
 
 		if($reqSimpan == 1)
 		{

@@ -3,14 +3,6 @@ include_once("functions/personal.func.php");
 
 $this->load->model("base/SertifikatProfesi");
 
-$userpegawaimode= $this->userpegawaimode;
-$adminuserid= $this->adminuserid;
-
-if(!empty($userpegawaimode) && !empty($adminuserid))
-    $reqPegawaiId= $userpegawaimode;
-else
-    $reqPegawaiId= $this->pegawaiId;
-
 $reqId= $this->input->get('reqId');
 $reqRowId= $this->input->get('reqRowId');
 
@@ -20,35 +12,25 @@ if(empty($reqRowId))
 }
 else
 {
+	$set= new SertifikatProfesi();
+	$set->selectByParams(array('SERTIFIKAT_PROFESI_ID'=>$reqRowId));
+	// echo $set_prestasi->query;exit;
+	$set->firstRow();
+	$reqRowId= (int)$set->getField('SERTIFIKAT_PROFESI_ID');
+	$reqNama= $set->getField('NAMA');
+	$reqNomor= $set->getField('NOMOR');
+	$reqSertifikat= $set->getField('SERTIFIKAT');
+	$reqTanggal= dateToPageCheck($set->getField('TANGGAL'));
+	$reqLembaga= $set->getField('LEMBAGA');
 
-	$sertifikat = new SertifikatProfesi();
-	$sertifikat->selectByParams(array('SERTIFIKAT_PROFESI_ID'=>$reqRowId));
-	// echo $sertifikat_prestasi->query;exit;
-	$sertifikat->firstRow();
-	$reqRowId					= (int)$sertifikat->getField('SERTIFIKAT_PROFESI_ID');
-	$reqNama				= $sertifikat->getField('NAMA');
-	$reqNomor		= $sertifikat->getField('NOMOR');
-	$reqSertifikat		= $sertifikat->getField('SERTIFIKAT');
-	$reqTanggal		= dateToPageCheck($sertifikat->getField('TANGGAL'));
-	$reqLembaga		= $sertifikat->getField('LEMBAGA');
-
-	$reqReqId					= (int)$sertifikat->getField('SERTIFIKAT_PROFESI_ID');
-
-	// echo $reqTmtJabatan;exit;
+	$reqReqId= (int)$set->getField('SERTIFIKAT_PROFESI_ID');
 	$reqMode="update";
-
 }
-
-	
 $arrTahun= setTahunLoop(3,1);
-
-
 ?>
 
 <!-- Bootstrap core CSS -->
-<!-- <link href="lib/bootstrap-3.3.7/dist/css/bootstrap.min.css" rel="stylesheet"> -->
 <link href="lib/bootstrap-3.3.7/docs/examples/navbar/navbar.css" rel="stylesheet">
-<!-- <script src="lib/bootstrap-3.3.7/dist/js/bootstrap.min.js"></script> -->
 
 <div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
 	<div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
@@ -256,6 +238,4 @@ $arrTahun= setTahunLoop(3,1);
 		, format: 'dd-mm-yyyy'
 		, templates: arrows
 	});
-
-
 </script>

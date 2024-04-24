@@ -12,53 +12,24 @@ class cuti_json extends CI_Controller {
 		parent::__construct();
 		//kauth
 
-		session_start();
-		
 		$CI =& get_instance();
 		$configdata= $CI->config;
         $configvlxsessfolder= $configdata->config["vlxsessfolder"];
-		$reqPegawaiHard=$this->input->get('reqPegawaiHard');
 
         $redirectlogin= "";
-        if(!empty($_SESSION["vuserpegawaimode".$configvlxsessfolder]) && !empty($this->session->userdata("adminuserid".$configvlxsessfolder)))
+        if(!empty($this->session->userdata("adminuserid".$configvlxsessfolder)))
         {
-        	$this->session->set_userdata("userpegawaimode".$configvlxsessfolder, $_SESSION["vuserpegawaimode".$configvlxsessfolder]);
-        	$redirectlogin= "";
+        	$redirectlogin= $this->session->userdata("adminuserid".$configvlxsessfolder);
         }
 
-		if(!empty($this->session->userdata("userpegawaiId".$configvlxsessfolder)) && !empty($redirectlogin))
-		{
-        	$redirectlogin= "";
-        }
-
-        if(!empty($reqPegawaiHard)){
-        	$redirectlogin= "";
-        }
-        // echo $redirectlogin."xx".$this->session->userdata("userpegawaimode".$configvlxsessfolder)."xx".$this->session->userdata("adminuserid".$configvlxsessfolder)."xx".$_SESSION["vuserpegawaimode".$configvlxsessfolder];exit;
-        // echo $redirectlogin."xx".$this->session->userdata("userpegawaiId".$configvlxsessfolder);exit;
-
-        if(!empty($redirectlogin))
+        if(empty($redirectlogin))
 		{
 			redirect('login');
 		}
 
-		$this->pegawaiId= $this->session->userdata("userpegawaiId".$configvlxsessfolder);
-		$this->userpegawaiNama= $this->session->userdata("userpegawaiNama".$configvlxsessfolder);
-		// echo $this->userpegawaiNama; exit;
-		$this->userstatuspegId= $this->session->userdata("userstatuspegId".$configvlxsessfolder);
-		$this->userpegawaimode= $this->session->userdata("userpegawaimode".$configvlxsessfolder);
-
 		$this->adminuserid= $this->session->userdata("adminuserid".$configvlxsessfolder);
-		$this->adminusernama= $this->session->userdata("adminusernama".$configvlxsessfolder);
 		$this->adminuserloginnama= $this->session->userdata("adminuserloginnama".$configvlxsessfolder);
-		$this->adminuseraksesappmenu= $this->session->userdata("adminuseraksesappmenu".$configvlxsessfolder);
-
-		$this->userlevel= $this->session->userdata("userlevel".$configvlxsessfolder);
-
-
-        if(!empty($reqPegawaiHard)){
-        	$this->userpegawaimode=$reqPegawaiHard;
-        }
+		$this->adminsatkerid= $this->session->userdata("adminsatkerid".$configvlxsessfolder);
 	}
 
 	function json()
@@ -88,7 +59,7 @@ class cuti_json extends CI_Controller {
 
 		// $sOrder = "";
 		// $set->selectByParams(array(), $dsplyRange, $dsplyStart, $statement." AND (UPPER(B.GOL_RUANG) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(TEMPAT_LAHIR) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(NAMA) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(A.NAMA) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(A.NIP_LAMA) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(A.NIP_BARU) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(AMBIL_FORMAT_NIP_BARU(NIP_BARU)) LIKE '%".strtoupper($_GET['sSearch'])."%' ) ", $sOrder);
-		$statement= "and pegawai_id= '".$reqId."'" ;
+		$statement= " AND A.PEGAWAI_ID = '".$reqId."'" ;
 		$set->selectByParams(array(), $dsplyRange, $dsplyStart, $statement, $sOrder);
 		
 		if(!empty($cekquery)){
@@ -194,62 +165,60 @@ class cuti_json extends CI_Controller {
 		$reqRowId= $this->input->post("reqRowId");
 		$reqMode= $this->input->post("reqMode");
 
-		$reqTahun 				= $this->input->post("reqTahun");
-		$reqJenisCuti 			= $this->input->post("reqJenisCuti");
-		$reqNoSurat 			= $this->input->post("reqNoSurat");
-		$reqTanggalSurat		= $this->input->post("reqTanggalSurat");
-		$reqTanggalMulai		= $this->input->post("reqTanggalMulai");
-		$reqTanggalSelesai		= $this->input->post("reqTanggalSelesai");
-		$reqTanggalPermohonan	= $this->input->post("reqTanggalPermohonan");
-		$reqLama				= $this->input->post("reqLama");
-		$reqKeterangan			= $this->input->post("reqKeterangan");
+		$reqTahun= $this->input->post("reqTahun");
+		$reqJenisCuti= $this->input->post("reqJenisCuti");
+		$reqNoSurat= $this->input->post("reqNoSurat");
+		$reqTanggalSurat= $this->input->post("reqTanggalSurat");
+		$reqTanggalMulai= $this->input->post("reqTanggalMulai");
+		$reqTanggalSelesai= $this->input->post("reqTanggalSelesai");
+		$reqTanggalPermohonan= $this->input->post("reqTanggalPermohonan");
+		$reqLama= $this->input->post("reqLama");
+		$reqKeterangan= $this->input->post("reqKeterangan");
 
 		if(strtotime($reqTanggalMulai) > strtotime($reqTanggalSelesai) )
 		{
 			echo json_response(400, "Tanggal Mulai tidak boleh lebih dari tanggal selesai");exit;
 		}
 
+		$set = new Cuti();
+		$set->setField('NO_SURAT', $reqNoSurat);
+		$set->setField('JENIS_CUTI', $reqJenisCuti);
+		$set->setField('TANGGAL_PERMOHONAN', dateToDBCheck($reqTanggalPermohonan));
+		$set->setField('TANGGAL_SURAT', dateToDBCheck($reqTanggalSurat));
+		$set->setField('TANGGAL_MULAI', dateToDBCheck($reqTanggalMulai));
+		$set->setField('TANGGAL_SELESAI', dateToDBCheck($reqTanggalSelesai));	
+		$set->setField('LAMA', $reqLama);
+		$set->setField('KETERANGAN', $reqKeterangan);
+		$set->setField('PEGAWAI_ID', $reqId);
 
-		// print_r($reqMode);exit;
+		$set->setField('CUTI_ID', $reqRowId);
 
-		$cuti = new Cuti();
-	
-		$cuti->setField('NO_SURAT', $reqNoSurat);
-		$cuti->setField('JENIS_CUTI', $reqJenisCuti);
-		$cuti->setField('TANGGAL_PERMOHONAN', dateToDBCheck($reqTanggalPermohonan));
-		$cuti->setField('TANGGAL_SURAT', dateToDBCheck($reqTanggalSurat));
-		$cuti->setField('TANGGAL_MULAI', dateToDBCheck($reqTanggalMulai));
-		$cuti->setField('TANGGAL_SELESAI', dateToDBCheck($reqTanggalSelesai));	
-		$cuti->setField('LAMA', $reqLama);
-		$cuti->setField('KETERANGAN', $reqKeterangan);
-		$cuti->setField('PEGAWAI_ID', $reqId);
-
-		$cuti->setField('CUTI_ID', $reqRowId);
+		$adminusernama= $this->adminuserloginnama;
+		$userSatkerId= $this->adminsatkerid;
 
 		$reqSimpan= "";
 		if ($reqMode == "insert")
 		{
 
-			$cuti->setField("LAST_CREATE_USER", $adminusernama);
-			$cuti->setField("LAST_CREATE_DATE", "NOW()");	
-			$cuti->setField("LAST_CREATE_SATKER", $userSatkerId);
+			$set->setField("LAST_CREATE_USER", $adminusernama);
+			$set->setField("LAST_CREATE_DATE", "NOW()");	
+			$set->setField("LAST_CREATE_SATKER", $userSatkerId);
 	
-			if($cuti->insert())
+			if($set->insert())
 			{
 				$reqSimpan= 1;
 			}
 		}
 		else
 		{	
-			$cuti->setField("LAST_UPDATE_USER", $adminusernama);
-			$cuti->setField("LAST_UPDATE_DATE", "NOW()");	
-			$cuti->setField("LAST_UPDATE_SATKER", $userSatkerId);
-			if($cuti->update())
+			$set->setField("LAST_UPDATE_USER", $adminusernama);
+			$set->setField("LAST_UPDATE_DATE", "NOW()");	
+			$set->setField("LAST_UPDATE_SATKER", $userSatkerId);
+			if($set->update())
 			{
 				$reqSimpan= 1;
 			}
 		}
-
 
 		if($reqSimpan == 1)
 		{
@@ -261,7 +230,6 @@ class cuti_json extends CI_Controller {
 		}
 				
 	}
-
 
 	function delete()
 	{

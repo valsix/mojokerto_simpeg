@@ -3,14 +3,6 @@ include_once("functions/personal.func.php");
 
 $this->load->model("base/IjinBelajar");
 
-$userpegawaimode= $this->userpegawaimode;
-$adminuserid= $this->adminuserid;
-
-if(!empty($userpegawaimode) && !empty($adminuserid))
-    $reqPegawaiId= $userpegawaimode;
-else
-    $reqPegawaiId= $this->pegawaiId;
-
 $reqId= $this->input->get('reqId');
 $reqRowId= $this->input->get('reqRowId');
 
@@ -20,34 +12,22 @@ if(empty($reqRowId))
 }
 else
 {
-
-	$ijin = new IjinBelajar();
-	$ijin->selectByParams(array('IJIN_BELAJAR_ID'=>$reqRowId));
-	// echo $ijin_pendidikan->query;exit;
-	$ijin->firstRow();
-	$reqRowId					= (int)$ijin->getField('IJIN_BELAJAR_ID');
-
-	$reqNoSurat				= $ijin->getField('NOMOR_SURAT');
-	$reqTanggalSurat		= dateToPageCheck($ijin->getField('TANGGAL_SURAT'));
-	$reqNamaPerguruan		= $ijin->getField('NAMA_PERGURUAN');
-	$reqProgram		= $ijin->getField('PROGRAM_STUDI');
-	$reqJurusan		= $ijin->getField('JURUSAN');
-
-
-	// echo $reqTmtJabatan;exit;
+	$set = new IjinBelajar();
+	$set->selectByParams(array('IJIN_BELAJAR_ID'=>$reqRowId));
+	// echo $set->query;exit;
+	$set->firstRow();
+	$reqRowId= (int)$set->getField('IJIN_BELAJAR_ID');
+	$reqNoSurat= $set->getField('NOMOR_SURAT');
+	$reqTanggalSurat= dateToPageCheck($set->getField('TANGGAL_SURAT'));
+	$reqNamaPerguruan= $set->getField('NAMA_PERGURUAN');
+	$reqProgram= $set->getField('PROGRAM_STUDI');
+	$reqJurusan= $set->getField('JURUSAN');
 	$reqMode="update";
-
 }
-
-	
-
-
 ?>
 
 <!-- Bootstrap core CSS -->
-<!-- <link href="lib/bootstrap-3.3.7/dist/css/bootstrap.min.css" rel="stylesheet"> -->
 <link href="lib/bootstrap-3.3.7/docs/examples/navbar/navbar.css" rel="stylesheet">
-<!-- <script src="lib/bootstrap-3.3.7/dist/js/bootstrap.min.js"></script> -->
 
 <div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
 	<div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
