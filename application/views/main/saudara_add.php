@@ -4,14 +4,6 @@ include_once("functions/personal.func.php");
 $this->load->model("base/Core");
 $this->load->model("base/Saudara");
 
-$userpegawaimode= $this->userpegawaimode;
-$adminuserid= $this->adminuserid;
-
-if(!empty($userpegawaimode) && !empty($adminuserid))
-    $reqPegawaiId= $userpegawaimode;
-else
-    $reqPegawaiId= $this->pegawaiId;
-
 $reqId= $this->input->get('reqId');
 $reqRowId= $this->input->get('reqRowId');
 
@@ -27,19 +19,19 @@ else
 	$saudara->selectByParams(array('SAUDARA_ID'=>$reqRowId));
 	$saudara->firstRow();
 
-	$reqRowId = $saudara->getField('SAUDARA_ID');
-	$reqNama = $saudara->getField('NAMA');
-	$reqTempatLahir = $saudara->getField('TEMPAT_LAHIR');
-	$reqTglLahir = dateToPageCheck($saudara->getField('TANGGAL_LAHIR'));
+	$reqRowId= $saudara->getField('SAUDARA_ID');
+	$reqNama= $saudara->getField('NAMA');
+	$reqTempatLahir= $saudara->getField('TEMPAT_LAHIR');
+	$reqTglLahir= dateToPageCheck($saudara->getField('TANGGAL_LAHIR'));
 	$reqJenisKelamin = $saudara->getField('JENIS_KELAMIN');
-	$reqPekerjaan = $saudara->getField('PEKERJAAN');
-	$reqAlamat = $saudara->getField('ALAMAT');
-	$reqKodePos = $saudara->getField('KODEPOS');
-	$reqTelepon = $saudara->getField('TELEPON');
-	$reqPropinsi = $saudara->getField('PROPINSI_ID');
-	$reqKabupaten = $saudara->getField('KABUPATEN_ID');
-	$reqKecamatan = $saudara->getField('KECAMATAN_ID');
-	$reqKelurahan = $saudara->getField('KELURAHAN_ID');
+	$reqPekerjaan= $saudara->getField('PEKERJAAN');
+	$reqAlamat= $saudara->getField('ALAMAT');
+	$reqKodePos= $saudara->getField('KODEPOS');
+	$reqTelepon= $saudara->getField('TELEPON');
+	$reqPropinsi= $saudara->getField('PROPINSI_ID');
+	$reqKabupaten= $saudara->getField('KABUPATEN_ID');
+	$reqKecamatan= $saudara->getField('KECAMATAN_ID');
+	$reqKelurahan= $saudara->getField('KELURAHAN_ID');
 }
 
 $propinsi= new Core();
@@ -119,7 +111,7 @@ $readonly = "readonly";
 				        		</label>
 			        			<div class="col-lg-8 col-sm-12">
 			        				<div class="input-group date">
-				        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTglLahir" value="<?=$reqTglLahir?>" />
+				        				<input type="text" autocomplete="off" class="form-control kttanggal" name="reqTglLahir" value="<?=$reqTglLahir?>" />
 				        				<div class="input-group-append">
 				        					<span class="input-group-text">
 				        						<i class="la la-calendar"></i>
@@ -421,7 +413,7 @@ $readonly = "readonly";
 	});
 
 	arrows= {leftArrow: '<i class="la la-angle-left"></i>', rightArrow: '<i class="la la-angle-right"></i>'};
-	$('#kttanggallahir').datepicker({
+	$('.kttanggal').datepicker({
 		todayHighlight: true
 		, autoclose: true
 		, orientation: "bottom left"

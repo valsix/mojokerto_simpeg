@@ -1,13 +1,4 @@
-
 <?php
-$userpegawaimode= $this->userpegawaimode;
-$adminuserid= $this->adminuserid;
-
-if(!empty($userpegawaimode) && !empty($adminuserid))
-    $reqPegawaiId= $userpegawaimode;
-else
-    $reqPegawaiId= $this->pegawaiId;
-
 $reqId= $this->input->get('reqId');
 
 $arrtabledata= array(
@@ -31,10 +22,9 @@ $arrtabledata= array(
 ?>
 
 <!-- SELECT2 -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet">
+<!-- <link href="lib/select2/select2.min.css" rel="stylesheet"> -->
 <link href="lib/select2totreemaster/src/select2totree.css" rel="stylesheet">
-<!-- <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script> -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+<script src="lib/select2/select2.min.js"></script>
 <script src="lib/select2totreemaster/src/select2totree.js"></script>
 
 <div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
@@ -221,7 +211,7 @@ jQuery(document).ready(function() {
         }
         else
         {
-            urlAjax= "json-data/info_data_json/jsondiklatteknisdelete?&reqDetilId="+valinfoid;
+            urlAjax= "json-main/anak_json/delete?&reqRowId="+valinfoid;
             swal.fire({
                 title: 'Apakah anda yakin untuk hapus data?',
                 type: 'warning',
@@ -251,7 +241,7 @@ jQuery(document).ready(function() {
                                 showConfirmButton: false,
                                 timer: 2000
                             }).then(function() {
-                                document.location.href = "app/index/pegawai_diklat_teknis?formulaid=<?=$formulaid?>";
+                                document.location.href = "app/index/anak?reqId=<?=$reqId?>";
                             });
                         },
                         complete: function() {

@@ -3,14 +3,6 @@ include_once("functions/personal.func.php");
 
 $this->load->model("base/Organisasi");
 
-$userpegawaimode= $this->userpegawaimode;
-$adminuserid= $this->adminuserid;
-
-if(!empty($userpegawaimode) && !empty($adminuserid))
-    $reqPegawaiId= $userpegawaimode;
-else
-    $reqPegawaiId= $this->pegawaiId;
-
 $reqId= $this->input->get('reqId');
 $reqRowId= $this->input->get('reqRowId');
 
@@ -20,34 +12,25 @@ if(empty($reqRowId))
 }
 else
 {
-
-	$organisasi_riwayat = new Organisasi();
-	$organisasi_riwayat->selectByParams(array('ORGANISASI_RIWAYAT_ID'=>$reqRowId));
+	$set= new Organisasi();
+	$set->selectByParams(array('ORGANISASI_RIWAYAT_ID'=>$reqRowId));
 	// echo $organisasi->query;exit;
-	$organisasi_riwayat->firstRow();
-	$reqRowId					= $organisasi_riwayat->getField('ORGANISASI_RIWAYAT_ID');
-	$reqORGANISASI_RIWAYAT_ID = $organisasi_riwayat->getField('ORGANISASI_RIWAYAT_ID');
-	$reqJabatan 			= $organisasi_riwayat->getField('JABATAN');
-	$reqNamaOrganisasi 		= $organisasi_riwayat->getField('NAMA');
-	$reqAwal 		= dateToPageCheck($organisasi_riwayat->getField('TANGGAL_AWAL'));
-	$reqAkhir 		= dateToPageCheck($organisasi_riwayat->getField('TANGGAL_AKHIR'));
-	$reqPimpinan		= $organisasi_riwayat->getField('PIMPINAN');
-	$reqTempat		= $organisasi_riwayat->getField('TEMPAT');
+	$set->firstRow();
+	$reqRowId= $set->getField('ORGANISASI_RIWAYAT_ID');
+	$reqORGANISASI_RIWAYAT_ID= $set->getField('ORGANISASI_RIWAYAT_ID');
+	$reqJabatan= $set->getField('JABATAN');
+	$reqNamaOrganisasi= $set->getField('NAMA');
+	$reqAwal= dateToPageCheck($set->getField('TANGGAL_AWAL'));
+	$reqAkhir= dateToPageCheck($set->getField('TANGGAL_AKHIR'));
+	$reqPimpinan= $set->getField('PIMPINAN');
+	$reqTempat= $set->getField('TEMPAT');
 
-	// echo $reqTmtJabatan;exit;
 	$reqMode="update";
-
 }
-
-	
-
-
 ?>
 
 <!-- Bootstrap core CSS -->
-<!-- <link href="lib/bootstrap-3.3.7/dist/css/bootstrap.min.css" rel="stylesheet"> -->
 <link href="lib/bootstrap-3.3.7/docs/examples/navbar/navbar.css" rel="stylesheet">
-<!-- <script src="lib/bootstrap-3.3.7/dist/js/bootstrap.min.js"></script> -->
 
 <div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
 	<div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
@@ -100,19 +83,37 @@ else
 	        		</div>
 
 	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Awal</label>
-	        			<div class="col-lg-6 col-sm-12">
-	        				<input type="text" style="width:100px" <?=$read?> id="reqAwal" class="form-control" name="reqAwal" maxlength="10"  value="<?=$reqAwal?>" />
-	        			</div>
-	        		</div>
-
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Akhir</label>
-	        			<div class="col-lg-6 col-sm-12">
-	        				<input type="text" style="width:100px" <?=$read?> id="reqAkhir" class="form-control" name="reqAkhir" maxlength="10"  value="<?=$reqAkhir?>" />
-	        			</div>
-	        		</div>
-
+			        	<div class="col-md-6">
+			        		<div class="form-group row">
+			        			<label class="col-form-label text-right col-lg-4 col-sm-12">Awal</label>
+			        			<div class="col-lg-4 col-sm-12">
+			        				<div class="input-group date">
+				        				<input type="text" autocomplete="off" class="form-control kttanggal" name="reqAwal" value="<?=$reqAwal?>" />
+				        				<div class="input-group-append">
+				        					<span class="input-group-text">
+				        						<i class="la la-calendar"></i>
+				        					</span>
+				        				</div>
+				        			</div>
+			        			</div>
+			        		</div>
+			        	</div>
+			        	<div class="col-md-6">
+			        		<div class="form-group row">
+			        			<label class="col-form-label text-right col-lg-4 col-sm-12">Akhir</label>
+			        			<div class="col-lg-4 col-sm-12">
+			        				<div class="input-group date">
+				        				<input type="text" autocomplete="off" class="form-control kttanggal" name="reqAkhir" value="<?=$reqAkhir?>" />
+				        				<div class="input-group-append">
+				        					<span class="input-group-text">
+				        						<i class="la la-calendar"></i>
+				        					</span>
+				        				</div>
+				        			</div>
+			        			</div>
+			        		</div>
+			        	</div>
+			        </div>
 
 	        		<div class="form-group row">
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Pimpinan</label>
@@ -273,5 +274,13 @@ else
 		});
 	});
 
-
+	arrows= {leftArrow: '<i class="la la-angle-left"></i>', rightArrow: '<i class="la la-angle-right"></i>'};
+	$('.kttanggal').datepicker({
+		todayHighlight: true
+		, autoclose: true
+		, orientation: "bottom left"
+		, clearBtn: true
+		, format: 'dd-mm-yyyy'
+		, templates: arrows
+	});
 </script>

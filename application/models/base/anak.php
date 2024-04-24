@@ -19,12 +19,13 @@ class Anak extends Entity{
 		(
 			ANAK_ID, PEGAWAI_ID, PENDIDIKAN_ID, NAMA, TEMPAT_LAHIR, TANGGAL_LAHIR
 			, JENIS_KELAMIN, STATUS_KELUARGA, STATUS_TUNJANGAN, PEKERJAAN, AWAL_BAYAR, AKHIR_BAYAR
+			, LAST_CREATE_USER, LAST_CREATE_DATE, LAST_CREATE_SATKER
 		)
 		VALUES
 		(
 			".$this->getField("ANAK_ID")."
 			, '".$this->getField("PEGAWAI_ID")."'
-			, '".$this->getField("PENDIDIKAN_ID")."'
+			, ".$this->getField("PENDIDIKAN_ID")."
 			, '".$this->getField("NAMA")."'
 			, '".$this->getField("TEMPAT_LAHIR")."'
 			, ".$this->getField("TANGGAL_LAHIR")."
@@ -34,23 +35,25 @@ class Anak extends Entity{
 			, '".$this->getField("PEKERJAAN")."'
 			, ".$this->getField("AWAL_BAYAR")."
 			, ".$this->getField("AKHIR_BAYAR")."
+			, '".$this->getField("LAST_CREATE_USER")."'
+			, ".$this->getField("LAST_CREATE_DATE")."
+			, '".$this->getField("LAST_CREATE_SATKER")."'
 		)";
 
 		// , TANGGAL_UPDATE, FOTO, USER_APP_ID, LAST_CREATE_USER, LAST_CREATE_DATE, LAST_CREATE_SATKER
 
 		/*, SYSDATE
 		, '".$this->getField("FOTO")."'
-		, '".$this->getField("USER_APP_ID")."'
-		, '".$this->getField("LAST_CREATE_USER")."'
-		, ".$this->getField("LAST_CREATE_DATE")."
-		, '".$this->getField("LAST_CREATE_SATKER")."'*/
+		, '".$this->getField("USER_APP_ID")."'*/
 
+		$this->id= $this->getField("ANAK_ID"); 
 		$this->query = $str;
+		// echo $str;exit;
 
 		// untuk buat log data
 		// parse pertama sesuai nama table
 		// parse ke dua sesuai aksi
-		$this->setlogdata("ANAK", "INSERT", $str);
+		$this->setlogdata("anak", "INSERT", $str);
 
 		return $this->execQuery($str);
     }
@@ -61,7 +64,7 @@ class Anak extends Entity{
 		UPDATE anak
 		SET    
 			PEGAWAI_ID= '".$this->getField("PEGAWAI_ID")."'
-			, PENDIDIKAN_ID= '".$this->getField("PENDIDIKAN_ID")."'
+			, PENDIDIKAN_ID= ".$this->getField("PENDIDIKAN_ID")."
 			, NAMA= '".$this->getField("NAMA")."'
 			, TEMPAT_LAHIR= '".$this->getField("TEMPAT_LAHIR")."'
 			, TANGGAL_LAHIR= ".$this->getField("TANGGAL_LAHIR")."
@@ -71,21 +74,21 @@ class Anak extends Entity{
 			, PEKERJAAN= '".$this->getField("PEKERJAAN")."'
 			, AWAL_BAYAR= ".$this->getField("AWAL_BAYAR")."
 			, AKHIR_BAYAR= ".$this->getField("AKHIR_BAYAR")."
+			, LAST_UPDATE_USER= '".$this->getField("LAST_UPDATE_USER")."'
+			, LAST_UPDATE_DATE= ".$this->getField("LAST_UPDATE_DATE")."
+			, LAST_UPDATE_SATKER= '".$this->getField("LAST_UPDATE_SATKER")."'
 		WHERE ANAK_ID= '".$this->getField("ANAK_ID")."'
 		";
 		$this->query = $str;
 
 		/*, TANGGAL_UPDATE= SYSDATE
 		, FOTO= '".$this->getField("FOTO")."'
-		, USER_APP_ID= '".$this->getField("USER_APP_ID")."'
-		, LAST_UPDATE_USER= '".$this->getField("LAST_UPDATE_USER")."'
-		, LAST_UPDATE_DATE= ".$this->getField("LAST_UPDATE_DATE")."
-		, LAST_UPDATE_SATKER= '".$this->getField("LAST_UPDATE_SATKER")."'*/
+		, USER_APP_ID= '".$this->getField("USER_APP_ID")."'*/
 
 		// untuk buat log data
 		// parse pertama sesuai nama table
 		// parse ke dua sesuai aksi
-		$this->setlogdata("ANAK", "UPDATE", $str);
+		$this->setlogdata("anak", "UPDATE", $str);
 
 		return $this->execQuery($str);
     }
@@ -99,7 +102,7 @@ class Anak extends Entity{
 		// untuk buat log data
 		// parse pertama sesuai nama table
 		// parse ke dua sesuai aksi
-		$this->setlogdata("ANAK", "DELETE", $str);
+		$this->setlogdata("anak", "DELETE", $str);
 
         return $this->execQuery($str);
     }

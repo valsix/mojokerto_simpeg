@@ -12,53 +12,24 @@ class organisasi_json extends CI_Controller {
 		parent::__construct();
 		//kauth
 
-		session_start();
-		
 		$CI =& get_instance();
 		$configdata= $CI->config;
         $configvlxsessfolder= $configdata->config["vlxsessfolder"];
-		$reqPegawaiHard=$this->input->get('reqPegawaiHard');
 
         $redirectlogin= "";
-        if(!empty($_SESSION["vuserpegawaimode".$configvlxsessfolder]) && !empty($this->session->userdata("adminuserid".$configvlxsessfolder)))
+        if(!empty($this->session->userdata("adminuserid".$configvlxsessfolder)))
         {
-        	$this->session->set_userdata("userpegawaimode".$configvlxsessfolder, $_SESSION["vuserpegawaimode".$configvlxsessfolder]);
-        	$redirectlogin= "";
+        	$redirectlogin= $this->session->userdata("adminuserid".$configvlxsessfolder);
         }
 
-		if(!empty($this->session->userdata("userpegawaiId".$configvlxsessfolder)) && !empty($redirectlogin))
-		{
-        	$redirectlogin= "";
-        }
-
-        if(!empty($reqPegawaiHard)){
-        	$redirectlogin= "";
-        }
-        // echo $redirectlogin."xx".$this->session->userdata("userpegawaimode".$configvlxsessfolder)."xx".$this->session->userdata("adminuserid".$configvlxsessfolder)."xx".$_SESSION["vuserpegawaimode".$configvlxsessfolder];exit;
-        // echo $redirectlogin."xx".$this->session->userdata("userpegawaiId".$configvlxsessfolder);exit;
-
-        if(!empty($redirectlogin))
+        if(empty($redirectlogin))
 		{
 			redirect('login');
 		}
 
-		$this->pegawaiId= $this->session->userdata("userpegawaiId".$configvlxsessfolder);
-		$this->userpegawaiNama= $this->session->userdata("userpegawaiNama".$configvlxsessfolder);
-		// echo $this->userpegawaiNama; exit;
-		$this->userstatuspegId= $this->session->userdata("userstatuspegId".$configvlxsessfolder);
-		$this->userpegawaimode= $this->session->userdata("userpegawaimode".$configvlxsessfolder);
-
 		$this->adminuserid= $this->session->userdata("adminuserid".$configvlxsessfolder);
-		$this->adminusernama= $this->session->userdata("adminusernama".$configvlxsessfolder);
 		$this->adminuserloginnama= $this->session->userdata("adminuserloginnama".$configvlxsessfolder);
-		$this->adminuseraksesappmenu= $this->session->userdata("adminuseraksesappmenu".$configvlxsessfolder);
-
-		$this->userlevel= $this->session->userdata("userlevel".$configvlxsessfolder);
-
-
-        if(!empty($reqPegawaiHard)){
-        	$this->userpegawaimode=$reqPegawaiHard;
-        }
+		$this->adminsatkerid= $this->session->userdata("adminsatkerid".$configvlxsessfolder);
 	}
 
 	function json()
@@ -88,7 +59,7 @@ class organisasi_json extends CI_Controller {
 
 		// $sOrder = "";
 		// $set->selectByParams(array(), $dsplyRange, $dsplyStart, $statement." AND (UPPER(B.GOL_RUANG) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(TEMPAT_LAHIR) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(NAMA) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(A.NAMA) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(A.NIP_LAMA) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(A.NIP_BARU) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(AMBIL_FORMAT_NIP_BARU(NIP_BARU)) LIKE '%".strtoupper($_GET['sSearch'])."%' ) ", $sOrder);
-		$statement= "and pegawai_id= '".$reqId."'" ;
+		$statement= " AND A.PEGAWAI_ID = '".$reqId."'" ;
 		$set->selectByParams(array(), $dsplyRange, $dsplyStart, $statement, $sOrder);
 		
 		if(!empty($cekquery)){
@@ -193,55 +164,53 @@ class organisasi_json extends CI_Controller {
 		$reqId= $this->input->post("reqId");
 		$reqRowId= $this->input->post("reqRowId");
 		$reqMode= $this->input->post("reqMode");
-		$reqPOTENSI_DIRI_ID = $this->input->post("reqPOTENSI_DIRI_ID");
+		$reqPOTENSI_DIRI_ID= $this->input->post("reqPOTENSI_DIRI_ID");
 
-		$reqPegawaiId	= $this->input->post("reqPegawaiId");
-		$reqNamaOrganisasi	= $this->input->post("reqNamaOrganisasi");
-		$reqJabatan			= $this->input->post("reqJabatan");
-		$reqAwal			= $this->input->post("reqAwal");
-		$reqAkhir			= $this->input->post("reqAkhir");
-		$reqPimpinan		= $this->input->post("reqPimpinan");
-		$reqTempat			= $this->input->post("reqTempat");
+		$reqPegawaiId= $this->input->post("reqPegawaiId");
+		$reqNamaOrganisasi= $this->input->post("reqNamaOrganisasi");
+		$reqJabatan= $this->input->post("reqJabatan");
+		$reqAwal= $this->input->post("reqAwal");
+		$reqAkhir= $this->input->post("reqAkhir");
+		$reqPimpinan= $this->input->post("reqPimpinan");
+		$reqTempat= $this->input->post("reqTempat");
 
+		$set= new Organisasi();
+		$set->setField('JABATAN', $reqJabatan);
+		$set->setField('NAMA', $reqNamaOrganisasi);
+		$set->setField('TANGGAL_AWAL', dateToDBCheck($reqAwal));
+		$set->setField('TANGGAL_AKHIR', dateToDBCheck($reqAkhir));
+		$set->setField('PIMPINAN', $reqPimpinan);
+		$set->setField('TEMPAT', $reqTempat);
+		$set->setField('PEGAWAI_ID', $reqId);
 
-		// print_r($reqMode);exit;
+		$set->setField('ORGANISASI_RIWAYAT_ID', $reqRowId);
 
-		$organisasi = new Organisasi();
-		$organisasi->setField('JABATAN', $reqJabatan);
-		$organisasi->setField('NAMA', $reqNamaOrganisasi);
-		$organisasi->setField('TANGGAL_AWAL', dateToDBCheck($reqAwal));
-		$organisasi->setField('TANGGAL_AKHIR', dateToDBCheck($reqAkhir));
-		$organisasi->setField('PIMPINAN', $reqPimpinan);
-		$organisasi->setField('TEMPAT', $reqTempat);
-		$organisasi->setField('PEGAWAI_ID', $reqId);
-
-		$organisasi->setField('ORGANISASI_RIWAYAT_ID', $reqRowId);
+		$adminusernama= $this->adminuserloginnama;
+		$userSatkerId= $this->adminsatkerid;
 
 		$reqSimpan= "";
 		if ($reqMode == "insert")
 		{
-
-			$organisasi->setField("LAST_CREATE_USER", $adminusernama);
-			$organisasi->setField("LAST_CREATE_DATE", "NOW()");	
-			$organisasi->setField("LAST_CREATE_SATKER", $userSatkerId);
+			$set->setField("LAST_CREATE_USER", $adminusernama);
+			$set->setField("LAST_CREATE_DATE", "NOW()");	
+			$set->setField("LAST_CREATE_SATKER", $userSatkerId);
 	
-			if($organisasi->insert())
+			if($set->insert())
 			{
 				$reqSimpan= 1;
 			}
 		}
 		else
 		{	
-			$organisasi->setField("LAST_UPDATE_USER", $adminusernama);
-			$organisasi->setField("LAST_UPDATE_DATE", "NOW()");	
-			$organisasi->setField("LAST_UPDATE_SATKER", $userSatkerId);
-			if($organisasi->update())
+			$set->setField("LAST_UPDATE_USER", $adminusernama);
+			$set->setField("LAST_UPDATE_DATE", "NOW()");	
+			$set->setField("LAST_UPDATE_SATKER", $userSatkerId);
+			if($set->update())
 			{
 				$reqSimpan= 1;
 			}
 		}
-
-
+		
 		if($reqSimpan == 1)
 		{
 			echo json_response(200, $reqRowId."-Data berhasil disimpan.");
