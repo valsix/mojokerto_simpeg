@@ -2,32 +2,12 @@
 include_once("functions/personal.func.php");
 
 $this->load->model("base/CatatanPrestasi");
-$this->load->model("base/TingkatHukuman");
-$this->load->model("base/JenisHukuman");
-$this->load->model("base/PejabatPenetap");
-
-
-
-
-$userpegawaimode= $this->userpegawaimode;
-$adminuserid= $this->adminuserid;
-
-if(!empty($userpegawaimode) && !empty($adminuserid))
-    $reqPegawaiId= $userpegawaimode;
-else
-    $reqPegawaiId= $this->pegawaiId;
+$this->load->model("base/Core");
 
 $reqId= $this->input->get('reqId');
 $reqRowId= $this->input->get('reqRowId');
 
-
-$tingkat_catatan_prestasi = new TingkatHukuman();
-$jenis_catatan_prestasi = new JenisHukuman();
-$pejabat_penetap = new PejabatPenetap();
-
-
-
-
+$pejabat_penetap = new Core();
 
 if(empty($reqRowId))
 {
@@ -35,13 +15,12 @@ if(empty($reqRowId))
 }
 else
 {
-
-	$prestasi = new CatatanPrestasi();
-	$prestasi->selectByParams(array('PRESTASI_KERJA_ID'=>$reqRowId));
-	// echo $cuti->query;exit;
-	$prestasi->firstRow();
-	$reqRowId					= $prestasi->getField('PRESTASI_KERJA_ID');
-	if( $prestasi->getField('PEJABAT_PENETAP_ID')==''){
+	$set = new CatatanPrestasi();
+	$set->selectByParams(array('PRESTASI_KERJA_ID'=>$reqRowId));
+	// echo $set->query;exit;
+	$set->firstRow();
+	$reqRowId= $set->getField('PRESTASI_KERJA_ID');
+	if( $set->getField('PEJABAT_PENETAP_ID')==''){
 		$reqStatus='baru';
 		$reqDisplayBaru='';
 		$reqDisplay='none';
@@ -49,31 +28,22 @@ else
 		$reqDisplayBaru='none';
 		$reqDisplay='';
 	}
-	$reqPjPenetapNama= $prestasi->getField('PEJABAT_PENETAP');
-	$reqPjPenetapId= $prestasi->getField('PEJABAT_PENETAP_ID');
+	$reqPjPenetapNama= $set->getField('PEJABAT_PENETAP');
+	$reqPjPenetapId= $set->getField('PEJABAT_PENETAP_ID');
 
-	$reqPRESTASI_KERJA_ID = $prestasi->getField('PRESTASI_KERJA_ID');
-	$reqTahun 			= $prestasi->getField('TAHUN');
-	$reqPrestasi = $prestasi->getField('NAMA');
-	$reqTglSK = dateToPageCheck($prestasi->getField('TANGGAL_SK'));
-	$reqNoSK				= $prestasi->getField('NO_SK');
-	$reqPejabatPenetap				= $prestasi->getField('PEJABAT_PENETAP_ID');
-	$reqKeterangan				= $prestasi->getField('KETERANGAN');
-
-	// echo $reqTmtJabatan;exit;
+	$reqPRESTASI_KERJA_ID= $set->getField('PRESTASI_KERJA_ID');
+	$reqTahun= $set->getField('TAHUN');
+	$reqPrestasi= $set->getField('NAMA');
+	$reqTglSK= dateToPageCheck($set->getField('TANGGAL_SK'));
+	$reqNoSK= $set->getField('NO_SK');
+	$reqPejabatPenetap= $set->getField('PEJABAT_PENETAP_ID');
+	$reqKeterangan= $set->getField('KETERANGAN');
 	$reqMode="update";
-
 }
-
-	
-
-
 ?>
 
 <!-- Bootstrap core CSS -->
-<!-- <link href="lib/bootstrap-3.3.7/dist/css/bootstrap.min.css" rel="stylesheet"> -->
 <link href="lib/bootstrap-3.3.7/docs/examples/navbar/navbar.css" rel="stylesheet">
-<!-- <script src="lib/bootstrap-3.3.7/dist/js/bootstrap.min.js"></script> -->
 
 <div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
 	<div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
@@ -118,19 +88,28 @@ else
 	        		</div>
 	        		<div class="form-group row">
 	        			<label  class="col-form-label text-right col-lg-2 col-sm-12">Prestasi</label>
-	        			<div class="col-lg-3 col-sm-12">
-	        				<input type="text" id="reqTahun" name="reqPrestasi" <?=$read?> value="<?=$reqPrestasi?>"class="form-control" /></td>
+	        			<div class="col-lg-6 col-sm-12">
+	        				<input type="text" id="reqPrestasi" name="reqPrestasi" <?=$read?> value="<?=$reqPrestasi?>"class="form-control" /></td>
 	        			</div>
 	        		</div>
 	        		
 	        		<div class="form-group row">
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">No. SK</label>
 	        			<div class="col-lg-4 col-sm-12">
-	        				<input type="text" style="width:250px" <?=$read?> class="form-control" name="reqNoSK" value="<?=$reqNoSK?>" title="No SK harus diisi" class="required" />
+	        				<input type="text" <?=$read?> class="form-control" name="reqNoSK" value="<?=$reqNoSK?>" title="No SK harus diisi" class="required" />
 	        			</div>
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Tgl SK</label>
-	        			<div class="col-lg-4 col-sm-12">
-	        				<input type="text" style="width:100px" <?=$read?> id="reqTglSK" class="form-control" name="reqTglSK" maxlength="10"  value="<?=$reqTglSK?>" />
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+		        			Tgl SK
+		        		</label>
+	        			<div class="col-lg-2 col-sm-12">
+	        				<div class="input-group date">
+		        				<input type="text" autocomplete="off" class="form-control kttanggal" name="reqTglSK" value="<?=$reqTglSK?>" />
+		        				<div class="input-group-append">
+		        					<span class="input-group-text">
+		        						<i class="la la-calendar"></i>
+		        					</span>
+		        				</div>
+		        			</div>
 	        			</div>
 	        		</div>
 	        		<div class="form-group row">
@@ -145,7 +124,7 @@ else
 			                </div>
 			                
 			                <div id="select_status" style="display:<?=$reqDisplay?>">
-			            	<? $pejabat_penetap->selectByParams(array());?>
+			            	<? $pejabat_penetap->selectByParamsPejabatPenetap(array());?>
 			                <select <?=$disabled?> name="reqPjPenetap" id="reqPjPenetap" class="form-control">
 			                    <? while($pejabat_penetap->nextRow()){?>
 			                        <option value="<?=$pejabat_penetap->getField('PEJABAT_PENETAP_ID')?>" <? if($reqPjPenetapId == $pejabat_penetap->getField('PEJABAT_PENETAP_ID')) echo 'selected';?>><?=$pejabat_penetap->getField('JABATAN')?></option>
@@ -324,5 +303,14 @@ else
 		});
 	});
 
+	arrows= {leftArrow: '<i class="la la-angle-left"></i>', rightArrow: '<i class="la la-angle-right"></i>'};
+	$('.kttanggal').datepicker({
+		todayHighlight: true
+		, autoclose: true
+		, orientation: "bottom left"
+		, clearBtn: true
+		, format: 'dd-mm-yyyy'
+		, templates: arrows
+	});
 
 </script>

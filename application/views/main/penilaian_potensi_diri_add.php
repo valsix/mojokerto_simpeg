@@ -20,32 +20,22 @@ if(empty($reqRowId))
 }
 else
 {
-
-	$potensi_diri = new PenilaianPotensiDiri();
-	$potensi_diri->selectByParams(array('POTENSI_DIRI_ID'=>$reqRowId));
+	$set = new PenilaianPotensiDiri();
+	$set->selectByParams(array('POTENSI_DIRI_ID'=>$reqRowId));
 	// echo $penilaian_potensi_diri->query;exit;
-	$potensi_diri->firstRow();
-	$reqRowId					= $potensi_diri->getField('POTENSI_DIRI_ID');
-	$reqPOTENSI_DIRI_ID = $potensi_diri->getField('POTENSI_DIRI_ID');
-	$reqTahun = $potensi_diri->getField('TAHUN');
-	$reqTanggungJawab = $potensi_diri->getField('TANGGUNG_JAWAB');
-	$reqMotivasi = $potensi_diri->getField('MOTIVASI');
-	$reqMinat = $potensi_diri->getField('MINAT');
-
-	// echo $reqTmtJabatan;exit;
+	$set->firstRow();
+	$reqRowId= $set->getField('POTENSI_DIRI_ID');
+	$reqPOTENSI_DIRI_ID= $set->getField('POTENSI_DIRI_ID');
+	$reqTahun= $set->getField('TAHUN');
+	$reqTanggungJawab= $set->getField('TANGGUNG_JAWAB');
+	$reqMotivasi= $set->getField('MOTIVASI');
+	$reqMinat= $set->getField('MINAT');
 	$reqMode="update";
-
 }
-
-	
-
-
 ?>
 
 <!-- Bootstrap core CSS -->
-<!-- <link href="lib/bootstrap-3.3.7/dist/css/bootstrap.min.css" rel="stylesheet"> -->
 <link href="lib/bootstrap-3.3.7/docs/examples/navbar/navbar.css" rel="stylesheet">
-<!-- <script src="lib/bootstrap-3.3.7/dist/js/bootstrap.min.js"></script> -->
 
 <div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
 	<div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
