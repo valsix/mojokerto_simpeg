@@ -37,7 +37,7 @@ $reqNoSuratUjiKesehatan		= $skpns->getField('NO_UJI_KESEHATAN');
 $reqTanggalSuratUjiKesehatan	= dateToPageCheck($skpns->getField('TANGGAL_UJI_KESEHATAN'));
 $reqGolRuang					= $skpns->getField('PANGKAT_ID');
 $reqPengambilanSumpah			= $skpns->getField('SUMPAH');
-$reqSKPNSId					= (int)$skpns->getField('SK_PNS_ID');
+$reqSkPnsId					= (int)$skpns->getField('SK_PNS_ID');
 $reqTanggalSumpah				= $skpns->getField('TANGGAL_SUMPAH');
 $reqNoSuratjiKesehatan			= $skpns->getField('NO_UJI_KESEHATAN');
 $reqNoDiklatPrajabatan			= $skpns->getField('NO_PRAJAB');
@@ -267,11 +267,11 @@ $readonly = "readonly";
 	        		<div class="form-group row">
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Masa Kerja </label>
 	        			<div class="col-lg-1 col-sm-12">
-	        				<input type="text" class="form-control" name="tempTh" id="tempTh" value="<?=$tempTh?>" />
+	        				<input type="text" class="form-control" name="reqTh" id="reqTh" value="<?=$reqTh?>" />
 	        			</div>
 	        			<label class="col-form-label">Tahun </label>
 	        			<div class="col-lg-1 col-sm-12">
-	        				<input type="text" class="form-control" name="tempBl" id="tempBl" value="<?=$tempBl?>" />
+	        				<input type="text" class="form-control" name="reqBl" id="reqBl" value="<?=$reqBl?>" />
 	        			</div>
 	        			<label class="col-form-label">Bulan</label>
 	        			
@@ -281,6 +281,8 @@ $readonly = "readonly";
 	        		<div class="row">
 	        			<div class="col-lg-9">
 	        				<input type="hidden" name="reqMode" value="<?=$reqMode?>">
+	        				<input type="hidden" name="reqSkPnsId" value="<?=$reqSkPnsId?>">
+	        				<input type="hidden" name="reqId" value="<?=$reqId?>">
 	        				<input type="hidden" name="reqTempValidasiId" value="<?=$reqTempValidasiId?>">
 	        				<button type="submit" id="ktloginformsubmitbutton"  class="btn btn-primary font-weight-bold mr-2">Simpan</button>
 	        			</div>
