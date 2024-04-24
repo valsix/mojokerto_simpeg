@@ -3,14 +3,6 @@ include_once("functions/personal.func.php");
 
 $this->load->model("base/SertifikatPendidik");
 
-$userpegawaimode= $this->userpegawaimode;
-$adminuserid= $this->adminuserid;
-
-if(!empty($userpegawaimode) && !empty($adminuserid))
-    $reqPegawaiId= $userpegawaimode;
-else
-    $reqPegawaiId= $this->pegawaiId;
-
 $reqId= $this->input->get('reqId');
 $reqRowId= $this->input->get('reqRowId');
 
@@ -20,33 +12,23 @@ if(empty($reqRowId))
 }
 else
 {
+	$set= new SertifikatPendidik();
+	$set->selectByParams(array('SERTIFIKAT_PENDIDIK_ID'=>$reqRowId));
+	// echo $set_pendidikan->query;exit;
+	$set->firstRow();
+	$reqRowId= (int)$set->getField('SERTIFIKAT_PENDIDIK_ID');
+	$reqNama= $set->getField('NAMA');
+	$reqNomor= $set->getField('NOMOR');
+	$reqSertifikat= $set->getField('SERTIFIKAT');
+	$reqTanggal= dateToPageCheck($set->getField('TANGGAL'));
+	$reqLembaga= $set->getField('LEMBAGA');
 
-	$sertifikat = new SertifikatPendidik();
-	$sertifikat->selectByParams(array('SERTIFIKAT_PENDIDIK_ID'=>$reqRowId));
-	// echo $sertifikat_pendidikan->query;exit;
-	$sertifikat->firstRow();
-	$reqRowId					= (int)$sertifikat->getField('SERTIFIKAT_PENDIDIK_ID');
-	$reqNama				= $sertifikat->getField('NAMA');
-	$reqNomor		= $sertifikat->getField('NOMOR');
-	$reqSertifikat		= $sertifikat->getField('SERTIFIKAT');
-	$reqTanggal		= dateToPageCheck($sertifikat->getField('TANGGAL'));
-	$reqLembaga		= $sertifikat->getField('LEMBAGA');
-
-
-	// echo $reqTmtJabatan;exit;
 	$reqMode="update";
-
 }
-
-	
-
-
 ?>
 
 <!-- Bootstrap core CSS -->
-<!-- <link href="lib/bootstrap-3.3.7/dist/css/bootstrap.min.css" rel="stylesheet"> -->
 <link href="lib/bootstrap-3.3.7/docs/examples/navbar/navbar.css" rel="stylesheet">
-<!-- <script src="lib/bootstrap-3.3.7/dist/js/bootstrap.min.js"></script> -->
 
 <div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
 	<div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
@@ -254,6 +236,5 @@ else
 		, format: 'dd-mm-yyyy'
 		, templates: arrows
 	});
-
 
 </script>
