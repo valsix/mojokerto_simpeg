@@ -3,14 +3,6 @@ include_once("functions/personal.func.php");
 
 $this->load->model("base/SuamiIstri");
 
-$userpegawaimode= $this->userpegawaimode;
-$adminuserid= $this->adminuserid;
-
-if(!empty($userpegawaimode) && !empty($adminuserid))
-    $reqPegawaiId= $userpegawaimode;
-else
-    $reqPegawaiId= $this->pegawaiId;
-
 $reqId= $this->input->get('reqId');
 $reqRowId= $this->input->get('reqRowId');
 
@@ -20,37 +12,28 @@ if(empty($reqRowId))
 }
 else
 {
+	$set= new SuamiIstri();
+	$set->selectByParams(array('SUAMI_ISTRI_ID'=>$reqRowId));
+	// echo $set->query;exit;
+	$set->firstRow();
+	$reqRowId= (int)$set->getField('SUAMI_ISTRI_ID');
+	$reqNoSKPengadilan= $set->getField('SK_CERAI');
+	$reqGajiPokok= $set->getField('GAJI_POKOK');
+	$reqNama= $set->getField('NAMA');
+	$reqPNS= $set->getField('STATUS_PNS');
+	$reqNIP= $set->getField('NIP_PNS');
+	$reqPekerjaan= $set->getField('PEKERJAAN');
 
-	$suami_istri_cerai = new SuamiIstri();
-	$suami_istri_cerai->selectByParams(array('SUAMI_ISTRI_ID'=>$reqRowId));
-	// echo $suami_istri_cerai->query;exit;
-	$suami_istri_cerai->firstRow();
-	$reqRowId					= (int)$suami_istri_cerai->getField('SUAMI_ISTRI_ID');
-	$reqNoSKPengadilan	= $suami_istri_cerai->getField('SK_CERAI');
-	$reqGajiPokok	= $suami_istri_cerai->getField('GAJI_POKOK');
-	$reqNama	= $suami_istri_cerai->getField('NAMA');
-	$reqPNS	= $suami_istri_cerai->getField('PNS');
-	$reqNIP	= $suami_istri_cerai->getField('NIP');
-	$reqPekerjaan = $suami_istri_cerai->getField('PEKERJAAN');
+	$reqTanggalSKPengadilan= dateToPageCheck($set->getField('SK_CERAI_TANGGAL'));
+	$reqTMTSK= dateToPageCheck($set->getField('SK_CERAI_TMT'));
 
-	$reqTanggalSKPengadilan = dateToPageCheck($suami_istri_cerai->getField('SK_CERAI_TANGGAL'));
-	$reqTMTSK = dateToPageCheck($suami_istri_cerai->getField('SK_CERAI_TMT'));
-
-	// echo $reqTmtJabatan;exit;
 	$reqMode="update";
-
 }
-
-	
 $arrTahun= setTahunLoop(3,1);
-
-
 ?>
 
 <!-- Bootstrap core CSS -->
-<!-- <link href="lib/bootstrap-3.3.7/dist/css/bootstrap.min.css" rel="stylesheet"> -->
 <link href="lib/bootstrap-3.3.7/docs/examples/navbar/navbar.css" rel="stylesheet">
-<!-- <script src="lib/bootstrap-3.3.7/dist/js/bootstrap.min.js"></script> -->
 
 <div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
 	<div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
@@ -95,28 +78,52 @@ $arrTahun= setTahunLoop(3,1);
 	        			</div>
 	        		</div>
 	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Tanggal SK</label>
-	        			<div class="col-lg-6 col-sm-12">
-	        				<input type="text" style="width:80px" name="reqTanggalSKPengadilan" id="reqTanggalSKPengadilan"  class="form-control" <?=$read?> maxlength="10" value="<?=$reqTanggalSKPengadilan?>" />
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+		        			Tanggal SK
+		        		</label>
+	        			<div class="col-lg-2 col-sm-12">
+	        				<div class="input-group date">
+		        				<input type="text" autocomplete="off" class="form-control kttanggal" name="reqTanggalSKPengadilan" value="<?=$reqTanggalSKPengadilan?>" />
+		        				<div class="input-group-append">
+		        					<span class="input-group-text">
+		        						<i class="la la-calendar"></i>
+		        					</span>
+		        				</div>
+		        			</div>
 	        			</div>
 	        		</div>
 	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">TMT SK</label>
-	        			<div class="col-lg-6 col-sm-12">
-	        				<input type="text" style="width:80px" name="reqTMTSK" id="reqTMTSK" <?=$read?>  class="form-control" maxlength="10"  value="<?=$reqTMTSK?>" />
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+		        			TMT SK
+		        		</label>
+	        			<div class="col-lg-2 col-sm-12">
+	        				<div class="input-group date">
+		        				<input type="text" autocomplete="off" class="form-control kttanggal" name="reqTMTSK" value="<?=$reqTMTSK?>" />
+		        				<div class="input-group-append">
+		        					<span class="input-group-text">
+		        						<i class="la la-calendar"></i>
+		        					</span>
+		        				</div>
+		        			</div>
 	        			</div>
 	        		</div>
 	        		<div class="form-group row">
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Nama</label>
-	        			<div class="col-lg-6 col-sm-12">
+	        			<div class="col-lg-4 col-sm-12">
 	        				<input type="text"  class="form-control" style="width:150px" name="reqNama" <?=$read?> value="<?=$reqNama?>" />
 	        				<br/>
-	        				<input type="checkbox" id="reqPNS"  name="reqPNS" value="1" <? if($reqPNS == 1) echo 'checked'?> <?=$disabled?>/> PNS &nbsp;
-	        				<label id="reqLabelNIP">NIP</label>
-	        				<input type="text" id="reqNIP" name="reqNIP" <?=$read?> value="<?=$reqNIP?>" />
+	        				<input type="checkbox" id="reqPNS" name="reqPNS" value="1" <? if($reqPNS == 1) echo 'checked'?> <?=$disabled?>/> PNS &nbsp;
 	        			</div>
-
 	        		</div>
+	        		
+	        		<!-- reqLabelNIP -->
+	        		<div class="form-group row" id="divnip">
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">NIP</label>
+	        			<div class="col-lg-4 col-sm-12">
+	        				<input type="text" id="reqNIP" class="form-control" name="reqNIP" <?=$read?> value="<?=$reqNIP?>" />
+	        			</div>
+	        		</div>
+
 	        		<div class="form-group row">
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Pekerjaan</label>
 	        			<div class="col-lg-6 col-sm-12">
@@ -156,8 +163,8 @@ $arrTahun= setTahunLoop(3,1);
 		, templates: arrows
 	});
 
-	$("#reqLabelNIP").hide();
-	$("#reqNIP").hide();
+	// $("#reqLabelNIP").hide();
+	// $("#reqNIP").hide();
 
 	$("#reqTanggalSKPengadilan, #reqTMTSK, #reqTanggalSKIjin").keypress(function(e) {
 		if( e.which!=8 && e.which!=0 && (e.which<48 || e.which>57))
@@ -169,27 +176,32 @@ $arrTahun= setTahunLoop(3,1);
 	function countChecked() {
 		var n = $("input:checked").length;
 		if(n){
-			$("#reqLabelNIP").show(1000);
-			$("#reqNIP").show(1000);
+			$("#divnip").show(1000);
+			// $("#reqLabelNIP").show(1000);
+			// $("#reqNIP").show(1000);
 		}else{
-			$("#reqLabelNIP").hide(1000);
-			$("#reqNIP").hide(1000);
+			$("#divnip").hide(1000);
+			// $("#reqLabelNIP").hide(1000);
+			// $("#reqNIP").hide(1000);
 			document.getElementById("reqNIP").value = '';
 		}
 	}
+
+	defaultNip();
 	function defaultNip() {
 		var n = document.getElementById("reqNIP").value;
 		if(n != ''){
-			$("#reqLabelNIP").show(1000);
-			$("#reqNIP").show(1000);
+			$("#divnip").show(1000);
+			// $("#reqLabelNIP").show(1000);
+			// $("#reqNIP").show(1000);
 		}else{
-			$("#reqLabelNIP").hide(1000);
-			$("#reqNIP").hide(1000);				
+			$("#divnip").hide(1000);
+			// $("#reqLabelNIP").hide(1000);
+			// $("#reqNIP").hide(1000);				
 		}			
 	}		
 
 	$("#reqPNS").click(countChecked);
-
 	$("#reqNIP").keypress(function(e) {
 		if( e.which!=8 && e.which!=0 && (e.which<48 || e.which>57))
 		{
@@ -299,5 +311,14 @@ $arrTahun= setTahunLoop(3,1);
 		});
 	});
 
+	arrows= {leftArrow: '<i class="la la-angle-left"></i>', rightArrow: '<i class="la la-angle-right"></i>'};
+	$('.kttanggal').datepicker({
+		todayHighlight: true
+		, autoclose: true
+		, orientation: "bottom left"
+		, clearBtn: true
+		, format: 'dd-mm-yyyy'
+		, templates: arrows
+	});
 
 </script>

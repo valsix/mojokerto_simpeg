@@ -2,30 +2,14 @@
 include_once("functions/personal.func.php");
 
 $this->load->model("base/Hukuman");
-$this->load->model("base/TingkatHukuman");
-$this->load->model("base/JenisHukuman");
-$this->load->model("base/PejabatPenetap");
-
-
-
-
-$userpegawaimode= $this->userpegawaimode;
-$adminuserid= $this->adminuserid;
-
-if(!empty($userpegawaimode) && !empty($adminuserid))
-    $reqPegawaiId= $userpegawaimode;
-else
-    $reqPegawaiId= $this->pegawaiId;
+$this->load->model("base/Core");
 
 $reqId= $this->input->get('reqId');
 $reqRowId= $this->input->get('reqRowId');
 
-
-$tingkat_hukuman = new TingkatHukuman();
-$jenis_hukuman = new JenisHukuman();
-$pejabat_penetap = new PejabatPenetap();
-
-
+$tingkat_hukuman = new Core();
+$jenis_hukuman = new Core();
+$pejabat_penetap = new Core();
 
 if(empty($reqRowId))
 {
@@ -33,13 +17,12 @@ if(empty($reqRowId))
 }
 else
 {
-
-	$hukuman = new Hukuman();
-	$hukuman->selectByParams(array('HUKUMAN_ID'=>$reqRowId));
+	$set = new Hukuman();
+	$set->selectByParams(array('HUKUMAN_ID'=>$reqRowId));
 	// echo $cuti->query;exit;
-	$hukuman->firstRow();
-	$reqRowId					= $hukuman->getField('HUKUMAN_ID');
-	if( $hukuman->getField('PEJABAT_PENETAP_ID')==''){
+	$set->firstRow();
+	$reqRowId= $set->getField('HUKUMAN_ID');
+	if( $set->getField('PEJABAT_PENETAP_ID')==''){
 		$reqStatus='baru';
 		$reqDisplayBaru='';
 		$reqDisplay='none';
@@ -47,35 +30,30 @@ else
 		$reqDisplayBaru='none';
 		$reqDisplay='';
 	}
-	$reqPjPenetapNama= $hukuman->getField('PEJABAT_PENETAP');
-	$reqPjPenetapId= $hukuman->getField('PEJABAT_PENETAP_ID');
+	$reqPjPenetapNama= $set->getField('PEJABAT_PENETAP');
+	$reqPjPenetapId= $set->getField('PEJABAT_PENETAP_ID');
 
-	$reqHUKUMAN_ID = $hukuman->getField('HUKUMAN_ID');
-	$reqNoSK	= $hukuman->getField('NO_SK');
-	$reqPejabatPenetap = $hukuman->getField('PEJABAT_PENETAP_ID');
-	$reqTanggalSK	= dateToPageCheck($hukuman->getField('TANGGAL_SK'));
-	$reqTMTSK = dateToPageCheck($hukuman->getField('TMT_SK'));
-	$reqJenisHukuman = $hukuman->getField('JENIS_HUKUMAN_ID');
-	$reqTingkatHukuman = $hukuman->getField('TINGKAT_HUKUMAN_ID');
-	$reqPeraturan = $hukuman->getField('PERATURAN_ID');
-	$reqPermasalahan = $hukuman->getField('KETERANGAN');
-	$reqMasihBerlaku		= $hukuman->getField('STATUS_BERLAKU');
+	$reqHUKUMAN_ID= $set->getField('HUKUMAN_ID');
+	$reqNoSK= $set->getField('NO_SK');
+	$reqPejabatPenetap= $set->getField('PEJABAT_PENETAP_ID');
+	$reqTanggalSK= dateToPageCheck($set->getField('TANGGAL_SK'));
+	$reqTMTSK= dateToPageCheck($set->getField('TMT_SK'));
+	$reqJenisHukuman= $set->getField('JENIS_HUKUMAN_ID');
+	$reqTingkatHukuman= $set->getField('TINGKAT_HUKUMAN_ID');
+	$reqPeraturan= $set->getField('PERATURAN_ID');
+	$reqPermasalahan= $set->getField('KETERANGAN');
+	$reqMasihBerlaku= $set->getField('STATUS_BERLAKU');
 	if($reqMasihBerlaku == 'Ya')
 		$reqMasihBerlaku=1;
 	else
 		$reqMasihBerlaku=0;
 
-	$reqTanggalMulai= dateToPageCheck($hukuman->getField('TANGGAL_MULAI'));
-	$reqTanggalAkhir= dateToPageCheck($hukuman->getField('TANGGAL_AKHIR'));
+	$reqTanggalMulai= dateToPageCheck($set->getField('TANGGAL_MULAI'));
+	$reqTanggalAkhir= dateToPageCheck($set->getField('TANGGAL_AKHIR'));
 
 	// echo $reqTmtJabatan;exit;
 	$reqMode="update";
-
 }
-
-	
-
-
 ?>
 
 <!-- Bootstrap core CSS -->
@@ -120,11 +98,11 @@ else
 	        	<div class="card-body">
 	        		<div class="form-group row">
 	        			<label  class="col-form-label text-right col-lg-2 col-sm-12">Tingkat Hukuman</label>
-	        			<div class="col-lg-3 col-sm-12">
+	        			<div class="col-lg-6 col-sm-12">
 	        				<select <?=$disabled?> name="reqTingkatHukuman" id="reqTingkatHukuman" class="form-control">
 	        					<option value=""></option>
 	        					<? 
-	        					$tingkat_hukuman->selectByParamsEdit(array(),-1,-1, '');
+	        					$tingkat_hukuman->selectByParamsTingkatHukuman(array(),-1,-1, '');
 	        					while($tingkat_hukuman->nextRow())
 	        					{
 	        						?>
@@ -138,18 +116,18 @@ else
 	        		</div>
 	        		<div class="form-group row">
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Jenis Hukuman</label>
-	        			<div class="col-lg-2 col-sm-12">
+	        			<div class="col-lg-6 col-sm-12">
 					        	<? 
 								if($reqJenisHukuman)
 								{
 								?>
 				                <select <?=$disabled?> name="reqJenisHukuman" id="reqJenisHukuman" title="Jenis hukuman harus diisi" class="required form-control"  >
 				                	<option value=""></option>
-									<? $jenis_hukuman->selectByParamsEdit(array('TINGKAT_HUKUMAN_ID'=>$reqTingkatHukuman),-1,-1, '');
+									<? $jenis_hukuman->selectByParamsJenisHukuman(array('TINGKAT_HUKUMAN_ID'=>$reqTingkatHukuman),-1,-1, '');
 				                        while($jenis_hukuman->nextRow())
 										{
 									?>
-				                        <option value="<?=$jenis_hukuman->getField('JENIS_HUKUMAN_ID')?>" <? if($jenis_hukuman->getField('JENIS_HUKUMAN_ID')==$reqJenisHukuman) echo 'selected'?>><?=$jenis_hukuman->getField('NAMA')?></option>
+				                        <option value="<?=$jenis_hukuman->getField('JENIS_HUKUMAN_ID')?>" <? if($jenis_hukuman->getField('JENIS_HUKUMAN_ID')==$reqJenisHukuman) echo 'selected'?>><?=$jenis_hukuman->getField('JENIS_HUKUMAN')?></option>
 				                    <? 	
 										}
 									?>
@@ -171,25 +149,61 @@ else
 	        			</div>
 	        		</div>
 	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Tanggal SK</label>
-	        			<div class="col-lg-4 col-sm-12">
-	        				<input type="text" style="width:100px" <?=$read?> id="reqTanggalSK" class="form-control" name="reqTanggalSK" maxlength="10"  value="<?=$reqTanggalSK?>" />
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+		        			Tanggal SK
+		        		</label>
+	        			<div class="col-lg-2 col-sm-12">
+	        				<div class="input-group date">
+		        				<input type="text" autocomplete="off" class="form-control kttanggal" name="reqTanggalSK" value="<?=$reqTanggalSK?>" />
+		        				<div class="input-group-append">
+		        					<span class="input-group-text">
+		        						<i class="la la-calendar"></i>
+		        					</span>
+		        				</div>
+		        			</div>
 	        			</div>
 	        		</div>
 					<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">TMT SK</label>
-	        			<div class="col-lg-4 col-sm-12">
-	        				<input type="text" style="width:100px" <?=$read?> id="reqTMTSK" class="form-control" name="reqTMTSK" maxlength="10"  value="<?=$reqTMTSK?>" />
+						<label class="col-form-label text-right col-lg-2 col-sm-12">
+		        			TMT SK
+		        		</label>
+	        			<div class="col-lg-2 col-sm-12">
+	        				<div class="input-group date">
+		        				<input type="text" autocomplete="off" class="form-control kttanggal" name="reqTMTSK" value="<?=$reqTMTSK?>" />
+		        				<div class="input-group-append">
+		        					<span class="input-group-text">
+		        						<i class="la la-calendar"></i>
+		        					</span>
+		        				</div>
+		        			</div>
 	        			</div>
 	        		</div>
 	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Tanggal Mulai</label>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+		        			Tanggal Mulai
+		        		</label>
 	        			<div class="col-lg-2 col-sm-12">
-	        				<input type="text"  name="reqTanggalMulai" class="form-control" id="reqTanggalMulai" class="dateIna" <?=$read?> maxlength="10"  value="<?=$reqTanggalMulai?>" />
+	        				<div class="input-group date">
+		        				<input type="text" autocomplete="off" class="form-control kttanggal" name="reqTanggalMulai" value="<?=$reqTanggalMulai?>" />
+		        				<div class="input-group-append">
+		        					<span class="input-group-text">
+		        						<i class="la la-calendar"></i>
+		        					</span>
+		        				</div>
+		        			</div>
 	        			</div>
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Tanggal Akhir</label>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+		        			Tanggal Akhir
+		        		</label>
 	        			<div class="col-lg-2 col-sm-12">
-	        				<input type="text"  name="reqTanggalAkhir" class="form-control" id="reqTanggalAkhir" class="dateIna" <?=$read?> maxlength="10"  value="<?=$reqTanggalAkhir?>" />
+	        				<div class="input-group date">
+		        				<input type="text" autocomplete="off" class="form-control kttanggal" name="reqTanggalAkhir" value="<?=$reqTanggalAkhir?>" />
+		        				<div class="input-group-append">
+		        					<span class="input-group-text">
+		        						<i class="la la-calendar"></i>
+		        					</span>
+		        				</div>
+		        			</div>
 	        			</div>
 	        		</div>
 	        		<div class="form-group row">
@@ -210,7 +224,7 @@ else
 			                </div>
 			                
 			                <div id="select_status" style="display:<?=$reqDisplay?>">
-			            	<? $pejabat_penetap->selectByParams(array());?>
+			            	<? $pejabat_penetap->selectByParamsPejabatPenetap(array());?>
 			                <select <?=$disabled?> name="reqPjPenetap" id="reqPjPenetap" class="form-control">
 			                    <? while($pejabat_penetap->nextRow()){?>
 			                        <option value="<?=$pejabat_penetap->getField('PEJABAT_PENETAP_ID')?>" <? if($reqPjPenetapId == $pejabat_penetap->getField('PEJABAT_PENETAP_ID')) echo 'selected';?>><?=$pejabat_penetap->getField('JABATAN')?></option>
@@ -222,7 +236,6 @@ else
 			                </div>
 	        			</div>
 	        		</div>
-
 
 	        		<div class="card-footer">
 	        		<div class="row">
@@ -287,18 +300,6 @@ else
 			return false;
 		}
 	});
-
-
-	arrows= {leftArrow: '<i class="la la-angle-left"></i>', rightArrow: '<i class="la la-angle-right"></i>'};
-	$('#reqTanggalAkhir,#reqTanggalMulai,#reqTanggalSK,#reqTMTSK').datepicker({
-		todayHighlight: true
-		, autoclose: true
-		, orientation: "bottom left"
-		, clearBtn: true
-		, format: 'dd-mm-yyyy'
-		, templates: arrows
-	});
-
 
 	var _buttonSpinnerClasses = 'spinner spinner-right spinner-white pr-15';
 	jQuery(document).ready(function() {
@@ -401,5 +402,14 @@ else
 		});
 	});
 
+	arrows= {leftArrow: '<i class="la la-angle-left"></i>', rightArrow: '<i class="la la-angle-right"></i>'};
+	$('.kttanggal').datepicker({
+		todayHighlight: true
+		, autoclose: true
+		, orientation: "bottom left"
+		, clearBtn: true
+		, format: 'dd-mm-yyyy'
+		, templates: arrows
+	});
 
 </script>

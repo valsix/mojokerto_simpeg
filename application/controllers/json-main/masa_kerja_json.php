@@ -12,56 +12,25 @@ class masa_kerja_json extends CI_Controller {
 		parent::__construct();
 		//kauth
 
-		session_start();
-		
 		$CI =& get_instance();
 		$configdata= $CI->config;
         $configvlxsessfolder= $configdata->config["vlxsessfolder"];
-		$reqPegawaiHard=$this->input->get('reqPegawaiHard');
 
         $redirectlogin= "";
-        if(!empty($_SESSION["vuserpegawaimode".$configvlxsessfolder]) && !empty($this->session->userdata("adminuserid".$configvlxsessfolder)))
+        if(!empty($this->session->userdata("adminuserid".$configvlxsessfolder)))
         {
-        	$this->session->set_userdata("userpegawaimode".$configvlxsessfolder, $_SESSION["vuserpegawaimode".$configvlxsessfolder]);
-        	$redirectlogin= "";
+        	$redirectlogin= $this->session->userdata("adminuserid".$configvlxsessfolder);
         }
 
-		if(!empty($this->session->userdata("userpegawaiId".$configvlxsessfolder)) && !empty($redirectlogin))
-		{
-        	$redirectlogin= "";
-        }
-
-        if(!empty($reqPegawaiHard)){
-        	$redirectlogin= "";
-        }
-        // echo $redirectlogin."xx".$this->session->userdata("userpegawaimode".$configvlxsessfolder)."xx".$this->session->userdata("adminuserid".$configvlxsessfolder)."xx".$_SESSION["vuserpegawaimode".$configvlxsessfolder];exit;
-        // echo $redirectlogin."xx".$this->session->userdata("userpegawaiId".$configvlxsessfolder);exit;
-
-        if(!empty($redirectlogin))
+        if(empty($redirectlogin))
 		{
 			redirect('login');
 		}
 
-		$this->pegawaiId= $this->session->userdata("userpegawaiId".$configvlxsessfolder);
-		$this->userpegawaiNama= $this->session->userdata("userpegawaiNama".$configvlxsessfolder);
-		// echo $this->userpegawaiNama; exit;
-		$this->userstatuspegId= $this->session->userdata("userstatuspegId".$configvlxsessfolder);
-		$this->userpegawaimode= $this->session->userdata("userpegawaimode".$configvlxsessfolder);
-
 		$this->adminuserid= $this->session->userdata("adminuserid".$configvlxsessfolder);
-		$this->adminusernama= $this->session->userdata("adminusernama".$configvlxsessfolder);
 		$this->adminuserloginnama= $this->session->userdata("adminuserloginnama".$configvlxsessfolder);
-		$this->adminuseraksesappmenu= $this->session->userdata("adminuseraksesappmenu".$configvlxsessfolder);
-
-		$this->userlevel= $this->session->userdata("userlevel".$configvlxsessfolder);
-
-
-        if(!empty($reqPegawaiHard)){
-        	$this->userpegawaimode=$reqPegawaiHard;
-        }
+		$this->adminsatkerid= $this->session->userdata("adminsatkerid".$configvlxsessfolder);
 	}
-
-	
 
 	function add()
 	{
@@ -71,57 +40,54 @@ class masa_kerja_json extends CI_Controller {
 		$reqRowId= $this->input->post("reqRowId");
 		$reqMode= $this->input->post("reqMode");
 
-		$reqPegawaiId	= $this->input->post("reqId");
+		$reqPegawaiId= $this->input->post("reqId");
 
-		$reqNoSK				= $this->input->post("reqNoSK");
-		$reqTglSK				= $this->input->post("reqTglSK");
-		$reqTMTSK				= $this->input->post("reqTMTSK");
-		$reqTambahanMasaKerja	= $this->input->post("reqTambahanMasaKerja");
-		$reqMasaKerja			= $this->input->post("reqMasaKerja");
-		$reqThTMK				= $this->input->post("reqThTMK");
-		$reqThMK				= $this->input->post("reqThMK");
-		$reqBlTMK				= $this->input->post("reqBlTMK");
-		$reqBlMK				= $this->input->post("reqBlMK");
+		$reqNoSK= $this->input->post("reqNoSK");
+		$reqTglSK= $this->input->post("reqTglSK");
+		$reqTMTSK= $this->input->post("reqTMTSK");
+		$reqTambahanMasaKerja= $this->input->post("reqTambahanMasaKerja");
+		$reqMasaKerja= $this->input->post("reqMasaKerja");
+		$reqThTMK= $this->input->post("reqThTMK");
+		$reqThMK= $this->input->post("reqThMK");
+		$reqBlTMK= $this->input->post("reqBlTMK");
+		$reqBlMK= $this->input->post("reqBlMK");
 
-
-		// print_r($reqPejabatId);exit;
-
-		$tamb_masa_kerja = new TambahanMasaKerja();
-	
-		$tamb_masa_kerja->setField('TAMBAHAN_MASA_KERJA_ID', $reqRowId);		
-		$tamb_masa_kerja->setField('NO_SK', $reqNoSK);
-		$tamb_masa_kerja->setField('PEGAWAI_ID', $reqId);		
-		$tamb_masa_kerja->setField('TANGGAL_SK', dateToDBCheck($reqTglSK));		
-		$tamb_masa_kerja->setField('TMT_SK', dateToDBCheck($reqTMTSK));
-		$tamb_masa_kerja->setField('TAHUN_TAMBAHAN', $reqThTMK);
-		$tamb_masa_kerja->setField('TAHUN_BARU', $reqThMK);
-		$tamb_masa_kerja->setField('BULAN_TAMBAHAN', $reqBlTMK);
-		$tamb_masa_kerja->setField('BULAN_BARU', $reqBlMK);
+		$set = new TambahanMasaKerja();
+		$set->setField('TAMBAHAN_MASA_KERJA_ID', $reqRowId);		
+		$set->setField('NO_SK', $reqNoSK);
+		$set->setField('PEGAWAI_ID', $reqId);		
+		$set->setField('TANGGAL_SK', dateToDBCheck($reqTglSK));		
+		$set->setField('TMT_SK', dateToDBCheck($reqTMTSK));
+		$set->setField('TAHUN_TAMBAHAN', $reqThTMK);
+		$set->setField('TAHUN_BARU', $reqThMK);
+		$set->setField('BULAN_TAMBAHAN', $reqBlTMK);
+		$set->setField('BULAN_BARU', $reqBlMK);
+		
+		$adminusernama= $this->adminuserloginnama;
+		$userSatkerId= $this->adminsatkerid;
 		
 		$reqSimpan= "";
 		if ($reqMode == "insert")
 		{
-
-			$tamb_masa_kerja->setField("LAST_CREATE_USER", $adminusernama);
-			$tamb_masa_kerja->setField("LAST_CREATE_DATE", "NOW()");	
-			$tamb_masa_kerja->setField("LAST_CREATE_SATKER", $userSatkerId);
+			$set->setField("LAST_CREATE_USER", $adminusernama);
+			$set->setField("LAST_CREATE_DATE", "NOW()");	
+			$set->setField("LAST_CREATE_SATKER", $userSatkerId);
 	
-			if($tamb_masa_kerja->insert())
+			if($set->insert())
 			{
 				$reqSimpan= 1;
 			}
 		}
 		else
 		{	
-			$tamb_masa_kerja->setField("LAST_UPDATE_USER", $adminusernama);
-			$tamb_masa_kerja->setField("LAST_UPDATE_DATE", "NOW()");	
-			$tamb_masa_kerja->setField("LAST_UPDATE_SATKER", $userSatkerId);
-			if($tamb_masa_kerja->update())
+			$set->setField("LAST_UPDATE_USER", $adminusernama);
+			$set->setField("LAST_UPDATE_DATE", "NOW()");	
+			$set->setField("LAST_UPDATE_SATKER", $userSatkerId);
+			if($set->update())
 			{
 				$reqSimpan= 1;
 			}
 		}
-
 
 		if($reqSimpan == 1)
 		{
@@ -133,7 +99,6 @@ class masa_kerja_json extends CI_Controller {
 		}
 				
 	}
-
 
 }
 ?>

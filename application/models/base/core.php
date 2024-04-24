@@ -285,7 +285,7 @@ class Core extends Entity{
 		$str = "
 		SELECT JENIS_HUKUMAN_ID, A.TINGKAT_HUKUMAN_ID, A.NAMA JENIS_HUKUMAN,
         (SELECT X.NAMA FROM TINGKAT_HUKUMAN X WHERE A.TINGKAT_HUKUMAN_ID = X.TINGKAT_HUKUMAN_ID) TINGKAT_HUKUMAN
-				FROM JENIS_HUKUMAN A WHERE 'PAKBONG' = 'PAKBONG'
+		FROM JENIS_HUKUMAN A WHERE 'PAKBONG' = 'PAKBONG'
 		";						
 		
 		while(list($key,$val) = each($paramsArray))
@@ -312,7 +312,7 @@ class Core extends Entity{
 			$str .= " AND $key = '$val' ";
 		}
 		
-		$str .= $statement." ORDER BY JENIS_HUKUMAN_ID ASC";
+		$str .= $statement." ORDER BY TINGKAT_HUKUMAN_ID ASC";
 		$this->query = $str;
 				
 		return $this->selectLimit($str,$limit,$from); 

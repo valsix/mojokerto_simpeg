@@ -3,35 +3,23 @@ include_once("functions/personal.func.php");
 
 $this->load->model("base/TambahanMasaKerja");
 
-$userpegawaimode= $this->userpegawaimode;
-$adminuserid= $this->adminuserid;
-
-if(!empty($userpegawaimode) && !empty($adminuserid))
-    $reqPegawaiId= $userpegawaimode;
-else
-    $reqPegawaiId= $this->pegawaiId;
-
 $reqId= $this->input->get('reqId');
 $reqRowId= $this->input->get('reqRowId');
 
-
-$tamb_masa_kerja= new TambahanMasaKerja();
-$tamb_masa_kerja->selectByParams(array("PEGAWAI_ID" => $reqId), -1,-1,'');
-
-// echo $tamb_masa_kerja->query;exit;
-$tamb_masa_kerja->firstRow();
-			   
-$reqRowId			= (int)$tamb_masa_kerja->getField('TAMBAHAN_MASA_KERJA_ID');
-$reqNoSK				= $tamb_masa_kerja->getField('NO_SK');
-$reqTglSK				= dateToPageCheck($tamb_masa_kerja->getField('TANGGAL_SK'));
-$reqTMTSK				= dateToPageCheck($tamb_masa_kerja->getField('TMT_SK'));
-$reqTambahanMasaKerja	= $tamb_masa_kerja->getField('TAMBAHAN_MASA_KERJA_ID');
-$reqMasaKerja			= $tamb_masa_kerja->getField('TAMBAHAN_MASA_KERJA_ID');
-$reqThTMK				= $tamb_masa_kerja->getField('TAHUN_TAMBAHAN');
-$reqThMK				= $tamb_masa_kerja->getField('TAHUN_BARU');
-$reqBlTMK				= $tamb_masa_kerja->getField('BULAN_TAMBAHAN');
-$reqBlMK				= $tamb_masa_kerja->getField('BULAN_BARU');
-
+$set= new TambahanMasaKerja();
+$set->selectByParams(array("PEGAWAI_ID" => $reqId), -1,-1,'');
+// echo $set->query;exit;
+$set->firstRow();
+$reqRowId= (int)$set->getField('TAMBAHAN_MASA_KERJA_ID');
+$reqNoSK= $set->getField('NO_SK');
+$reqTglSK= dateToPageCheck($set->getField('TANGGAL_SK'));
+$reqTMTSK= dateToPageCheck($set->getField('TMT_SK'));
+$reqTambahanMasaKerja= $set->getField('TAMBAHAN_MASA_KERJA_ID');
+$reqMasaKerja= $set->getField('TAMBAHAN_MASA_KERJA_ID');
+$reqThTMK= $set->getField('TAHUN_TAMBAHAN');
+$reqThMK= $set->getField('TAHUN_BARU');
+$reqBlTMK= $set->getField('BULAN_TAMBAHAN');
+$reqBlMK= $set->getField('BULAN_BARU');
 
 if(empty($reqRowId))
 {
@@ -42,8 +30,7 @@ else
 	$reqMode="update";
 
 }
-// echo $reqTmtJabatan;exit;
-// $reqMode="insert";
+
 $readonly = "readonly";
 ?>
 <style type="text/css">
@@ -64,9 +51,7 @@ $readonly = "readonly";
 </style>
 
 <!-- Bootstrap core CSS -->
-<!-- <link href="lib/bootstrap-3.3.7/dist/css/bootstrap.min.css" rel="stylesheet"> -->
 <link href="lib/bootstrap-3.3.7/docs/examples/navbar/navbar.css" rel="stylesheet">
-<!-- <script src="lib/bootstrap-3.3.7/dist/js/bootstrap.min.js"></script> -->
 
 <div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
 	<div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
