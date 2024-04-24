@@ -16,27 +16,27 @@ else
 
 $reqId= $this->input->get('reqId');
 
-$suami_istri= new SuamiIstri();
-$suami_istri->selectByParams(array("PEGAWAI_ID" => $reqId, "STATUS"=>1), -1,-1,'');
-$suami_istri->firstRow();
-// echo $suami_istri->query; exit;
-$reqIdSuamiIstri= (int)$suami_istri->getField('SUAMI_ISTRI_ID');
-$reqNamaSuamiIstri= $suami_istri->getField('NAMA');
-$reqTempatLahir= $suami_istri->getField('TEMPAT_LAHIR');
-$reqTglLahir= dateToPageCheck($suami_istri->getField('TANGGAL_LAHIR'));
-$reqTglKawin= dateToPageCheck($suami_istri->getField('TANGGAL_KAWIN'));
-$reqPNS= $suami_istri->getField('STATUS_PNS');
-$reqNIP= $suami_istri->getField('NIP_PNS');
-$reqPendidikan= $suami_istri->getField('PENDIDIKAN_ID');
-$reqPekerjaan= $suami_istri->getField('PEKERJAAN');
-$reqTunjangan= $suami_istri->getField('STATUS_TUNJANGAN');
-$reqSudahDibayar= $suami_istri->getField('STATUS_BAYAR');
-$reqBulanDibayar= dateToPageCheck($suami_istri->getField('BULAN_BAYAR'));
-$reqKartu= $suami_istri->getField('KARTU');
-$reqPegawaiId= $suami_istri->getField('PEGAWAI_ID');
+$set= new SuamiIstri();
+$set->selectByParams(array("PEGAWAI_ID" => $reqId, "STATUS"=>1), -1,-1,'');
+$set->firstRow();
+// echo $set->query; exit;
+$reqIdSuamiIstri= (int)$set->getField('SUAMI_ISTRI_ID');
+$reqNamaSuamiIstri= $set->getField('NAMA');
+$reqTempatLahir= $set->getField('TEMPAT_LAHIR');
+$reqTglLahir= dateToPageCheck($set->getField('TANGGAL_LAHIR'));
+$reqTglKawin= dateToPageCheck($set->getField('TANGGAL_KAWIN'));
+$reqPNS= $set->getField('STATUS_PNS');
+$reqNIP= $set->getField('NIP_PNS');
+$reqPendidikan= $set->getField('PENDIDIKAN_ID');
+$reqPekerjaan= $set->getField('PEKERJAAN');
+$reqTunjangan= $set->getField('STATUS_TUNJANGAN');
+$reqSudahDibayar= $set->getField('STATUS_BAYAR');
+$reqBulanDibayar= dateToPageCheck($set->getField('BULAN_BAYAR'));
+$reqKartu= $set->getField('KARTU');
+$reqPegawaiId= $set->getField('PEGAWAI_ID');
 
-$reqFoto= $suami_istri->getField('FOTO');
-$reqFotoTmp= $suami_istri->getField('FOTO');
+$reqFoto= $set->getField('FOTO');
+$reqFotoTmp= $set->getField('FOTO');
 
 $pendidikan= new Core();
 $pendidikan->selectByParamsPendidikan(); 

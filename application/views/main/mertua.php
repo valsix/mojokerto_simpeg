@@ -14,52 +14,48 @@ else
 
 $reqId= $this->input->get('reqId');
 
-$ayah = new Mertua();
-$ayah->selectByParams(array("a.PEGAWAI_ID" => $reqId,"JENIS_KELAMIN" => L),-1,-1, '');
-// echo $ayah->query;exit;
-$ayah->firstRow();
+$set= new Mertua();
+$set->selectByParams(array("a.PEGAWAI_ID" => $reqId,"JENIS_KELAMIN" => L),-1,-1, '');
+// echo $set->query;exit;
+$set->firstRow();
 
-$reqIdAyah				= (int)$ayah->getField("ORANG_TUA_ID");
-$reqNamaAyah			= $ayah->getField('NAMA');
-$reqTempatLahirAyah	= $ayah->getField('TEMPAT_LAHIR');
-$reqTglLahirAyah		= dateToPageCheck($ayah->getField('TANGGAL_LAHIR'));
-$reqUsiaAyah			= $ayah->getField('');
-$reqPekerjaanAyah 		= $ayah->getField('PEKERJAAN');
-$reqAlamatAyah			= $ayah->getField('ALAMAT');
-$reqPropinsiAyah		= $ayah->getField('PROPINSI_ID');
-$reqKabupatenAyah		= $ayah->getField('KABUPATEN_ID');
-$reqKecamatanAyah		= $ayah->getField('KECAMATAN_ID');
-$reqDesaAyah			= $ayah->getField('KELURAHAN_ID');
-$reqKodePosAyah		= $ayah->getField('KODEPOS');
-$reqTeleponAyah		= $ayah->getField('TELEPON');
+$reqAyahId= (int)$set->getField("ORANG_TUA_ID");
+$reqNamaAyah= $set->getField('NAMA');
+$reqTempatLahirAyah= $set->getField('TEMPAT_LAHIR');
+$reqTglLahirAyah= dateToPageCheck($set->getField('TANGGAL_LAHIR'));
+$reqUsiaAyah= $set->getField('');
+$reqPekerjaanAyah= $set->getField('PEKERJAAN');
+$reqAlamatAyah= $set->getField('ALAMAT');
+$reqPropinsiAyah= $set->getField('PROPINSI_ID');
+$reqKabupatenAyah= $set->getField('KABUPATEN_ID');
+$reqKecamatanAyah= $set->getField('KECAMATAN_ID');
+$reqDesaAyah= $set->getField('KELURAHAN_ID');
+$reqKodePosAyah= $set->getField('KODEPOS');
+$reqTeleponAyah= $set->getField('TELEPON');
 
-$ibu	= new Mertua();
-$ibu->selectByParams(array("a.PEGAWAI_ID" => $reqId,"JENIS_KELAMIN" => P),-1,-1, '');
-$ibu->firstRow();
+$set= new Mertua();
+$set->selectByParams(array("a.PEGAWAI_ID" => $reqId,"JENIS_KELAMIN" => P),-1,-1, '');
+$set->firstRow();
 
-$reqIdIbu				= (int)$ibu->getField("ORANG_TUA_ID");
-$reqNamaIbu			= $ibu->getField('NAMA');
-$reqTempatLahirIbu		= $ibu->getField('TEMPAT_LAHIR');
-$reqTglLahirIbu		= dateToPageCheck($ibu->getField('TANGGAL_LAHIR'));
-$reqUsiaIbu			= $ibu->getField('');
-$reqPekerjaanIbu		= $ibu->getField('PEKERJAAN');
-$reqAlamatIbu			= $ibu->getField('ALAMAT');
-$reqPropinsiIbu		= $ibu->getField('PROPINSI_ID');
-$reqKabupatenIbu		= $ibu->getField('KABUPATEN_ID');
-$reqKecamatanIbu		= $ibu->getField('KECAMATAN_ID');
-$reqDesaIbu			= $ibu->getField('KELURAHAN_ID');
-$reqKodePosIbu			= $ibu->getField('KODEPOS');
-$reqTeleponIbu			= $ibu->getField('TELEPON');
+$reqIbuId= (int)$set->getField("ORANG_TUA_ID");
+$reqNamaIbu= $set->getField('NAMA');
+$reqTempatLahirIbu= $set->getField('TEMPAT_LAHIR');
+$reqTglLahirIbu= dateToPageCheck($set->getField('TANGGAL_LAHIR'));
+$reqUsiaIbu= $set->getField('');
+$reqPekerjaanIbu= $set->getField('PEKERJAAN');
+$reqAlamatIbu= $set->getField('ALAMAT');
+$reqPropinsiIbu= $set->getField('PROPINSI_ID');
+$reqKabupatenIbu= $set->getField('KABUPATEN_ID');
+$reqKecamatanIbu= $set->getField('KECAMATAN_ID');
+$reqDesaIbu= $set->getField('KELURAHAN_ID');
+$reqKodePosIbu= $set->getField('KODEPOS');
+$reqTeleponIbu= $set->getField('TELEPON');
 
 $propinsi= new Core();
-
 $kabupaten= new Core();
-
 $kecamatan= new Core();
-
 $kelurahan= new Core();
 
-// echo $reqTmtJabatan;exit;
 $reqMode="update";
 // $reqMode="insert";
 $readonly = "readonly";
@@ -544,7 +540,7 @@ $readonly = "readonly";
 	var _buttonSpinnerClasses = 'spinner spinner-right spinner-white pr-15';
 	jQuery(document).ready(function() {
 		var form = KTUtil.getById('ktloginform');
-		var formSubmitUrl = "json-data/info_data_json/indentitaspegawai";
+		var formSubmitUrl = "json-main/mertua_json/add";
 		var formSubmitButton = KTUtil.getById('ktloginformsubmitbutton');
 		if (!form) {
 			return;
@@ -592,18 +588,31 @@ $readonly = "readonly";
 					dataType: 'json',
 					success: function (response) {
 			        	// console.log(response); return false;
-			        	// Swal.fire("Good job!", "You clicked the button!", "success");
-			        	Swal.fire({
-			        		text: response.message,
-			        		icon: "success",
-			        		buttonsStyling: false,
-			        		confirmButtonText: "Ok",
-			        		customClass: {
-			        			confirmButton: "btn font-weight-bold btn-light-primary"
-			        		}
-			        	}).then(function() {
-			        		document.location.href = "app/index/pegawai_data";
-			        	});
+
+			        	data= response.message;
+			        	data= data.split("-");
+			        	rowid= data[0];
+			        	infodata= data[1];
+
+			        	if(rowid == "xxx")
+                        {
+                            Swal.fire("Error", infodata, "error");
+                        }
+                        else
+                        {
+                            Swal.fire({
+                                text: infodata,
+                                icon: "success",
+                                buttonsStyling: false,
+                                confirmButtonText: "Ok",
+                                customClass: {
+                                    confirmButton: "btn font-weight-bold btn-light-primary"
+                                }
+                            }).then(function() {
+                                document.location.href = "app/index/mertua?reqId=<?=$reqId?>";
+                                // window.location.reload();
+                            });
+                        }
 			        },
 			        error: function(xhr, status, error) {
 			        	var err = JSON.parse(xhr.responseText);
