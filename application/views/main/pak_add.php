@@ -3,14 +3,6 @@ include_once("functions/personal.func.php");
 
 $this->load->model("base/Pak");
 
-$userpegawaimode= $this->userpegawaimode;
-$adminuserid= $this->adminuserid;
-
-if(!empty($userpegawaimode) && !empty($adminuserid))
-    $reqPegawaiId= $userpegawaimode;
-else
-    $reqPegawaiId= $this->pegawaiId;
-
 $reqId= $this->input->get('reqId');
 $reqRowId= $this->input->get('reqRowId');
 
@@ -21,39 +13,31 @@ if(empty($reqRowId))
 else
 {
 
-	$pak = new Pak();
-	$pak->selectByParams(array('PAK_ID'=>$reqRowId));
-	// echo $pak->query;exit;
-	$pak->firstRow();
-	$reqRowId					= (int)$pak->getField('PAK_ID');
-	$reqNomor				= $pak->getField('NOMOR_SK');
-	$reqTahun				= $pak->getField('TAHUN');
-	$reqKredit				= $pak->getField('ANGKA_KREDIT');
+	$set = new Pak();
+	$set->selectByParams(array('PAK_ID'=>$reqRowId));
+	// echo $set->query;exit;
+	$set->firstRow();
+	$reqRowId= (int)$set->getField('PAK_ID');
+	$reqNomor= $set->getField('NOMOR_SK');
+	$reqTahun= $set->getField('TAHUN');
+	$reqKredit= $set->getField('ANGKA_KREDIT');
+	$reqBulanMulai= $set->getField('BULAN_MULAI');
+	$reqTahunMulai= $set->getField('TAHUN_MULAI');
+	$reqBulanSelesai= $set->getField('BULAN_SELESAI');
+	$reqTahunSelesai= $set->getField('TAHUN_SELESAI');
+	$reqTglSK= dateToPageCheck($set->getField('TGL_SK'));
 
-	$reqBulanMulai				= $pak->getField('BULAN_MULAI');
-	$reqTahunMulai				= $pak->getField('TAHUN_MULAI');
-	$reqBulanSelesai				= $pak->getField('BULAN_SELESAI');
-	$reqTahunSelesai				= $pak->getField('TAHUN_SELESAI');
-	$reqTglSK				= dateToPageCheck($pak->getField('TGL_SK'));
-
-	// echo $reqTmtJabatan;exit;
 	$reqMode="update";
 
 }
-
 	
 $arrBulan= setBulanLoop();
 $arrTahun= setTahunLoop(6,22);
 $reqBulanAktif= generateZeroDate(date("n"),2);
 $reqTahunAktif= date("Y");
-
-
 ?>
 
-<!-- Bootstrap core CSS -->
-<!-- <link href="lib/bootstrap-3.3.7/dist/css/bootstrap.min.css" rel="stylesheet"> -->
 <link href="lib/bootstrap-3.3.7/docs/examples/navbar/navbar.css" rel="stylesheet">
-<!-- <script src="lib/bootstrap-3.3.7/dist/js/bootstrap.min.js"></script> -->
 
 <div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
 	<div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
@@ -237,8 +221,6 @@ $reqTahunAktif= date("Y");
 		, format: 'dd-mm-yyyy'
 		, templates: arrows
 	});
-
-
 
 	var _buttonSpinnerClasses = 'spinner spinner-right spinner-white pr-15';
 	jQuery(document).ready(function() {

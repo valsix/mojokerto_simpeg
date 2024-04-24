@@ -3,14 +3,6 @@ include_once("functions/personal.func.php");
 
 $this->load->model("base/Kinerja");
 
-$userpegawaimode= $this->userpegawaimode;
-$adminuserid= $this->adminuserid;
-
-if(!empty($userpegawaimode) && !empty($adminuserid))
-    $reqPegawaiId= $userpegawaimode;
-else
-    $reqPegawaiId= $this->pegawaiId;
-
 $reqId= $this->input->get('reqId');
 $reqRowId= $this->input->get('reqRowId');
 
@@ -20,34 +12,25 @@ if(empty($reqRowId))
 }
 else
 {
+	$set= new Kinerja();
+	$set->selectByParams(array('KINERJA_ID'=>$reqRowId));
+	// echo $set->query;exit;
+	$set->firstRow();
+	$reqRowId= (int)$set->getField('KINERJA_ID');
+	$reqTahun= $set->getField('TAHUN');
+	$reqHasil= $set->getField('HASIL_KERJA');
+	$reqPerilaku= $set->getField('PERILAKU_KERJA');
+	$reqPredikat= $set->getField('PREDIKAT_KINERJA');
+	$reqNipPejabat= $set->getField('NIP_PEJABAT_PENILAI');
+	$reqNamaPejabat= $set->getField('NAMA_PEJABAT_PENILAI');
 
-	$kinerja = new Kinerja();
-	$kinerja->selectByParams(array('KINERJA_ID'=>$reqRowId));
-	// echo $kinerja->query;exit;
-	$kinerja->firstRow();
-	$reqRowId					= (int)$kinerja->getField('KINERJA_ID');
-	$reqTahun				= $kinerja->getField('TAHUN');
-	$reqHasil		= $kinerja->getField('HASIL_KERJA');
-	$reqPerilaku		= $kinerja->getField('PERILAKU_KERJA');
-	$reqPredikat		= $kinerja->getField('PREDIKAT_KINERJA');
-	$reqNipPejabat		= $kinerja->getField('NIP_PEJABAT_PENILAI');
-	$reqNamaPejabat		= $kinerja->getField('NAMA_PEJABAT_PENILAI');
-
-	// echo $reqTmtJabatan;exit;
 	$reqMode="update";
-
 }
-
 	
 $arrTahun= setTahunLoop(3,1);
-
-
 ?>
 
-<!-- Bootstrap core CSS -->
-<!-- <link href="lib/bootstrap-3.3.7/dist/css/bootstrap.min.css" rel="stylesheet"> -->
 <link href="lib/bootstrap-3.3.7/docs/examples/navbar/navbar.css" rel="stylesheet">
-<!-- <script src="lib/bootstrap-3.3.7/dist/js/bootstrap.min.js"></script> -->
 
 <div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
 	<div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">

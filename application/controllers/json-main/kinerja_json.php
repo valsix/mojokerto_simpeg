@@ -12,53 +12,24 @@ class kinerja_json extends CI_Controller {
 		parent::__construct();
 		//kauth
 
-		session_start();
-		
 		$CI =& get_instance();
 		$configdata= $CI->config;
         $configvlxsessfolder= $configdata->config["vlxsessfolder"];
-		$reqPegawaiHard=$this->input->get('reqPegawaiHard');
 
         $redirectlogin= "";
-        if(!empty($_SESSION["vuserpegawaimode".$configvlxsessfolder]) && !empty($this->session->userdata("adminuserid".$configvlxsessfolder)))
+        if(!empty($this->session->userdata("adminuserid".$configvlxsessfolder)))
         {
-        	$this->session->set_userdata("userpegawaimode".$configvlxsessfolder, $_SESSION["vuserpegawaimode".$configvlxsessfolder]);
-        	$redirectlogin= "";
+        	$redirectlogin= $this->session->userdata("adminuserid".$configvlxsessfolder);
         }
 
-		if(!empty($this->session->userdata("userpegawaiId".$configvlxsessfolder)) && !empty($redirectlogin))
-		{
-        	$redirectlogin= "";
-        }
-
-        if(!empty($reqPegawaiHard)){
-        	$redirectlogin= "";
-        }
-        // echo $redirectlogin."xx".$this->session->userdata("userpegawaimode".$configvlxsessfolder)."xx".$this->session->userdata("adminuserid".$configvlxsessfolder)."xx".$_SESSION["vuserpegawaimode".$configvlxsessfolder];exit;
-        // echo $redirectlogin."xx".$this->session->userdata("userpegawaiId".$configvlxsessfolder);exit;
-
-        if(!empty($redirectlogin))
+        if(empty($redirectlogin))
 		{
 			redirect('login');
 		}
 
-		$this->pegawaiId= $this->session->userdata("userpegawaiId".$configvlxsessfolder);
-		$this->userpegawaiNama= $this->session->userdata("userpegawaiNama".$configvlxsessfolder);
-		// echo $this->userpegawaiNama; exit;
-		$this->userstatuspegId= $this->session->userdata("userstatuspegId".$configvlxsessfolder);
-		$this->userpegawaimode= $this->session->userdata("userpegawaimode".$configvlxsessfolder);
-
 		$this->adminuserid= $this->session->userdata("adminuserid".$configvlxsessfolder);
-		$this->adminusernama= $this->session->userdata("adminusernama".$configvlxsessfolder);
 		$this->adminuserloginnama= $this->session->userdata("adminuserloginnama".$configvlxsessfolder);
-		$this->adminuseraksesappmenu= $this->session->userdata("adminuseraksesappmenu".$configvlxsessfolder);
-
-		$this->userlevel= $this->session->userdata("userlevel".$configvlxsessfolder);
-
-
-        if(!empty($reqPegawaiHard)){
-        	$this->userpegawaimode=$reqPegawaiHard;
-        }
+		$this->adminsatkerid= $this->session->userdata("adminsatkerid".$configvlxsessfolder);
 	}
 
 	function json()
@@ -87,7 +58,7 @@ class kinerja_json extends CI_Controller {
 
 		$sOrder = "";
 	
-		$statement= "AND PEGAWAI_ID= ".$reqId ;
+		$statement= " AND A.PEGAWAI_ID = ".$reqId ;
 		$set->selectByParams(array(), $dsplyRange, $dsplyStart, $statement, $sOrder);
 
 		// echo $set->query;exit;
@@ -203,42 +174,44 @@ class kinerja_json extends CI_Controller {
 
 		// print_r($reqMode);exit;
 
-		$kinerja = new Kinerja();
+		$set= new Kinerja();
 	
-		$kinerja->setField('PEGAWAI_ID', $reqId);
-		$kinerja->setField('TAHUN', $reqTahun);
-		$kinerja->setField('HASIL_KERJA', $reqHasil);
-		$kinerja->setField('PERILAKU_KERJA', $reqPerilaku);
-		$kinerja->setField('PREDIKAT_KINERJA', $reqPredikat);
-		$kinerja->setField('NIP_PEJABAT_PENILAI', ValToNullDB($reqNipPejabat));
-		$kinerja->setField('NAMA_PEJABAT_PENILAI', $reqNamaPejabat);
+		$set->setField('PEGAWAI_ID', $reqId);
+		$set->setField('TAHUN', $reqTahun);
+		$set->setField('HASIL_KERJA', $reqHasil);
+		$set->setField('PERILAKU_KERJA', $reqPerilaku);
+		$set->setField('PREDIKAT_KINERJA', $reqPredikat);
+		$set->setField('NIP_PEJABAT_PENILAI', ValToNullDB($reqNipPejabat));
+		$set->setField('NAMA_PEJABAT_PENILAI', $reqNamaPejabat);
 
-		$kinerja->setField('KINERJA_ID', $reqRowId);
+		$set->setField('KINERJA_ID', $reqRowId);
+
+		$adminusernama= $this->adminuserloginnama;
+		$userSatkerId= $this->adminsatkerid;
 
 		$reqSimpan= "";
 		if ($reqMode == "insert")
 		{
 
-			$kinerja->setField("LAST_CREATE_USER", $adminusernama);
-			$kinerja->setField("LAST_CREATE_DATE", "NOW()");	
-			$kinerja->setField("LAST_CREATE_SATKER", $userSatkerId);
+			$set->setField("LAST_CREATE_USER", $adminusernama);
+			$set->setField("LAST_CREATE_DATE", "NOW()");	
+			$set->setField("LAST_CREATE_SATKER", $userSatkerId);
 	
-			if($kinerja->insert())
+			if($set->insert())
 			{
 				$reqSimpan= 1;
 			}
 		}
 		else
 		{	
-			$kinerja->setField("LAST_UPDATE_USER", $adminusernama);
-			$kinerja->setField("LAST_UPDATE_DATE", "NOW()");	
-			$kinerja->setField("LAST_UPDATE_SATKER", $userSatkerId);
-			if($kinerja->update())
+			$set->setField("LAST_UPDATE_USER", $adminusernama);
+			$set->setField("LAST_UPDATE_DATE", "NOW()");	
+			$set->setField("LAST_UPDATE_SATKER", $userSatkerId);
+			if($set->update())
 			{
 				$reqSimpan= 1;
 			}
 		}
-
 
 		if($reqSimpan == 1)
 		{
