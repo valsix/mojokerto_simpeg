@@ -12,6 +12,10 @@ $pejabat_penetap = new Core();
 if(empty($reqRowId))
 {
 	$reqMode="insert";
+
+	$tempStatus='baru';
+	$tempDisplayBaru='';
+	$tempDisplay='none';
 }
 else
 {

@@ -103,11 +103,9 @@ class PelatihanTeknis extends Entity{
 	{
 		$str = "
 		SELECT
-		DIKLAT_TEKNIS_ID, PEGAWAI_ID, TEMPAT, 
-		PENYELENGGARA, ANGKATAN, TAHUN, 
-		NO_STTPP, TANGGAL_MULAI, TANGGAL_SELESAI, 
-		TANGGAL_STTPP, JUMLAH_JAM, NAMA, FOTO_BLOB
-		FROM DIKLAT_TEKNIS A
+			DIKLAT_TEKNIS_ID, PEGAWAI_ID, TEMPAT, PENYELENGGARA, ANGKATAN, TAHUN, NO_STTPP, TANGGAL_MULAI, TANGGAL_SELESAI
+			,  TANGGAL_STTPP, JUMLAH_JAM, NAMA, FOTO_BLOB
+		FROM diklat_teknis A
 		WHERE DIKLAT_TEKNIS_ID IS NOT NULL "; 
 		
 		while(list($key,$val) = each($paramsArray))
@@ -125,7 +123,7 @@ class PelatihanTeknis extends Entity{
 	{
 		$str = "
 		SELECT COUNT(1) AS ROWCOUNT 
-		FROM DIKLAT_TEKNIS A WHERE DIKLAT_TEKNIS_ID IS NOT NULL ".$statement; 
+		FROM diklat_teknis A WHERE DIKLAT_TEKNIS_ID IS NOT NULL ".$statement; 
 				
 		foreach ($paramsArray as $key => $val)
 		{
