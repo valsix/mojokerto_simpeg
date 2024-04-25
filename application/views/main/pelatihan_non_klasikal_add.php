@@ -4,32 +4,28 @@ include_once("functions/personal.func.php");
 $this->load->model("base/PelatihanNonKlasikal");
 $this->load->model("base/Core");
 
-$userpegawaimode= $this->userpegawaimode;
-$adminuserid= $this->adminuserid;
-
-if(!empty($userpegawaimode) && !empty($adminuserid))
-    $reqPegawaiId= $userpegawaimode;
-else
-    $reqPegawaiId= $this->pegawaiId;
-
 $reqId= $this->input->get('reqId');
 $reqRowId= $this->input->get('reqRowId');
 
-$kursus= new PelatihanNonKlasikal();
-$kursus->selectByParams(array('KURSUS_ID'=>$reqRowId));
-$kursus->firstRow();
-$reqKURSUS_ID = $kursus->getField('KURSUS_ID');
-$reqNamaSeminar 			= $kursus->getField('NAMA');
-$reqTempat 		= $kursus->getField('TEMPAT');
-$reqTglPiagam 		= dateToPageCheck($kursus->getField('TANGGAL_PIAGAM'));
-$reqPenyelenggara				= $kursus->getField('PENYELENGGARA');
-$reqNoPiagam = $kursus->getField('NO_PIAGAM');
-$reqTglMulai	= dateToPageCheck($kursus->getField('TANGGAL_MULAI'));
-$reqTglSelesai = dateToPageCheck($kursus->getField('TANGGAL_SELESAI'));
-$reqJumlahJam = $kursus->getField('JUMLAH_JAM');
-
-$reqMode="update";
-// $reqMode="insert";
+if(empty($reqRowId))
+{
+	$reqMode="insert";
+}
+else
+{
+	$set= new PelatihanNonKlasikal();
+	$set->selectByParams(array('KURSUS_ID'=>$reqRowId));
+	$set->firstRow();
+	$reqKURSUS_ID= $set->getField('KURSUS_ID');
+	$reqNamaKursus= $set->getField('NAMA');
+	$reqTempat= $set->getField('TEMPAT');
+	$reqTglPiagam= dateToPageCheck($set->getField('TANGGAL_PIAGAM'));
+	$reqPenyelenggara= $set->getField('PENYELENGGARA');
+	$reqNoPiagam= $set->getField('NO_PIAGAM');
+	$reqTglMulai= dateToPageCheck($set->getField('TANGGAL_MULAI'));
+	$reqTglSelesai= dateToPageCheck($set->getField('TANGGAL_SELESAI'));
+	$reqMode="update";
+}
 $readonly = "readonly";
 ?>
 
@@ -76,7 +72,7 @@ $readonly = "readonly";
 	        		<div class="form-group row">
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Nama</label>
 	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" name="reqNamaSeminar" id="reqNamaSeminar" value="<?=$reqNamaSeminar?>" />
+	        				<input type="text" class="form-control" name="reqNamaKursus" id="reqNamaKursus" value="<?=$reqNamaKursus?>" />
 	        			</div>
 	        		</div>
 	        		<div class="form-group row">
@@ -92,62 +88,78 @@ $readonly = "readonly";
 	        			</div>
 	        		</div>
 	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">No Piagam</label>
-	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" name="reqNoPiagam" id="reqNoPiagam" value="<?=$reqNoPiagam?>" />
-	        			</div>
-	        		</div>
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			Tgl Mulai
-		        		</label>
-	        			<div class="col-lg-10 col-sm-12">
-	        				<div class="input-group date">
-		        				<input type="text" autocomplete="off" class="form-control" id="reqTglMulai" name="reqTglMulai" value="<?=$reqTglMulai?>" />
-		        				<div class="input-group-append">
-		        					<span class="input-group-text">
-		        						<i class="la la-calendar"></i>
-		        					</span>
-		        				</div>
-		        			</div>
-	        			</div>
-	        		</div>
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			Tgl Selesai
-		        		</label>
-	        			<div class="col-lg-10 col-sm-12">
-	        				<div class="input-group date">
-		        				<input type="text" autocomplete="off" class="form-control" id="reqTglSelesai" name="reqTglSelesai" value="<?=$reqTglSelesai?>" />
-		        				<div class="input-group-append">
-		        					<span class="input-group-text">
-		        						<i class="la la-calendar"></i>
-		        					</span>
-		        				</div>
-		        			</div>
-	        			</div>
+	        			<div class="col-md-6">
+	        				<div class="form-group row">
+			        			<label class="col-form-label text-right col-lg-4 col-sm-12">
+				        			No Piagam
+				        		</label>
+			        			<div class="col-lg-8 col-sm-12">
+			        				<input type="text" class="form-control" name="reqNoPiagam" id="reqNoPiagam" value="<?=$reqNoPiagam?>" />
+			        			</div>
+			        		</div>
+		        		</div>
+		        		<div class="col-md-6">
+		        			<div class="form-group row">
+			        			<label class="col-form-label text-right col-lg-4 col-sm-12">
+				        			Tgl. Piagam
+				        		</label>
+			        			<div class="col-lg-8 col-sm-12">
+			        				<div class="input-group date">
+				        				<input type="text" <?=$read?> autocomplete="off" class="form-control kttanggal" name="reqTglPiagam" value="<?=$reqTglPiagam?>" />
+				        				<div class="input-group-append">
+				        					<span class="input-group-text">
+				        						<i class="la la-calendar"></i>
+				        					</span>
+				        				</div>
+				        			</div>
+			        			</div>
+			        		</div>
+		        		</div>
 	        		</div>
 
 	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-		        			Tgl. Piagam
-		        		</label>
-	        			<div class="col-lg-10 col-sm-12">
-	        				<div class="input-group date">
-		        				<input type="text" autocomplete="off" class="form-control" id="reqTglPiagam" name="reqTglPiagam" value="<?=$reqTglPiagam?>" />
-		        				<div class="input-group-append">
-		        					<span class="input-group-text">
-		        						<i class="la la-calendar"></i>
-		        					</span>
-		        				</div>
-		        			</div>
-	        			</div>
+	        			<div class="col-md-6">
+	        				<div class="form-group row">
+			        			<label class="col-form-label text-right col-lg-4 col-sm-12">
+				        			Tgl Mulai
+				        		</label>
+			        			<div class="col-lg-8 col-sm-12">
+			        				<div class="input-group date">
+				        				<input type="text" <?=$read?> autocomplete="off" class="form-control kttanggal" name="reqTglMulai" value="<?=$reqTglMulai?>" />
+				        				<div class="input-group-append">
+				        					<span class="input-group-text">
+				        						<i class="la la-calendar"></i>
+				        					</span>
+				        				</div>
+				        			</div>
+			        			</div>
+			        		</div>
+		        		</div>
+		        		<div class="col-md-6">
+		        			<div class="form-group row">
+			        			<label class="col-form-label text-right col-lg-4 col-sm-12">
+				        			Tgl Selesai
+				        		</label>
+			        			<div class="col-lg-8 col-sm-12">
+			        				<div class="input-group date">
+				        				<input type="text" <?=$read?> autocomplete="off" class="form-control kttanggal" name="reqTglSelesai" value="<?=$reqTglSelesai?>" />
+				        				<div class="input-group-append">
+				        					<span class="input-group-text">
+				        						<i class="la la-calendar"></i>
+				        					</span>
+				        				</div>
+				        			</div>
+			        			</div>
+			        		</div>
+		        		</div>
 	        		</div>
+
 	        		<div class="card-footer">
 		        		<div class="row">
 		        			<div class="col-lg-9">
-		        				<input type="hidden" name="reqMode" value="<?=$reqMode?>">
-		        				<input type="hidden" name="reqTempValidasiId" value="<?=$reqTempValidasiId?>">
+		        				<input type="hidden" name="reqMode" value="<?=$reqMode?>" />
+		        				<input type="hidden" name="reqId" value="<?=$reqId?>" />
+		        				<input type="hidden" name="reqRowId" value="<?=$reqRowId?>" />
 		        				<button type="submit" id="ktloginformsubmitbutton" class="btn btn-light-success"><i class="fa fa-save" aria-hidden="true"></i> Simpan</button>
 		        			</div>
 		        		</div>
@@ -168,7 +180,7 @@ $readonly = "readonly";
 	var _buttonSpinnerClasses = 'spinner spinner-right spinner-white pr-15';
 	jQuery(document).ready(function() {
 		var form = KTUtil.getById('ktloginform');
-		var formSubmitUrl = "json-data/info_data_json/indentitaspegawai";
+		var formSubmitUrl = "json-main/pelatihan_non_klasikal_json/add";
 		var formSubmitButton = KTUtil.getById('ktloginformsubmitbutton');
 		if (!form) {
 			return;
@@ -216,18 +228,30 @@ $readonly = "readonly";
 					dataType: 'json',
 					success: function (response) {
 			        	// console.log(response); return false;
-			        	// Swal.fire("Good job!", "You clicked the button!", "success");
-			        	Swal.fire({
-			        		text: response.message,
-			        		icon: "success",
-			        		buttonsStyling: false,
-			        		confirmButtonText: "Ok",
-			        		customClass: {
-			        			confirmButton: "btn font-weight-bold btn-light-primary"
-			        		}
-			        	}).then(function() {
-			        		document.location.href = "app/index/pegawai_data";
-			        	});
+			        	data= response.message;
+			        	data= data.split("-");
+			        	rowid= data[0];
+			        	infodata= data[1];
+
+			        	if(rowid == "xxx")
+                        {
+                            Swal.fire("Error", infodata, "error");
+                        }
+                        else
+                        {
+                            Swal.fire({
+                                text: infodata,
+                                icon: "success",
+                                buttonsStyling: false,
+                                confirmButtonText: "Ok",
+                                customClass: {
+                                    confirmButton: "btn font-weight-bold btn-light-primary"
+                                }
+                            }).then(function() {
+                                document.location.href = "app/index/pelatihan_non_klasikal?reqId=<?=$reqId?>";
+                                // window.location.reload();
+                            });
+                        }
 			        },
 			        error: function(xhr, status, error) {
 			        	var err = JSON.parse(xhr.responseText);
@@ -254,7 +278,7 @@ $readonly = "readonly";
 	});
 
 	arrows= {leftArrow: '<i class="la la-angle-left"></i>', rightArrow: '<i class="la la-angle-right"></i>'};
-	$('#kttanggallahir').datepicker({
+	$('.kttanggal').datepicker({
 		todayHighlight: true
 		, autoclose: true
 		, orientation: "bottom left"

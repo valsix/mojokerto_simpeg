@@ -6,7 +6,7 @@ include_once("functions/date.func.php");
 include_once("functions/class-list-util.php");
 include_once("functions/class-list-util-serverside.php");
 
-class pelatihan_teknis_json extends CI_Controller {
+class seminar_workshop_json extends CI_Controller {
 
 	function __construct() {
 		parent::__construct();
@@ -35,9 +35,9 @@ class pelatihan_teknis_json extends CI_Controller {
 	function json()
 	{
 		ini_set('memory_limit', '-1');
-		$this->load->model("base/PelatihanTeknis");
+		$this->load->model("base/SeminarWorkshop");
 
-		$set= new PelatihanTeknis();
+		$set= new SeminarWorkshop();
 
 		if ( isset( $_REQUEST['columnsDef'] ) && is_array( $_REQUEST['columnsDef'] ) ) {
 			$columnsDefault = [];
@@ -159,37 +159,33 @@ class pelatihan_teknis_json extends CI_Controller {
 
 	function add()
 	{
-		$this->load->model("base/PelatihanTeknis");
+		$this->load->model("base/SeminarWorkshop");
 
 		$reqId= $this->input->post("reqId");
 		$reqRowId= $this->input->post("reqRowId");
 		$reqMode= $this->input->post("reqMode");
 
-		$reqNamaDiklat= $this->input->post("reqNamaDiklat");
+		$reqNamaSeminar= $this->input->post("reqNamaSeminar");
 		$reqTempat= $this->input->post("reqTempat");
 		$reqPenyelenggara= $this->input->post("reqPenyelenggara");
 		$reqTglMulai= $this->input->post("reqTglMulai");
-		$reqNoSTTPP= $this->input->post("reqNoSTTPP");
+		$reqNoPiagam= $this->input->post("reqNoPiagam");
 		$reqTglSelesai= $this->input->post("reqTglSelesai");
-		$reqTglSTTPP= $this->input->post("reqTglSTTPP");
+		$reqTglPiagam= $this->input->post("reqTglPiagam");
 		$reqJumlahJam= $this->input->post("reqJumlahJam");
-		$reqAngkatan= $this->input->post("reqAngkatan");
-		$reqTahun= $this->input->post("reqTahun");
-		
-		$set = new PelatihanTeknis();
-		$set->setField("DIKLAT_TEKNIS_ID", $reqRowId);
+
+		$set = new SeminarWorkshop();
+		$set->setField("SEMINAR_ID", $reqRowId);
 		$set->setField("PEGAWAI_ID", $reqId);
 
-		$set->setField("NAMA", $reqNamaDiklat);
+		$set->setField("NAMA", $reqNamaSeminar);
 		$set->setField("TEMPAT", $reqTempat);
-		$set->setField("TANGGAL_STTPP", dateToDBCheck($reqTglSTTPP));
+		$set->setField("TANGGAL_PIAGAM", dateToDBCheck($reqTglPiagam));
 		$set->setField("PENYELENGGARA", $reqPenyelenggara);
-		$set->setField("NO_STTPP", $reqNoSTTPP);
+		$set->setField("NO_PIAGAM", $reqNoPiagam);
 		$set->setField("TANGGAL_MULAI", dateToDBCheck($reqTglMulai));
 		$set->setField("TANGGAL_SELESAI", dateToDBCheck($reqTglSelesai));
 		$set->setField("JUMLAH_JAM", ValToNullDB($reqJumlahJam));
-		$set->setField("ANGKATAN", ValToNullDB($reqAngkatan));
-		$set->setField("TAHUN", ValToNullDB($reqTahun));
 
 		$adminusernama= $this->adminuserloginnama;
 		$userSatkerId= $this->adminsatkerid;
@@ -231,13 +227,13 @@ class pelatihan_teknis_json extends CI_Controller {
 
 	function delete()
 	{
-		$this->load->model("base/PelatihanTeknis");
-		$set = new PelatihanTeknis();
+		$this->load->model("base/SeminarWorkshop");
+		$set = new SeminarWorkshop();
 		
 		$reqRowId= $this->input->get('reqRowId');
 		$reqMode= $this->input->get('reqMode');
 
-		$set->setField("DIKLAT_TEKNIS_ID", $reqRowId);
+		$set->setField("SEMINAR_ID", $reqRowId);
 		$reqSimpan="";
 		if($set->delete())
 		{
