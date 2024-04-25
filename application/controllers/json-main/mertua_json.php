@@ -47,7 +47,7 @@ class mertua_json extends CI_Controller {
 		$set->selectByParams(array(), -1, -1, $statement);
 		// echo $set->query;exit;
 		$set->firstRow();
-		$reqAyahId= (int)$set->getField('MERTUA_ID');
+		$reqAyahId= $set->getField('MERTUA_ID');
 
 		if(empty($reqAyahId))
 		{
@@ -130,7 +130,7 @@ class mertua_json extends CI_Controller {
 		$set->selectByParams(array(), -1, -1, $statement);
 		// echo $set->query;exit;
 		$set->firstRow();
-		$reqIbuId= (int)$set->getField('MERTUA_ID');
+		$reqIbuId= $set->getField('MERTUA_ID');
 
 		if(empty($reqIbuId))
 		{

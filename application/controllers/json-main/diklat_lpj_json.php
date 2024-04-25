@@ -6,7 +6,7 @@ include_once("functions/date.func.php");
 include_once("functions/class-list-util.php");
 include_once("functions/class-list-util-serverside.php");
 
-class masa_kerja_json extends CI_Controller {
+class diklat_lpj_json extends CI_Controller {
 
 	function __construct() {
 		parent::__construct();
@@ -34,18 +34,17 @@ class masa_kerja_json extends CI_Controller {
 
 	function add()
 	{
-		$this->load->model("base/TambahanMasaKerja");
+		$this->load->model("base/DiklatLpj");
 
 		$reqId= $this->input->post("reqId");
 		$reqRowId= $this->input->post("reqRowId");
-		$reqMode= $this->input->post("reqMode");
 
 		$statement= " AND A.PEGAWAI_ID = ".$reqId;
-		$set= new TambahanMasaKerja();
+		$set= new DiklatLpj();
 		$set->selectByParams(array(), -1, -1, $statement);
 		// echo $set->query;exit;
 		$set->firstRow();
-		$reqRowId= $set->getField('TAMBAHAN_MASA_KERJA_ID');
+		$reqRowId= $set->getField('DIKLAT_LPJ_ID');
 
 		if(empty($reqRowId))
 		{
@@ -56,28 +55,30 @@ class masa_kerja_json extends CI_Controller {
 			$reqMode="update";
 		}
 
-		$reqPegawaiId= $this->input->post("reqId");
+		$reqTempat= $this->input->post("reqTempat");
+		$reqPenyelenggara= $this->input->post("reqPenyelenggara");
+		$reqTglMulai= $this->input->post("reqTglMulai");
+		$reqNoSTTPP= $this->input->post("reqNoSTTPP");
+		$reqTglSelesai= $this->input->post("reqTglSelesai");
+		$reqTglSTTPP= $this->input->post("reqTglSTTPP");
+		$reqJumlahJam= $this->input->post("reqJumlahJam");
+		$reqAngkatan= $this->input->post("reqAngkatan");
+		$reqTahun= $this->input->post("reqTahun");
 
-		$reqNoSK= $this->input->post("reqNoSK");
-		$reqTglSK= $this->input->post("reqTglSK");
-		$reqTMTSK= $this->input->post("reqTMTSK");
-		$reqTambahanMasaKerja= $this->input->post("reqTambahanMasaKerja");
-		$reqMasaKerja= $this->input->post("reqMasaKerja");
-		$reqThTMK= $this->input->post("reqThTMK");
-		$reqThMK= $this->input->post("reqThMK");
-		$reqBlTMK= $this->input->post("reqBlTMK");
-		$reqBlMK= $this->input->post("reqBlMK");
+		$set = new DiklatLpj();
+		$set->setField("DIKLAT_LPJ_ID", $reqRowId);
+		$set->setField("PEGAWAI_ID", $reqId);
 
-		$set = new TambahanMasaKerja();
-		$set->setField('TAMBAHAN_MASA_KERJA_ID', $reqRowId);		
-		$set->setField('NO_SK', $reqNoSK);
-		$set->setField('PEGAWAI_ID', $reqId);		
-		$set->setField('TANGGAL_SK', dateToDBCheck($reqTglSK));		
-		$set->setField('TMT_SK', dateToDBCheck($reqTMTSK));
-		$set->setField('TAHUN_TAMBAHAN', $reqThTMK);
-		$set->setField('TAHUN_BARU', $reqThMK);
-		$set->setField('BULAN_TAMBAHAN', $reqBlTMK);
-		$set->setField('BULAN_BARU', $reqBlMK);
+		$set->setField("NAMA", $reqNamaDiklat);
+		$set->setField("TEMPAT", $reqTempat);
+		$set->setField("TANGGAL_STTPP", dateToDBCheck($reqTglSTTPP));
+		$set->setField("PENYELENGGARA", $reqPenyelenggara);
+		$set->setField("NO_STTPP", $reqNoSTTPP);
+		$set->setField("TANGGAL_MULAI", dateToDBCheck($reqTglMulai));
+		$set->setField("TANGGAL_SELESAI", dateToDBCheck($reqTglSelesai));
+		$set->setField("JUMLAH_JAM", ValToNullDB($reqJumlahJam));
+		$set->setField("ANGKATAN", ValToNullDB($reqAngkatan));
+		$set->setField("TAHUN", ValToNullDB($reqTahun));
 		
 		$adminusernama= $this->adminuserloginnama;
 		$userSatkerId= $this->adminsatkerid;

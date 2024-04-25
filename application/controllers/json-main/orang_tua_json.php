@@ -47,7 +47,7 @@ class orang_tua_json extends CI_Controller {
 		$set->selectByParams(array(), -1, -1, $statement);
 		// echo $set->query;exit;
 		$set->firstRow();
-		$reqAyahId= (int)$set->getField('ORANG_TUA_ID');
+		$reqAyahId= $set->getField('ORANG_TUA_ID');
 
 		if(empty($reqAyahId))
 		{
@@ -130,7 +130,7 @@ class orang_tua_json extends CI_Controller {
 		$set->selectByParams(array(), -1, -1, $statement);
 		// echo $set->query;exit;
 		$set->firstRow();
-		$reqIbuId= (int)$set->getField('ORANG_TUA_ID');
+		$reqIbuId= $set->getField('ORANG_TUA_ID');
 
 		if(empty($reqIbuId))
 		{
