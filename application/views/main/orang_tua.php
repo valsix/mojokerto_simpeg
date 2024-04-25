@@ -498,8 +498,7 @@ $readonly = "readonly";
 	        	<div class="card-footer">
 	        		<div class="row">
 	        			<div class="col-lg-9">
-	        				<input type="hidden" name="reqMode" value="<?=$reqMode?>">
-	        				<input type="hidden" name="reqTempValidasiId" value="<?=$reqTempValidasiId?>">
+	        				<input type="hidden" name="reqId" value="<?=$reqId?>" />
 	        				<button type="submit" id="ktloginformsubmitbutton"  class="btn btn-primary font-weight-bold mr-2">Simpan</button>
 	        			</div>
 	        		</div>
