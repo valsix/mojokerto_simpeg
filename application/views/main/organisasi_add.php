@@ -83,36 +83,28 @@ else
 	        		</div>
 
 	        		<div class="form-group row">
-			        	<div class="col-md-6">
-			        		<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-4 col-sm-12">Awal</label>
-			        			<div class="col-lg-4 col-sm-12">
-			        				<div class="input-group date">
-				        				<input type="text" autocomplete="off" class="form-control kttanggal" name="reqAwal" value="<?=$reqAwal?>" />
-				        				<div class="input-group-append">
-				        					<span class="input-group-text">
-				        						<i class="la la-calendar"></i>
-				        					</span>
-				        				</div>
-				        			</div>
-			        			</div>
-			        		</div>
-			        	</div>
-			        	<div class="col-md-6">
-			        		<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-4 col-sm-12">Akhir</label>
-			        			<div class="col-lg-4 col-sm-12">
-			        				<div class="input-group date">
-				        				<input type="text" autocomplete="off" class="form-control kttanggal" name="reqAkhir" value="<?=$reqAkhir?>" />
-				        				<div class="input-group-append">
-				        					<span class="input-group-text">
-				        						<i class="la la-calendar"></i>
-				        					</span>
-				        				</div>
-				        			</div>
-			        			</div>
-			        		</div>
-			        	</div>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Awal</label>
+	        			<div class="col-lg-4 col-sm-12">
+	        				<div class="input-group date">
+		        				<input type="text" autocomplete="off" class="form-control kttanggal" name="reqAwal" value="<?=$reqAwal?>" />
+		        				<div class="input-group-append">
+		        					<span class="input-group-text">
+		        						<i class="la la-calendar"></i>
+		        					</span>
+		        				</div>
+		        			</div>
+	        			</div>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Akhir</label>
+	        			<div class="col-lg-4 col-sm-12">
+	        				<div class="input-group date">
+		        				<input type="text" autocomplete="off" class="form-control kttanggal" name="reqAkhir" value="<?=$reqAkhir?>" />
+		        				<div class="input-group-append">
+		        					<span class="input-group-text">
+		        						<i class="la la-calendar"></i>
+		        					</span>
+		        				</div>
+		        			</div>
+	        			</div>
 			        </div>
 
 	        		<div class="form-group row">

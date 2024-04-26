@@ -2,14 +2,7 @@
 include_once("functions/personal.func.php");
 
 $this->load->model("base/RiwayatJabatan");
-
-$userpegawaimode= $this->userpegawaimode;
-$adminuserid= $this->adminuserid;
-
-if(!empty($userpegawaimode) && !empty($adminuserid))
-    $reqPegawaiId= $userpegawaimode;
-else
-    $reqPegawaiId= $this->pegawaiId;
+$this->load->model("base/Core");
 
 $reqId= $this->input->get('reqId');
 $reqRowId= $this->input->get('reqRowId');
@@ -50,7 +43,11 @@ $reqTentangJabatan = $jabatan_riwayat->getField('TENTANG_JABATAN');
 $reqKodeJabatan = $jabatan_riwayat->getField('KODE_JABATAN');
 $reqSatker = $jabatan_riwayat->getField('SATKER');
 
+$eselon= new Core();
+$eselon->selectByParamsEselon(array());
 
+$pejabatpenetap= new Core();
+$pejabatpenetap->selectByParamsPejabatPenetap(array());
 // echo $reqTmtJabatan;exit;
 $reqMode="update";
 // $reqMode="insert";
@@ -99,17 +96,15 @@ $readonly = "readonly";
 	        	<div class="card-body">
 	        		<div class="form-group row">
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">No.SK</label>
-	        			<div class="col-lg-10 col-sm-12">
+	        			<div class="col-lg-4 col-sm-12">
 	        				<input type="text" class="form-control" name="reqNoSK" id="reqNoSK" value="<?=$reqNoSK?>" />
 	        			</div>
-	        		</div>
-	        		<div class="form-group row">
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
 		        			Tanggal SK
 		        		</label>
-	        			<div class="col-lg-10 col-sm-12">
+	        			<div class="col-lg-4 col-sm-12">
 	        				<div class="input-group date">
-		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTglSK" value="<?=$reqTglSK?>" />
+		        				<input type="text" autocomplete="off" class="form-control" id="reqTglSK" name="reqTglSK" value="<?=$reqTglSK?>" />
 		        				<div class="input-group-append">
 		        					<span class="input-group-text">
 		        						<i class="la la-calendar"></i>
@@ -127,42 +122,60 @@ $readonly = "readonly";
 	        		<div class="form-group row">
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">TMT Mutasi</label>
 	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" name="reqTMTJabatan" id="reqTMTJabatan" value="<?=$reqTMTJabatan?>" />
+	        				<div class="input-group date">
+		        				<input type="text" autocomplete="off" class="form-control" id="reqTMTJabatan" name="reqTMTJabatan" value="<?=$reqTMTJabatan?>" />
+		        				<div class="input-group-append">
+		        					<span class="input-group-text">
+		        						<i class="la la-calendar"></i>
+		        					</span>
+		        				</div>
+		        			</div>
 	        			</div>
 	        		</div>
 	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">TMT Jabatan Fungsional</label>
-	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" name="reqTMTJabatanFungsional" id="reqTMTJabatanFungsional" value="<?=$reqTMTJabatanFungsional?>" />
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Eselon</label>
+	        			<div class="col-lg-4 col-sm-12">
+	        				<select class="form-control" name="reqEselon" id="reqEselon">
+				                   <option value="" <? if($reqEselon =='') echo 'selected';?> disabled> Pilih Eselon</option>
+	        					<?while($eselon->nextRow()){?>
+				                    <option value="<?=$eselon->getField('ESELON_ID')?>" <? if($reqEselon == $eselon->getField('ESELON_ID')) echo 'selected';?>><?=$eselon->getField('NAMA')?></option>
+				                <? }?>
+	        				</select>
 	        			</div>
-	        		</div>
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">TMT Tugas Tambahan</label>
-	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" name="reqTMTTugasTambahan" id="reqTMTTugasTambahan" value="<?=$reqTMTTugasTambahan?>" />
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">TMT Eselon</label>
+	        			<div class="col-lg-4 col-sm-12">
+	        				<div class="input-group date">
+		        				<input type="text" autocomplete="off" class="form-control" id="reqTMTEselon" name="reqTMTEselon" value="<?=$reqTMTEselon?>" />
+		        				<div class="input-group-append">
+		        					<span class="input-group-text">
+		        						<i class="la la-calendar"></i>
+		        					</span>
+		        				</div>
+		        			</div>
 	        			</div>
 	        		</div>
 	        		<div class="form-group row">
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Pj Penetap</label>
 	        			<div class="col-lg-10 col-sm-12">
-	        				<select class="form-control" name="reqStatusPejabatPenetap" id="reqStatusPejabatPenetap">
-	        					
+	        				<select class="form-control" name="reqPjPenetap" id="reqPjPenetap">
+			                   <option value="" <? if($reqEselon =='') echo 'selected';?> disabled> Pilih PJ Penetap</option>
+        					<?while($pejabatpenetap->nextRow()){?>
+			                    <option value="<?=$pejabatpenetap->getField('PEJABAT_PENETAP_ID')?>" <? if($reqPjPenetapId == $pejabatpenetap->getField('PEJABAT_PENETAP_ID')) echo 'selected';?>><?=$pejabatpenetap->getField('JABATAN')?></option>
+			                <? }?>	        					
 	        				</select>
 	        			</div>
 	        		</div>
 	        		<div class="form-group row">
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">No. Pelantikan</label>
-	        			<div class="col-lg-10 col-sm-12">
+	        			<div class="col-lg-4 col-sm-12">
 	        				<input type="text" class="form-control" name="reqNoPelantikan" id="reqNoPelantikan" value="<?=$reqNoPelantikan?>" />
 	        			</div>
-	        		</div>
-	        		<div class="form-group row">
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
 		        			Tanggal Pelantikan
 		        		</label>
-	        			<div class="col-lg-10 col-sm-12">
+	        			<div class="col-lg-4 col-sm-12">
 	        				<div class="input-group date">
-		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTglPelantikan" value="<?=$reqTglPelantikan?>" />
+		        				<input type="text" autocomplete="off" class="form-control" id="reqTglPelantikan" name="reqTglPelantikan" value="<?=$reqTglPelantikan?>" />
 		        				<div class="input-group-append">
 		        					<span class="input-group-text">
 		        						<i class="la la-calendar"></i>
@@ -173,13 +186,11 @@ $readonly = "readonly";
 	        		</div>
 	        		<div class="form-group row">
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Tunjangan</label>
-	        			<div class="col-lg-10 col-sm-12">
+	        			<div class="col-lg-4 col-sm-12">
 	        				<input type="text" class="form-control" name="reqTunjangan" id="reqTunjangan" value="<?=$reqTunjangan?>" />
 	        			</div>
-	        		</div>
-	        		<div class="form-group row">
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Bln. Dibayar</label>
-	        			<div class="col-lg-10 col-sm-12">
+	        			<div class="col-lg-4 col-sm-12">
 	        				<input type="text" class="form-control" name="reqBlnDibayar" id="reqBlnDibayar" value="<?=$reqBlnDibayar?>" />
 	        			</div>
 	        		</div>
@@ -222,6 +233,8 @@ $readonly = "readonly";
 	        		<div class="card-footer">
 	        		<div class="row">
 	        			<div class="col-lg-9">
+	        				<input type="hidden" name="reqId" value="<?=$reqId?>">
+	        				<input type="hidden" name="reqRowId" value="<?=$reqRowId?>">
 	        				<input type="hidden" name="reqMode" value="<?=$reqMode?>">
 	        				<input type="hidden" name="reqTempValidasiId" value="<?=$reqTempValidasiId?>">
 	        				<button type="submit" id="ktloginformsubmitbutton" class="btn btn-light-success"><i class="fa fa-save" aria-hidden="true"></i> Simpan</button>
@@ -244,7 +257,7 @@ $readonly = "readonly";
 	var _buttonSpinnerClasses = 'spinner spinner-right spinner-white pr-15';
 	jQuery(document).ready(function() {
 		var form = KTUtil.getById('ktloginform');
-		var formSubmitUrl = "json-data/info_data_json/indentitaspegawai";
+		var formSubmitUrl = "json-main/riwayat_jabatan_json/add";
 		var formSubmitButton = KTUtil.getById('ktloginformsubmitbutton');
 		if (!form) {
 			return;
@@ -292,18 +305,30 @@ $readonly = "readonly";
 					dataType: 'json',
 					success: function (response) {
 			        	// console.log(response); return false;
-			        	// Swal.fire("Good job!", "You clicked the button!", "success");
-			        	Swal.fire({
-			        		text: response.message,
-			        		icon: "success",
-			        		buttonsStyling: false,
-			        		confirmButtonText: "Ok",
-			        		customClass: {
-			        			confirmButton: "btn font-weight-bold btn-light-primary"
-			        		}
-			        	}).then(function() {
-			        		document.location.href = "app/index/pegawai_data";
-			        	});
+			        	data= response.message;
+			        	data= data.split("-");
+			        	rowid= data[0];
+			        	infodata= data[1];
+
+			        	if(rowid == "xxx")
+                        {
+                            Swal.fire("Error", infodata, "error");
+                        }
+                        else
+                        {
+                            Swal.fire({
+                                text: infodata,
+                                icon: "success",
+                                buttonsStyling: false,
+                                confirmButtonText: "Ok",
+                                customClass: {
+                                    confirmButton: "btn font-weight-bold btn-light-primary"
+                                }
+                            }).then(function() {
+			        			document.location.href = "app/index/riwayat_jabatan?reqId=<?=$reqId?>";
+                                // window.location.reload();
+                            });
+                        }
 			        },
 			        error: function(xhr, status, error) {
 			        	var err = JSON.parse(xhr.responseText);
@@ -330,7 +355,7 @@ $readonly = "readonly";
 	});
 
 	arrows= {leftArrow: '<i class="la la-angle-left"></i>', rightArrow: '<i class="la la-angle-right"></i>'};
-	$('#kttanggallahir').datepicker({
+	$('#reqTMTJabatan,#reqTMTEselon,#reqTglPelantikan,#reqTglSK').datepicker({
 		todayHighlight: true
 		, autoclose: true
 		, orientation: "bottom left"

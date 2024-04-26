@@ -86,17 +86,9 @@ $readonly = "readonly";
 	        	<div class="card-body">
 	        		<div class="form-group row">
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Tahun</label>
-	        			<div class="col-lg-2 col-sm-12">
+	        			<div class="col-lg-3 col-sm-12">
 	        				<input type="text" class="form-control" name="reqTahun" id="reqTahun" value="<?=$reqTahun?>" />
 	        			</div>
-	        		</div>
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Nilai Skp</label>
-	        			<div class="col-lg-3 col-sm-12">
-	        				<input type="text" class="form-control" name="reqNilai" id="reqNilai" value="<?=$reqNilai?>" />
-	        			</div>
-	        		</div>
-	        		<div class="form-group row">
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">NIP Pejabat Penilai</label>
 	        			<div class="col-lg-4 col-sm-12">
 	        				<input type="hidden" name="reqPejabatId" id="reqPejabatId" style="width:350px;" value="<?=$reqPejabatId?>" />   
@@ -104,8 +96,13 @@ $readonly = "readonly";
 	        					<option value="<?=$reqPejabatId?>"><?=$reqPejabat?></option>
 	        				</select>
 	        			</div>
+
 	        		</div>
 	        		<div class="form-group row">
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Nilai Skp</label>
+	        			<div class="col-lg-3 col-sm-12">
+	        				<input type="text" class="form-control" name="reqNilai" id="reqNilai" value="<?=$reqNilai?>" />
+	        			</div>
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">NIP Atasan Pejabat Penilai</label>
 	        			<div class="col-lg-4 col-sm-12">
 	        				<input type="hidden" name="reqAtasanId" id="reqAtasanId" style="width:350px;" value="<?=$reqAtasanId?>" />   

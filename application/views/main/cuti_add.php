@@ -89,76 +89,60 @@ else
 	        			</div>
 	        		</div>
 	        		<div class="form-group row">
-	        			<div class="col-md-6">
-	        				<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-4 col-sm-12">
-				        			Tanggal Surat
-				        		</label>
-			        			<div class="col-lg-8 col-sm-12">
-			        				<div class="input-group date">
-				        				<input type="text" <?=$read?> autocomplete="off" class="form-control kttanggal" name="reqTanggalSurat" value="<?=$reqTanggalSurat?>" />
-				        				<div class="input-group-append">
-				        					<span class="input-group-text">
-				        						<i class="la la-calendar"></i>
-				        					</span>
-				        				</div>
-				        			</div>
-			        			</div>
-			        		</div>
-		        		</div>
-		        		<div class="col-md-6">
-		        			<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-4 col-sm-12">
-				        			Tanggal Mulai
-				        		</label>
-			        			<div class="col-lg-8 col-sm-12">
-			        				<div class="input-group date">
-				        				<input type="text" <?=$read?> autocomplete="off" class="form-control kttanggal" name="reqTanggalMulai" value="<?=$reqTanggalMulai?>" />
-				        				<div class="input-group-append">
-				        					<span class="input-group-text">
-				        						<i class="la la-calendar"></i>
-				        					</span>
-				        				</div>
-				        			</div>
-			        			</div>
-			        		</div>
-		        		</div>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+		        			Tanggal Surat
+		        		</label>
+	        			<div class="col-lg-4 col-sm-12">
+	        				<div class="input-group date">
+		        				<input type="text" <?=$read?> autocomplete="off" class="form-control kttanggal" name="reqTanggalSurat" value="<?=$reqTanggalSurat?>" />
+		        				<div class="input-group-append">
+		        					<span class="input-group-text">
+		        						<i class="la la-calendar"></i>
+		        					</span>
+		        				</div>
+		        			</div>
+	        			</div>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+		        			Tanggal Mulai
+		        		</label>
+	        			<div class="col-lg-4 col-sm-12">
+	        				<div class="input-group date">
+		        				<input type="text" <?=$read?> autocomplete="off" class="form-control kttanggal" name="reqTanggalMulai" value="<?=$reqTanggalMulai?>" />
+		        				<div class="input-group-append">
+		        					<span class="input-group-text">
+		        						<i class="la la-calendar"></i>
+		        					</span>
+		        				</div>
+		        			</div>
+	        			</div>
 	        		</div>
 	        		<div class="form-group row">
-			        	<div class="col-md-6">
-			        		<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-4 col-sm-12">
-				        			Tanggal Permohonan
-				        		</label>
-			        			<div class="col-lg-8 col-sm-12">
-			        				<div class="input-group date">
-				        				<input type="text" <?=$read?> autocomplete="off" class="form-control kttanggal" name="reqTanggalPermohonan" value="<?=$reqTanggalPermohonan?>" />
-				        				<div class="input-group-append">
-				        					<span class="input-group-text">
-				        						<i class="la la-calendar"></i>
-				        					</span>
-				        				</div>
-				        			</div>
-			        			</div>
-			        		</div>
-		        		</div>
-		        		<div class="col-md-6">
-		        			<div class="form-group row">
-		        				<label class="col-form-label text-right col-lg-4 col-sm-12">
-				        			Tanggal Selesai
-				        		</label>
-			        			<div class="col-lg-8 col-sm-12">
-			        				<div class="input-group date">
-				        				<input type="text" <?=$read?> autocomplete="off" class="form-control kttanggal" name="reqTanggalSelesai" value="<?=$reqTanggalSelesai?>" />
-				        				<div class="input-group-append">
-				        					<span class="input-group-text">
-				        						<i class="la la-calendar"></i>
-				        					</span>
-				        				</div>
-				        			</div>
-			        			</div>
-			        		</div>
-		        		</div>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+		        			Tanggal Permohonan
+		        		</label>
+	        			<div class="col-lg-4 col-sm-12">
+	        				<div class="input-group date">
+		        				<input type="text" <?=$read?> autocomplete="off" class="form-control kttanggal" name="reqTanggalPermohonan" value="<?=$reqTanggalPermohonan?>" />
+		        				<div class="input-group-append">
+		        					<span class="input-group-text">
+		        						<i class="la la-calendar"></i>
+		        					</span>
+		        				</div>
+		        			</div>
+	        			</div>
+        				<label class="col-form-label text-right col-lg-2 col-sm-12">
+		        			Tanggal Selesai
+		        		</label>
+	        			<div class="col-lg-4 col-sm-12">
+	        				<div class="input-group date">
+		        				<input type="text" <?=$read?> autocomplete="off" class="form-control kttanggal" name="reqTanggalSelesai" value="<?=$reqTanggalSelesai?>" />
+		        				<div class="input-group-append">
+		        					<span class="input-group-text">
+		        						<i class="la la-calendar"></i>
+		        					</span>
+		        				</div>
+		        			</div>
+	        			</div>
 	        		</div>
 
 	        		<div class="form-group row">

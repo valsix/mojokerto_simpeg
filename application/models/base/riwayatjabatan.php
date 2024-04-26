@@ -63,5 +63,107 @@ class RiwayatJabatan extends Entity{
 		else 
 			return 0;  
     }
+    function insert()
+	{
+		//TMT_JABATAN_FUNGSIONAL, TMT_TUGAS_TAMBAHAN
+		/*Auto-generate primary key(s) by next max value (integer) */
+		$this->setField("JABATAN_RIWAYAT_ID", $this->getNextId("JABATAN_RIWAYAT_ID","JABATAN_RIWAYAT")); 
+
+		$str = "INSERT INTO JABATAN_RIWAYAT
+		(
+			JABATAN_RIWAYAT_ID, PEGAWAI_ID, NO_SK, TANGGAL_SK, NAMA,  TMT_JABATAN, ESELON_ID, 
+			TMT_ESELON,PEJABAT_PENETAP_ID, NO_PELANTIKAN, TANGGAL_PELANTIKAN, TUNJANGAN, BULAN_DIBAYAR,
+			KETERANGAN_BUP, ANGKA_KREDIT, TENTANG_JABATAN, JENIS_JABATAN, KODE_JABATAN, SATKER,
+			LAST_CREATE_USER, LAST_CREATE_DATE, LAST_CREATE_SATKER
+		)
+		VALUES
+		(
+			".$this->getField("JABATAN_RIWAYAT_ID")."
+			, '".$this->getField("PEGAWAI_ID")."'
+			, '".$this->getField("NO_SK")."'
+			, ".$this->getField("TANGGAL_SK")."
+			, '".$this->getField("NAMA")."'
+			, ".$this->getField("TMT_JABATAN")."
+			, ".$this->getField("ESELON_ID")."
+			, ".$this->getField("TMT_ESELON")."
+			, '".$this->getField("PEJABAT_PENETAP_ID")."'
+			, '".$this->getField("NO_PELANTIKAN")."'
+			, ".$this->getField("TANGGAL_PELANTIKAN")."
+			, '".$this->getField("TUNJANGAN")."'
+			, ".$this->getField("BULAN_DIBAYAR")."
+			, '".$this->getField("KETERANGAN_BUP")."'
+			, '".$this->getField("ANGKA_KREDIT")."'
+			, '".$this->getField("TENTANG_JABATAN")."'
+			, '".$this->getField("JENIS_JABATAN")."'
+			, '".$this->getField("KODE_JABATAN")."'
+			, '".$this->getField("SATKER")."'
+			, '".$this->getField("LAST_CREATE_USER")."'
+			, ".$this->getField("LAST_CREATE_DATE")."
+			, '".$this->getField("LAST_CREATE_SATKER")."'
+		)";
+
+		$this->query = $str;
+		$this->id= $this->getField("JABATAN_RIWAYAT_ID");
+
+		// untuk buat log data
+		// parse pertama sesuai nama table
+		// parse ke dua sesuai aksi
+		$this->setlogdata("JABATAN_RIWAYAT", "INSERT", $str);
+
+		// echo $str;exit;
+		return $this->execQuery($str);
+    }
+
+    function update()
+	{
+		$str = "UPDATE JABATAN_RIWAYAT
+		SET    
+			NO_SK= '".$this->getField("NO_SK")."'
+			, TANGGAL_SK= ".$this->getField("TANGGAL_SK")."
+			, TMT_JABATAN= ".$this->getField("TMT_JABATAN")."
+			, ESELON_ID= '".$this->getField("ESELON_ID")."'
+			, TMT_ESELON= ".$this->getField("TMT_ESELON")."
+			, PEJABAT_PENETAP_ID= '".$this->getField("PEJABAT_PENETAP_ID")."'
+			, NO_PELANTIKAN= '".$this->getField("NO_PELANTIKAN")."'
+			, TANGGAL_PELANTIKAN= ".$this->getField("TANGGAL_PELANTIKAN")."
+			, TUNJANGAN= '".$this->getField("TUNJANGAN")."'
+			, BULAN_DIBAYAR= ".$this->getField("BULAN_DIBAYAR")."
+			, KETERANGAN_BUP= '".$this->getField("KETERANGAN_BUP")."'
+			, ANGKA_KREDIT= '".$this->getField("ANGKA_KREDIT")."'
+			, TENTANG_JABATAN= '".$this->getField("TENTANG_JABATAN")."'
+			, JENIS_JABATAN= '".$this->getField("JENIS_JABATAN")."'
+			, KODE_JABATAN= '".$this->getField("KODE_JABATAN")."'
+			, SATKER= '".$this->getField("SATKER")."'
+			, LAST_UPDATE_USER= '".$this->getField("LAST_UPDATE_USER")."'
+			, LAST_UPDATE_DATE= ".$this->getField("LAST_UPDATE_DATE")."
+			, LAST_UPDATE_SATKER= '".$this->getField("LAST_UPDATE_SATKER")."'
+		WHERE JABATAN_RIWAYAT_ID= '".$this->getField("JABATAN_RIWAYAT_ID")."'
+		"; 
+		$this->query = $str;
+
+		// untuk buat log data
+		// parse pertama sesuai nama table
+		// parse ke dua sesuai aksi
+		$this->setlogdata("JABATAN_RIWAYAT", "UPDATE", $str);
+
+		return $this->execQuery($str);
+    }
+
+    function delete()
+	{
+        $str = "DELETE FROM JABATAN_RIWAYAT
+        WHERE JABATAN_RIWAYAT_ID = '".$this->getField("JABATAN_RIWAYAT_ID")."'";
+		$this->query = $str;
+		// echo$str; exit;
+
+		// untuk buat log data
+		// parse pertama sesuai nama table
+		// parse ke dua sesuai aksi
+		$this->setlogdata("JABATAN_RIWAYAT", "DELETE", $str);
+
+        return $this->execQuery($str);
+    }
+
+
 } 
 ?>

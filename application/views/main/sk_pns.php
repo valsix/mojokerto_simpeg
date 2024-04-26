@@ -4,14 +4,6 @@ include_once("functions/personal.func.php");
 $this->load->model("base/SkPns");
 $this->load->model("base/Core");
 
-$userpegawaimode= $this->userpegawaimode;
-$adminuserid= $this->adminuserid;
-
-if(!empty($userpegawaimode) && !empty($adminuserid))
-    $reqPegawaiId= $userpegawaimode;
-else
-    $reqPegawaiId= $this->pegawaiId;
-
 $reqId= $this->input->get('reqId');
 
 $pejabat_penetap= new Core();
@@ -39,17 +31,12 @@ $reqGolRuang					= $skpns->getField('PANGKAT_ID');
 $reqPengambilanSumpah			= $skpns->getField('SUMPAH');
 $reqSkPnsId					= (int)$skpns->getField('SK_PNS_ID');
 $reqTanggalSumpah				= $skpns->getField('TANGGAL_SUMPAH');
-$reqNoSuratjiKesehatan			= $skpns->getField('NO_UJI_KESEHATAN');
-$reqNoDiklatPrajabatan			= $skpns->getField('NO_PRAJAB');
 $reqTh 						= $skpns->getField('MASA_KERJA_TAHUN');
 $reqBl 						= $skpns->getField('MASA_KERJA_BULAN');
-
 $reqNoBeritaAcara				= $skpns->getField('NOMOR_BERITA_ACARA');
 $reqTanggalBeritaAcara			= dateToPageCheck($skpns->getField('TANGGAL_BERITA_ACARA'));
 $reqKeteranganLPJ				= $skpns->getField('KETERANGAN_LPJ');
-$reqMode="update";
-// $reqMode="insert";
-$readonly = "readonly";
+
 ?>
 <style type="text/css">
 	   select[readonly].select2-hidden-accessible + .select2-container {
@@ -243,7 +230,7 @@ $readonly = "readonly";
 	        					<option <? if($tempGolRuang=='') echo 'selected'?> disabled>Pilih Pengkat/Gol.Ruang</option>					
 	        					<? while ($pangkat->nextRow()){?>
 								<option value="<?=$pangkat->getField('PANGKAT_ID')?>"
-								<? if($pangkat->getField('PANGKAT_ID') == $tempGolRuang) echo 'selected'?>><?=$pangkat->getField('KODE')?></option>					
+								<? if($pangkat->getField('PANGKAT_ID') == $reqGolRuang) echo 'selected'?>><?=$pangkat->getField('KODE')?></option>					
 								<? }?>		
 	        				</select>
 	        			</div>
@@ -253,7 +240,7 @@ $readonly = "readonly";
 		        			Pengambilan Sumpah
 		        		</label>
 	        			<div class="col-lg-1 col-sm-12">
-	        				<input type="checkbox" class="form-control" name="reqPengambilanSumpah" id="reqPengambilanSumpah" value="<?=$reqPengambilanSumpah?>" />
+	        				<input type="checkbox" <?if($reqPengambilanSumpah==1){ echo "checked";}?> class="form-control" name="reqPengambilanSumpah" id="reqPengambilanSumpah" value="<?=$reqPengambilanSumpah?>" />
 	        			</div>
 	        		</div>
 	        		<div class="form-group row">

@@ -64,5 +64,109 @@ class RiwayatPangkat extends Entity{
 		else 
 			return 0;  
     }
+
+    function insert()
+	{
+		/*Auto-generate primary key(s) by next max value (integer) */
+		$this->setField("PANGKAT_RIWAYAT_ID", $this->getNextId("PANGKAT_RIWAYAT_ID","PANGKAT_RIWAYAT")); 
+
+		$str = "INSERT INTO PANGKAT_RIWAYAT
+		(
+			PANGKAT_RIWAYAT_ID, PEGAWAI_ID, PANGKAT_ID, PEJABAT_PENETAP_ID, PEJABAT_PENETAP, STLUD, NO_STLUD
+			, TANGGAL_STLUD, NO_NOTA, TANGGAL_NOTA, NO_SK, MASA_KERJA_TAHUN, MASA_KERJA_BULAN, GAJI_POKOK
+			, TANGGAL_SK, TMT_PANGKAT, KREDIT, JENIS_KP, KETERANGAN, TANGGAL_UPDATE
+			, LAST_CREATE_USER, LAST_CREATE_DATE, LAST_CREATE_SATKER
+		) 
+		VALUES 
+		(
+			".$this->getField("PANGKAT_RIWAYAT_ID")."
+			, '".$this->getField("PEGAWAI_ID")."'
+			, '".$this->getField("PANGKAT_ID")."'
+			, '".$this->getField("PEJABAT_PENETAP_ID")."'
+			, '".$this->getField("PEJABAT_PENETAP")."'
+			, '".$this->getField("STLUD")."'
+			, '".$this->getField("NO_STLUD")."'
+			, ".$this->getField("TANGGAL_STLUD")."
+			, '".$this->getField("NO_NOTA")."'
+			, ".$this->getField("TANGGAL_NOTA")."
+			, '".$this->getField("NO_SK")."'
+			, '".$this->getField("MASA_KERJA_TAHUN")."'
+			, '".$this->getField("MASA_KERJA_BULAN")."'
+			, '".$this->getField("GAJI_POKOK")."'
+			, ".$this->getField("TANGGAL_SK")."
+			, ".$this->getField("TMT_PANGKAT")."
+			, '".$this->getField("KREDIT")."'
+			, '".$this->getField("JENIS_KP")."'
+			, '".$this->getField("KETERANGAN")."'
+			, current_date
+			, '".$this->getField("LAST_CREATE_USER")."'
+			, ".$this->getField("LAST_CREATE_DATE")."
+			, '".$this->getField("LAST_CREATE_SATKER")."'
+		)";
+		$this->id= $this->getField("PANGKAT_RIWAYAT_ID");		
+		$this->query = $str;
+		// echo $str; exit;
+
+		// untuk buat log data
+		// parse pertama sesuai nama table
+		// parse ke dua sesuai aksi
+		$this->setlogdata("PANGKAT_RIWAYAT", "INSERT", $str);
+
+		return $this->execQuery($str);
+    }
+
+    function update()
+	{
+		/*Auto-generate primary key(s) by next max value (integer) */
+		$str = "UPDATE PANGKAT_RIWAYAT
+		SET    
+			PANGKAT_ID= '".$this->getField("PANGKAT_ID")."'
+			, PEJABAT_PENETAP_ID= '".$this->getField("PEJABAT_PENETAP_ID")."'
+			, PEJABAT_PENETAP= '".$this->getField("PEJABAT_PENETAP")."'
+			, STLUD= '".$this->getField("STLUD")."'
+			, NO_STLUD= '".$this->getField("NO_STLUD")."'
+			, TANGGAL_STLUD= ".$this->getField("TANGGAL_STLUD")."
+			, NO_NOTA= '".$this->getField("NO_NOTA")."'
+			, TANGGAL_NOTA= ".$this->getField("TANGGAL_NOTA")."
+			, NO_SK= '".$this->getField("NO_SK")."'
+			, MASA_KERJA_TAHUN= '".$this->getField("MASA_KERJA_TAHUN")."'
+			, MASA_KERJA_BULAN= '".$this->getField("MASA_KERJA_BULAN")."'
+			, TANGGAL_SK= ".$this->getField("TANGGAL_SK")."
+			, TMT_PANGKAT= ".$this->getField("TMT_PANGKAT")."
+			, KREDIT= '".$this->getField("KREDIT")."'
+			, JENIS_KP= '".$this->getField("JENIS_KP")."'
+			, KETERANGAN= '".$this->getField("KETERANGAN")."'
+			, TANGGAL_UPDATE= current_date
+			, GAJI_POKOK= '".$this->getField("GAJI_POKOK")."'
+			, LAST_UPDATE_USER= '".$this->getField("LAST_UPDATE_USER")."'
+			, LAST_UPDATE_DATE= ".$this->getField("LAST_UPDATE_DATE")."
+			, LAST_UPDATE_SATKER= '".$this->getField("LAST_UPDATE_SATKER")."'
+		WHERE PANGKAT_RIWAYAT_ID= '".$this->getField("PANGKAT_RIWAYAT_ID")."' AND PEGAWAI_ID= '".$this->getField("PEGAWAI_ID")."'
+		"; 
+		$this->query = $str;
+		// echo $str;exit;
+
+		// untuk buat log data
+		// parse pertama sesuai nama table
+		// parse ke dua sesuai aksi
+		$this->setlogdata("PANGKAT_RIWAYAT", "UPDATE", $str);
+
+		return $this->execQuery($str);
+    }
+	
+	function delete()
+	{
+        $str = "DELETE FROM PANGKAT_RIWAYAT
+        WHERE PANGKAT_RIWAYAT_ID= '".$this->getField("PANGKAT_RIWAYAT_ID")."'";
+		$this->query = $str;
+		// echo $str;exit;
+
+		// untuk buat log data
+		// parse pertama sesuai nama table
+		// parse ke dua sesuai aksi
+		$this->setlogdata("PANGKAT_RIWAYAT", "DELETE", $str);
+
+        return $this->execQuery($str);
+    }
 } 
 ?>

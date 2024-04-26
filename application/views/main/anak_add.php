@@ -95,91 +95,67 @@ $readonly = "readonly";
 	        			</div>
 	        		</div>
 	        		<div class="form-group row">
-			        	<div class="col-md-6">
-	        				<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-4 col-sm-12">Tempat Lahir</label>
-			        			<div class="col-lg-8 col-sm-12">
-			        				<input type="text" class="form-control" name="reqTmpLahir" id="reqTmpLahir" value="<?=$reqTmpLahir?>" />
-			        			</div>
-			        		</div>
-			        	</div>
-			        	<div class="col-md-6">
-	        				<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-4 col-sm-12">
-				        			Tanggal Lahir
-				        		</label>
-			        			<div class="col-lg-8 col-sm-12">
-			        				<div class="input-group date">
-				        				<input type="text" autocomplete="off" class="form-control kttanggal" name="reqTglLahir" value="<?=$reqTglLahir?>" />
-				        				<div class="input-group-append">
-				        					<span class="input-group-text">
-				        						<i class="la la-calendar"></i>
-				        					</span>
-				        				</div>
-				        			</div>
-			        			</div>
-			        		</div>
-			        	</div>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Tempat Lahir</label>
+	        			<div class="col-lg-4 col-sm-12">
+	        				<input type="text" class="form-control" name="reqTmpLahir" id="reqTmpLahir" value="<?=$reqTmpLahir?>" />
+	        			</div>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+		        			Tanggal Lahir
+		        		</label>
+	        			<div class="col-lg-4 col-sm-12">
+	        				<div class="input-group date">
+		        				<input type="text" autocomplete="off" class="form-control kttanggal" name="reqTglLahir" value="<?=$reqTglLahir?>" />
+		        				<div class="input-group-append">
+		        					<span class="input-group-text">
+		        						<i class="la la-calendar"></i>
+		        					</span>
+		        				</div>
+		        			</div>
+	        			</div>
 			        </div>
 	        		<div class="form-group row">
-	        			<div class="col-md-6">
-	        				<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-4 col-sm-12">Jenis Kelamin</label>
-			        			<div class="col-lg-8 col-sm-12">
-			        				<select class="form-control" id='reqLP' name='reqLP'>
-			        					<option <?if ($reqLP==''){echo "selected";}?> disabled> Pilih Jenis Kelamin</option>
-			        					<option value="L" <?if ($reqLP=='L'){echo "selected";}?>> Laki laki</option>
-			        					<option value="P" <?if ($reqLP=='P'){echo "selected";}?>> Perempuan</option>
-			        				</select>
-			        			</div>
-			        		</div>
-			        	</div>
-			        	<div class="col-md-6">
-	        				<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-4 col-sm-12">Tunjangan</label>
-			        			<div class="col-lg-8 col-sm-12">
-			        				<select class="form-control" id='reqDapatTunjangan' name='reqDapatTunjangan'>
-			        					<option value="1" <?if ($reqDapatTunjangan=='1'){echo "selected";}?>> Dapat</option>
-			        					<option value="2" <?if ($reqDapatTunjangan=='2'){echo "selected";}?>> Tidak</option>
-			        				</select>
-			        			</div>
-			        		</div>
-			        	</div>
-	        		</div>
+		    			<label class="col-form-label text-right col-lg-2 col-sm-12">Jenis Kelamin</label>
+		    			<div class="col-lg-4 col-sm-12">
+		    				<select class="form-control" id='reqLP' name='reqLP'>
+		    					<option <?if ($reqLP==''){echo "selected";}?> disabled> Pilih Jenis Kelamin</option>
+		    					<option value="L" <?if ($reqLP=='L'){echo "selected";}?>> Laki laki</option>
+		    					<option value="P" <?if ($reqLP=='P'){echo "selected";}?>> Perempuan</option>
+		    				</select>
+		    			</div>
+		    			<label class="col-form-label text-right col-lg-2 col-sm-12">Tunjangan</label>
+		    			<div class="col-lg-4 col-sm-12">
+		    				<select class="form-control" id='reqDapatTunjangan' name='reqDapatTunjangan'>
+		    					<option value="1" <?if ($reqDapatTunjangan=='1'){echo "selected";}?>> Dapat</option>
+		    					<option value="2" <?if ($reqDapatTunjangan=='2'){echo "selected";}?>> Tidak</option>
+		    				</select>
+		    			</div>
+		    		</div>
 
 	        		<div class="form-group row">
-	        			<div class="col-md-6">
-	        				<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-4 col-sm-12">Pendidikan</label>
-			        			<div class="col-lg-8 col-sm-12">
-			        				<select class="form-control select2" id="ktpendidikan" <?=$disabled?> name="reqPendidikan" >
-			        					<option value=""></option>
-			        					<?
-			        					foreach($arrpendidikan as $item) 
-			        					{
-			        						$selectvalid= $item["id"];
-			        						$selectvaltext= $item["text"];
-			        					?>
-			        					<option value="<?=$selectvalid?>" <? if($reqPendidikan == $selectvalid) echo "selected";?>><?=$selectvaltext?></option>
-			        					<?
-			        					}
-			        					?>
-			        				</select>
-			        			</div>
-			        		</div>
-			        	</div>
-			        	<div class="col-md-6">
-			        		<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-4 col-sm-12">Status</label>
-			        			<div class="col-lg-8 col-sm-12">
-			        				<select class="form-control" id='reqStatus' name='reqStatus'>
-			        					<option value="1" <? if($reqStatus == 1) echo 'selected';?>>Kandung</option>
-			        					<option value="2" <? if($reqStatus == 2) echo 'selected';?>>Tiri</option>
-			        					<option value="3" <? if($reqStatus == 3) echo 'selected';?>>Angkat</option>
-			        				</select>
-			        			</div>
-			        		</div>
-		        		</div>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Pendidikan</label>
+	        			<div class="col-lg-4 col-sm-12">
+	        				<select class="form-control select2" id="ktpendidikan" <?=$disabled?> name="reqPendidikan" >
+	        					<option value=""></option>
+	        					<?
+	        					foreach($arrpendidikan as $item) 
+	        					{
+	        						$selectvalid= $item["id"];
+	        						$selectvaltext= $item["text"];
+	        					?>
+	        					<option value="<?=$selectvalid?>" <? if($reqPendidikan == $selectvalid) echo "selected";?>><?=$selectvaltext?></option>
+	        					<?
+	        					}
+	        					?>
+	        				</select>
+	        			</div>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Status</label>
+	        			<div class="col-lg-4 col-sm-12">
+	        				<select class="form-control" id='reqStatus' name='reqStatus'>
+	        					<option value="1" <? if($reqStatus == 1) echo 'selected';?>>Kandung</option>
+	        					<option value="2" <? if($reqStatus == 2) echo 'selected';?>>Tiri</option>
+	        					<option value="3" <? if($reqStatus == 3) echo 'selected';?>>Angkat</option>
+	        				</select>
+	        			</div>
 	        		</div>
 
 	        		<div class="form-group row">
@@ -190,40 +166,32 @@ $readonly = "readonly";
 	        		</div>
 
 	        		<div class="form-group row">
-			        	<div class="col-md-6">
-	        				<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-4 col-sm-12">
-				        			Mulai Dibayar
-				        		</label>
-			        			<div class="col-lg-8 col-sm-12">
-			        				<div class="input-group date">
-				        				<input type="text" autocomplete="off" class="form-control kttanggal" name="reqMulaiDibayar" value="<?=$reqMulaiDibayar?>" />
-				        				<div class="input-group-append">
-				        					<span class="input-group-text">
-				        						<i class="la la-calendar"></i>
-				        					</span>
-				        				</div>
-				        			</div>
-			        			</div>
-			        		</div>
-			        	</div>
-			        	<div class="col-md-6">
-	        				<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-4 col-sm-12">
-				        			Akhir Dibayar
-				        		</label>
-			        			<div class="col-lg-8 col-sm-12">
-			        				<div class="input-group date">
-				        				<input type="text" autocomplete="off" class="form-control kttanggal" name="reqAkhirDibayar" value="<?=$reqAkhirDibayar?>" />
-				        				<div class="input-group-append">
-				        					<span class="input-group-text">
-				        						<i class="la la-calendar"></i>
-				        					</span>
-				        				</div>
-				        			</div>
-			        			</div>
-			        		</div>
-			        	</div>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+		        			Mulai Dibayar
+		        		</label>
+	        			<div class="col-lg-4 col-sm-12">
+	        				<div class="input-group date">
+		        				<input type="text" autocomplete="off" class="form-control kttanggal" name="reqMulaiDibayar" value="<?=$reqMulaiDibayar?>" />
+		        				<div class="input-group-append">
+		        					<span class="input-group-text">
+		        						<i class="la la-calendar"></i>
+		        					</span>
+		        				</div>
+		        			</div>
+	        			</div>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+		        			Akhir Dibayar
+		        		</label>
+	        			<div class="col-lg-4 col-sm-12">
+	        				<div class="input-group date">
+		        				<input type="text" autocomplete="off" class="form-control kttanggal" name="reqAkhirDibayar" value="<?=$reqAkhirDibayar?>" />
+		        				<div class="input-group-append">
+		        					<span class="input-group-text">
+		        						<i class="la la-calendar"></i>
+		        					</span>
+		        				</div>
+		        			</div>
+	        			</div>
 			        </div>
 
 	        		<div class="card-footer">

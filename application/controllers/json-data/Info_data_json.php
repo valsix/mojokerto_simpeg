@@ -1612,7 +1612,7 @@ class info_data_json extends CI_Controller {
 
 		$adminusernama= $this->adminuserloginnama;
 		$userSatkerId= $this->adminsatkerid;
-		
+
 		if($reqSkCpnsId == "")
 		{
 
@@ -1652,7 +1652,7 @@ class info_data_json extends CI_Controller {
 
 	function SkPnsAdd()
 	{
-		$this->load->model("base/SkCpns");
+		$this->load->model("base/SkPns");
 
 		$reqPejabatPenetapan= $this->input->post('reqPejabatPenetapan');
 		$reqNamaPejabatPenetap= $this->input->post('reqNamaPejabatPenetap');
@@ -1660,45 +1660,56 @@ class info_data_json extends CI_Controller {
 		$reqNoSuratKeputusan= $this->input->post('reqNoSuratKeputusan');
 		$reqTanggalSuratKeputusan= $this->input->post('reqTanggalSuratKeputusan');
 		$reqTerhitungMulaiTanggal= $this->input->post('reqTerhitungMulaiTanggal');
-		$reqNoBeritaAcara= $this->input->post('reqNoBeritaAcara');
-		$reqTanggalBeritaAcara= $this->input->post('reqTanggalBeritaAcara');
 		$reqNoDiklatPrajabatan= $this->input->post('reqNoDiklatPrajabatan');
 		$reqTanggalDiklatPrajabatan= $this->input->post('reqTanggalDiklatPrajabatan');
 		$reqNoSuratUjiKesehatan= $this->input->post('reqNoSuratUjiKesehatan');
 		$reqTanggalSuratUjiKesehatan= $this->input->post('reqTanggalSuratUjiKesehatan');
 		$reqGolRuang= $this->input->post('reqGolRuang');
 		$reqPengambilanSumpah= $this->input->post('reqPengambilanSumpah');
-		$reqKeteranganLPJ= $this->input->post('reqKeteranganLPJ');
+		$reqSkPnsId= $this->input->post('reqSkPnsId');
+		$reqTanggalSumpah= $this->input->post('reqTanggalSumpah');
+		$reqNoSuratjiKesehatan= $this->input->post('reqNoSuratjiKesehatan');
+		$reqNoDiklatPrajabatan= $this->input->post('reqNoDiklatPrajabatan');
 		$reqTh= $this->input->post('reqTh');
 		$reqBl= $this->input->post('reqBl');
-		$reqSkPnsId= $this->input->post('reqSkPnsId');
+		$reqNoBeritaAcara= $this->input->post('reqNoBeritaAcara');
+		$reqTanggalBeritaAcara= $this->input->post('reqTanggalBeritaAcara');
+		$reqKeteranganLPJ= $this->input->post('reqKeteranganLPJ');
 		$reqId= $this->input->post('reqId');
 
-		$set= new SkCpns();
-		$set->setField('PEGAWAI_ID', $reqId);
-		$set->setField('NO_NOTA', $reqPejabatPenetapan);
-		$set->setField('NO_NOTA', $reqNamaPejabatPenetap);
-		$set->setField('NO_NOTA', $reqNIPPejabatPenetap);
-		$set->setField('NO_NOTA', $reqNoSuratKeputusan);
-		$set->setField('TANGGAL_NOTA', dateToDBCheck($reqTanggalSuratKeputusan));
-		$set->setField('TANGGAL_NOTA', dateToDBCheck($reqTerhitungMulaiTanggal));
-		$set->setField('NAMA_PENETAP', $reqNoBeritaAcara);
-		$set->setField('TANGGAL_SK', dateToDBCheck($reqTanggalBeritaAcara));
-		$set->setField('NAMA_PENETAP', $reqNoDiklatPrajabatan);
-		$set->setField('TMT_CPNS', dateToDBCheck($reqTanggalDiklatPrajabatan));
-		$set->setField('PANGKAT_ID', $reqNoSuratUjiKesehatan);
-		$set->setField('TANGGAL_TUGAS', dateToDBCheck($reqTanggalSuratUjiKesehatan));
-		$set->setField('MASA_KERJA_TAHUN', $reqGolRuang);
-		$set->setField('MASA_KERJA_BULAN', $reqPengambilanSumpah);
-		$set->setField('MASA_KERJA_BULAN', $reqKeteranganLPJ);
-		$set->setField('MASA_KERJA_BULAN', $reqTh);
-		$set->setField('MASA_KERJA_BULAN', $reqBl);
-		$set->setField('SK_CPNS_ID', $reqSkPnsId);
 
-		$reqSimpan="";
-	
+		$set= new SkPns();
+		$set->setField('PEGAWAI_ID', $reqId);
+		$set->setField('PEJABAT_PENETAP_ID', $reqPejabatPenetapan);
+		$set->setField('NAMA_PENETAP', $reqNamaPejabatPenetap);
+		$set->setField('NIP_PENETAP', $reqNIPPejabatPenetap);
+		$set->setField('NO_SK', $reqNoSuratKeputusan);
+		$set->setField('TANGGAL_SK', dateToDBCheck($reqTanggalSuratKeputusan));
+		$set->setField('TMT_PNS', dateToDBCheck($reqTerhitungMulaiTanggal));
+		$set->setField('NOMOR_BERITA_ACARA', $reqNoBeritaAcara);
+		$set->setField('TANGGAL_BERITA_ACARA', dateToDBCheck($reqTanggalBeritaAcara));
+		$set->setField('NO_PRAJAB', $reqNoDiklatPrajabatan);
+		$set->setField('TANGGAL_PRAJAB', dateToDBCheck($reqTanggalDiklatPrajabatan));
+		$set->setField('NO_UJI_KESEHATAN', $reqNoSuratUjiKesehatan);
+		$set->setField('TANGGAL_UJI_KESEHATAN', dateToDBCheck($reqTanggalSuratUjiKesehatan));
+		$set->setField('PANGKAT_ID', $reqGolRuang);
+		$set->setField('SUMPAH', $reqPengambilanSumpah);
+		$set->setField('TANGGAL_SUMPAH', dateToDBCheck($reqTanggalSumpah));
+		$set->setField('MASA_KERJA_TAHUN', $reqTh);
+		$set->setField('MASA_KERJA_BULAN', $reqBl);
+		$set->setField('KETERANGAN_LPJ', $reqKeteranganLPJ);
+		$set->setField('SK_PNS_ID', $reqSkPnsId);
+
+		$adminusernama= $this->adminuserloginnama;
+		$userSatkerId= $this->adminsatkerid;	
+		
 		if($reqSkPnsId == "")
 		{
+
+			$set->setField("LAST_CREATE_USER", $adminusernama);
+			$set->setField("LAST_CREATE_DATE", "NOW()");	
+			$set->setField("LAST_CREATE_SATKER", $userSatkerId);
+	
 			if($set->insert())
 			{
 				$reqPegawaiId= $set->pegawai_id;
@@ -1706,7 +1717,11 @@ class info_data_json extends CI_Controller {
 			}
 		}
 		else
-		{
+		{	
+			$set->setField("LAST_UPDATE_USER", $adminusernama);
+			$set->setField("LAST_UPDATE_DATE", "NOW()");	
+			$set->setField("LAST_UPDATE_SATKER", $userSatkerId);
+
 			if($set->update())
 			{
 				$reqSimpan = 1;

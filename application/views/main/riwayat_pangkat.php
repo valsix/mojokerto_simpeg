@@ -222,7 +222,7 @@ jQuery(document).ready(function() {
         }
         else
         {
-            urlAjax= "json-data/info_data_json/jsondiklatteknisdelete?&reqDetilId="+valinfoid;
+            urlAjax= "json-main/riwayat_pangkat_json/delete?reqRowId="+valinfoid;
             swal.fire({
                 title: 'Apakah anda yakin untuk hapus data?',
                 type: 'warning',
@@ -252,7 +252,7 @@ jQuery(document).ready(function() {
                                 showConfirmButton: false,
                                 timer: 2000
                             }).then(function() {
-                                document.location.href = "app/index/pegawai_diklat_teknis?formulaid=<?=$formulaid?>";
+                                document.location.href = "app/index/riwayat_pangkat?reqId=<?=$reqId?>";
                             });
                         },
                         complete: function() {

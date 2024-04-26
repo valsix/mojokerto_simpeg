@@ -91,79 +91,63 @@ $readonly = "readonly";
 	        		</div>
 	        		<div class="form-group row">
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Angkatan</label>
-	        			<div class="col-lg-1 col-sm-12">
+	        			<div class="col-lg-4 col-sm-12">
 	        				<input type="text" class="form-control valsixnumbering" name="reqAngkatan" id="reqAngkatan" value="<?=$reqAngkatan?>" />
 	        			</div>
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Tahun</label>
-	        			<div class="col-lg-1 col-sm-12">
+	        			<div class="col-lg-4 col-sm-12">
 	        				<input type="text" class="form-control valsixnumbering" name="reqTahun" id="reqTahun" value="<?=$reqTahun?>" />
 	        			</div>
 	        		</div>
 	        		<div class="form-group row">
-	        			<div class="col-md-6">
-	        				<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-4 col-sm-12">
-				        			No. STTPP
-				        		</label>
-			        			<div class="col-lg-8 col-sm-12">
-			        				<input type="text" class="form-control" name="reqNoSTTPP" id="reqNoSTTPP" value="<?=$reqNoSTTPP?>" />
-			        			</div>
-			        		</div>
-		        		</div>
-		        		<div class="col-md-6">
-		        			<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-4 col-sm-12">
-				        			Tgl. STTPP
-				        		</label>
-			        			<div class="col-lg-8 col-sm-12">
-			        				<div class="input-group date">
-				        				<input type="text" <?=$read?> autocomplete="off" class="form-control kttanggal" name="reqTglSTTPP" value="<?=$reqTglSTTPP?>" />
-				        				<div class="input-group-append">
-				        					<span class="input-group-text">
-				        						<i class="la la-calendar"></i>
-				        					</span>
-				        				</div>
-				        			</div>
-			        			</div>
-			        		</div>
-		        		</div>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+		        			No. STTPP
+		        		</label>
+	        			<div class="col-lg-4 col-sm-12">
+	        				<input type="text" class="form-control" name="reqNoSTTPP" id="reqNoSTTPP" value="<?=$reqNoSTTPP?>" />
+	        			</div>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+		        			Tgl. STTPP
+		        		</label>
+	        			<div class="col-lg-4 col-sm-12">
+	        				<div class="input-group date">
+		        				<input type="text" <?=$read?> autocomplete="off" class="form-control kttanggal" name="reqTglSTTPP" value="<?=$reqTglSTTPP?>" />
+		        				<div class="input-group-append">
+		        					<span class="input-group-text">
+		        						<i class="la la-calendar"></i>
+		        					</span>
+		        				</div>
+		        			</div>
+	        			</div>
 	        		</div>
 
 	        		<div class="form-group row">
-	        			<div class="col-md-6">
-	        				<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-4 col-sm-12">
-				        			Tgl Mulai
-				        		</label>
-			        			<div class="col-lg-8 col-sm-12">
-			        				<div class="input-group date">
-				        				<input type="text" <?=$read?> autocomplete="off" class="form-control kttanggal" name="reqTglMulai" value="<?=$reqTglMulai?>" />
-				        				<div class="input-group-append">
-				        					<span class="input-group-text">
-				        						<i class="la la-calendar"></i>
-				        					</span>
-				        				</div>
-				        			</div>
-			        			</div>
-			        		</div>
-		        		</div>
-		        		<div class="col-md-6">
-		        			<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-4 col-sm-12">
-				        			Tgl Selesai
-				        		</label>
-			        			<div class="col-lg-8 col-sm-12">
-			        				<div class="input-group date">
-				        				<input type="text" <?=$read?> autocomplete="off" class="form-control kttanggal" name="reqTglSelesai" value="<?=$reqTglSelesai?>" />
-				        				<div class="input-group-append">
-				        					<span class="input-group-text">
-				        						<i class="la la-calendar"></i>
-				        					</span>
-				        				</div>
-				        			</div>
-			        			</div>
-			        		</div>
-		        		</div>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+		        			Tgl Mulai
+		        		</label>
+	        			<div class="col-lg-4 col-sm-12">
+	        				<div class="input-group date">
+		        				<input type="text" <?=$read?> autocomplete="off" class="form-control kttanggal" name="reqTglMulai" value="<?=$reqTglMulai?>" />
+		        				<div class="input-group-append">
+		        					<span class="input-group-text">
+		        						<i class="la la-calendar"></i>
+		        					</span>
+		        				</div>
+		        			</div>
+	        			</div>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+		        			Tgl Selesai
+		        		</label>
+	        			<div class="col-lg-4 col-sm-12">
+	        				<div class="input-group date">
+		        				<input type="text" <?=$read?> autocomplete="off" class="form-control kttanggal" name="reqTglSelesai" value="<?=$reqTglSelesai?>" />
+		        				<div class="input-group-append">
+		        					<span class="input-group-text">
+		        						<i class="la la-calendar"></i>
+		        					</span>
+		        				</div>
+		        			</div>
+	        			</div>
 	        		</div>
 
 	        		<div class="form-group row">

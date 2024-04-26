@@ -88,70 +88,54 @@ $readonly = "readonly";
 	        		</div>
 
 	        		<div class="form-group row">
-	        			<div class="col-md-6">
-	        				<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-4 col-sm-12">
-				        			No Piagam
-				        		</label>
-			        			<div class="col-lg-8 col-sm-12">
-			        				<input type="text" class="form-control" name="reqNoPiagam" id="reqNoPiagam" value="<?=$reqNoPiagam?>" />
-			        			</div>
-			        		</div>
-		        		</div>
-		        		<div class="col-md-6">
-		        			<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-4 col-sm-12">
-				        			Tgl. Piagam
-				        		</label>
-			        			<div class="col-lg-8 col-sm-12">
-			        				<div class="input-group date">
-				        				<input type="text" <?=$read?> autocomplete="off" class="form-control kttanggal" name="reqTglPiagam" value="<?=$reqTglPiagam?>" />
-				        				<div class="input-group-append">
-				        					<span class="input-group-text">
-				        						<i class="la la-calendar"></i>
-				        					</span>
-				        				</div>
-				        			</div>
-			        			</div>
-			        		</div>
-		        		</div>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+		        			No Piagam
+		        		</label>
+	        			<div class="col-lg-4 col-sm-12">
+	        				<input type="text" class="form-control" name="reqNoPiagam" id="reqNoPiagam" value="<?=$reqNoPiagam?>" />
+	        			</div>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+		        			Tgl. Piagam
+		        		</label>
+	        			<div class="col-lg-4 col-sm-12">
+	        				<div class="input-group date">
+		        				<input type="text" <?=$read?> autocomplete="off" class="form-control kttanggal" name="reqTglPiagam" value="<?=$reqTglPiagam?>" />
+		        				<div class="input-group-append">
+		        					<span class="input-group-text">
+		        						<i class="la la-calendar"></i>
+		        					</span>
+		        				</div>
+		        			</div>
+	        			</div>
 	        		</div>
 
 	        		<div class="form-group row">
-	        			<div class="col-md-6">
-	        				<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-4 col-sm-12">
-				        			Tgl Mulai
-				        		</label>
-			        			<div class="col-lg-8 col-sm-12">
-			        				<div class="input-group date">
-				        				<input type="text" <?=$read?> autocomplete="off" class="form-control kttanggal" name="reqTglMulai" value="<?=$reqTglMulai?>" />
-				        				<div class="input-group-append">
-				        					<span class="input-group-text">
-				        						<i class="la la-calendar"></i>
-				        					</span>
-				        				</div>
-				        			</div>
-			        			</div>
-			        		</div>
-		        		</div>
-		        		<div class="col-md-6">
-		        			<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-4 col-sm-12">
-				        			Tgl Selesai
-				        		</label>
-			        			<div class="col-lg-8 col-sm-12">
-			        				<div class="input-group date">
-				        				<input type="text" <?=$read?> autocomplete="off" class="form-control kttanggal" name="reqTglSelesai" value="<?=$reqTglSelesai?>" />
-				        				<div class="input-group-append">
-				        					<span class="input-group-text">
-				        						<i class="la la-calendar"></i>
-				        					</span>
-				        				</div>
-				        			</div>
-			        			</div>
-			        		</div>
-		        		</div>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+		        			Tgl Mulai
+		        		</label>
+	        			<div class="col-lg-4 col-sm-12">
+	        				<div class="input-group date">
+		        				<input type="text" <?=$read?> autocomplete="off" class="form-control kttanggal" name="reqTglMulai" value="<?=$reqTglMulai?>" />
+		        				<div class="input-group-append">
+		        					<span class="input-group-text">
+		        						<i class="la la-calendar"></i>
+		        					</span>
+		        				</div>
+		        			</div>
+	        			</div>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+		        			Tgl Selesai
+		        		</label>
+	        			<div class="col-lg-4 col-sm-12">
+	        				<div class="input-group date">
+		        				<input type="text" <?=$read?> autocomplete="off" class="form-control kttanggal" name="reqTglSelesai" value="<?=$reqTglSelesai?>" />
+		        				<div class="input-group-append">
+		        					<span class="input-group-text">
+		        						<i class="la la-calendar"></i>
+		        					</span>
+		        				</div>
+		        			</div>
+	        			</div>
 	        		</div>
 
 	        		<div class="form-group row">

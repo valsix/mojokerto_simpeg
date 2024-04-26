@@ -28,8 +28,9 @@ class SkCpns extends Entity{
 			$str .= " AND $key = '$val' ";
 		}
 		
-		$this->query = $str;
 		$str .= $statement." ". $orderby;
+		$this->query = $str;
+		$this->setlogdata("SK_CPNS", "INSERT", $str);
 				
 		return $this->selectLimit($str,$limit,$from); 
     }

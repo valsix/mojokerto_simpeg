@@ -107,66 +107,47 @@ $reqTipePegawaiId= $pegawai->getField('TIPE_PEGAWAI_ID');
             </div>
             <form class="form" id="ktloginform" method="POST" enctype="multipart/form-data">
 	        	<div class="card-body">
-
 	        		<div class="form-group row">
-	        			<div class="col-md-8">
-	        				<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-3 col-sm-12">
-				        			No. SK
-				        		</label>
-			        			<div class="col-lg-9 col-sm-12">
-			        				<input type="text" class="form-control" name="reqNoSK" id="reqNoSK" value="<?=$reqNoSK?>" />
-			        			</div>
-			        		</div>
-		        		</div>
-		        		<div class="col-md-4">
-		        			<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-4 col-sm-12">
-				        			Tanggal SK
-				        		</label>
-			        			<div class="col-lg-8 col-sm-12">
-			        				<div class="input-group date">
-				        				<input type="text" <?=$read?> autocomplete="off" class="form-control kttanggal" name="reqTglSK" value="<?=$reqTglSK?>" />
-				        				<div class="input-group-append">
-				        					<span class="input-group-text">
-				        						<i class="la la-calendar"></i>
-				        					</span>
-				        				</div>
-				        			</div>
-			        			</div>
-			        		</div>
-		        		</div>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">No. SK</label>
+	        			<div class="col-lg-4 col-sm-12">
+	        				<input type="text" class="form-control" name="reqNoSK" id="reqNoSK" value="<?=$reqNoSK?>" />
+	        			</div>		
+        				<label class="col-form-label text-right col-lg-2 col-sm-12">
+		        			Tanggal SK
+		        		</label>
+	        			<div class="col-lg-4 col-sm-12">
+	        				<div class="input-group date">
+		        				<input type="text" <?=$read?> autocomplete="off" class="form-control kttanggal" name="reqTglSK" value="<?=$reqTglSK?>" />
+		        				<div class="input-group-append">
+		        					<span class="input-group-text">
+		        						<i class="la la-calendar"></i>
+		        					</span>
+		        				</div>
+		        			</div>
+	        			</div>
 	        		</div>
 
 	        		<div class="form-group row">
-	        			<div class="col-md-8">
-	        				<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-3 col-sm-12">
-				        			Nama Jabatan
-				        		</label>
-			        			<div class="col-lg-9 col-sm-12">
-			        				<input type="hidden" name="reqTipePegawaiId" value="<?=$reqTipePegawaiParentId?>" />
-			        				<input type="hidden" name="reqSatkerId" id="reqSatkerId" value="<?=$reqSatkerId?>" />
-			        				<input type="text" class="form-control" name="reqNamaJabatan" id="reqNamaJabatan" value="<?=$reqNamaJabatan?>" />
-			        			</div>
-			        		</div>
-		        		</div>
-		        		<div class="col-md-4">
-		        			<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-4 col-sm-12">
-				        			TMT Mutasi
-				        		</label>
-			        			<div class="col-lg-8 col-sm-12">
-			        				<div class="input-group date">
-				        				<input type="text" <?=$read?> autocomplete="off" class="form-control kttanggal" name="reqTMTJabatan" value="<?=$reqTMTJabatan?>" />
-				        				<div class="input-group-append">
-				        					<span class="input-group-text">
-				        						<i class="la la-calendar"></i>
-				        					</span>
-				        				</div>
-				        			</div>
-			        			</div>
-			        		</div>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+		        			Nama Jabatan
+		        		</label>
+	        			<div class="col-lg-4 col-sm-12">
+	        				<input type="hidden" name="reqTipePegawaiId" value="<?=$reqTipePegawaiParentId?>" />
+	        				<input type="hidden" name="reqSatkerId" id="reqSatkerId" value="<?=$reqSatkerId?>" />
+	        				<input type="text" class="form-control" name="reqNamaJabatan" id="reqNamaJabatan" value="<?=$reqNamaJabatan?>" />
+	        			</div>
+    					<label class="col-form-label text-right col-lg-2 col-sm-12">
+		        			TMT Mutasi
+		        		</label>
+	        			<div class="col-lg-4 col-sm-12">
+	        				<div class="input-group date">
+		        				<input type="text" <?=$read?> autocomplete="off" class="form-control kttanggal" name="reqTMTJabatan" value="<?=$reqTMTJabatan?>" />
+		        				<div class="input-group-append">
+		        					<span class="input-group-text">
+		        						<i class="la la-calendar"></i>
+		        					</span>
+		        				</div>
+		        			</div>
 		        		</div>
 	        		</div>
 
@@ -175,73 +156,57 @@ $reqTipePegawaiId= $pegawai->getField('TIPE_PEGAWAI_ID');
 					{
 					?>
 					<div class="form-group row">
-	        			<div class="col-md-6">
-	        				<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-4 col-sm-12">
-				        			Eselon
-				        		</label>
-			        			<div class="col-lg-8 col-sm-12">
-			        				<select class="form-control" id="reqEselon" name="reqEselon">
-			        					<?while($eselon->nextRow()){?>
-						                    <option value="<?=$eselon->getField('ESELON_ID')?>" <? if($reqEselon == $eselon->getField('ESELON_ID')) echo 'selected';?>><?=$eselon->getField('NAMA')?></option>
-						                <? }?>
-			        				</select>
-			        			</div>
-			        		</div>
-		        		</div>
-		        		<div class="col-md-6">
-		        			<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-4 col-sm-12">
-				        			TMT Eselon
-				        		</label>
-			        			<div class="col-lg-8 col-sm-12">
-			        				<div class="input-group date">
-				        				<input type="text" <?=$read?> autocomplete="off" class="form-control kttanggal" name="reqTMTEselon" value="<?=$reqTMTEselon?>" />
-				        				<div class="input-group-append">
-				        					<span class="input-group-text">
-				        						<i class="la la-calendar"></i>
-				        					</span>
-				        				</div>
-				        			</div>
-			        			</div>
-			        		</div>
-		        		</div>
-	        		</div>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+		        			Eselon
+		        		</label>
+	        			<div class="col-lg-4 col-sm-12">
+	        				<select class="form-control" id="reqEselon" name="reqEselon">
+	        					<?while($eselon->nextRow()){?>
+				                    <option value="<?=$eselon->getField('ESELON_ID')?>" <? if($reqEselon == $eselon->getField('ESELON_ID')) echo 'selected';?>><?=$eselon->getField('NAMA')?></option>
+				                <? }?>
+	        				</select>
+	        			</div>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+		        			TMT Eselon
+		        		</label>
+	        			<div class="col-lg-4 col-sm-12">
+	        				<div class="input-group date">
+		        				<input type="text" <?=$read?> autocomplete="off" class="form-control kttanggal" name="reqTMTEselon" value="<?=$reqTMTEselon?>" />
+		        				<div class="input-group-append">
+		        					<span class="input-group-text">
+		        						<i class="la la-calendar"></i>
+		        					</span>
+		        				</div>
+		        			</div>
+	        			</div>
+			        </div>
 	        		<div class="form-group row">
-	        			<div class="col-md-6">
-	        				<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-4 col-sm-12">
-				        			TMT Tugas Tambahan
-				        		</label>
-			        			<div class="col-lg-8 col-sm-12">
-			        				<div class="input-group date">
-				        				<input type="text" <?=$read?> autocomplete="off" class="form-control kttanggal" name="reqTMTTugasTambahan" value="<?=$reqTMTTugasTambahan?>" />
-				        				<div class="input-group-append">
-				        					<span class="input-group-text">
-				        						<i class="la la-calendar"></i>
-				        					</span>
-				        				</div>
-				        			</div>
-			        			</div>
-			        		</div>
-		        		</div>
-		        		<div class="col-md-6">
-		        			<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-4 col-sm-12">
-				        			Tgl. Berakhir
-				        		</label>
-			        			<div class="col-lg-8 col-sm-12">
-			        				<div class="input-group date">
-				        				<input type="text" <?=$read?> autocomplete="off" class="form-control kttanggal" name="reqTglBerakhir" value="<?=$reqTglBerakhir?>" />
-				        				<div class="input-group-append">
-				        					<span class="input-group-text">
-				        						<i class="la la-calendar"></i>
-				        					</span>
-				        				</div>
-				        			</div>
-			        			</div>
-			        		</div>
-		        		</div>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+		        			TMT Tugas Tambahan
+		        		</label>
+	        			<div class="col-lg-4 col-sm-12">
+	        				<div class="input-group date">
+		        				<input type="text" <?=$read?> autocomplete="off" class="form-control kttanggal" name="reqTMTTugasTambahan" value="<?=$reqTMTTugasTambahan?>" />
+		        				<div class="input-group-append">
+		        					<span class="input-group-text">
+		        						<i class="la la-calendar"></i>
+		        					</span>
+		        				</div>
+		        			</div>
+	        			</div>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+		        			Tgl. Berakhir
+		        		</label>
+	        			<div class="col-lg-4 col-sm-12">
+	        				<div class="input-group date">
+		        				<input type="text" <?=$read?> autocomplete="off" class="form-control kttanggal" name="reqTglBerakhir" value="<?=$reqTglBerakhir?>" />
+		        				<div class="input-group-append">
+		        					<span class="input-group-text">
+		        						<i class="la la-calendar"></i>
+		        					</span>
+		        				</div>
+		        			</div>
+	        			</div>
 	        		</div>
 		        	<?
 		        	}
@@ -249,57 +214,45 @@ $reqTipePegawaiId= $pegawai->getField('TIPE_PEGAWAI_ID');
 		        	{
 		        	?>
 		        	<div class="form-group row">
-	        			<div class="col-md-4">
-	        				<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-6 col-sm-12">
-				        			TMT Jabatan Fungsional
-				        		</label>
-			        			<div class="col-lg-6 col-sm-12">
-			        				<div class="input-group date">
-				        				<input type="text" <?=$read?> autocomplete="off" class="form-control kttanggal" name="reqTMTJabatanFungsional" value="<?=$reqTMTJabatanFungsional?>" />
-				        				<div class="input-group-append">
-				        					<span class="input-group-text">
-				        						<i class="la la-calendar"></i>
-				        					</span>
-				        				</div>
-				        			</div>
-			        			</div>
-			        		</div>
-		        		</div>
-		        		<div class="col-md-4">
-		        			<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-5 col-sm-12">
-				        			TMT Tugas Tambahan
-				        		</label>
-			        			<div class="col-lg-7 col-sm-12">
-			        				<div class="input-group date">
-				        				<input type="text" <?=$read?> autocomplete="off" class="form-control kttanggal" name="reqTMTTugasTambahan" value="<?=$reqTMTTugasTambahan?>" />
-				        				<div class="input-group-append">
-				        					<span class="input-group-text">
-				        						<i class="la la-calendar"></i>
-				        					</span>
-				        				</div>
-				        			</div>
-			        			</div>
-			        		</div>
-		        		</div>
-		        		<div class="col-md-4">
-	        				<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-4 col-sm-12">
-				        			Tgl. Berakhir
-				        		</label>
-			        			<div class="col-lg-8 col-sm-12">
-			        				<div class="input-group date">
-				        				<input type="text" <?=$read?> autocomplete="off" class="form-control kttanggal" name="reqTglBerakhir" value="<?=$reqTglBerakhir?>" />
-				        				<div class="input-group-append">
-				        					<span class="input-group-text">
-				        						<i class="la la-calendar"></i>
-				        					</span>
-				        				</div>
-				        			</div>
-			        			</div>
-			        		</div>
-		        		</div>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+		        			TMT Jabatan Fungsional
+		        		</label>
+	        			<div class="col-lg-2 col-sm-12">
+	        				<div class="input-group date">
+		        				<input type="text" <?=$read?> autocomplete="off" class="form-control kttanggal" name="reqTMTJabatanFungsional" value="<?=$reqTMTJabatanFungsional?>" />
+		        				<div class="input-group-append">
+		        					<span class="input-group-text">
+		        						<i class="la la-calendar"></i>
+		        					</span>
+		        				</div>
+		        			</div>
+	        			</div>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+		        			TMT Tugas Tambahan
+		        		</label>
+	        			<div class="col-lg-2 col-sm-12">
+	        				<div class="input-group date">
+		        				<input type="text" <?=$read?> autocomplete="off" class="form-control kttanggal" name="reqTMTTugasTambahan" value="<?=$reqTMTTugasTambahan?>" />
+		        				<div class="input-group-append">
+		        					<span class="input-group-text">
+		        						<i class="la la-calendar"></i>
+		        					</span>
+		        				</div>
+		        			</div>
+	        			</div>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+		        			Tgl. Berakhir
+		        		</label>
+	        			<div class="col-lg-2 col-sm-12">
+	        				<div class="input-group date">
+		        				<input type="text" <?=$read?> autocomplete="off" class="form-control kttanggal" name="reqTglBerakhir" value="<?=$reqTglBerakhir?>" />
+		        				<div class="input-group-append">
+		        					<span class="input-group-text">
+		        						<i class="la la-calendar"></i>
+		        					</span>
+		        				</div>
+		        			</div>
+	        			</div>
 	        		</div>
 		        	<?
 		        	}
@@ -307,15 +260,14 @@ $reqTipePegawaiId= $pegawai->getField('TIPE_PEGAWAI_ID');
 
 		        	<div class="form-group row">
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Pj Penetap</label>
-	        			<div class="col-lg-10 col-sm-12">
+	        			<div class="col-lg-9 col-sm-12">
 	        				<input type="hidden" id="reqStatusPejabatPenetap" name="reqStatusPejabatPenetap" value="<?=$reqStatus?>" />
 			                <div id="baru_status" style="display:<?=$reqDisplayBaru?>">
-			            	<input type="text" style="width:225px;" id="reqPjPenetap_Baru" class="form-control" name="reqPjPenetap_Baru" <?=$read?> value="<?=$reqPjPenetapNama?>" />
-			                <? if($disabled == ''){?>
-			                	<img src="images/button_cancel.png" style="cursor:pointer" id="image_cancel" onclick="ShowHiddenId('')">
-			                <? }?>
+				            	<input type="text" style="width:225px;" id="reqPjPenetap_Baru" class="form-control" name="reqPjPenetap_Baru" <?=$read?> value="<?=$reqPjPenetapNama?>" />
+				                <? if($disabled == ''){?>
+				                	<img src="images/button_cancel.png" style="cursor:pointer" id="image_cancel" onclick="ShowHiddenId('')">
+				                <? }?>
 			                </div>
-			                
 			                <div id="select_status" style="display:<?=$reqDisplay?>">
 				            	<? $pejabat_penetap->selectByParamsPejabatPenetap(array());?>
 				                <select <?=$disabled?> name="reqPjPenetap" id="reqPjPenetap" class="form-control">
@@ -323,81 +275,63 @@ $reqTipePegawaiId= $pegawai->getField('TIPE_PEGAWAI_ID');
 				                        <option value="<?=$pejabat_penetap->getField('PEJABAT_PENETAP_ID')?>" <? if($reqPjPenetapId == $pejabat_penetap->getField('PEJABAT_PENETAP_ID')) echo 'selected';?>><?=$pejabat_penetap->getField('JABATAN')?></option>
 				                    <? }?>
 				                </select>
-				                <? if($disabled == ''){?>
-				                	<img src="images/add.png" style="cursor:pointer" title="Tambah Data" id="image_add" height="15" width="15" onclick="ShowHiddenId('baru')">
-				                <? }?>
 		        			</div>
+	        			</div>
+	        			<div class="col-lg-1 col-sm-12">
+							<? if($disabled == ''){?>
+			                	<img src="images/add.png" style="cursor:pointer" title="Tambah Data" id="image_add" height="30" onclick="ShowHiddenId('baru')">
+			                <? }?>
 	        			</div>
 	        		</div>
 
 	        		<div class="form-group row">
-	        			<div class="col-md-4">
-	        				<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-6 col-sm-12">
-				        			No. Pelantikan
-				        		</label>
-			        			<div class="col-lg-6 col-sm-12">
-			        				<input type="text" class="form-control" name="reqNoPelantikan" id="reqNoPelantikan" value="<?=$reqNoPelantikan?>" />
-			        			</div>
-			        		</div>
-		        		</div>
-		        		<div class="col-md-4">
-		        			<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-4 col-sm-12">
-				        			Tgl. Pelantikan
-				        		</label>
-			        			<div class="col-lg-8 col-sm-12">
-			        				<div class="input-group date">
-				        				<input type="text" <?=$read?> autocomplete="off" class="form-control kttanggal" name="reqTglPelantikan" value="<?=$reqTglPelantikan?>" />
-				        				<div class="input-group-append">
-				        					<span class="input-group-text">
-				        						<i class="la la-calendar"></i>
-				        					</span>
-				        				</div>
-				        			</div>
-			        			</div>
-			        		</div>
-		        		</div>
-		        		<div class="col-md-4">
-	        				<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-4 col-sm-12">
-				        			Tunjangan
-				        		</label>
-			        			<div class="col-lg-8 col-sm-12">
-			        				<input type="text" placeholder class="form-control" id="reqTunjangan" name="reqTunjangan" OnFocus="FormatAngka('reqTunjangan')" OnKeyUp="FormatUang('reqTunjangan')" OnBlur="FormatUang('reqTunjangan')" value="<?=numberToIna($reqTunjangan)?>" />
-			        			</div>
-			        		</div>
-		        		</div>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+		        			No. Pelantikan
+		        		</label>
+	        			<div class="col-lg-2 col-sm-12">
+	        				<input type="text" class="form-control" name="reqNoPelantikan" id="reqNoPelantikan" value="<?=$reqNoPelantikan?>" />
+	        			</div>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+		        			Tgl. Pelantikan
+		        		</label>
+	        			<div class="col-lg-2 col-sm-12">
+	        				<div class="input-group date">
+		        				<input type="text" <?=$read?> autocomplete="off" class="form-control kttanggal" name="reqTglPelantikan" value="<?=$reqTglPelantikan?>" />
+		        				<div class="input-group-append">
+		        					<span class="input-group-text">
+		        						<i class="la la-calendar"></i>
+		        					</span>
+		        				</div>
+		        			</div>
+	        			</div>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+		        			Tunjangan
+		        		</label>
+	        			<div class="col-lg-2 col-sm-12">
+	        				<input type="text" placeholder class="form-control" id="reqTunjangan" name="reqTunjangan" OnFocus="FormatAngka('reqTunjangan')" OnKeyUp="FormatUang('reqTunjangan')" OnBlur="FormatUang('reqTunjangan')" value="<?=numberToIna($reqTunjangan)?>" />
+	        			</div>
 	        		</div>
 
 	        		<div class="form-group row">
-	        			<div class="col-md-4">
-	        				<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-6 col-sm-12">
-				        			Bln. Dibayar
-				        		</label>
-			        			<div class="col-lg-6 col-sm-12">
-			        				<div class="input-group date">
-				        				<input type="text" <?=$read?> autocomplete="off" class="form-control kttanggal" name="reqBlnDibayar" value="<?=$reqBlnDibayar?>" />
-				        				<div class="input-group-append">
-				        					<span class="input-group-text">
-				        						<i class="la la-calendar"></i>
-				        					</span>
-				        				</div>
-				        			</div>
-			        			</div>
-			        		</div>
-		        		</div>
-		        		<div class="col-md-8">
-		        			<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-2 col-sm-12">
-				        			Perpanjangan BUP
-				        		</label>
-			        			<div class="col-lg-10 col-sm-12">
-			        				<input type="text" class="form-control" name="reqKeteranganBUP" id="reqKeteranganBUP" value="<?=$reqKeteranganBUP?>" />
-			        			</div>
-			        		</div>
-		        		</div>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+		        			Bln. Dibayar
+		        		</label>
+	        			<div class="col-lg-4 col-sm-12">
+	        				<div class="input-group date">
+		        				<input type="text" <?=$read?> autocomplete="off" class="form-control kttanggal" name="reqBlnDibayar" value="<?=$reqBlnDibayar?>" />
+		        				<div class="input-group-append">
+		        					<span class="input-group-text">
+		        						<i class="la la-calendar"></i>
+		        					</span>
+		        				</div>
+		        			</div>
+	        			</div>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+		        			Perpanjangan BUP
+		        		</label>
+	        			<div class="col-lg-4 col-sm-12">
+	        				<input type="text" class="form-control" name="reqKeteranganBUP" id="reqKeteranganBUP" value="<?=$reqKeteranganBUP?>" />
+	        			</div>
 	        		</div>
 
 	        		<div class="card-footer">

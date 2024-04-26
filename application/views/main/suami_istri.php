@@ -126,63 +126,47 @@ $readonly = "readonly";
 		        			</div>
 		        		</div>
 		        		<div class="form-group row">
-		        			<div class="col-md-6">
-		        				<div class="form-group row">
-				        			<label class="col-form-label text-right col-lg-4 col-sm-12">
-					        			Tempat Lahir
-					        		</label>
-				        			<div class="col-lg-8 col-sm-12">
-				        				<input type="text" class="form-control" name="reqTempatLahir" id="reqTempatLahir" value="<?=$reqTempatLahir?>" />
-				        			</div>
-				        		</div>
-				        	</div>
-				        	<div class="col-md-6">
-				        		<div class="form-group row">
-				        			<label class="col-form-label text-right col-lg-4 col-sm-12">
-					        			Kartu
-					        		</label>
-				        			<div class="col-lg-8 col-sm-12">
-				        				<input type="text" class="form-control" name="reqKartu" id="reqKartu" value="<?=$reqKartu?>" />
-				        			</div>
-				        		</div>
-				        	</div>
+		        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+			        			Tempat Lahir
+			        		</label>
+		        			<div class="col-lg-4 col-sm-12">
+		        				<input type="text" class="form-control" name="reqTempatLahir" id="reqTempatLahir" value="<?=$reqTempatLahir?>" />
+		        			</div>
+		        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+			        			Kartu
+			        		</label>
+		        			<div class="col-lg-4 col-sm-12">
+		        				<input type="text" class="form-control" name="reqKartu" id="reqKartu" value="<?=$reqKartu?>" />
+		        			</div>
 		        		</div>
 
 		        		<div class="form-group row">
-				        	<div class="col-md-6">
-				        		<div class="form-group row">
-				        			<label class="col-form-label text-right col-lg-4 col-sm-12">
-					        			Tgl Lahir
-					        		</label>
-				        			<div class="col-lg-8 col-sm-12">
-				        				<div class="input-group date">
-					        				<input type="text" <?=$read?> autocomplete="off" class="form-control kttanggal" name="reqTglLahir" value="<?=$reqTglLahir?>" />
-					        				<div class="input-group-append">
-					        					<span class="input-group-text">
-					        						<i class="la la-calendar"></i>
-					        					</span>
-					        				</div>
-					        			</div>
-				        			</div>
-				        		</div>
-			        		</div>
-			        		<div class="col-md-6">
-			        			<div class="form-group row">
-			        				<label class="col-form-label text-right col-lg-4 col-sm-12">
-					        			Tgl Kawin
-					        		</label>
-				        			<div class="col-lg-8 col-sm-12">
-				        				<div class="input-group date">
-					        				<input type="text" <?=$read?> autocomplete="off" class="form-control kttanggal" name="reqTglKawin" value="<?=$reqTglKawin?>" />
-					        				<div class="input-group-append">
-					        					<span class="input-group-text">
-					        						<i class="la la-calendar"></i>
-					        					</span>
-					        				</div>
-					        			</div>
-				        			</div>
-				        		</div>
-			        		</div>
+		        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+			        			Tgl Lahir
+			        		</label>
+		        			<div class="col-lg-4 col-sm-12">
+		        				<div class="input-group date">
+			        				<input type="text" <?=$read?> autocomplete="off" class="form-control kttanggal" name="reqTglLahir" value="<?=$reqTglLahir?>" />
+			        				<div class="input-group-append">
+			        					<span class="input-group-text">
+			        						<i class="la la-calendar"></i>
+			        					</span>
+			        				</div>
+			        			</div>
+		        			</div>
+	        				<label class="col-form-label text-right col-lg-2 col-sm-12">
+			        			Tgl Kawin
+			        		</label>
+		        			<div class="col-lg-4 col-sm-12">
+		        				<div class="input-group date">
+			        				<input type="text" <?=$read?> autocomplete="off" class="form-control kttanggal" name="reqTglKawin" value="<?=$reqTglKawin?>" />
+			        				<div class="input-group-append">
+			        					<span class="input-group-text">
+			        						<i class="la la-calendar"></i>
+			        					</span>
+			        				</div>
+			        			</div>
+		        			</div>
 		        		</div>
 
 		        		<div class="form-group row">
@@ -202,31 +186,24 @@ $readonly = "readonly";
 		        			</div>
 		        		</div>
 		        		<div class="form-group row">
-		        			<div class="col-md-4">
-				        		<div class="form-group row">
-				        			<label class="col-form-label text-right col-lg-6 col-sm-12">
-					        			Pendidikan
-					        		</label>
-				        			<div class="col-lg-6 col-sm-12">
-				        				<select class="form-control" id="reqPendidikan" name="reqPendidikan">
-				        					 <? while($pendidikan->nextRow()){?>
-							                    <option value="<?=$pendidikan->getField('PENDIDIKAN_ID')?>" <? if($reqPendidikan == $pendidikan->getField('PENDIDIKAN_ID')) echo 'selected';?>><?=$pendidikan->getField('NAMA')?></option>
-							                <? }?>
-				        				</select>
-				        			</div>
-				        		</div>
-				        	</div>
-				        	<div class="col-md-8">
-					        	<div class="form-group row">
-				        			<label class="col-form-label text-right col-lg-4 col-sm-12">
-					        			Pekerjaan
-					        		</label>
-				        			<div class="col-lg-8 col-sm-12">
-				        				<input type="text" class="form-control" name="reqPekerjaan" id="reqPekerjaan" value="<?=$reqPekerjaan?>" />
-				        			</div>
-				        		</div>
-				        	</div>
+		        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+			        			Pendidikan
+			        		</label>
+		        			<div class="col-lg-4 col-sm-12">
+		        				<select class="form-control" id="reqPendidikan" name="reqPendidikan">
+		        					 <? while($pendidikan->nextRow()){?>
+					                    <option value="<?=$pendidikan->getField('PENDIDIKAN_ID')?>" <? if($reqPendidikan == $pendidikan->getField('PENDIDIKAN_ID')) echo 'selected';?>><?=$pendidikan->getField('NAMA')?></option>
+					                <? }?>
+		        				</select>
+		        			</div>
+		        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+			        			Pekerjaan
+			        		</label>
+		        			<div class="col-lg-4 col-sm-12">
+		        				<input type="text" class="form-control" name="reqPekerjaan" id="reqPekerjaan" value="<?=$reqPekerjaan?>" />
+		        			</div>
 		        		</div>
+
 		        		<div class="form-group row">
 		        			<label class="col-form-label text-right col-lg-2 col-sm-12">
 			        			Tunjangan

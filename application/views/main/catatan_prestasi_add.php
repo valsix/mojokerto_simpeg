@@ -117,23 +117,25 @@ else
 	        			<div class="col-lg-6 col-sm-12">
 				        	<input type="hidden" id="reqStatusPejabatPenetap" name="reqStatusPejabatPenetap" value="<?=$reqStatus?>" />
 			                <div id="baru_status" style="display:<?=$reqDisplayBaru?>">
-			            	<input type="text" style="width:225px;" id="reqPjPenetap_Baru" class="form-control" name="reqPjPenetap_Baru" <?=$read?> value="<?=$reqPjPenetapNama?>" />
-			                <? if($disabled == ''){?>
-			                	<img src="images/button_cancel.png" style="cursor:pointer" id="image_cancel" onclick="ShowHiddenId('')">
-			                <? }?>
+				            	<input type="text" style="width:225px;" id="reqPjPenetap_Baru" class="form-control" name="reqPjPenetap_Baru" <?=$read?> value="<?=$reqPjPenetapNama?>" />
+				                <? if($disabled == ''){?>
+				                	<img src="images/button_cancel.png" style="cursor:pointer" id="image_cancel" onclick="ShowHiddenId('')">
+				                <? }?>
+				                </div>
+				                
+				                <div id="select_status" style="display:<?=$reqDisplay?>">
+				            	<? $pejabat_penetap->selectByParamsPejabatPenetap(array());?>
+				                <select <?=$disabled?> name="reqPjPenetap" id="reqPjPenetap" class="form-control">
+				                    <? while($pejabat_penetap->nextRow()){?>
+				                        <option value="<?=$pejabat_penetap->getField('PEJABAT_PENETAP_ID')?>" <? if($reqPjPenetapId == $pejabat_penetap->getField('PEJABAT_PENETAP_ID')) echo 'selected';?>><?=$pejabat_penetap->getField('JABATAN')?></option>
+				                    <? }?>
+				                </select>			                
 			                </div>
-			                
-			                <div id="select_status" style="display:<?=$reqDisplay?>">
-			            	<? $pejabat_penetap->selectByParamsPejabatPenetap(array());?>
-			                <select <?=$disabled?> name="reqPjPenetap" id="reqPjPenetap" class="form-control">
-			                    <? while($pejabat_penetap->nextRow()){?>
-			                        <option value="<?=$pejabat_penetap->getField('PEJABAT_PENETAP_ID')?>" <? if($reqPjPenetapId == $pejabat_penetap->getField('PEJABAT_PENETAP_ID')) echo 'selected';?>><?=$pejabat_penetap->getField('JABATAN')?></option>
-			                    <? }?>
-			                </select>
-			                <? if($disabled == ''){?>
-			                	<img src="images/add.png" style="cursor:pointer" title="Tambah Data" id="image_add" height="15" width="15" onclick="ShowHiddenId('baru')">
+	        			</div>
+	        			<div class="col-lg-1 col-sm-12">
+	        				<? if($disabled == ''){?>
+			                	<img src="images/add.png" style="cursor:pointer" title="Tambah Data" id="image_add" height="30"onclick="ShowHiddenId('baru')">
 			                <? }?>
-			                </div>
 	        			</div>
 	        		</div>
 
