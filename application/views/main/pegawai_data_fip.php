@@ -4,14 +4,6 @@ include_once("functions/personal.func.php");
 $this->load->model("base/Pegawai");
 $this->load->model("base/Core");
 
-$userpegawaimode= $this->userpegawaimode;
-$adminuserid= $this->adminuserid;
-
-if(!empty($userpegawaimode) && !empty($adminuserid))
-    $reqPegawaiId= $userpegawaimode;
-else
-    $reqPegawaiId= $this->pegawaiId;
-
 $reqId= $this->input->get('reqId');
 
 $pegawai= new Pegawai();

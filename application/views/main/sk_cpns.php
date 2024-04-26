@@ -4,14 +4,6 @@ include_once("functions/personal.func.php");
 $this->load->model("base/SkCpns");
 $this->load->model("base/Core");
 
-$userpegawaimode= $this->userpegawaimode;
-$adminuserid= $this->adminuserid;
-
-if(!empty($userpegawaimode) && !empty($adminuserid))
-    $reqPegawaiId= $userpegawaimode;
-else
-    $reqPegawaiId= $this->pegawaiId;
-
 $reqId= $this->input->get('reqId');
 
 $skcpns= new SkCpns();
@@ -19,7 +11,7 @@ $skcpns->selectByParams(array("PEGAWAI_ID" => $reqId));
 $skcpns->firstRow();
 // echo $skcpns->query; exit;
 
-$reqNoNotaBAKN				= $skcpns->getField('NO_NOTA');
+$reqNoNotaBAKN= $skcpns->getField('NO_NOTA');
 $reqTanggalNotaBAKN		= dateToPageCheck($skcpns->getField('TANGGAL_NOTA'));
 $reqPejabatPenetapan		= $skcpns->getField('PEJABAT_PENETAP_ID');
 $reqNamaPejabatPenetap		= $skcpns->getField('NAMA_PENETAP');

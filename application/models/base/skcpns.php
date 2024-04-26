@@ -42,6 +42,7 @@ class SkCpns extends Entity{
 				TANGGAL_NOTA, NAMA_PENETAP,NIP_PENETAP, NO_SK
 				TANGGAL_SK, TMT_CPNS,PANGKAT_ID, TANGGAL_TUGAS
 				MASA_KERJA_TAHUN, MASA_KERJA_BULAN
+				, LAST_CREATE_USER, LAST_CREATE_DATE, LAST_CREATE_SATKER
 				)
 				VALUES (
 				  ".$this->getField("SK_CPNS_ID").",
@@ -56,11 +57,15 @@ class SkCpns extends Entity{
 				  '".$this->getField("PANGKAT_ID")."',
 				  ".$this->getField("TANGGAL_TUGAS").",
 				  '".$this->getField("MASA_KERJA_TAHUN")."',
-				  '".$this->getField("MASA_KERJA_BULAN")."'
+				  '".$this->getField("MASA_KERJA_BULAN")."'				  
+				, '".$this->getField("LAST_CREATE_USER")."'
+				, ".$this->getField("LAST_CREATE_DATE")."
+				, '".$this->getField("LAST_CREATE_SATKER")."'
 				)"; 
 				
 		$this->id= $this->getField("SK_CPNS_ID");
 		$this->query = $str;
+		$this->setlogdata("SK_CPNS", "INSERT", $str);
 		// echo $str;exit;
 		return $this->execQuery($str);
   	}
@@ -81,9 +86,13 @@ class SkCpns extends Entity{
 					   TANGGAL_TUGAS    = ".$this->getField("TANGGAL_TUGAS").",
 					   MASA_KERJA_TAHUN    = ".$this->getField("MASA_KERJA_TAHUN").",
 					   MASA_KERJA_BULAN    = ".$this->getField("MASA_KERJA_BULAN")."
+					   , LAST_UPDATE_USER= '".$this->getField("LAST_UPDATE_USER")."'
+						, LAST_UPDATE_DATE= ".$this->getField("LAST_UPDATE_DATE")."
+						, LAST_UPDATE_SATKER= '".$this->getField("LAST_UPDATE_SATKER")."'
 				WHERE  SK_CPNS_ID          = '".$this->getField("SK_CPNS_ID")."'
 				"; 
 				$this->query = $str;
+				$this->setlogdata("SK_CPNS", "UPDATE", $str);
 
 				// echo $str;exit;
 		return $this->execQuery($str);

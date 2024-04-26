@@ -24,6 +24,7 @@ class Pegawai extends Entity{
 			, KELURAHAN_ID, BANK_ID, NO_REKENING, SATKER_ID, TIPE_PEGAWAI_ID, TUGAS_TAMBAHAN_NEW
 			, STATUS_PEGAWAI, TANGGAL_PENSIUN, JENIS_PEGAWAI_ID, KEDUDUKAN_ID, KARTU_PEGAWAI, ASKES
 			, TASPEN, NPWP, NIK, KTP_PNS, KK, KTP_PASANGAN, DRH
+			, LAST_CREATE_USER, LAST_CREATE_DATE, LAST_CREATE_SATKER
 		) 
 		VALUES
 		(
@@ -68,11 +69,15 @@ class Pegawai extends Entity{
 			, '".$this->getField("KK")."'
 			, '".$this->getField("KTP_PASANGAN")."'
 			, '".$this->getField("DRH")."'
+			, '".$this->getField("LAST_CREATE_USER")."'
+			, ".$this->getField("LAST_CREATE_DATE")."
+			, '".$this->getField("LAST_CREATE_SATKER")."'
 		)
 		"; 	
 		// echo $str;exit();
 		$this->id = $this->getField("PEGAWAI_ID");
 		$this->query = $str;
+		$this->setlogdata("pegawai", "INSERT", $str);
 		return $this->execQuery($str);
     }
 
@@ -118,10 +123,14 @@ class Pegawai extends Entity{
 		, KK= '".$this->getField("KK")."'
 		, KTP_PASANGAN= '".$this->getField("KTP_PASANGAN")."'
 		, DRH= '".$this->getField("DRH")."'
+		, LAST_UPDATE_USER= '".$this->getField("LAST_UPDATE_USER")."'
+		, LAST_UPDATE_DATE= ".$this->getField("LAST_UPDATE_DATE")."
+		, LAST_UPDATE_SATKER= '".$this->getField("LAST_UPDATE_SATKER")."'
 		WHERE PEGAWAI_ID= '".$this->getField("PEGAWAI_ID")."'
 		";
 		$this->query = $str;
 		// echo $str;exit();
+		$this->setlogdata("pegawai", "UPDATE", $str);
 		return $this->execQuery($str);
     }
 

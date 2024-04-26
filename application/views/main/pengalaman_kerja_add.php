@@ -3,14 +3,6 @@ include_once("functions/personal.func.php");
 
 $this->load->model("base/PengalamanKerja");
 
-$userpegawaimode= $this->userpegawaimode;
-$adminuserid= $this->adminuserid;
-
-if(!empty($userpegawaimode) && !empty($adminuserid))
-    $reqPegawaiId= $userpegawaimode;
-else
-    $reqPegawaiId= $this->pegawaiId;
-
 $reqId= $this->input->get('reqId');
 $reqRowId= $this->input->get('reqRowId');
 
@@ -99,13 +91,13 @@ $readonly = "readonly";
 	        		<div class="form-group row">
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Masa Kerja (Th)</label>
 	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" name="reqMasaKerjaTh" id="reqMasaKerjaTh" value="<?=$reqMasaKerjaTh?>" />
+	        				<input type="text" class="form-control" name="reqMasaKerjaTh" id="reqMasaKerjaTh" value="<?=$reqMasaKerjaTh?>" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"/>
 	        			</div>
 	        		</div>
 	        		<div class="form-group row">
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Masa Kerja (Bln)</label>
 	        			<div class="col-lg-10 col-sm-12">
-	        				<input type="text" class="form-control" name="reqMasaKerjaBl" id="reqMasaKerjaBl" value="<?=$reqMasaKerjaBl?>" />
+	        				<input type="text" class="form-control" name="reqMasaKerjaBl" id="reqMasaKerjaBl" value="<?=$reqMasaKerjaBl?>" onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))" />
 	        			</div>
 	        		</div>
 	        		<div class="card-footer">

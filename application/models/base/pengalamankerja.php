@@ -23,7 +23,8 @@ class PengalamanKerja extends Entity{
 		
 		$str .= $statement." ORDER BY pengalaman_id";
 		$this->query = $str;
-		// echo $statement;exit;
+		$this->setlogdata("pengalaman_kerja", "INSERT", $str);
+		// echo $str;exit;
 				
 		return $this->selectLimit($str,$limit,$from); 
     }
@@ -35,19 +36,25 @@ class PengalamanKerja extends Entity{
 
 		$str = "INSERT INTO PENGALAMAN (
 				PENGALAMAN_ID, PEGAWAI_ID, NAMA, 
-				JABATAN, MASA_KERJA_TAHUN,MASA_KERJA_BULAN, TANGGAL_KERJA)
+				JABATAN, MASA_KERJA_TAHUN,MASA_KERJA_BULAN, TANGGAL_KERJA
+				, LAST_CREATE_USER, LAST_CREATE_DATE, LAST_CREATE_SATKER
+				)
 				VALUES (
-				  ".$this->getField("PENGALAMAN_ID").",
-				  ".$this->getField("PEGAWAI_ID").",
-				  '".$this->getField("NAMA")."',
-				  '".$this->getField("JABATAN")."',
-				  ".$this->getField("MASA_KERJA_TAHUN").",
-				  ".$this->getField("MASA_KERJA_BULAN").",
-				  ".$this->getField("TANGGAL_KERJA")."
+				  ".$this->getField("PENGALAMAN_ID")."
+				  ,".$this->getField("PEGAWAI_ID")."
+				  ,'".$this->getField("NAMA")."'
+				  ,'".$this->getField("JABATAN")."'
+				  ,".$this->getField("MASA_KERJA_TAHUN")."
+				  ,".$this->getField("MASA_KERJA_BULAN")."
+				  ,".$this->getField("TANGGAL_KERJA")."
+					, '".$this->getField("LAST_CREATE_USER")."'
+					, ".$this->getField("LAST_CREATE_DATE")."
+					, '".$this->getField("LAST_CREATE_SATKER")."'
 				)"; 
 				
 		$this->id= $this->getField("PENGALAMAN_ID");
 		$this->query = $str;
+		$this->setlogdata("pengalaman_kerja", "UPDATE", $str);
 		// echo $str;exit;
 		return $this->execQuery($str);
   }
@@ -57,11 +64,14 @@ class PengalamanKerja extends Entity{
 		$str = "
 				UPDATE PENGALAMAN
 				SET    
-					   NAMA    = '".$this->getField("NAMA")."',
-					   JABATAN    = '".$this->getField("JABATAN")."',
-					   MASA_KERJA_TAHUN    = ".$this->getField("MASA_KERJA_TAHUN").",
-					   MASA_KERJA_BULAN    = ".$this->getField("MASA_KERJA_BULAN").",
-					   TANGGAL_KERJA    = ".$this->getField("TANGGAL_KERJA")."
+					   NAMA    = '".$this->getField("NAMA")."'
+					  ,JABATAN    = '".$this->getField("JABATAN")."'
+					  ,MASA_KERJA_TAHUN    = ".$this->getField("MASA_KERJA_TAHUN")."
+					  ,MASA_KERJA_BULAN    = ".$this->getField("MASA_KERJA_BULAN")."
+					  ,TANGGAL_KERJA    = ".$this->getField("TANGGAL_KERJA")."
+					  , LAST_UPDATE_USER= '".$this->getField("LAST_UPDATE_USER")."'
+						, LAST_UPDATE_DATE= ".$this->getField("LAST_UPDATE_DATE")."
+						, LAST_UPDATE_SATKER= '".$this->getField("LAST_UPDATE_SATKER")."'
 				WHERE  PENGALAMAN_ID          = '".$this->getField("PENGALAMAN_ID")."'
 				"; 
 				// $this->query = $str;

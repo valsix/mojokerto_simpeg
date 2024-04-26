@@ -12,53 +12,24 @@ class info_data_json extends CI_Controller {
 		parent::__construct();
 		//kauth
 
-		session_start();
-		
 		$CI =& get_instance();
 		$configdata= $CI->config;
         $configvlxsessfolder= $configdata->config["vlxsessfolder"];
-		$reqPegawaiHard=$this->input->get('reqPegawaiHard');
 
         $redirectlogin= "";
-        if(!empty($_SESSION["vuserpegawaimode".$configvlxsessfolder]) && !empty($this->session->userdata("adminuserid".$configvlxsessfolder)))
+        if(!empty($this->session->userdata("adminuserid".$configvlxsessfolder)))
         {
-        	$this->session->set_userdata("userpegawaimode".$configvlxsessfolder, $_SESSION["vuserpegawaimode".$configvlxsessfolder]);
-        	$redirectlogin= "";
+        	$redirectlogin= $this->session->userdata("adminuserid".$configvlxsessfolder);
         }
 
-		if(!empty($this->session->userdata("userpegawaiId".$configvlxsessfolder)) && !empty($redirectlogin))
-		{
-        	$redirectlogin= "";
-        }
-
-        if(!empty($reqPegawaiHard)){
-        	$redirectlogin= "";
-        }
-        // echo $redirectlogin."xx".$this->session->userdata("userpegawaimode".$configvlxsessfolder)."xx".$this->session->userdata("adminuserid".$configvlxsessfolder)."xx".$_SESSION["vuserpegawaimode".$configvlxsessfolder];exit;
-        // echo $redirectlogin."xx".$this->session->userdata("userpegawaiId".$configvlxsessfolder);exit;
-
-        if(!empty($redirectlogin))
+        if(empty($redirectlogin))
 		{
 			redirect('login');
 		}
 
-		$this->pegawaiId= $this->session->userdata("userpegawaiId".$configvlxsessfolder);
-		$this->userpegawaiNama= $this->session->userdata("userpegawaiNama".$configvlxsessfolder);
-		// echo $this->userpegawaiNama; exit;
-		$this->userstatuspegId= $this->session->userdata("userstatuspegId".$configvlxsessfolder);
-		$this->userpegawaimode= $this->session->userdata("userpegawaimode".$configvlxsessfolder);
-
 		$this->adminuserid= $this->session->userdata("adminuserid".$configvlxsessfolder);
-		$this->adminusernama= $this->session->userdata("adminusernama".$configvlxsessfolder);
 		$this->adminuserloginnama= $this->session->userdata("adminuserloginnama".$configvlxsessfolder);
-		$this->adminuseraksesappmenu= $this->session->userdata("adminuseraksesappmenu".$configvlxsessfolder);
-
-		$this->userlevel= $this->session->userdata("userlevel".$configvlxsessfolder);
-
-
-        if(!empty($reqPegawaiHard)){
-        	$this->userpegawaimode=$reqPegawaiHard;
-        }
+		$this->adminsatkerid= $this->session->userdata("adminsatkerid".$configvlxsessfolder);
 	}
 
 	function indentitaspegawai()
@@ -108,8 +79,6 @@ class info_data_json extends CI_Controller {
 
 		$reqBank= $this->input->post("reqBank");
 		$reqNoRekening= $this->input->post("reqNoRekening");
-		// $reqPangkatTerkahir= $this->input->post("reqPangkatTerkahir");
-		// $reqJabatanTerkahir= $this->input->post("reqJabatanTerkahir");
 		$reqSatkerId= $this->input->post("reqSatkerId");
 		$reqTipePegawai= $this->input->post("reqTipePegawai");
 		$reqTugasTambahan= $this->input->post("reqTugasTambahan");
@@ -122,24 +91,18 @@ class info_data_json extends CI_Controller {
 		$reqTaspen= $this->input->post("reqTaspen");
 		$reqNPWP= $this->input->post("reqNPWP");
 		$reqNIK= $this->input->post("reqNIK");
-		// $reqTahunLulus= $this->input->post("reqTahunLulus");
 		$reqNikPns= $this->input->post("reqNikPns");
 		$reqNomorKK= $this->input->post("reqNomorKK");
 		$reqKtpPasangan= $this->input->post("reqKtpPasangan");
-		// $reqTMTPangkat= $this->input->post("reqTMTPangkat");
-		// $reqTMTJabatan= $this->input->post("reqTMTJabatan");
 		$reqDrh= $this->input->post("reqDrh");
-
 		$reqMode= $this->input->post("reqMode");
 
 
 		$set= new Pegawai();	
 		$set->setField("PEGAWAI_ID", $reqPegawaiId);
-
 		$set->setField("NIP_LAMA", $reqNIP1);
 		$set->setField("NIP_BARU", $reqNIP2);
 		$set->setField("NAMA", setQuote($reqNama));
-
 		$set->setField("GELAR_DEPAN", $reqGelarDepan);
 		$set->setField("GELAR_BELAKANG", $reqGelarBelakang);
 		$set->setField("TEMPAT_LAHIR", $reqTempatLahir);
@@ -161,8 +124,6 @@ class info_data_json extends CI_Controller {
 		$set->setField("KELURAHAN_ID", ValToNullDB($reqDesa));
 		$set->setField("BANK_ID", ValToNullDB($reqBank));
 		$set->setField("NO_REKENING", $reqNoRekening);
-		// $set->setField("", $reqPangkatTerkahir);
-		// $set->setField("", $reqJabatanTerkahir);
 		$set->setField("SATKER_ID", $reqSatkerId);
 		$set->setField("TIPE_PEGAWAI_ID", ValToNullDB($reqTipePegawai));
 		$set->setField("TUGAS_TAMBAHAN_NEW", $reqTugasTambahan);
@@ -175,18 +136,19 @@ class info_data_json extends CI_Controller {
 		$set->setField("TASPEN", $reqTaspen);
 		$set->setField("NPWP", $reqNPWP);
 		$set->setField("NIK", $reqNIK);
-		// $set->setField("", $reqTahunLulus);
 		$set->setField("KTP_PNS", $reqNikPns);
 		$set->setField("KK", $reqNomorKK);
 		$set->setField("KTP_PASANGAN", $reqKtpPasangan);
-		// $set->setField("", $reqTMTPangkat);
-		// $set->setField("", $reqTMTJabatan);
 		$set->setField("DRH", setQuote($reqDrh));
 
-		$reqSimpan="";
+		$adminusernama= $this->adminuserloginnama;
+		$userSatkerId= $this->adminsatkerid;		
 	
 		if($reqMode == "insert")
 		{
+			$set->setField("LAST_CREATE_USER", $adminusernama);
+			$set->setField("LAST_CREATE_DATE", "NOW()");	
+			$set->setField("LAST_CREATE_SATKER", $userSatkerId);
 			if($set->insert())
 			{
 				$reqPegawaiId= $set->id;
@@ -195,13 +157,15 @@ class info_data_json extends CI_Controller {
 		}
 		elseif($reqMode == "update")
 		{
+			$set->setField("LAST_UPDATE_USER", $adminusernama);
+			$set->setField("LAST_UPDATE_DATE", "NOW()");	
+			$set->setField("LAST_UPDATE_SATKER", $userSatkerId);
 			if($set->update())
 			{
 				$reqSimpan = 1;
 			}
 		}
 
-		// $reqSimpan="1";
 		if($reqSimpan == 1 )
 		{
 			echo json_response(200, 'Data berhasil disimpan');
@@ -1646,10 +1610,16 @@ class info_data_json extends CI_Controller {
 		$set->setField('MASA_KERJA_BULAN', $reqBl);
 		$set->setField('SK_CPNS_ID', $reqSkCpnsId);
 
-		$reqSimpan="";
-	
+		$adminusernama= $this->adminuserloginnama;
+		$userSatkerId= $this->adminsatkerid;
+		
 		if($reqSkCpnsId == "")
 		{
+
+			$set->setField("LAST_CREATE_USER", $adminusernama);
+			$set->setField("LAST_CREATE_DATE", "NOW()");	
+			$set->setField("LAST_CREATE_SATKER", $userSatkerId);
+
 			if($set->insert())
 			{
 				$reqPegawaiId= $set->pegawai_id;
@@ -1658,6 +1628,10 @@ class info_data_json extends CI_Controller {
 		}
 		else
 		{
+			$set->setField("LAST_UPDATE_USER", $adminusernama);
+			$set->setField("LAST_UPDATE_DATE", "NOW()");	
+			$set->setField("LAST_UPDATE_SATKER", $userSatkerId);
+
 			if($set->update())
 			{
 				$reqSimpan = 1;

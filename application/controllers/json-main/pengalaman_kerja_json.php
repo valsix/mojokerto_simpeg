@@ -12,53 +12,24 @@ class pengalaman_kerja_json extends CI_Controller {
 		parent::__construct();
 		//kauth
 
-		session_start();
-		
 		$CI =& get_instance();
 		$configdata= $CI->config;
         $configvlxsessfolder= $configdata->config["vlxsessfolder"];
-		$reqPegawaiHard=$this->input->get('reqPegawaiHard');
 
         $redirectlogin= "";
-        if(!empty($_SESSION["vuserpegawaimode".$configvlxsessfolder]) && !empty($this->session->userdata("adminuserid".$configvlxsessfolder)))
+        if(!empty($this->session->userdata("adminuserid".$configvlxsessfolder)))
         {
-        	$this->session->set_userdata("userpegawaimode".$configvlxsessfolder, $_SESSION["vuserpegawaimode".$configvlxsessfolder]);
-        	$redirectlogin= "";
+        	$redirectlogin= $this->session->userdata("adminuserid".$configvlxsessfolder);
         }
 
-		if(!empty($this->session->userdata("userpegawaiId".$configvlxsessfolder)) && !empty($redirectlogin))
-		{
-        	$redirectlogin= "";
-        }
-
-        if(!empty($reqPegawaiHard)){
-        	$redirectlogin= "";
-        }
-        // echo $redirectlogin."xx".$this->session->userdata("userpegawaimode".$configvlxsessfolder)."xx".$this->session->userdata("adminuserid".$configvlxsessfolder)."xx".$_SESSION["vuserpegawaimode".$configvlxsessfolder];exit;
-        // echo $redirectlogin."xx".$this->session->userdata("userpegawaiId".$configvlxsessfolder);exit;
-
-        if(!empty($redirectlogin))
+        if(empty($redirectlogin))
 		{
 			redirect('login');
 		}
 
-		$this->pegawaiId= $this->session->userdata("userpegawaiId".$configvlxsessfolder);
-		$this->userpegawaiNama= $this->session->userdata("userpegawaiNama".$configvlxsessfolder);
-		// echo $this->userpegawaiNama; exit;
-		$this->userstatuspegId= $this->session->userdata("userstatuspegId".$configvlxsessfolder);
-		$this->userpegawaimode= $this->session->userdata("userpegawaimode".$configvlxsessfolder);
-
 		$this->adminuserid= $this->session->userdata("adminuserid".$configvlxsessfolder);
-		$this->adminusernama= $this->session->userdata("adminusernama".$configvlxsessfolder);
 		$this->adminuserloginnama= $this->session->userdata("adminuserloginnama".$configvlxsessfolder);
-		$this->adminuseraksesappmenu= $this->session->userdata("adminuseraksesappmenu".$configvlxsessfolder);
-
-		$this->userlevel= $this->session->userdata("userlevel".$configvlxsessfolder);
-
-
-        if(!empty($reqPegawaiHard)){
-        	$this->userpegawaimode=$reqPegawaiHard;
-        }
+		$this->adminsatkerid= $this->session->userdata("adminsatkerid".$configvlxsessfolder);
 	}
 
 	function json()
@@ -207,10 +178,16 @@ class pengalaman_kerja_json extends CI_Controller {
 		$set->setField('MASA_KERJA_BULAN', ValToNullDB($reqMasaKerjaBl));
 		$set->setField('TANGGAL_KERJA', dateToDBCheck($reqTglMulaiKerja));
 
-		$reqSimpan="";
+		$adminusernama= $this->adminuserloginnama;
+		$userSatkerId= $this->adminsatkerid;
 	
 		if($reqRowId == "")
 		{
+
+			$set->setField("LAST_CREATE_USER", $adminusernama);
+			$set->setField("LAST_CREATE_DATE", "NOW()");	
+			$set->setField("LAST_CREATE_SATKER", $userSatkerId);
+
 			if($set->insert())
 			{
 				$reqRowId= $set->pegawai_id;
@@ -219,6 +196,10 @@ class pengalaman_kerja_json extends CI_Controller {
 		}
 		else
 		{
+			$set->setField("LAST_UPDATE_USER", $adminusernama);
+			$set->setField("LAST_UPDATE_DATE", "NOW()");	
+			$set->setField("LAST_UPDATE_SATKER", $userSatkerId);
+			
 			if($set->update())
 			{
 				$reqSimpan = 1;
