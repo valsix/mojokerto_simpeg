@@ -69,25 +69,27 @@ $reqTahunLulus= $set->getField('TAHUN');
                     <div class="col-md-6">
                         <div class="area-total-jenis-kelamin">
                             <div class="inner">
-                                <div class="item">
-                                    <div class="ikon">
-                                        <img src="images/img-pria.png">  
+                                <div class="row">
+                                    <div class="item">
+                                        <div class="ikon">
+                                            <img src="images/img-pria.png">  
+                                        </div>
+                                        <div class="data">
+                                            <div class="title">Laki-laki</div>
+                                            <div class="nilai">3114</div>
+                                        </div>
                                     </div>
-                                    <div class="data">
-                                        <div class="title">Laki-laki</div>
-                                        <div class="nilai">3114</div>
+                                    <div class="item">
+                                        <div class="ikon">
+                                            <img src="images/img-wanita.png">    
+                                        </div>
+                                        <div class="data">
+                                            <div class="title">Perempuan</div>
+                                            <div class="nilai">389</div>
+                                        </div>
                                     </div>
+                                    <div class="clearfix"></div>
                                 </div>
-                                <div class="item">
-                                    <div class="ikon">
-                                        <img src="images/img-wanita.png">    
-                                    </div>
-                                    <div class="data">
-                                        <div class="title">Perempuan</div>
-                                        <div class="nilai">389</div>
-                                    </div>
-                                </div>
-                                <div class="clearfix"></div>
                             </div>
                         </div>
                     </div>

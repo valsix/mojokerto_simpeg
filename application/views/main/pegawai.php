@@ -151,7 +151,7 @@ $arrsatkerdata= $this->sessdatatree;
                                     </a>
                                 </li>
                                 <li class="navi-item">
-                                    <a  id="" class="navi-link">
+                                    <a  id="btnCetak" class="navi-link">
                                         <span class="navi-text">Cetak</span>
                                     </a>
                                 </li>
@@ -445,6 +445,11 @@ jQuery(document).ready(function() {
         varurl= "export/index/cetakpegawaiexcel?reqId="+reqId+"&reqFilter="+reqFilter;
         // window.open(varurl, 'window name', 'window settings');
         window.open(varurl, '_blank');
+    }); 
+
+    $("#btnCetak").on("click", function () {
+        reqId= $("#reqSatkerId").val();
+        openAdd('app/loadUrl/main/popup_cetak?reqId='+reqId)
     });
 
     $("#triggercari").on("click", function () {

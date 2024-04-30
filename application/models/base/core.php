@@ -317,5 +317,25 @@ class Core extends Entity{
 				
 		return $this->selectLimit($str,$limit,$from); 
     }
+
+    function selectByGolongan($paramsArray=array(),$limit=-1,$from=-1, $statement='')
+	{
+		$str = "
+			SELECT strpos(substr(KODE, strpos(KODE, '/')), '1') + strpos(KODE, '/') - 1 GOL
+			FROM PANGKAT
+			WHERE 1=1			
+		"; 
+		// echo $str;exit;
+		
+		while(list($key,$val) = each($paramsArray))
+		{
+			$str .= " AND $key = '$val' ";
+		}
+		
+		$str .= " GROUP BY strpos(substr(KODE, strpos(KODE, '/')), '1') + strpos(KODE, '/') - 1 ORDER BY strpos(substr(KODE, strpos(KODE, '/')), '1') + strpos(KODE, '/') - 1";
+		$this->query = $str;
+		return $this->selectLimit($str,$limit,$from); 
+    }
+	
 } 
 ?>
