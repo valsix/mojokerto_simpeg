@@ -125,6 +125,8 @@ elseif($rdoState == 'modul3'){
 		$objWorksheet->insertNewRowBefore($i+1, $allrecord-1);
 		while($pegawai->nextRow())
 		{
+			// echo $pegawai->getField('DATA_DIKLAT');exit;
+
 			$objWorksheet->getRowDimension($i)->setRowHeight(52);		
 			$col = 'A'; 	
 			$objWorksheet->setCellValue($col.$i,$z);	$objWorksheet->getStyle('A'.$i)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_TOP);
@@ -136,10 +138,11 @@ elseif($rdoState == 'modul3'){
 			$col = 'D'; 	
 			$objWorksheet->setCellValue($col.$i,$pegawai->getField('GOL_RUANG')."\n".$pegawai->getField('TMT_PANGKAT'));
 			$objWorksheet->getStyle('D'.$i)->getAlignment()->setWrapText(true); $objWorksheet->getStyle('D'.$i)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_TOP);
-			$data_diklat = explode('*',$pegawai->getField('DATA_DIKLAT'));
+			// $data_diklat = explode('*',$pegawai->getField('DATA_DIKLAT'));
 			$col = 'E'; 	
 			// $objWorksheet->setCellValue($col.$i,$pegawai->getField('PENDIDIKAN')."\n".getValueArrayCetakBr($data_diklat));
-			$objWorksheet->setCellValue($col.$i,$pegawai->getField('PENDIDIKAN')."\n".$data_diklat);
+			$objWorksheet->setCellValue($col.$i,$pegawai->getField('PENDIDIKAN'));
+			// $objWorksheet->setCellValue($col.$i,$pegawai->getField('PENDIDIKAN')."\n".$data_diklat);
 			$objWorksheet->getStyle('E'.$i)->getAlignment()->setWrapText(true); $objWorksheet->getStyle('E'.$i)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_TOP);
 			$col = 'F'; 	
 			$objWorksheet->setCellValue($col.$i,$pegawai->getField('JABATAN')); $objWorksheet->getStyle('F'.$i)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_TOP);
