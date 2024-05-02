@@ -863,23 +863,27 @@ $arrsatkerdata= $this->sessdatatree;
 			form,
 			{
 				fields: {
-					/*reqEmail: {
+					reqNIP2: {
 						validators: {
 							notEmpty: {
-								message: 'Email is required'
+								message: 'NIP harus diisi'
 							},
-							emailAddress: {
-								message: 'The value is not a valid email address'
-							}
 						}
 					},
-					reqSatuanKerjaNama: {
+					reqNama: {
 						validators: {
 							notEmpty: {
-								message: 'Please select an option'
-							}
+								message: 'Nama harus diisi'
+							},
 						}
-					},*/
+					},
+					reqAlamat: {
+						validators: {
+							notEmpty: {
+								message: 'Alamat harus diisi'
+							},
+						}
+					},
 				},
 				plugins: {
 					trigger: new FormValidation.plugins.Trigger(),
@@ -925,10 +929,10 @@ $arrsatkerdata= $this->sessdatatree;
 			})
 		.on('core.form.invalid', function() {
 			Swal.fire({
-				text: "Sorry, looks like there are some errors detected, please try again.",
+				text: "Maaf, isi semua form yang disediakan, silahkan coba lagi.",
 				icon: "error",
 				buttonsStyling: false,
-				confirmButtonText: "Ok, got it!",
+				confirmButtonText: "Ok, saya mengerti",
 				customClass: {
 					confirmButton: "btn font-weight-bold btn-light-primary"
 				}

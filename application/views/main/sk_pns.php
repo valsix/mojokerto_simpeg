@@ -384,10 +384,10 @@ $reqKeteranganLPJ				= $skpns->getField('KETERANGAN_LPJ');
 			})
 		.on('core.form.invalid', function() {
 			Swal.fire({
-				text: "Sorry, looks like there are some errors detected, please try again.",
+				text: "Maaf, isi semua form yang disediakan, silahkan coba lagi.",
 				icon: "error",
 				buttonsStyling: false,
-				confirmButtonText: "Ok, got it!",
+				confirmButtonText: "Ok, saya mengerti",
 				customClass: {
 					confirmButton: "btn font-weight-bold btn-light-primary"
 				}
