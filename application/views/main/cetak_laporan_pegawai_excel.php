@@ -5,6 +5,9 @@ include_once("functions/date.func.php");
 include_once("functions/string.func.php");
 include_once("functions/default.func.php");
 
+ini_set("memory_limit","500M");
+ini_set('max_execution_time', 520);
+
 $this->load->model("base/CetakModel");
 $pegawai = new CetakModel();
 
@@ -123,17 +126,25 @@ elseif($rdoState == 'modul3'){
 		while($pegawai->nextRow())
 		{
 			$objWorksheet->getRowDimension($i)->setRowHeight(52);		
-			$col = 'A'; 	$objWorksheet->setCellValue($col.$i,$z);	$objWorksheet->getStyle('A'.$i)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_TOP);
-			$col = 'B'; 	$objWorksheet->setCellValue($col.$i,$pegawai->getField('NAMA')."\n".$pegawai->getField('NIP_BARU'));
+			$col = 'A'; 	
+			$objWorksheet->setCellValue($col.$i,$z);	$objWorksheet->getStyle('A'.$i)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_TOP);
+			$col = 'B'; 	
+			$objWorksheet->setCellValue($col.$i,$pegawai->getField('NAMA')."\n".$pegawai->getField('NIP_BARU'));
 			$objWorksheet->getStyle('B'.$i)->getAlignment()->setWrapText(true);	$objWorksheet->getStyle('B'.$i)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_TOP);
-			$col = 'C'; 	$objWorksheet->setCellValue($col.$i,$pegawai->getField('TTL'));	$objWorksheet->getStyle('C'.$i)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_TOP);
-			$col = 'D'; 	$objWorksheet->setCellValue($col.$i,$pegawai->getField('GOL_RUANG')."\n".$pegawai->getField('TMT_PANGKAT'));
+			$col = 'C'; 	
+			$objWorksheet->setCellValue($col.$i,$pegawai->getField('TTL'));	$objWorksheet->getStyle('C'.$i)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_TOP);
+			$col = 'D'; 	
+			$objWorksheet->setCellValue($col.$i,$pegawai->getField('GOL_RUANG')."\n".$pegawai->getField('TMT_PANGKAT'));
 			$objWorksheet->getStyle('D'.$i)->getAlignment()->setWrapText(true); $objWorksheet->getStyle('D'.$i)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_TOP);
 			$data_diklat = explode('*',$pegawai->getField('DATA_DIKLAT'));
-			// $col = 'E'; 	$objWorksheet->setCellValue($col.$i,$pegawai->getField('PENDIDIKAN')."\n".getValueArrayCetakBr($data_diklat));
+			$col = 'E'; 	
+			// $objWorksheet->setCellValue($col.$i,$pegawai->getField('PENDIDIKAN')."\n".getValueArrayCetakBr($data_diklat));
+			$objWorksheet->setCellValue($col.$i,$pegawai->getField('PENDIDIKAN')."\n".$data_diklat);
 			$objWorksheet->getStyle('E'.$i)->getAlignment()->setWrapText(true); $objWorksheet->getStyle('E'.$i)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_TOP);
-			$col = 'F'; 	$objWorksheet->setCellValue($col.$i,$pegawai->getField('JABATAN')); $objWorksheet->getStyle('F'.$i)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_TOP);
-			$col = 'G'; 	$objWorksheet->setCellValue($col.$i,$pegawai->getField('ALAMAT')); $objWorksheet->getStyle('G'.$i)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_TOP);
+			$col = 'F'; 	
+			$objWorksheet->setCellValue($col.$i,$pegawai->getField('JABATAN')); $objWorksheet->getStyle('F'.$i)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_TOP);
+			$col = 'G'; 	
+			$objWorksheet->setCellValue($col.$i,$pegawai->getField('ALAMAT')); $objWorksheet->getStyle('G'.$i)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_TOP);
 			$i++; $z++;
 		}
 	}
