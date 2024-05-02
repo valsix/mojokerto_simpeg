@@ -267,23 +267,20 @@ $readonly = "readonly";
 			form,
 			{
 				fields: {
-					/*reqEmail: {
+					reqNoSK: {
 						validators: {
 							notEmpty: {
-								message: 'Email is required'
+								message: 'Area ini harus diisi'
 							},
-							emailAddress: {
-								message: 'The value is not a valid email address'
-							}
 						}
 					},
-					reqSatuanKerjaNama: {
+					reqTglSK: {
 						validators: {
 							notEmpty: {
-								message: 'Please select an option'
-							}
+								message: 'Area ini harus diisi'
+							},
 						}
-					},*/
+					},
 				},
 				plugins: {
 					trigger: new FormValidation.plugins.Trigger(),

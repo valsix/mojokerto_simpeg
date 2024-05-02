@@ -139,23 +139,13 @@ else
 			form,
 			{
 				fields: {
-					/*reqEmail: {
-						validators: {
-							notEmpty: {
-								message: 'Email is required'
-							},
-							emailAddress: {
-								message: 'The value is not a valid email address'
-							}
-						}
-					},
-					reqSatuanKerjaNama: {
-						validators: {
-							notEmpty: {
-								message: 'Please select an option'
-							}
-						}
-					},*/
+					// reqNoSurat: {
+					// 	validators: {
+					// 		notEmpty: {
+					// 			message: 'Area ini harus diisi'
+					// 		},
+					// 	}
+					// },
 				},
 				plugins: {
 					trigger: new FormValidation.plugins.Trigger(),

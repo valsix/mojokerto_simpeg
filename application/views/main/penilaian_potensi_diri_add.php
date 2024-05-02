@@ -97,7 +97,7 @@ else
 	        		<div class="form-group row">
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Minat Bidang Tugas</label>
 	        			<div class="col-lg-6 col-sm-12">
-	        				<textarea <?=$disabled?> class="form-control" title="Minat bidang tugas harus diisi" name="reqMinat" cols="35"> <?=$reqMinat?></textarea>
+	        				<textarea <?=$disabled?> class="form-control" title="Minat bidang tugas harus diisi" name="reqMinat" id="reqMinat" cols="35"> <?=$reqMinat?></textarea>
 	        			</div>
 	        		</div>
 
@@ -146,23 +146,20 @@ else
 			form,
 			{
 				fields: {
-					/*reqEmail: {
+					reqTahun: {
 						validators: {
 							notEmpty: {
-								message: 'Email is required'
+								message: 'Area ini harus diisi'
 							},
-							emailAddress: {
-								message: 'The value is not a valid email address'
-							}
 						}
 					},
-					reqSatuanKerjaNama: {
+					reqMinat: {
 						validators: {
 							notEmpty: {
-								message: 'Please select an option'
-							}
+								message: 'Area ini harus diisi'
+							},
 						}
-					},*/
+					},
 				},
 				plugins: {
 					trigger: new FormValidation.plugins.Trigger(),

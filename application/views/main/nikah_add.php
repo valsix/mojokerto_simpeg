@@ -223,23 +223,27 @@ $arrTahun= setTahunLoop(3,1);
 			form,
 			{
 				fields: {
-					/*reqEmail: {
+					reqNoSKPengadilan: {
 						validators: {
 							notEmpty: {
-								message: 'Email is required'
+								message: 'Area ini harus diisi'
 							},
-							emailAddress: {
-								message: 'The value is not a valid email address'
-							}
 						}
 					},
-					reqSatuanKerjaNama: {
+					reqTanggalSKPengadilan: {
 						validators: {
 							notEmpty: {
-								message: 'Please select an option'
-							}
+								message: 'Area ini harus diisi'
+							},
 						}
-					},*/
+					},
+					reqTMTSK: {
+						validators: {
+							notEmpty: {
+								message: 'Area ini harus diisi'
+							},
+						}
+					},
 				},
 				plugins: {
 					trigger: new FormValidation.plugins.Trigger(),

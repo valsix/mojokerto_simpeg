@@ -240,23 +240,76 @@ $readonly = "readonly";
 			form,
 			{
 				fields: {
-					/*reqEmail: {
+					reqNoNotaBAKN: {
 						validators: {
 							notEmpty: {
-								message: 'Email is required'
+								message: 'Area ini harus diisi'
 							},
-							emailAddress: {
-								message: 'The value is not a valid email address'
-							}
 						}
 					},
-					reqSatuanKerjaNama: {
+					reqTanggalNotaBAKN: {
 						validators: {
 							notEmpty: {
-								message: 'Please select an option'
-							}
+								message: 'Area ini harus diisi'
+							},
 						}
-					},*/
+					},
+					reqPejabatPenetapan: {
+						validators: {
+							notEmpty: {
+								message: 'Area ini harus diisi'
+							},
+						}
+					},
+					reqNamaPejabatPenetap: {
+						validators: {
+							notEmpty: {
+								message: 'Area ini harus diisi'
+							},
+						}
+					},
+					reqNIPPejabatPenetap: {
+						validators: {
+							notEmpty: {
+								message: 'Area ini harus diisi'
+							},
+						}
+					},
+					reqNoSuratKeputusan: {
+						validators: {
+							notEmpty: {
+								message: 'Area ini harus diisi'
+							},
+						}
+					},
+					reqTanggalSuratKeputusan: {
+						validators: {
+							notEmpty: {
+								message: 'Area ini harus diisi'
+							},
+						}
+					},
+					reqTerhitungMulaiTanggal: {
+						validators: {
+							notEmpty: {
+								message: 'Area ini harus diisi'
+							},
+						}
+					},
+					reqGolRuang: {
+						validators: {
+							notEmpty: {
+								message: 'Area ini harus diisi'
+							},
+						}
+					},
+					reqTanggalTugas: {
+						validators: {
+							notEmpty: {
+								message: 'Area ini harus diisi'
+							},
+						}
+					},
 				},
 				plugins: {
 					trigger: new FormValidation.plugins.Trigger(),

@@ -322,23 +322,90 @@ $reqKeteranganLPJ				= $skpns->getField('KETERANGAN_LPJ');
 			form,
 			{
 				fields: {
-					/*reqEmail: {
+					reqPejabatPenetapan: {
 						validators: {
 							notEmpty: {
-								message: 'Email is required'
+								message: 'Area ini harus diisi'
 							},
-							emailAddress: {
-								message: 'The value is not a valid email address'
-							}
 						}
 					},
-					reqSatuanKerjaNama: {
+					reqNamaPejabatPenetap: {
 						validators: {
 							notEmpty: {
-								message: 'Please select an option'
-							}
+								message: 'Area ini harus diisi'
+							},
 						}
-					},*/
+					},
+					reqNIPPejabatPenetap: {
+						validators: {
+							notEmpty: {
+								message: 'Area ini harus diisi'
+							},
+						}
+					},
+					reqNoSuratKeputusan: {
+						validators: {
+							notEmpty: {
+								message: 'Area ini harus diisi'
+							},
+						}
+					},
+					reqTanggalSuratKeputusan: {
+						validators: {
+							notEmpty: {
+								message: 'Area ini harus diisi'
+							},
+						}
+					},
+					reqTerhitungMulaiTanggal: {
+						validators: {
+							notEmpty: {
+								message: 'Area ini harus diisi'
+							},
+						}
+					},
+					reqNoDiklatPrajabatan: {
+						validators: {
+							notEmpty: {
+								message: 'Area ini harus diisi'
+							},
+						}
+					},
+					reqTanggalDiklatPrajabatan: {
+						validators: {
+							notEmpty: {
+								message: 'Area ini harus diisi'
+							},
+						}
+					},
+					reqNoSuratUjiKesehatan: {
+						validators: {
+							notEmpty: {
+								message: 'Area ini harus diisi'
+							},
+						}
+					},
+					reqTanggalSuratUjiKesehatan: {
+						validators: {
+							notEmpty: {
+								message: 'Area ini harus diisi'
+							},
+						}
+					},
+					reqGolRuang: {
+						validators: {
+							notEmpty: {
+								message: 'Area ini harus diisi'
+							},
+						}
+					},
+					reqPengambilanSumpah: {
+						validators: {
+							notEmpty: {
+								message: 'Area ini harus diisi'
+							},
+						}
+					},
 				},
 				plugins: {
 					trigger: new FormValidation.plugins.Trigger(),

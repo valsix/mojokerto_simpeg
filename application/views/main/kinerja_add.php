@@ -159,23 +159,13 @@ $arrTahun= setTahunLoop(3,1);
 			form,
 			{
 				fields: {
-					/*reqEmail: {
+					reqTahun: {
 						validators: {
 							notEmpty: {
-								message: 'Email is required'
+								message: 'Area ini harus diisi'
 							},
-							emailAddress: {
-								message: 'The value is not a valid email address'
-							}
 						}
 					},
-					reqSatuanKerjaNama: {
-						validators: {
-							notEmpty: {
-								message: 'Please select an option'
-							}
-						}
-					},*/
 				},
 				plugins: {
 					trigger: new FormValidation.plugins.Trigger(),
