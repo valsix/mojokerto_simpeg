@@ -526,6 +526,21 @@ $arrcarimenuparent= $vfpeg->cariparentmenu($arrparam);
                                             <i class="menu-arrow"></i>
                                         </a>
                                     </li>
+
+                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover">
+                                        <a href="javascript:void(0);" class="menu-link menu-toggle">
+                                            <span class="menu-text"><i class="fa fa-home" aria-hidden="true" style="color: #FFFFFF;margin-right: 10px;"></i> Master Data</span>
+                                            <i class="menu-arrow"></i>
+                                        </a>
+                                    </li>
+
+                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover">
+                                        <a href="app/index/master_user_group" class="menu-link menu-toggle">
+                                            <span class="menu-text">Master User Group</span>
+                                            <i class="menu-arrow"></i>
+                                        </a>
+                                    </li>
+
                                 </ul>
 
                             </div>
