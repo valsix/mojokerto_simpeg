@@ -1573,6 +1573,28 @@ function getColomsNew($var)
 	return $tmp;
 }
 
+function churuf($x, $style=3) 
+{
+	$hasil = $x;
+
+	switch ($style) 
+	{
+		case 1:
+			$hasil = strtoupper($hasil);
+			break;
+		case 2:
+			$hasil = strtolower($hasil);
+			break;
+		case 3:
+			$hasil = ucwords($hasil);
+			break;
+		default:
+			$hasil = ucfirst($hasil);
+			break;
+	}      
+	return $hasil;
+}
+
 
 
 // <option value=''></option>
