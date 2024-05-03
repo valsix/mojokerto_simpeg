@@ -83,12 +83,26 @@ $arrtabledata= array(
                 <table class="table table-bordered table-hover table-checkable" id="kt_datatable" style="margin-top: 13px !important">
                     <thead>
                         <tr>
-                            <?php
-                            foreach($arrtabledata as $valkey => $valitem) 
-                            {
-                                echo "<th>".$valitem["label"]."</th>";
+                           <?php
+                           foreach($arrtabledata as $valkey => $valitem) 
+                           {
+                             $infotablelabel= $valitem["label"];
+                             $infotablecolspan= $valitem["colspan"];
+                             $infotablerowspan= $valitem["rowspan"];
+                             $infowidth= $valitem["width"];
+
+                             if(!empty($infotablecolspan))
+                             {
+                             }
+
+                             if(!empty($infotablelabel))
+                             {
+                                ?>
+                                <th style="text-align:center; width: <?=$infowidth?>%" colspan='<?=$infotablecolspan?>' rowspan='<?=$infotablerowspan?>'><?=$infotablelabel?></th>
+                                <?
                             }
-                            ?>
+                        }
+                        ?>
                         </tr>
                     </thead>
                 </table>
