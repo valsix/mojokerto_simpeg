@@ -526,20 +526,81 @@ $arrcarimenuparent= $vfpeg->cariparentmenu($arrparam);
                                             <i class="menu-arrow"></i>
                                         </a>
                                     </li>
-
                                     <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover">
                                         <a href="javascript:void(0);" class="menu-link menu-toggle">
-                                            <span class="menu-text"><i class="fa fa-home" aria-hidden="true" style="color: #FFFFFF;margin-right: 10px;"></i> Master Data</span>
+                                            <span class="menu-text"><i class="fa fa-file" aria-hidden="true" style="color: #FFFFFF;margin-right: 10px;"></i>Report</span>
                                             <i class="menu-arrow"></i>
                                         </a>
                                     </li>
 
-                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover">
-                                        <a href="app/index/master_user_group" class="menu-link menu-toggle">
-                                            <span class="menu-text">Master User Group</span>
-                                            <i class="menu-arrow"></i>
-                                        </a>
-                                    </li>
+                                    <?
+                                    if($this->adminuserMasterProses == 1 && $this->adminuserpegawaiid == "") 
+                                    {
+                                        ?>
+
+                                        <!-- <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover">
+                                            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                                                <span class="menu-text"><i class="fa fa-database" aria-hidden="true" style="color: #FFFFFF;margin-right: 10px;"></i> Master Data</span>
+                                                <i class="menu-arrow"></i>
+                                            </a>
+                                        </li>
+
+                                        <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover">
+                                            <a href="app/index/master_user_group" class="menu-link menu-toggle">
+                                                <span class="menu-text">Master User Group</span>
+                                                <i class="menu-arrow"></i>
+                                            </a>
+                                        </li> -->
+                                        <li class="menu-item menu-item-submenu menu-item-here" aria-haspopup="true" data-menu-toggle="hover">
+                                            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                                                <span class="menu-text"><i class="fa fa-database" aria-hidden="true" style="color: #FFFFFF;margin-right: 10px;"></i> Master Data</span>
+                                                <i class="menu-arrow"></i>
+                                            </a>
+                                            <div class="menu-submenu">
+                                                <i class="menu-arrow"></i>
+                                                <ul class="menu-subnav">
+                                                    <li class="menu-item menu-item-parent" aria-haspopup="true">
+                                                        <span class="menu-link">
+                                                            <span class="menu-text">Master</span>
+                                                        </span>
+                                                    </li>
+                                                    <li class="menu-item" aria-haspopup="true">
+                                                        <a href="app/index/master_diklat" class="menu-link ">
+                                                            <span class="menu-text" style="color: #FFFFFF;margin-right: 10px;">Diklat</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="menu-item" aria-haspopup="true">
+                                                        <a href="app/index/master_eselon" class="menu-link ">
+                                                            <span class="menu-text" style="color: #FFFFFF;margin-right: 10px;">Eselon</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="menu-item" aria-haspopup="true">
+                                                        <a href="app/index/master_jabatan_fungsional" class="menu-link ">
+                                                            <span class="menu-text" style="color: #FFFFFF;margin-right: 10px;">Jabatan Fungsional</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="menu-item" aria-haspopup="true">
+                                                        <a href="app/index/master_peraturan_gaji" class="menu-link ">
+                                                            <span class="menu-text" style="color: #FFFFFF;margin-right: 10px;">Peraturan Gaji</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="menu-item" aria-haspopup="true">
+                                                        <a href="app/index/master_gaji_pokok" class="menu-link ">
+                                                            <span class="menu-text" style="color: #FFFFFF;margin-right: 10px;">Gaji Pokok</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="menu-item" aria-haspopup="true">
+                                                        <a href="app/index/master_user_group" class="menu-link ">
+                                                            <span class="menu-text" style="color: #FFFFFF;margin-right: 10px;">User Group</span>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                      
+                                        <?
+                                    }
+                                    ?>
 
                                 </ul>
 
