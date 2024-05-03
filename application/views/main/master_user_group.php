@@ -242,7 +242,7 @@ jQuery(document).ready(function() {
         else
             vpilihid= "";
 
-        varurl= "app/index/user_group_add?reqId="+vpilihid;
+        varurl= "app/index/master_user_group_add?reqId="+vpilihid;
         
         document.location.href = varurl;
     });
