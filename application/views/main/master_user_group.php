@@ -6,7 +6,8 @@ $pgtitle= $pg;
 $pgtitle= churuf(str_replace("_", " ", str_replace("master_", "", $pgtitle)));
 
 $arrtabledata= array(
-    array("label"=>"Nama", "field"=> "NAMA", "display"=>"",  "width"=>"")
+    array("label"=>"No", "field"=> "NO", "display"=>"",  "width"=>"5")
+    , array("label"=>"Nama", "field"=> "NAMA", "display"=>"",  "width"=>"")
     , array("label"=>"Lihat Proses", "field"=> "LIHAT_PROSES", "display"=>"",  "width"=>"")
     , array("label"=>"Pegawai Proses", "field"=> "PEGAWAI_PROSES", "display"=>"",  "width"=>"")
     , array("label"=>"DUK Proses", "field"=> "DUK_PROSES", "display"=>"",  "width"=>"")

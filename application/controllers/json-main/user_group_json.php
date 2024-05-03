@@ -52,12 +52,13 @@ class user_group_json extends CI_Controller {
 
 		$displaystart= -1;
 		$displaylength= -1;
+		$no=1;
 
 		$arrinfodata= [];
 
 		$statement= "";
 		// $sOrder = " ORDER BY A.TANGGAL ASC";
-		$sOrder = "  ORDER BY A.NAMA ASC";
+		$sOrder = " ORDER BY A.NAMA ASC";
 		$set->selectByParams(array(), $displaylength, $displaystart, $statement, $sOrder);
 		// echo $set->query;exit;
 		while ($set->nextRow()) 
@@ -67,6 +68,10 @@ class user_group_json extends CI_Controller {
 			{
 				if ($valkey == "SORDERDEFAULT")
 					$row[$valkey]= "1";
+				else if ($valkey == "NO")
+				{
+					$row[$valkey]= $no;
+				}
 				else if ($valkey == "TANGGAL")
 				{
 					$row[$valkey]= dateToPageCheck($set->getField($valkey));
@@ -76,8 +81,12 @@ class user_group_json extends CI_Controller {
 					$row[$valkey]= getNameValue($set->getField(trim($valkey)));
 				}
 				else
+				{
 					$row[$valkey]= $set->getField($valkey);
+				}
+				
 			}
+			$no++;
 			array_push($arrinfodata, $row);
 		}
 
