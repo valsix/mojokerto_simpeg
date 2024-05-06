@@ -57,7 +57,7 @@ class TingkatHukuman extends Entity{
         return $this->execQuery($str);
     }
 
-     function selectByParams($paramsArray=array(),$limit=-1,$from=-1, $statement='')
+    function selectByParams($paramsArray=array(),$limit=-1,$from=-1, $statement='')
 	{
 		
 		$str = "
@@ -75,6 +75,22 @@ class TingkatHukuman extends Entity{
 				
 		return $this->selectLimit($str,$limit,$from); 
     }
+
+    function selectByParamsStatus($paramsArray=array(),$limit=-1,$from=-1)
+	{		
+		$str = "
+				SELECT PERATURAN_ID, NAMA, KETERANGAN 
+				FROM PERATURAN WHERE 1 = 1
+				".$statement; 
+		
+		while(list($key,$val) = each($paramsArray))
+		{
+			$str .= " AND $key = '$val' ";
+		}
+		$this->query = $str;
+		return $this->selectLimit($str,$limit,$from); 
+    }		
+    
 	
  	function selectByParamsEdit($paramsArray=array(),$limit=-1,$from=-1, $statement='')
 	{
