@@ -594,6 +594,56 @@ $arrcarimenuparent= $vfpeg->cariparentmenu($arrparam);
                                                         </a>
                                                     </li>
                                                     <li class="menu-item" aria-haspopup="true">
+                                                        <a href="app/index/master_peraturan" class="menu-link ">
+                                                            <span class="menu-text" style="color: #FFFFFF;margin-right: 10px;">Peraturan</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="menu-item" aria-haspopup="true">
+                                                        <a href="app/index/master_tingkat_hukuman" class="menu-link ">
+                                                            <span class="menu-text" style="color: #FFFFFF;margin-right: 10px;">Tingkat Hukuman</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="menu-item" aria-haspopup="true">
+                                                        <a href="app/index/master_jenis_hukuman" class="menu-link ">
+                                                            <span class="menu-text" style="color: #FFFFFF;margin-right: 10px;">Jenis Hukuman</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="menu-item" aria-haspopup="true">
+                                                        <a href="app/index/master_jurusan_pendidikan" class="menu-link ">
+                                                            <span class="menu-text" style="color: #FFFFFF;margin-right: 10px;">Jurusan Pendidikan</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="menu-item" aria-haspopup="true">
+                                                        <a href="app/index/master_pangkat" class="menu-link ">
+                                                            <span class="menu-text" style="color: #FFFFFF;margin-right: 10px;">Pangkat</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="menu-item" aria-haspopup="true">
+                                                        <a href="app/index/master_pejabat_penetap" class="menu-link ">
+                                                            <span class="menu-text" style="color: #FFFFFF;margin-right: 10px;">Pejabat Penetap</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="menu-item" aria-haspopup="true">
+                                                        <a href="app/index/master_pendidikan" class="menu-link ">
+                                                            <span class="menu-text" style="color: #FFFFFF;margin-right: 10px;">Pendidikan</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="menu-item" aria-haspopup="true">
+                                                        <a href="app/index/master_satker" class="menu-link ">
+                                                            <span class="menu-text" style="color: #FFFFFF;margin-right: 10px;">Satker</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="menu-item" aria-haspopup="true">
+                                                        <a href="app/index/master_user" class="menu-link ">
+                                                            <span class="menu-text" style="color: #FFFFFF;margin-right: 10px;">User</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="menu-item" aria-haspopup="true">
+                                                        <a href="app/index/master_user_rekap" class="menu-link ">
+                                                            <span class="menu-text" style="color: #FFFFFF;margin-right: 10px;">User Rekap</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="menu-item" aria-haspopup="true">
                                                         <a href="app/index/master_user_group" class="menu-link ">
                                                             <span class="menu-text" style="color: #FFFFFF;margin-right: 10px;">User Group</span>
                                                         </a>
