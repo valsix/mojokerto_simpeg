@@ -96,5 +96,21 @@ class JenisHukuman extends Entity{
 				
 		return $this->selectLimit($str,$limit,$from); 
     }	
+
+    function selectByParamsStatus($paramsArray=array(),$limit=-1,$from=-1)
+	{		
+		$str = "
+				SELECT TINGKAT_HUKUMAN_ID, NAMA 
+				FROM TINGKAT_HUKUMAN WHERE 1 = 1
+				".$statement; 
+		
+		while(list($key,$val) = each($paramsArray))
+		{
+			$str .= " AND $key = '$val' ";
+		}
+		$this->query = $str;
+		return $this->selectLimit($str,$limit,$from); 
+    }		
+    
 } 
 ?>
