@@ -4,8 +4,9 @@ $this->load->library("crfs_protect"); $csrf = new crfs_protect('_crfs_login');
 // $username= "bag_pemerintahan";
 $username= "admin";
 $pass= "admin";
-
+// print_r($this);exit;
 $sessinfopesan= $this->sessinfopesan;
+$sessvgenertecaptcha= $this->sessvgenertecaptcha;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -63,6 +64,23 @@ $sessinfopesan= $this->sessinfopesan;
                                     <div class="form-group mb-5">
                                         <input class="form-control h-auto form-control-solid py-4 px-8" type="password" placeholder="Password" name="reqPasswd" value="<?=$pass?>" />
                                     </div>
+                                     <div class="form-group mb-5">
+                                       <div class="row">
+                                            <div class="col-sm-4"></div>
+                                            <div class="col-sm-3">
+                                                  <img src="Logindata/captcha" id='imagecaptcha' /> 
+                                            </div>
+                                            <div class="col-sm-3" style="margin-top: 10px;">
+                                              <a href='javascript:void(0)' onclick="refreshcaptcha();"><i class="fa fa-refresh"></i></a> 
+                                            </div>
+                                       </div>
+                                    </div>
+                                    
+
+                                    <input type="hidden" name="reqNewCaptcha" id="reqNewCaptcha" value="<?=$sessvgenertecaptcha?>" />
+                                      <input type="text" placeholder="Capcha..." class="form-password form-control" name="reqCaptcha" id="reqCaptcha" required="" />
+                                        
+
 
                                     <?
                                     if(!empty($sessinfopesan))
@@ -103,3 +121,22 @@ $sessinfopesan= $this->sessinfopesan;
 
     </body>
 </html>
+
+<script type="text/javascript">
+     function refreshcaptcha()
+  {
+    $.get("login/captcha", function (data) {
+      // console.log(data);
+      $("#reqNewCaptcha").val(data.trim());
+
+      $.get("Logindata/captcha?ubah=1", function (data) {
+        console.log( document.images['imagecaptcha']);
+        var img = document.images['imagecaptcha'];
+        img.src = img.src;
+      });
+
+    });
+
+    
+  }
+</script>
