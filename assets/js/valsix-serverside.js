@@ -14,6 +14,8 @@ var ajaxserverselectsingle = function() {
         infonowrap= [];
 
         valarrdata.forEach(function (item, index) {
+            infoclass= item["class"];
+            infoorderable= item["orderable"];
             infofield= item["field"];
             infodisplay= item["display"];
             nowrap= item["nowrap"];
@@ -27,12 +29,19 @@ var ajaxserverselectsingle = function() {
                 setdisplay= false;
             }
 
+            setorder= true;
+            if(infoorderable=="1"){
+                setorder= false;
+            }
+
             if(nowrap == "1")
             {
                 infonowrap.push(index);
             }
 
             var infodetil= {};
+            infodetil.orderable= setorder;
+            infodetil.class= infoclass;
             infodetil.data= infofield;
             infodetil.visible= setdisplay;
             infodetil.nowrap= nowrap;

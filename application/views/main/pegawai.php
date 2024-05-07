@@ -8,7 +8,8 @@ else
     $reqPegawaiId= $this->pegawaiId;
 
 $arrtabledata= array(
-    array("label"=>"NIP", "field"=> "NIP_LAMA", "display"=>"", "width"=>"")
+    array("label"=>"", "field"=> "", "display"=>"", "width"=>"", "class"=>"dt-control", "orderable"=>"1")
+    , array("label"=>"NIP", "field"=> "NIP_LAMA", "display"=>"", "width"=>"")
     , array("label"=>"NIP Baru", "field"=> "NIP_BARU", "display"=>"", "width"=>"", "nowrap"=>'1')
     , array("label"=>"Nama ", "field"=> "NAMA", "display"=>"", "width"=>"", "nowrap"=>'1')
     , array("label"=>"Tempat Lahir", "field"=> "TEMPAT_LAHIR", "display"=>"", "width"=>"")
@@ -18,18 +19,18 @@ $arrtabledata= array(
     , array("label"=>"Gol.Ruang", "field"=> "GOL_RUANG", "display"=>"", "width"=>"")
     , array("label"=>"TMT Pangkat", "field"=> "TMT_PANGKAT", "display"=>"", "width"=>"")
     , array("label"=>"Eselon", "field"=> "ESELON", "display"=>"", "width"=>"")
-    , array("label"=>"Jabatan", "field"=> "JABATAN", "display"=>"", "width"=>"")
-    , array("label"=>"TMT Jabatan", "field"=> "TMT_JABATAN", "display"=>"", "width"=>"")
-    , array("label"=>"Mata Pelajaran", "field"=> "JENIS_MAPEL", "display"=>"", "width"=>"")
-    , array("label"=>"Agama", "field"=> "AGAMA", "display"=>"", "width"=>"")
-    , array("label"=>"Jabatan Tambahan", "field"=> "JABATAN_TAMBAHAN_NAMA", "display"=>"", "width"=>"")
-    , array("label"=>"TMT Jabatan Tambahan", "field"=> "TMT_JABATAN_AKHIR", "display"=>"", "width"=>"")
-    , array("label"=>"Telepon", "field"=> "TELEPON", "display"=>"", "width"=>"")
-    , array("label"=>"Alamat", "field"=> "ALAMAT", "display"=>"", "width"=>"")
-    , array("label"=>"Satuan Kerja", "field"=> "SATKER", "display"=>"", "width"=>"")
-    , array("label"=>"TMT Pensiun", "field"=> "TMT_PENSIUN", "display"=>"", "width"=>"")
-    , array("label"=>"Pendidikan", "field"=> "PENDIDIKAN", "display"=>"", "width"=>"")
-    , array("label"=>"Lulus", "field"=> "LULUS", "display"=>"", "width"=>"")
+    , array("label"=>"Jabatan", "field"=> "JABATAN", "display"=>"1", "width"=>"")
+    , array("label"=>"TMT Jabatan", "field"=> "TMT_JABATAN", "display"=>"1", "width"=>"")
+    , array("label"=>"Mata Pelajaran", "field"=> "JENIS_MAPEL", "display"=>"1", "width"=>"")
+    , array("label"=>"Agama", "field"=> "AGAMA", "display"=>"1", "width"=>"")
+    , array("label"=>"Jabatan Tambahan", "field"=> "JABATAN_TAMBAHAN_NAMA", "display"=>"1", "width"=>"")
+    , array("label"=>"TMT Jabatan Tambahan", "field"=> "TMT_JABATAN_AKHIR", "display"=>"1", "width"=>"")
+    , array("label"=>"Telepon", "field"=> "TELEPON", "display"=>"1", "width"=>"")
+    , array("label"=>"Alamat", "field"=> "ALAMAT", "display"=>"1", "width"=>"")
+    , array("label"=>"Satuan Kerja", "field"=> "SATKER", "display"=>"1", "width"=>"")
+    , array("label"=>"TMT Pensiun", "field"=> "TMT_PENSIUN", "display"=>"1", "width"=>"")
+    , array("label"=>"Pendidikan", "field"=> "PENDIDIKAN", "display"=>"1", "width"=>"")
+    , array("label"=>"Lulus", "field"=> "LULUS", "display"=>"1", "width"=>"")
 
     , array("label"=>"tugas tambahan", "field"=> "TUGAS_TAMBAHAN_NEW", "display"=>"1", "width"=>"")
     , array("label"=>"hukuman status", "field"=> "HUKUMAN_STATUS_TERAKHIR", "display"=>"1", "width"=>"")
@@ -67,11 +68,42 @@ $arrsatkerdata= $this->sessdatatree;
 .nowrap {
     white-space: nowrap;
 }
+
+table.dataTable td.dt-control {
+  text-align: center;
+  cursor: pointer;
+}
+table.dataTable td.dt-control:before {
+  display: inline-block;
+  box-sizing: border-box;
+  content: "";
+  border-top: 5px solid transparent;
+  border-left: 10px solid rgba(0, 0, 0, 0.5);
+  border-bottom: 5px solid transparent;
+  border-right: 0px solid transparent;
+}
+table.dataTable tr.dt-hasChild td.dt-control:before {
+  border-top: 10px solid rgba(0, 0, 0, 0.5);
+  border-left: 5px solid transparent;
+  border-bottom: 0px solid transparent;
+  border-right: 5px solid transparent;
+}
+
+html.dark table.dataTable td.dt-control:before,
+:root[data-bs-theme=dark] table.dataTable td.dt-control:before {
+  border-left-color: rgba(255, 255, 255, 0.5);
+}
+html.dark table.dataTable tr.dt-hasChild td.dt-control:before,
+:root[data-bs-theme=dark] table.dataTable tr.dt-hasChild td.dt-control:before {
+  border-top-color: rgba(255, 255, 255, 0.5);
+  border-left-color: transparent;
+}
 </style>
 
 <!-- SELECT2 -->
 <!-- <link href="lib/select2/select2.min.css" rel="stylesheet"> -->
 <link href="lib/select2totreemaster/src/select2totree.css" rel="stylesheet">
+<!-- <link href="https://cdn.datatables.net/2.0.6/css/dataTables.dataTables.css" rel="stylesheet"> -->
 <script src="lib/select2/select2.min.js"></script>
 <script src="lib/select2totreemaster/src/select2totree.js"></script>
 
@@ -267,6 +299,22 @@ jQuery(document).ready(function() {
         fieldinfoid= arrdata[indexfieldid]["field"];
         valinfoid= dataselected[fieldinfoid];
     });
+
+    $('#'+infotableid+' tbody').on('click', 'td.dt-control', function () {
+        var tr = $(this).parents('tr');
+        var row = datanewtable.DataTable().row(this);
+ 
+        if ( row.child.isShown() ) {
+            // This row is already open - close it
+            row.child.hide();
+            tr.removeClass('shown');
+        }
+        else {
+            // Open this row
+            row.child( format(row.data()) ).show();
+            tr.addClass('shown');
+        }
+    } );
 
     $('#'+infotableid+' tbody').on( 'dblclick', 'tr', function () {
       $("#btnUbahData").click();    
@@ -547,6 +595,52 @@ function showhidesatker()
     } else {
         x.style.display = "none";
     }
+}
+
+/* Formatting function for row details - modify as you need */
+function format ( d ) {
+    JABATAN_TAMBAHAN_NAMA=d.JABATAN_TAMBAHAN_NAMA ?? '-';
+    PENDIDIKAN=d.PENDIDIKAN ?? '-';
+    LULUS=d.LULUS ?? '-';
+    // `d` is the original data object for the row
+    return '<table cellpadding="5" cellspacing="0" border="0" style="">'+
+        '<tr>'+
+            '<td style="width:15%">Jabatan:</td>'+
+            '<td style="width:35%">'+d.JABATAN+'</td>'+
+            '<td style="width:15%">TMT Jabatan:</td>'+
+            '<td style="width:35%">'+d.TMT_JABATAN+'</td>'+
+        '</tr>'+
+        '<tr>'+
+            '<td style="width:15%">Mata Pelajaran:</td>'+
+            '<td style="width:35%">'+d.JENIS_MAPEL+'</td>'+
+            '<td style="width:15%">Agama:</td>'+
+            '<td style="width:35%">'+d.AGAMA+'</td>'+
+        '</tr>'+
+        '<tr>'+
+            '<td style="width:15%">Jabatan Tambahan:</td>'+
+            '<td style="width:35%">'+JABATAN_TAMBAHAN_NAMA+'</td>'+
+            '<td style="width:15%">TMT Jabatan Tambahan:</td>'+
+            '<td style="width:35%">'+d.TMT_JABATAN+'</td>'+
+        '</tr>'+
+        '<tr>'+
+            '<td style="width:15%">Telepon:</td>'+
+            '<td style="width:35%">'+d.TELEPON+'</td>'+
+            '<td style="width:15%">Alamat:</td>'+
+            '<td style="width:35%">'+d.ALAMAT+'</td>'+
+        '</tr>'+
+        '<tr>'+
+            '<td style="width:15%">Satuan Kerja:</td>'+
+            '<td style="width:35%">'+d.SATKER+'</td>'+
+            '<td style="width:15%">TMT Pensiun:</td>'+
+            '<td style="width:35%">'+d.TMT_PENSIUN+'</td>'+
+        '</tr>'+
+        '<tr>'+
+            '<td style="width:15%">Pendidikan:</td>'+
+            '<td style="width:35%">'+PENDIDIKAN+'</td>'+
+            '<td style="width:15%">Lulus:</td>'+
+            '<td style="width:35%">'+LULUS+'</td>'+
+        '</tr>'+
+    '</table>';
 }
 </script>
 
