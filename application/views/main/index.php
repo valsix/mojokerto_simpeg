@@ -185,6 +185,9 @@ $arrcarimenuparent= $vfpeg->cariparentmenu($arrparam);
 
                     <?
                     $arrmenupegawaidetil= array("pegawai_data_fip", "lokasi_kerja", "pengalaman_kerja", "pengalaman_kerja_add", "sk_pns", "sk_cpns", "riwayat_pangkat", "riwayat_pangkat_add", "riwayat_jabatan", "riwayat_jabatan_add", "riwayat_tugas_tambahan", "riwayat_tugas_tambahan_add", "riwayat_gaji", "riwayat_gaji_add", "pendidikan_umum", "pendidikan_umum_add", "pelatihan_kepemimpinan", "pelatihan_kepemimpinan_add", "pelatihan_fungsional", "pelatihan_fungsional_add", "diklat_lpj", "diklat_lpj_add", "pelatihan_teknis", "pelatihan_teknis_add", "seminar_workshop", "seminar_workshop_add", "pelatihan_non_klasikal", "pelatihan_non_klasikal_add", "orang_tua", "mertua", "suami_istri", "anak", "anak_add", "saudara", "saudara_add", "organisasi", "organisasi_add", "penghargaan", "penghargaan_add", "penilaian_potensi_diri", "penilaian_potensi_diri_add", "catatan_prestasi", "catatan_prestasi_add", "hukuman", "hukuman_add", "cuti", "cuti_add", "tambah_masa_kerja", "tambah_masa_kerja_add", "ijin_belajar", "ijin_belajar_add", "sertifikat_pendidikan", "sertifikat_pendidikan_add", "sertifikat_prestasi", "sertifikat_prestasi_add", "pak", "pak_add", "skp", "skp_add", "kinerja", "kinerja_add", "komparasi_data", "komparasi_data_add", "penguasaan_bahasa", "penguasaan_bahasa_add", "nikah", "nikah_add");
+
+                    $arrmenuMaster= array("master_diklat","master_diklat_add","master_eselon","master_eselon_add","master_peraturan_gaji","master_peraturan_gaji_add","master_gaji_pokok","master_gaji_pokok_add","master_peraturan","master_peraturan_add","master_tingkat_hukuman","master_tingkat_hukuman_add","master_jenis_hukuman","master_jenis_hukuman_add","master_jurusan_pendidikan","master_jurusan_pendidikan_add","master_pangkat","master_pangkat_add","master_diklat","master_diklat","master_diklat","master_diklat","master_pejabat_penetap","master_pejabat_penetap_add","master_pendidikan","master_pendidikan_add","master_user_group","master_user_group_add","master_diklat","master_diklat","master_diklat",);
+
                     if(in_array($pg, $arrmenupegawaidetil))
                     {
                     ?>
@@ -433,6 +436,112 @@ $arrcarimenuparent= $vfpeg->cariparentmenu($arrparam);
                         </div>
                     <?
                     }
+                    else if(in_array($pg, $arrmenuMaster))
+                    {
+                    ?>
+                        <div class="aside-menu-wrapper flex-column-fluid" id="kt_aside_menu_wrapper">
+                            <!--begin::Menu Container-->
+                            <div id="kt_aside_menu" class="aside-menu my-4" data-menu-vertical="1" data-menu-scroll="1" data-menu-dropdown-timeout="500" style="border: 0px solid red; margin-top: 0px !important; margin-bottom: 0px !important;">
+                                <!--begin::Menu Nav-->
+                                <ul class="menu-nav">
+                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover">
+                                        <a href="app/index/home" class="menu-link menu-toggle">
+                                            <span class="menu-text"><i class="fa fa-arrow-left" aria-hidden="true" style="color: #FFFFFF; margin-right: 10px;"></i>Kembali</span>
+                                            <i class="menu-arrow"></i>
+                                        </a>
+                                    </li>
+                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover" style="background-color: white;">
+                                        <a disabled class="menu-link menu-toggle" style="cursor: context-menu;">
+                                            <span class="menu-text" style="color: #bd1007;">Menu Master</span>
+                                            <i class="menu-arrow"></i>
+                                        </a>
+                                    </li>
+                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover" <?if($pg=='master_diklat'||$pg=='master_diklat_add'){?>style="background-color: #EE9D01;"<?}?>>
+                                        <a href="app/index/master_diklat" class="menu-link ">
+                                            <span class="menu-text">Diklat</span>
+                                        </a>
+                                    </li>
+                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover" <?if($pg=='master_eselon'||$pg=='master_eselon_add'){?>style="background-color: #EE9D01;"<?}?>>
+                                        <a href="app/index/master_eselon" class="menu-link ">
+                                            <span class="menu-text">Eselon</span>
+                                        </a>
+                                    </li>
+                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover" <?if($pg=='master_jabatan_fungsional'||$pg=='master_jabatan_fungsional_add'){?>style="background-color: #EE9D01;"<?}?>>
+                                        <a href="app/index/master_jabatan_fungsional" class="menu-link ">
+                                            <span class="menu-text" >Jabatan Fungsional</span>
+                                        </a>
+                                    </li>
+                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover"<?if($pg=='master_peraturan_gaji'||$pg=='master_peraturan_gaji_add'){?>style="background-color: #EE9D01;"<?}?>>
+                                        <a href="app/index/master_peraturan_gaji" class="menu-link ">
+                                            <span class="menu-text" >Peraturan Gaji</span>
+                                        </a>
+                                    </li>
+                                    
+                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover" <?if($pg=='master_gaji_pokok'||$pg=='master_gaji_pokok_add'){?>style="background-color: #EE9D01;"<?}?>>
+                                        <a href="app/index/master_gaji_pokok" class="menu-link ">
+                                            <span class="menu-text" >Gaji Pokok</span>
+                                        </a>
+                                    </li>
+                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover" <?if($pg=='master_peraturan'||$pg=='master_peraturan_add'){?>style="background-color: #EE9D01;"<?}?>>
+                                        <a href="app/index/master_peraturan" class="menu-link ">
+                                            <span class="menu-text" >Peraturan</span>
+                                        </a>
+                                    </li>
+                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover" <?if($pg=='master_tingkat_hukuman'||$pg=='master_tingkat_hukuman_add'){?>style="background-color: #EE9D01;"<?}?>>
+                                        <a href="app/index/master_tingkat_hukuman" class="menu-link ">
+                                            <span class="menu-text" >Tingkat Hukuman</span>
+                                        </a>
+                                    </li>
+                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover" <?if($pg=='master_jenis_hukuman'||$pg=='master_jenis_hukuman_add'){?>style="background-color: #EE9D01;"<?}?>>
+                                        <a href="app/index/master_jenis_hukuman" class="menu-link ">
+                                            <span class="menu-text" >Jenis Hukuman</span>
+                                        </a>
+                                    </li>
+                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover" <?if($pg=='master_jurusan_pendidikan'||$pg=='master_jurusan_pendidikan_add'){?>style="background-color: #EE9D01;"<?}?>>
+                                        <a href="app/index/master_jurusan_pendidikan" class="menu-link ">
+                                            <span class="menu-text" >Jurusan Pendidikan</span>
+                                        </a>
+                                    </li>
+                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover" <?if($pg=='master_pangkat'||$pg=='master_pangkat_add'){?>style="background-color: #EE9D01;"<?}?>>
+                                        <a href="app/index/master_pangkat" class="menu-link ">
+                                            <span class="menu-text" >Pangkat</span>
+                                        </a>
+                                    </li>
+                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover" <?if($pg=='master_pejabat_penetap'||$pg=='master_pejabat_penetap_add'){?>style="background-color: #EE9D01;"<?}?>>
+                                        <a href="app/index/master_pejabat_penetap" class="menu-link ">
+                                            <span class="menu-text" >Pejabat Penetap</span>
+                                        </a>
+                                    </li>
+                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover" <?if($pg=='master_pendidikan'||$pg=='master_pendidikan_add'){?>style="background-color: #EE9D01;"<?}?>>
+                                        <a href="app/index/master_pendidikan" class="menu-link ">
+                                            <span class="menu-text" >Pendidikan</span>
+                                        </a>
+                                    </li>
+                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover" <?if($pg=='master_satker'||$pg=='master_satker_add'){?>style="background-color: #EE9D01;"<?}?>>
+                                        <a href="app/index/master_satker" class="menu-link ">
+                                            <span class="menu-text" >Satker</span>
+                                        </a>
+                                    </li>
+                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover" <?if($pg=='master_user'||$pg=='master_user_add'){?>style="background-color: #EE9D01;"<?}?>>
+                                        <a href="app/index/master_user" class="menu-link ">
+                                            <span class="menu-text" >User</span>
+                                        </a>
+                                    </li>
+                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover" <?if($pg=='master_user_rekap'||$pg=='master_user_rekap_add'){?>style="background-color: #EE9D01;"<?}?>>
+                                        <a href="app/index/master_user_rekap" class="menu-link ">
+                                            <span class="menu-text" >User Rekap</span>
+                                        </a>
+                                    </li>
+                                    <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover" <?if($pg=='master_user_group'||$pg=='master_user_group_add'){?>style="background-color: #EE9D01;"<?}?>>
+                                        <a href="app/index/master_user_group" class="menu-link ">
+                                            <span class="menu-text" >User Group</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    <?
+                    }
                     else
                     {
                     ?>
@@ -543,114 +652,11 @@ $arrcarimenuparent= $vfpeg->cariparentmenu($arrparam);
                                     {
                                         ?>
 
-                                        <!-- <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover">
-                                            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                                                <span class="menu-text"><i class="fa fa-database" aria-hidden="true" style="color: #FFFFFF;margin-right: 10px;"></i> Master Data</span>
-                                                <i class="menu-arrow"></i>
-                                            </a>
-                                        </li>
-
                                         <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover">
-                                            <a href="app/index/master_user_group" class="menu-link menu-toggle">
-                                                <span class="menu-text">Master User Group</span>
+                                            <a href="app/index/master_diklat" class="menu-link menu-toggle">
+                                                <span class="menu-text"><i class="fa fa-database" aria-hidden="true" style="color: #FFFFFF;margin-right: 10px;"></i>Master Menu Edit</span>
                                                 <i class="menu-arrow"></i>
                                             </a>
-                                        </li> -->
-                                        <li class="menu-item menu-item-submenu menu-item-here" aria-haspopup="true" data-menu-toggle="hover">
-                                            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                                                <span class="menu-text"><i class="fa fa-database" aria-hidden="true" style="color: #FFFFFF;margin-right: 10px;"></i> Master Data</span>
-                                                <i class="menu-arrow"></i>
-                                            </a>
-                                            <div class="menu-submenu">
-                                                <i class="menu-arrow"></i>
-                                                <ul class="menu-subnav">
-                                                    <li class="menu-item menu-item-parent" aria-haspopup="true">
-                                                        <span class="menu-link">
-                                                            <span class="menu-text">Master</span>
-                                                        </span>
-                                                    </li>
-                                                    <li class="menu-item" aria-haspopup="true">
-                                                        <a href="app/index/master_diklat" class="menu-link ">
-                                                            <span class="menu-text" style="color: #FFFFFF;margin-right: 10px;">Diklat</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="menu-item" aria-haspopup="true">
-                                                        <a href="app/index/master_eselon" class="menu-link ">
-                                                            <span class="menu-text" style="color: #FFFFFF;margin-right: 10px;">Eselon</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="menu-item" aria-haspopup="true">
-                                                        <a href="app/index/master_jabatan_fungsional" class="menu-link ">
-                                                            <span class="menu-text" style="color: #FFFFFF;margin-right: 10px;">Jabatan Fungsional</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="menu-item" aria-haspopup="true">
-                                                        <a href="app/index/master_peraturan_gaji" class="menu-link ">
-                                                            <span class="menu-text" style="color: #FFFFFF;margin-right: 10px;">Peraturan Gaji</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="menu-item" aria-haspopup="true">
-                                                        <a href="app/index/master_gaji_pokok" class="menu-link ">
-                                                            <span class="menu-text" style="color: #FFFFFF;margin-right: 10px;">Gaji Pokok</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="menu-item" aria-haspopup="true">
-                                                        <a href="app/index/master_peraturan" class="menu-link ">
-                                                            <span class="menu-text" style="color: #FFFFFF;margin-right: 10px;">Peraturan</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="menu-item" aria-haspopup="true">
-                                                        <a href="app/index/master_tingkat_hukuman" class="menu-link ">
-                                                            <span class="menu-text" style="color: #FFFFFF;margin-right: 10px;">Tingkat Hukuman</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="menu-item" aria-haspopup="true">
-                                                        <a href="app/index/master_jenis_hukuman" class="menu-link ">
-                                                            <span class="menu-text" style="color: #FFFFFF;margin-right: 10px;">Jenis Hukuman</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="menu-item" aria-haspopup="true">
-                                                        <a href="app/index/master_jurusan_pendidikan" class="menu-link ">
-                                                            <span class="menu-text" style="color: #FFFFFF;margin-right: 10px;">Jurusan Pendidikan</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="menu-item" aria-haspopup="true">
-                                                        <a href="app/index/master_pangkat" class="menu-link ">
-                                                            <span class="menu-text" style="color: #FFFFFF;margin-right: 10px;">Pangkat</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="menu-item" aria-haspopup="true">
-                                                        <a href="app/index/master_pejabat_penetap" class="menu-link ">
-                                                            <span class="menu-text" style="color: #FFFFFF;margin-right: 10px;">Pejabat Penetap</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="menu-item" aria-haspopup="true">
-                                                        <a href="app/index/master_pendidikan" class="menu-link ">
-                                                            <span class="menu-text" style="color: #FFFFFF;margin-right: 10px;">Pendidikan</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="menu-item" aria-haspopup="true">
-                                                        <a href="app/index/master_satker" class="menu-link ">
-                                                            <span class="menu-text" style="color: #FFFFFF;margin-right: 10px;">Satker</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="menu-item" aria-haspopup="true">
-                                                        <a href="app/index/master_user" class="menu-link ">
-                                                            <span class="menu-text" style="color: #FFFFFF;margin-right: 10px;">User</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="menu-item" aria-haspopup="true">
-                                                        <a href="app/index/master_user_rekap" class="menu-link ">
-                                                            <span class="menu-text" style="color: #FFFFFF;margin-right: 10px;">User Rekap</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="menu-item" aria-haspopup="true">
-                                                        <a href="app/index/master_user_group" class="menu-link ">
-                                                            <span class="menu-text" style="color: #FFFFFF;margin-right: 10px;">User Group</span>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
                                         </li>
                                       
                                         <?
