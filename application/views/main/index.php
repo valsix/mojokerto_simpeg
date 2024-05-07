@@ -626,7 +626,7 @@ $arrcarimenuparent= $vfpeg->cariparentmenu($arrparam);
                                     </li>
                                     <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover" <?if($pg=='pegawai'){?>style="background-color: #EE9D01;"<?}?>>
                                         <a href="app/index/pegawai" class="menu-link menu-toggle">
-                                            <span class="menu-text">Pegawai</span>
+                                            <span class="menu-text"><i class="fa fa-user" aria-hidden="true" style="color: #FFFFFF;margin-right: 10px;"></i>Pegawai</span>
                                             <i class="menu-arrow"></i>
                                         </a>
                                     </li>
