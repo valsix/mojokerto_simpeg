@@ -72,7 +72,8 @@ $readonly = "readonly";
 	        		<div class="form-group row">
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Pendidikan</label>
 	        			<div class="col-lg-10 col-sm-12">
-	        				<select name="reqPendidikan" class="form-control" >
+	        				<select name="reqPendidikan" class="form-control" id='reqPendidikan'>
+	        					<option value="" <? if($reqPendidikan == '') echo 'selected';?>>Pilih</option>
 			                	<?while($pendidikan->nextRow()){?>
 									<option value="<?=$pendidikan->getField('PENDIDIKAN_ID')?>" <? if($reqPendidikan == $pendidikan->getField('PENDIDIKAN_ID')) echo 'selected';?>><?=$pendidikan->getField('NAMA')?></option>
 								<? }?>
@@ -268,5 +269,10 @@ $readonly = "readonly";
 		, format: 'dd-mm-yyyy'
 		, templates: arrows
 	});
+
+	$("#reqPendidikan").select2({
+    	placeholder: "Pilih salah satu data",
+    	allowClear: true
+  	});
 
 </script>

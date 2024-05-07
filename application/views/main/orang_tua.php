@@ -778,4 +778,9 @@ $readonly = "readonly";
 	        });
 		});	
 	})
+
+	$("#reqPropinsi, #reqPropinsiIbu, #reqKabupaten, #reqKabupatenIbu, #reqKecamatan, #reqKecamatanIbu, #reqKelurahan, #reqKelurahanIbu").select2({
+    	placeholder: "Pilih salah satu data",
+    	allowClear: true
+  	});
 </script>

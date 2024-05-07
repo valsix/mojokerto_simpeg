@@ -71,6 +71,7 @@ $arrTahun= setTahunLoop(3,1);
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Tahun</label>
 	        			<div class="col-lg-2 col-sm-12">
 				        		<select name="reqTahun" id="reqTahun"  readonly class="form-control datatable-input">
+									<option value="" <? if($reqTahun == '') echo "selected";?>>Pilih</option>
 								<?
 								for($tahun=0;$tahun < count($arrTahun);$tahun++)
 								{
@@ -237,5 +238,9 @@ $arrTahun= setTahunLoop(3,1);
 		});
 	});
 
+	$("#reqTahun").select2({
+    	placeholder: "Pilih salah satu data",
+    	allowClear: true
+  	});
 
 </script>

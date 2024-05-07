@@ -103,6 +103,7 @@ $reqTahunAktif= date("Y");
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Bulan Mulai Penilaian</label>
 	        			<div class="col-lg-2 col-sm-12">
 				        		<select name="reqBulanMulai" id="reqBulanMulai"  readonly class="form-control datatable-input">
+									<option value="" <? if($reqBulanMulai == '') echo "selected";?>>Pilih</option>
 								<?
 								for($bulan=0;$bulan < count($arrBulan);$bulan++)
 								{
@@ -116,6 +117,7 @@ $reqTahunAktif= date("Y");
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Bulan Selesai Penilaian</label>
 	        			<div class="col-lg-2 col-sm-12">
 				        		<select name="reqBulanSelesai" id="reqBulanSelesai"  readonly class="form-control datatable-input">
+									<option value="" <? if($reqBulanSelesai == '') echo "selected";?>>Pilih</option>
 								<?
 								for($bulan=0;$bulan < count($arrBulan);$bulan++)
 								{
@@ -131,6 +133,7 @@ $reqTahunAktif= date("Y");
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Tahun Mulai Penilaian</label>
 	        			<div class="col-lg-2 col-sm-12">
 				        		<select name="reqTahunMulai" id="reqTahunMulai"  readonly class="form-control datatable-input">
+									<option value="" <? if($reqTahunMulai == '') echo "selected";?>>Pilih</option>
 								<?
 								for($tahun=0;$tahun < count($arrTahun);$tahun++)
 								{
@@ -144,6 +147,7 @@ $reqTahunAktif= date("Y");
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Tahun Selesai Penilaian</label>
 	        			<div class="col-lg-2 col-sm-12">
 				        		<select name="reqTahunSelesai" id="reqTahunSelesai"  readonly class="form-control datatable-input">
+									<option value="" <? if($reqTahunSelesai == '') echo "selected";?>>Pilih</option>
 								<?
 								for($tahun=0;$tahun < count($arrTahun);$tahun++)
 								{
@@ -320,5 +324,9 @@ $reqTahunAktif= date("Y");
 		});
 	});
 
+	$("#reqBulanMulai, #reqBulanSelesai, #reqTahunMulai, #reqTahunSelesai").select2({
+    	placeholder: "Pilih salah satu data",
+    	allowClear: true
+  	});
 
 </script>

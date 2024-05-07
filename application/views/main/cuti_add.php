@@ -70,7 +70,8 @@ else
 	        		<div class="form-group row">
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Jenis Cuti</label>
 	        			<div class="col-lg-2 col-sm-12">
-	        				<select <?=$disabled?> name="reqJenisCuti" class="form-control">
+	        				<select <?=$disabled?> name="reqJenisCuti" class="form-control" id='reqJenisCuti'>
+	        					<option value="" <? if($reqJenisCuti == '') echo 'selected';?>>Pilih</option>				
 	        					<option value="1" <? if($reqJenisCuti == 1) echo 'selected';?>>Cuti Tahunan</option>				
 	        					<option value="2" <? if($reqJenisCuti == 2) echo 'selected';?>>Cuti Besar</option>				
 	        					<option value="3" <? if($reqJenisCuti == 3) echo 'selected';?>>Cuti Sakit</option>				
@@ -309,5 +310,10 @@ else
 		, format: 'dd-mm-yyyy'
 		, templates: arrows
 	});
+
+	$("#reqJenisCuti").select2({
+    	placeholder: "Pilih salah satu data",
+    	allowClear: true
+  	});
 
 </script>

@@ -117,6 +117,7 @@ $readonly = "readonly";
 		        		</label>
 	        			<div class="col-lg-4 col-sm-12">
 	        				<select class="form-control" name="reqGolRuang" id="reqGolRuang">
+	        					<option value="" <? if($reqGolRuang == '') echo 'selected';?>>Pilih</option>
 	    					<? while($pangkat->nextRow()){?>
 		                        <option value="<?=$pangkat->getField('PANGKAT_ID')?>" <? if($reqGolRuang == $pangkat->getField('PANGKAT_ID')) echo 'selected';?>><?=$pangkat->getField('KODE')?></option>
 		                    <? }?>
@@ -151,6 +152,7 @@ $readonly = "readonly";
 			                <div id="select_status" style="display:<?=$reqDisplay?>">
 				            	<? $pejabat_penetap->selectByParamsPejabatPenetap(array());?>
 				                <select <?=$disabled?> name="reqPjPenetap" id="reqPjPenetap" class="form-control">
+			                   		<option value="" <? if($reqEselon =='') echo 'selected';?> disabled> Pilih PJ Penetap</option>
 				                    <? while($pejabat_penetap->nextRow()){?>
 				                        <option value="<?=$pejabat_penetap->getField('PEJABAT_PENETAP_ID')?>" <? if($reqPjPenetapId == $pejabat_penetap->getField('PEJABAT_PENETAP_ID')) echo 'selected';?>><?=$pejabat_penetap->getField('JABATAN')?></option>
 				                    <? }?>
@@ -191,6 +193,7 @@ $readonly = "readonly";
 		        		</label>
 	        			<div class="col-lg-4 col-sm-12">
 	        				<select class="form-control" name="reqJenis" id="reqJenis">
+	        					<option value="" <? if($reqJenis == '') echo 'selected';?>>Pilih</option>
 	        					<option value="1" <? if($reqJenis == 1) echo "selected";?>>Kenaikan Pangkat</option>
 								<option value="2" <? if($reqJenis == 2) echo "selected";?>>Gaji Berkala</option>
 								<option value="3" <? if($reqJenis == 3) echo "selected";?>>Penyesuaian Tabel Gaji Pokok</option>
@@ -336,17 +339,10 @@ $readonly = "readonly";
 		});
 	});
 
-	$('#reqGolRuang').select2({
-		placeholder: "Pilih Gol/Ruang"
-	});
-
-	$('#reqPjPenetap').select2({
-		placeholder: "Pilih Pejabat Penetap"
-	});
-
-	$('#reqJenis').select2({
-		placeholder: "Pilih Jenis"
-	});
+	$("#reqPjPenetap,#reqGolRuang,#reqJenis").select2({
+    	placeholder: "Pilih salah satu data",
+    	allowClear: true
+  	});
 
 	arrows= {leftArrow: '<i class="la la-angle-left"></i>', rightArrow: '<i class="la la-angle-right"></i>'};
 	$('.kttanggal').datepicker({

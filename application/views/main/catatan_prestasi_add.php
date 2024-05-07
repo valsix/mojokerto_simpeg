@@ -126,6 +126,7 @@ else
 				                <div id="select_status" style="display:<?=$reqDisplay?>">
 				            	<? $pejabat_penetap->selectByParamsPejabatPenetap(array());?>
 				                <select <?=$disabled?> name="reqPjPenetap" id="reqPjPenetap" class="form-control">
+				                	<option value="" <? if($reqPjPenetapId == '') echo 'selected';?>>Pilih</option>
 				                    <? while($pejabat_penetap->nextRow()){?>
 				                        <option value="<?=$pejabat_penetap->getField('PEJABAT_PENETAP_ID')?>" <? if($reqPjPenetapId == $pejabat_penetap->getField('PEJABAT_PENETAP_ID')) echo 'selected';?>><?=$pejabat_penetap->getField('JABATAN')?></option>
 				                    <? }?>
@@ -311,5 +312,10 @@ else
 		, format: 'dd-mm-yyyy'
 		, templates: arrows
 	});
+
+	$("#reqPjPenetap").select2({
+    	placeholder: "Pilih salah satu data",
+    	allowClear: true
+  	});
 
 </script>

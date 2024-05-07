@@ -191,6 +191,7 @@ $readonly = "readonly";
 			        		</label>
 		        			<div class="col-lg-4 col-sm-12">
 		        				<select class="form-control" id="reqPendidikan" name="reqPendidikan">
+		        					<option value="" <? if($reqPendidikan == "") echo 'selected';?>>Pilih</option>
 		        					 <? while($pendidikan->nextRow()){?>
 					                    <option value="<?=$pendidikan->getField('PENDIDIKAN_ID')?>" <? if($reqPendidikan == $pendidikan->getField('PENDIDIKAN_ID')) echo 'selected';?>><?=$pendidikan->getField('NAMA')?></option>
 					                <? }?>
@@ -465,4 +466,9 @@ $readonly = "readonly";
 		    document.getElementById("reqBulanDibayar").value = '';
 		}
 	});
+
+	$("#reqPendidikan").select2({
+    	placeholder: "Pilih salah satu data",
+    	allowClear: true
+  	});
 </script>

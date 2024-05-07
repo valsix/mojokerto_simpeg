@@ -67,7 +67,8 @@ $arrTahun= setTahunLoop(3,1);
 	        		<div class="form-group row">
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12 ">Jenis Bahasa</label>
 	        			<div class="col-lg-2 col-sm-12">
-	        				<select <?=$disabled?> name="reqJenisBahasa" class="form-control">
+	        				<select <?=$disabled?> name="reqJenisBahasa" class="form-control" id='reqJenisBahasa'>
+	        					<option value="" <? if($reqJenisBahasa == '') echo 'selected'?>>Pilih</option>
 	        					<option value="1" <? if($reqJenisBahasa == 1) echo 'selected'?>>Asing</option>
 	        					<option value="2" <? if($reqJenisBahasa == 2) echo 'selected'?>>Daerah</option>
 	        				</select>
@@ -82,7 +83,8 @@ $arrTahun= setTahunLoop(3,1);
 	        		<div class="form-group row">
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Kemampuan Bicara</label>
 	        			<div class="col-lg-2 col-sm-12">
-	        				<select <?=$disabled?> name="reqKemampuanBicara" class="form-control">
+	        				<select <?=$disabled?> name="reqKemampuanBicara" class="form-control" id='reqKemampuanBicara'>
+	        					<option value="" <? if($reqKemampuanBicara == '') echo 'selected'?>>Pilih</option>
 	        					<option value="1" <? if($reqKemampuanBicara == 1) echo 'selected'?>>Aktif</option>
 	        					<option value="2" <? if($reqKemampuanBicara == 2) echo 'selected'?>>Pasif</option>
 	        				</select>
@@ -205,6 +207,11 @@ $arrTahun= setTahunLoop(3,1);
 			});
 		});
 	});
+
+	$("#reqJenisBahasa, #reqKemampuanBicara").select2({
+    	placeholder: "Pilih salah satu data",
+    	allowClear: true
+  	});
 
 
 </script>

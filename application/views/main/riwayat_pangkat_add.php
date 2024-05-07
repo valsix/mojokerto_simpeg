@@ -86,7 +86,7 @@ $readonly = "readonly";
 		        		</label>
 	        			<div class="col-lg-2 col-sm-12">
 	        				<div class="input-group date">
-		        				<select class="form-control"  name="reqSTLUD">
+		        				<select class="form-control"  name="reqSTLUD" id='reqSTLUD'>
 									<option></option>
 				                    <option value="1" <? if($reqSTLUD == 1) echo 'selected'?>>Tingkat I</option>
 				                    <option value="2" <? if($reqSTLUD == 2) echo 'selected'?>>Tingkat II</option>
@@ -178,7 +178,8 @@ $readonly = "readonly";
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Jenis KP</label>
 	        			<div class="col-lg-4 col-sm-12">
 	        				<select name="reqJenisKP" id="reqJenisKP"  class="form-control">
-			                   <option value="1" <? if($reqJenisKP == 1) echo 'selected'?>>Reguler</option>
+			                   	<option value=""<? if($reqJenisKP == '') echo 'selected'?>>Pilih</option>
+			                   	<option value="1" <? if($reqJenisKP == 1) echo 'selected'?>>Reguler</option>
 			                    <option value="2" <? if($reqJenisKP == 2) echo 'selected'?>>Pilihan (Struktural)</option>
 			                    <option value="3" <? if($reqJenisKP == 3) echo 'selected'?>>Anumerta</option>
 			                    <option value="4" <? if($reqJenisKP == 4) echo 'selected'?>>Pengabdian</option>
@@ -346,5 +347,10 @@ $readonly = "readonly";
 		, format: 'dd-mm-yyyy'
 		, templates: arrows
 	});
+
+	$("#reqSTLUD, #reqGolRuang, #reqPjPenetap, #reqJenisKP").select2({
+    	placeholder: "Pilih salah satu data",
+    	allowClear: true
+  	});
 
 </script>

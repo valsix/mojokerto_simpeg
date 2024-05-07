@@ -77,6 +77,7 @@ $readonly = "readonly";
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Diklat</label>
 	        			<div class="col-lg-10 col-sm-12">
 	        				<select class="form-control" name="reqDiklat" id="reqDiklat">
+	        					<option value="" <? if($reqDiklat=='') echo 'selected' ?>>pilih</option>
 	        					<?while($diklat->nextRow()){?>
 				            		<option <?=$read?> value="<?=$diklat->getField('DIKLAT_ID')?>" <? if($diklat->getField('DIKLAT_ID')==$reqDiklat) echo 'selected'?>><?=$diklat->getField('NAMA')?></option>
 								<? }?>
@@ -289,5 +290,10 @@ $readonly = "readonly";
 		, format: 'dd-mm-yyyy'
 		, templates: arrows
 	});
+
+	$("#reqDiklat").select2({
+    	placeholder: "Pilih salah satu data",
+    	allowClear: true
+  	});
 
 </script>

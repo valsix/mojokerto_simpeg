@@ -271,6 +271,7 @@ $reqTipePegawaiId= $pegawai->getField('TIPE_PEGAWAI_ID');
 			                <div id="select_status" style="display:<?=$reqDisplay?>">
 				            	<? $pejabat_penetap->selectByParamsPejabatPenetap(array());?>
 				                <select <?=$disabled?> name="reqPjPenetap" id="reqPjPenetap" class="form-control">
+			                   	<option value="" <? if($reqEselon =='') echo 'selected';?> disabled> Pilih PJ Penetap</option>
 				                    <? while($pejabat_penetap->nextRow()){?>
 				                        <option value="<?=$pejabat_penetap->getField('PEJABAT_PENETAP_ID')?>" <? if($reqPjPenetapId == $pejabat_penetap->getField('PEJABAT_PENETAP_ID')) echo 'selected';?>><?=$pejabat_penetap->getField('JABATAN')?></option>
 				                    <? }?>
@@ -489,5 +490,10 @@ $reqTipePegawaiId= $pegawai->getField('TIPE_PEGAWAI_ID');
 		, format: 'dd-mm-yyyy'
 		, templates: arrows
 	});
+
+	$("#reqPjPenetap").select2({
+    	placeholder: "Pilih salah satu data",
+    	allowClear: true
+  	});
 
 </script>

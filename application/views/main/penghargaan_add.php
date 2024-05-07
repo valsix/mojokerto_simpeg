@@ -92,7 +92,8 @@ else
 	        		<div class="form-group row">
 	        			<label  class="col-form-label text-right col-lg-2 col-sm-12">Nama Penghargaan</label>
 	        			<div class="col-lg-3 col-sm-12">
-	        				<select name="reqNamaPenghargaan" class="form-control">
+	        				<select name="reqNamaPenghargaan" class="form-control" id='reqNamaPenghargaan'>
+	        					<option value="" <? if($reqNamaPenghargaan == '') echo 'selected';?>>Pilih</option>
 	        					<option value="1" <? if($reqNamaPenghargaan == 1) echo 'selected';?>>Satya Lencana Karya Satya X (Perunggu)</option>
 	        					<option value="2" <? if($reqNamaPenghargaan == 2) echo 'selected';?>>Satya Lencana Karya Satya XX (Perak)</option>
 	        					<option value="3" <? if($reqNamaPenghargaan == 3) echo 'selected';?>>Satya Lencana Karya Satya XXX (Emas)</option>
@@ -131,6 +132,7 @@ else
 				                <div id="select_status" style="display:<?=$reqDisplay?>">
 				            	<? $pejabat_penetap->selectByParamsPejabatPenetap(array());?>
 				                <select <?=$disabled?> name="reqPjPenetap" id="reqPjPenetap" class="form-control">
+				                	<option value="" <? if($reqPjPenetapId == '') echo 'selected';?>>Pilih</option>
 				                    <? while($pejabat_penetap->nextRow()){?>
 				                        <option value="<?=$pejabat_penetap->getField('PEJABAT_PENETAP_ID')?>" <? if($reqPjPenetapId == $pejabat_penetap->getField('PEJABAT_PENETAP_ID')) echo 'selected';?>><?=$pejabat_penetap->getField('JABATAN')?></option>
 				                    <? }?>
@@ -302,4 +304,9 @@ else
 		, format: 'dd-mm-yyyy'
 		, templates: arrows
 	});
+
+	$("#reqNamaPenghargaan, #reqPjPenetap").select2({
+    	placeholder: "Pilih salah satu data",
+    	allowClear: true
+  	});
 </script>

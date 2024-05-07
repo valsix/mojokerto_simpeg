@@ -361,4 +361,9 @@ $readonly = "readonly";
 		, templates: arrows
 	});
 
+	$("#reqEselon, #reqPjPenetap").select2({
+    	placeholder: "Pilih salah satu data",
+    	allowClear: true
+  	});
+
 </script>

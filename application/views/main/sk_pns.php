@@ -98,7 +98,7 @@ $reqKeteranganLPJ				= $skpns->getField('KETERANGAN_LPJ');
 		        		</label>
 	        			<div class="col-lg-10 col-sm-12">
 	        				<select class="form-control" id="reqPejabatPenetapan" name="reqPejabatPenetapan">
-	        					<option <? if($reqPejabatPenetapan=='') echo 'selected'?> disabled>Pilih Pejabat Penetapan</option>					
+	        					<option <? if($reqPejabatPenetapan=='') echo 'selected'?> disabled value="">Pilih Pejabat Penetapan</option>					
         						<? while($pejabat_penetap->nextRow()){?>
 			                        <option value="<?=$pejabat_penetap->getField('PEJABAT_PENETAP_ID')?>"
 			                        <? if ($pejabat_penetap->getField('PEJABAT_PENETAP_ID') == $tempPejabatPenetapan) echo 'selected'?>><?=$pejabat_penetap->getField('JABATAN')?></option>
@@ -227,7 +227,7 @@ $reqKeteranganLPJ				= $skpns->getField('KETERANGAN_LPJ');
 		        		</label>
 	        			<div class="col-lg-8 col-sm-12">
 	        				<select class="form-control" id="reqGolRuang" name="reqGolRuang">
-	        					<option <? if($tempGolRuang=='') echo 'selected'?> disabled>Pilih Pengkat/Gol.Ruang</option>					
+	        					<option <? if($tempGolRuang=='') echo 'selected'?> disabled value="">Pilih Pengkat/Gol.Ruang</option>					
 	        					<? while ($pangkat->nextRow()){?>
 								<option value="<?=$pangkat->getField('PANGKAT_ID')?>"
 								<? if($pangkat->getField('PANGKAT_ID') == $reqGolRuang) echo 'selected'?>><?=$pangkat->getField('KODE')?></option>					
@@ -463,6 +463,11 @@ $reqKeteranganLPJ				= $skpns->getField('KETERANGAN_LPJ');
 			});
 		});
 	});
+
+	$("#reqPejabatPenetapan, #reqGolRuang").select2({
+    	placeholder: "Pilih salah satu data",
+    	allowClear: true
+  	});
 
 </script>
 

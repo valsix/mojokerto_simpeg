@@ -257,8 +257,8 @@ $arrsatkerdata= $this->sessdatatree;
 	        				<div class="form-group row">
 			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Jenis Kelamin</label>
 			        			<div class="col-lg-9 col-sm-12">
-			        				<select class="form-control" id='reqJenisKelamin' name='reqJenisKelamin'>
-			        					<option <?if ($reqJenisKelamin==''){echo "selected";}?> disabled> Pilih Jenis Kelamin</option>
+			        				<select class="js-states form-control" id='reqJenisKelamin' name='reqJenisKelamin'>
+			        					<option <?if ($reqJenisKelamin=='') echo "selected";?> disabled value=''> Pilih Jenis Kelamin</option>
 			        					<option value="L" <?if ($reqJenisKelamin=='L'){echo "selected";}?>> Laki laki</option>
 			        					<option value="P" <?if ($reqJenisKelamin=='P'){echo "selected";}?>> Perempuan</option>
 			        				</select>
@@ -271,8 +271,8 @@ $arrsatkerdata= $this->sessdatatree;
 				        			Agama
 				        		</label>
 			        			<div class="col-lg-9 col-sm-12">
-			        				<select class="form-control"  id='reqAgama' name='reqAgama'>
-			        					<option <?if($reqAgamaId==''){echo "selected";}?> disabled>Pilih Agama</option>
+			        				<select class="js-states form-control"  id='reqAgama' name='reqAgama'>
+			        					<option <?if($reqAgamaId==''){echo "selected";}?> disabled value=''>Pilih Agama</option>
 			        					<?while ($agama->nextRow()){?>
 					                        <option value="<?=$agama->getField('AGAMA_ID')?>"
 					                        <? if ($agama->getField('AGAMA_ID') == $reqAgamaId) echo 'selected'?>>
@@ -290,8 +290,8 @@ $arrsatkerdata= $this->sessdatatree;
 	        				<div class="form-group row">
 			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Status Pernikahan</label>
 			        			<div class="col-lg-9 col-sm-12">
-			        				<select class="form-control" id='reqStatusPernikahan' name='reqStatusPernikahan'>
-			        					<option  <? if($reqStatusPernikahan == "") echo 'selected'?> disabled>Pilih Status Pernikahan</option>
+			        				<select class="js-states form-control" id='reqStatusPernikahan' name='reqStatusPernikahan'>
+			        					<option  <? if($reqStatusPernikahan == "") echo 'selected'?> disabled value=''>Pilih Status Pernikahan</option>
 			        					<option value="1" <? if($reqStatusPernikahan == "1") echo 'selected'?>>Belum Kawin</option>
 										<option value="2" <? if($reqStatusPernikahan == "2") echo 'selected'?>>Kawin</option>
 										<option value="3" <? if($reqStatusPernikahan == "3") echo 'selected'?>>Janda</option>
@@ -317,7 +317,7 @@ $arrsatkerdata= $this->sessdatatree;
 				        			Gol Darah 
 				        		</label>
 			        			<div class="col-lg-9 col-sm-12">
-			        				<select class="form-control" id='reqGolDarah' name='reqGolDarah'>
+			        				<select class="js-states form-control" id='reqGolDarah' name='reqGolDarah'>
 			        					<option value=""  <? if($reqGolDarah == "") echo 'selected'?> disabled>Pilih Golongan Darah</option>
 			        					<option value="A" <? if($reqGolDarah == "A") echo 'selected'?>>A</option>
 										<option value="B" <? if($reqGolDarah == "B") echo 'selected'?>>B</option>
@@ -392,7 +392,7 @@ $arrsatkerdata= $this->sessdatatree;
 	        				<div class="form-group row">
 			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Propinsi</label>
 			        			<div class="col-lg-9 col-sm-12">
-			        				<select class="form-control" id='reqPropinsi' name='reqPropinsi'>
+			        				<select class="js-states form-control" id='reqPropinsi' name='reqPropinsi'>
 			        					<option value="" <?if($reqPropinsi=='') echo 'selected' ?> disabled></option>
 										<?while($propinsi->nextRow())
 										 {
@@ -412,7 +412,7 @@ $arrsatkerdata= $this->sessdatatree;
 	        				<div class="form-group row">
 			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Kabupaten</label>
 			        			<div class="col-lg-9 col-sm-12">
-			        				<select class="form-control" id='reqKabupaten' name='reqKabupaten'>
+			        				<select class="js-states form-control" id='reqKabupaten' name='reqKabupaten'>
 			        					<option value="" <?if($reqKabupaten=='') echo 'selected' ?> disabled></option>
 										<?while($kabupaten->nextRow())
 										 {
@@ -434,7 +434,7 @@ $arrsatkerdata= $this->sessdatatree;
 	        				<div class="form-group row">
 			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Kecamatan</label>
 			        			<div class="col-lg-9 col-sm-12">
-			        				<select class="form-control" id="reqKecamatan" name="reqKecamatan">
+			        				<select class="js-states form-control" id="reqKecamatan" name="reqKecamatan">
 			        					<option value="" <?if($reqKecamatan=='') echo 'selected' ?> disabled></option>
 										<?while($kecamatan->nextRow())
 										 {
@@ -453,7 +453,7 @@ $arrsatkerdata= $this->sessdatatree;
 	        				<div class="form-group row">
 			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Desa</label>
 			        			<div class="col-lg-9 col-sm-12">
-			        				<select class="form-control" id="reqKelurahan" name="reqDesa">
+			        				<select class="js-states form-control" id="reqKelurahan" name="reqDesa">
 			        					<option value="" <?if($reqKelurahan=='') echo 'selected' ?> disabled></option>
 										<?while($kelurahan->nextRow())
 										 {
@@ -475,7 +475,7 @@ $arrsatkerdata= $this->sessdatatree;
 	        				<div class="form-group row">
 			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Bank</label>
 			        			<div class="col-lg-9 col-sm-12">
-			        				<select class="form-control" id="reqBank" name="reqBank">
+			        				<select class="js-states form-control" id="reqBank" name="reqBank">
 			        					<option value="" <?if($reqBank=='') echo 'selected' ?> disabled>Pilih Bank</option>
 										<?while($bank->nextRow())
 										 {
@@ -561,7 +561,7 @@ $arrsatkerdata= $this->sessdatatree;
 			        			<div class="col-lg-9 col-sm-12">
 			        				<!-- <textarea  class="form-control" name="reqSatuanKerjaNama"  id="reqSatkerNama"></textarea> -->
 			        				<!-- <input type="text" class="form-control" name="reqSatuanKerjaNama"  id="reqSatkerNama"> -->
-			        				<select class="form-control" id="reqSatkerId" name="reqSatkerId">
+			        				<select class="js-states form-control" id="reqSatkerId" name="reqSatkerId">
 			                            <option value=""></option>
 			                        </select>
 			        			</div>
@@ -571,13 +571,17 @@ $arrsatkerdata= $this->sessdatatree;
 	        				<div class="form-group row">
 			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Tipe Pegawai</label>
 			        			<div class="col-lg-9 col-sm-12">
-			        				<select class="form-control" name="reqTipePegawai" id="reqTipePegawai">
+			        				<select class="js-states form-control" name="reqTipePegawai" id="reqTipePegawai" >
+			        					<option value="" <?if($reqBank=='') echo 'selected' ?> disabled>Pilih Bank</option>
+			        					
 			        					<? while ($tipepegawai->nextRow()){?>
 										<option value="<?=$tipepegawai->getField('TIPE_PEGAWAI_ID')?>"
 										<? if ($tipepegawai->getField('TIPE_PEGAWAI_ID') == $reqTipePegawai) echo 'selected'?>>
 										<?
-										if($tipepegawai->getField('TIPE_PEGAWAI_ID_PARENT') == 0)  echo $tipepegawai->getField('TIPE_PEGAWAI_ID').'.'.$tipepegawai->getField('NAMA');
-										else														echo substr($tipepegawai->getField('TIPE_PEGAWAI_ID'),0,1).'.'.substr($tipepegawai->getField('TIPE_PEGAWAI_ID'),1).'.'.$tipepegawai->getField('NAMA');
+										if($tipepegawai->getField('TIPE_PEGAWAI_ID_PARENT') == 0)  
+											echo $tipepegawai->getField('TIPE_PEGAWAI_ID').'.'.$tipepegawai->getField('NAMA');
+										else														
+											echo substr($tipepegawai->getField('TIPE_PEGAWAI_ID'),0,1).'.'.substr($tipepegawai->getField('TIPE_PEGAWAI_ID'),1).'.'.$tipepegawai->getField('NAMA');
 										?></option>
 										<? } ?>
 			        				</select>
@@ -591,7 +595,7 @@ $arrsatkerdata= $this->sessdatatree;
 	        				<div class="form-group row">
 			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Tugas Tambahan</label>
 			        			<div class="col-lg-9 col-sm-12">
-			        				<select class="form-control" name="reqTugasTambahan" id="reqTugasTambahan">
+			        				<select class="js-states form-control" name="reqTugasTambahan" id="reqTugasTambahan">
 			        					<option value="" <? if($reqTugasTambahan == "") echo 'selected'?> disabled>Pilih Tugas Tambahan</option>
 										<option value="1" <? if($reqTugasTambahan == "1") echo 'selected'?>>Kepala Sekolah</option>
 										<option value="2" <? if($reqTugasTambahan == "2") echo 'selected'?>>Kepala Puskesmas</option>
@@ -606,7 +610,7 @@ $arrsatkerdata= $this->sessdatatree;
 				        			Status Pegawai
 				        		</label>
 			        			<div class="col-lg-9 col-sm-12">
-			        				<select class="form-control"  name = "reqStatusPegawai" id="reqStatusPegawai">
+			        				<select class="js-states form-control"  name = "reqStatusPegawai" id="reqStatusPegawai">
 			        					<option value="" <? if($reqStatusPegawai == "") echo 'selected'?> disabled>Pilih Status Pegawai</option>
 			        					<?
 						                while($status_pegawai->nextRow())
@@ -642,7 +646,7 @@ $arrsatkerdata= $this->sessdatatree;
 	        				<div class="form-group row">
 			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Jenis Pegawai</label>
 			        			<div class="col-lg-9 col-sm-12">
-			        				<select class="form-control" name = "reqJenisPegawai" id="reqJenisPegawai">
+			        				<select class="js-states form-control" name = "reqJenisPegawai" id="reqJenisPegawai">
 			        					<option value="" <? if($reqJenisPegawai == "") echo 'selected'?> disabled>Pilih Jenis Pegawai</option>
 			        					<? while ($jenis_pegawai->nextRow()){?>
 					                        <option value="<?=$jenis_pegawai->getField('JENIS_PEGAWAI_ID')?>"
@@ -661,7 +665,7 @@ $arrsatkerdata= $this->sessdatatree;
 	        				<div class="form-group row">
 			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Kedudukan</label>
 			        			<div class="col-lg-9 col-sm-12">
-			        				<select class="form-control" name = "reqKedudukanId" id="reqKedudukanId">
+			        				<select class="js-states form-control" name = "reqKedudukanId" id="reqKedudukanId">
 			        					<option value="" <? if($reqKedudukanId == "") echo 'selected'?> disabled>Pilih Kedudukan</option>
 			        					<? while ($kedudukan->nextRow()){?>
 					                        <option value="<?=$kedudukan->getField('KEDUDUKAN_ID')?>"
@@ -1021,4 +1025,9 @@ $arrsatkerdata= $this->sessdatatree;
 	        });
 		});	
 	})
+
+	$("#reqPropinsi, #reqJenisKelamin, #reqAgama, #reqStatusPernikahan, #reqGolDarah, #reqKecamatan, #reqKabupaten, #reqKecamatan, #reqKelurahan, #reqTugasTambahan, #reqTipePegawai, #reqStatusPegawai, #reqJenisPegawai, #reqKedudukanId, #reqBank").select2({
+    	placeholder: "Pilih salah satu data",
+    	allowClear: true
+  	});
 </script>

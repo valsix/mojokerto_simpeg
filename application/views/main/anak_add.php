@@ -117,7 +117,7 @@ $readonly = "readonly";
 		    			<label class="col-form-label text-right col-lg-2 col-sm-12">Jenis Kelamin</label>
 		    			<div class="col-lg-4 col-sm-12">
 		    				<select class="form-control" id='reqLP' name='reqLP'>
-		    					<option <?if ($reqLP==''){echo "selected";}?> disabled> Pilih Jenis Kelamin</option>
+		    					<option <?if ($reqLP==''){echo "selected";}?> disabled  value=''> Pilih Jenis Kelamin</option>
 		    					<option value="L" <?if ($reqLP=='L'){echo "selected";}?>> Laki laki</option>
 		    					<option value="P" <?if ($reqLP=='P'){echo "selected";}?>> Perempuan</option>
 		    				</select>
@@ -125,6 +125,7 @@ $readonly = "readonly";
 		    			<label class="col-form-label text-right col-lg-2 col-sm-12">Tunjangan</label>
 		    			<div class="col-lg-4 col-sm-12">
 		    				<select class="form-control" id='reqDapatTunjangan' name='reqDapatTunjangan'>
+		    					<option value="" <?if ($reqDapatTunjangan==''){echo "selected";}?>> Pilih</option>
 		    					<option value="1" <?if ($reqDapatTunjangan=='1'){echo "selected";}?>> Dapat</option>
 		    					<option value="2" <?if ($reqDapatTunjangan=='2'){echo "selected";}?>> Tidak</option>
 		    				</select>
@@ -151,6 +152,7 @@ $readonly = "readonly";
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Status</label>
 	        			<div class="col-lg-4 col-sm-12">
 	        				<select class="form-control" id='reqStatus' name='reqStatus'>
+	        					<option value="" <? if($reqStatus == '') echo 'selected';?>>Pilih</option>
 	        					<option value="1" <? if($reqStatus == 1) echo 'selected';?>>Kandung</option>
 	        					<option value="2" <? if($reqStatus == 2) echo 'selected';?>>Tiri</option>
 	        					<option value="3" <? if($reqStatus == 3) echo 'selected';?>>Angkat</option>
@@ -304,10 +306,6 @@ $readonly = "readonly";
 		});
 	});
 
-	$('#ktpendidikan').select2({
-		placeholder: "Pilih Pendidikan"
-	});
-
 	arrows= {leftArrow: '<i class="la la-angle-left"></i>', rightArrow: '<i class="la la-angle-right"></i>'};
 	$('.kttanggal').datepicker({
 		todayHighlight: true
@@ -317,5 +315,10 @@ $readonly = "readonly";
 		, format: 'dd-mm-yyyy'
 		, templates: arrows
 	});
+
+	$("#ktpendidikan, #reqLP, #reqDapatTunjangan, #reqStatus").select2({
+    	placeholder: "Pilih salah satu data",
+    	allowClear: true
+  	});
 
 </script>

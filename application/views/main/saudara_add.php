@@ -126,7 +126,7 @@ $readonly = "readonly";
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Jenis Kelamin</label>
 	        			<div class="col-lg-10 col-sm-12">
 	        				<select class="form-control" id='reqJenisKelamin' name='reqJenisKelamin'>
-	        					<option <?if ($reqJenisKelamin==''){echo "selected";}?> disabled> Pilih Jenis Kelamin</option>
+	        					<option <?if ($reqJenisKelamin==''){echo "selected";}?> disabled value=''> Pilih Jenis Kelamin</option>
 	        					<option value="L" <?if ($reqJenisKelamin=='L'){echo "selected";}?>> Laki laki</option>
 	        					<option value="P" <?if ($reqJenisKelamin=='P'){echo "selected";}?>> Perempuan</option>
 	        				</select>
@@ -425,5 +425,10 @@ $readonly = "readonly";
 		, format: 'dd-mm-yyyy'
 		, templates: arrows
 	});
+
+	$("#reqPropinsi, #reqKabupaten, #reqKecamatan, #reqKelurahan, #reqJenisKelamin").select2({
+    	placeholder: "Pilih salah satu data",
+    	allowClear: true
+  	});
 
 </script>
