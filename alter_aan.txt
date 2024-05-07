@@ -2,3 +2,41 @@
 ALTER TABLE KINERJA ALTER COLUMN PEGAWAI_ID TYPE BIGINT;
 ALTER TABLE KINERJA ALTER COLUMN KINERJA_ID SET NOT NULL;
 ALTER TABLE penghargaan ADD PRIMARY KEY (penghargaan_id);
+
+-- Function: ambil_jab_fung_nama(character varying)
+
+-- DROP FUNCTION ambil_jab_fung_nama(character varying);
+
+CREATE OR REPLACE FUNCTION ambil_jab_fung_nama(jabatanfungsionalid character varying)
+  RETURNS character varying AS
+$BODY$
+DECLARE
+tmpTahun VARCHAR(200);
+jabfung VARCHAR(300);
+
+BEGIN
+      FOR i IN 0 .. (LENGTH(JABATANFUNGSIONALID) / 2) - 1 LOOP
+
+        SELECT NAMA into jabfung  FROM JABATAN_FUNGSIONAL WHERE JABATAN_FUNGSIONAL_ID = SUBSTR(JABATANFUNGSIONALID, 1, LENGTH(JABATANFUNGSIONALID) - (i * 2));
+
+            IF i = 0 THEN
+                tmpTahun := jabfung;
+            ELSE
+                IF i = 2 THEN 
+                tmpTahun := jabfung || '  ' || tmpTahun;
+                ELSE
+                tmpTahun :=tmpTahun; 
+                END IF;
+            END IF;
+
+
+    END LOOP;
+
+    RETURN tmpTahun;
+END;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION ambil_jab_fung_nama(character varying)
+  OWNER TO postgres;
+
