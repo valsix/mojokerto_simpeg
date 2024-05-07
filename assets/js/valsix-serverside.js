@@ -11,9 +11,12 @@ var ajaxserverselectsingle = function() {
         infocolumnsdef= [];
         infocolumns= [];
         infotargets= [];
+        infonowrap= [];
+
         valarrdata.forEach(function (item, index) {
             infofield= item["field"];
             infodisplay= item["display"];
+            nowrap= item["nowrap"];
 
             infocolumnsdef.push(infofield);
 
@@ -24,14 +27,21 @@ var ajaxserverselectsingle = function() {
                 setdisplay= false;
             }
 
+            if(nowrap == "1")
+            {
+                infonowrap.push(index);
+            }
+
             var infodetil= {};
             infodetil.data= infofield;
             infodetil.visible= setdisplay;
+            infodetil.nowrap= nowrap;
             infocolumns.push(infodetil);
         });
         infogroupfield= valarrdata[0]["field"];
         // console.log(valarrdata[0]["field"]);
         // console.log(infocolumns);
+        // console.log(infonowrap);
 
         if(typeof datainfopage == "undefined")
         {
@@ -144,7 +154,8 @@ var ajaxserverselectsingle = function() {
                 }
                 , order: [[ valorderdefault, "desc" ]]
                 , columnDefs: [
-                    { className: 'never', targets: infotargets }
+                    { className: 'never', targets: infotargets },
+                    { className: 'nowrap', targets: infonowrap }
                 ]
 
                 , ajax: 
@@ -176,7 +187,7 @@ var ajaxserverselectsingle = function() {
                     console.log( 'DataTables has finished its initialisation.' );*/
                 }
                 , "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-                    console.log(aData);
+                    // console.log(aData);
                     /*var valueStyle= loopIndex= "";
                     valueStyle= nRow % 2;
                     loopIndex= 6;
@@ -217,7 +228,8 @@ var ajaxserverselectsingle = function() {
                 , pageLength: datainfopage
                 , order: [[ valorderdefault, "desc" ]]
                 , columnDefs: [
-                    { className: 'never', targets: infotargets }
+                    { className: 'never', targets: infotargets },
+                    { className: 'nowrap', targets: infonowrap }
                 ]
                 , ajax: 
                 {
@@ -261,18 +273,25 @@ var ajaxserverselectsingle = function() {
                             gethukuman= aData[valarrdata[indexstatushukuman]["field"].toUpperCase()];
                             gettugastambahan= aData[valarrdata[indextugastambahan]["field"].toUpperCase()];
 
-                            if (gethukuman == '1')
-                                $($(nRow).children()).attr('class', 'hukumanStyle');
-                            else if (getstatuseselon == '2')
-                                $($(nRow).children()).attr('class', 'EselonII');
-                            else if (getstatuseselon == '3')
-                                $($(nRow).children()).attr('class', 'EselonIII');
-                            else if (getstatuseselon == '4')
-                                $($(nRow).children()).attr('class', 'EselonIV');
-                            else if (getstatuseselon == '5')
-                                $($(nRow).children()).attr('class', 'EselonV');
-                            else if (gettugastambahan !== '')
-                                $($(nRow).children()).attr('class', 'tugastambahan');
+                            if (gethukuman == '1'){
+                                $($(nRow).children()).addClass('hukumanStyle');
+                            }
+                            else if (getstatuseselon == '2'){
+                                $($(nRow).children()).addClass('EselonII');
+                                // $($(nRow).children()).addClass("nowrap");
+                            }
+                            else if (getstatuseselon == '3'){
+                                $($(nRow).children()).addClass('EselonIII');
+                            }
+                            else if (getstatuseselon == '4'){
+                                $($(nRow).children()).addClass('EselonIV');
+                            }
+                            else if (getstatuseselon == '5'){
+                                $($(nRow).children()).addClass('EselonV');
+                            }
+                            else if (gettugastambahan !== ''){
+                                $($(nRow).children()).addClass('tugastambahan');
+                            }
                         }
                     }
 

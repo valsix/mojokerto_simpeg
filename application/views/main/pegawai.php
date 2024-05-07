@@ -9,8 +9,8 @@ else
 
 $arrtabledata= array(
     array("label"=>"NIP", "field"=> "NIP_LAMA", "display"=>"", "width"=>"")
-    , array("label"=>"NIP Baru", "field"=> "NIP_BARU", "display"=>"", "width"=>"")
-    , array("label"=>"Nama", "field"=> "NAMA", "display"=>"", "width"=>"")
+    , array("label"=>"NIP Baru", "field"=> "NIP_BARU", "display"=>"", "width"=>"", "nowrap"=>'1')
+    , array("label"=>"Nama ", "field"=> "NAMA", "display"=>"", "width"=>"", "nowrap"=>'1')
     , array("label"=>"Tempat Lahir", "field"=> "TEMPAT_LAHIR", "display"=>"", "width"=>"")
     , array("label"=>"Tanggal Lahir", "field"=> "TANGGAL_LAHIR", "display"=>"", "width"=>"")
     , array("label"=>"L/P", "field"=> "JENIS_KELAMIN", "display"=>"", "width"=>"")
@@ -63,6 +63,9 @@ $arrsatkerdata= $this->sessdatatree;
     height:calc(100% - 40px);
     min-height:calc(100% - 40px);
     border:none !important;
+}
+.nowrap {
+    white-space: nowrap;
 }
 </style>
 
