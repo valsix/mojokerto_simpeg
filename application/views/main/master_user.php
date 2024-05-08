@@ -265,7 +265,7 @@ jQuery(document).ready(function() {
     $("#btnReset").on("click", function () {
         btnid= $(this).attr('id');
 
-        if(valinfoid == "" && btnid == "btnUbahData")
+        if(valinfoid == "" )
         {
             Swal.fire({
                 text: "Pilih salah satu data terlebih dahulu.",
@@ -279,10 +279,7 @@ jQuery(document).ready(function() {
             return false;
         }
 
-        if(btnid == "btnReset")
-            vpilihid= valinfoid;
-        else
-            vpilihid= "";
+        vpilihid= valinfoid;
 
         varurl= "app/index/master_user_reset_password?reqId="+vpilihid;
         
