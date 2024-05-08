@@ -110,6 +110,9 @@ $arrcarimenuparent= $vfpeg->cariparentmenu($arrparam);
             .card.card-custom {
               margin-top: 0%;
             }
+            .form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
+             background-color: #EBEBE4;
+            }
         </style>
 
         <link rel="stylesheet" type="text/css" href="assets/css/gaya.css">
@@ -186,7 +189,7 @@ $arrcarimenuparent= $vfpeg->cariparentmenu($arrparam);
                     <?
                     $arrmenupegawaidetil= array("pegawai_data_fip", "lokasi_kerja", "pengalaman_kerja", "pengalaman_kerja_add", "sk_pns", "sk_cpns", "riwayat_pangkat", "riwayat_pangkat_add", "riwayat_jabatan", "riwayat_jabatan_add", "riwayat_tugas_tambahan", "riwayat_tugas_tambahan_add", "riwayat_gaji", "riwayat_gaji_add", "pendidikan_umum", "pendidikan_umum_add", "pelatihan_kepemimpinan", "pelatihan_kepemimpinan_add", "pelatihan_fungsional", "pelatihan_fungsional_add", "diklat_lpj", "diklat_lpj_add", "pelatihan_teknis", "pelatihan_teknis_add", "seminar_workshop", "seminar_workshop_add", "pelatihan_non_klasikal", "pelatihan_non_klasikal_add", "orang_tua", "mertua", "suami_istri", "anak", "anak_add", "saudara", "saudara_add", "organisasi", "organisasi_add", "penghargaan", "penghargaan_add", "penilaian_potensi_diri", "penilaian_potensi_diri_add", "catatan_prestasi", "catatan_prestasi_add", "hukuman", "hukuman_add", "cuti", "cuti_add", "tambah_masa_kerja", "tambah_masa_kerja_add", "ijin_belajar", "ijin_belajar_add", "sertifikat_pendidikan", "sertifikat_pendidikan_add", "sertifikat_prestasi", "sertifikat_prestasi_add", "pak", "pak_add", "skp", "skp_add", "kinerja", "kinerja_add", "komparasi_data", "komparasi_data_add", "penguasaan_bahasa", "penguasaan_bahasa_add", "nikah", "nikah_add");
 
-                    $arrmenuMaster= array("master_diklat","master_diklat_add","master_eselon","master_eselon_add","master_peraturan_gaji","master_peraturan_gaji_add","master_gaji_pokok","master_gaji_pokok_add","master_peraturan","master_peraturan_add","master_tingkat_hukuman","master_tingkat_hukuman_add","master_jenis_hukuman","master_jenis_hukuman_add","master_jurusan_pendidikan","master_jurusan_pendidikan_add","master_pangkat","master_pangkat_add","master_diklat","master_diklat","master_diklat","master_diklat","master_pejabat_penetap","master_pejabat_penetap_add","master_pendidikan","master_pendidikan_add","master_user_group","master_user_group_add","master_diklat","master_diklat","master_diklat",);
+                    $arrmenuMaster= array("master_diklat","master_diklat_add","master_eselon","master_eselon_add","master_peraturan_gaji","master_peraturan_gaji_add","master_gaji_pokok","master_gaji_pokok_add","master_peraturan","master_peraturan_add","master_tingkat_hukuman","master_tingkat_hukuman_add","master_jenis_hukuman","master_jenis_hukuman_add","master_jurusan_pendidikan","master_jurusan_pendidikan_add","master_pangkat","master_pangkat_add","master_satker","master_satker_add","master_user","master_user_add","master_satker","master_pejabat_penetap","master_pejabat_penetap_add","master_pendidikan","master_pendidikan_add","master_user_group","master_user_group_add","master_user_rekap","master_jabatan_fungsional","master_jabatan_fungsional_add");
 
                     if(in_array($pg, $arrmenupegawaidetil))
                     {
