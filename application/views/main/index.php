@@ -93,6 +93,10 @@ $arrcarimenuparent= $vfpeg->cariparentmenu($arrparam);
             function openAdd(pageUrl) {
                 eModal.iframe(pageUrl, 'Aplikasi')
             }
+            function closePopup() {
+                eModal.close();
+            }
+
         </script>
 
         <!-- <script script type="text/javascript" src="js/highcharts.js"></script> -->
