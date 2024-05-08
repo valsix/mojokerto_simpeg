@@ -356,5 +356,20 @@ DESCRIPTION			:
 			return $this->selectLimit($str,$limit,$from); 
 	    }
 
+
+	function selectByParamsSatker($paramsArray=array(),$limit=-1,$from=-1, $statement="", $sOrder="ORDER BY SATKER_ID")
+	{
+		$str = "
+		SELECT A.SATKER_ID, A.NAMA, AMBIL_SATKER_NAMA(A.SATKER_ID) SATKER
+		FROM SATKER A
+		WHERE 1=1
+		"; 
+		while(list($key,$val)=each($paramsArray)){
+			$str .= " AND $key = '$val' ";
+		}
+		$str .= $statement." ".$sOrder;
+		return $this->selectLimit($str,$limit,$from); 
+	}
+
   } 
 ?>

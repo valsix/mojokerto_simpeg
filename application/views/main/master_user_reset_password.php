@@ -2,7 +2,6 @@
 include_once("functions/personal.func.php");
 
 $this->load->model("base/Users");
-$this->load->model("base/UserGroup");
 
 
 $reqId= $this->input->get('reqId');
@@ -33,9 +32,6 @@ else
 $arrTahun= setTahunLoop(3,1);
 
 
-$user_grup	= new UserGroup();
-
-$user_grup->selectByParams(array(),-1,-1);
 
 
 
@@ -79,56 +75,12 @@ $user_grup->selectByParams(array(),-1,-1);
 	        	<div class="card-body">
 	        		
 	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Nama Users</label>
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Reset Password</label>
 	        			<div class="col-lg-6 col-sm-12">
-	        				<input type="text" class="form-control" name="reqNama" id="reqNama" required value="<?=$reqNama?>" />
+	        				<input type="password" class="form-control" name="reqSearchKeyword" id="reqSearchKeyword" required value="<?=$reqSearchKeyword?>" />
 	        			</div>
 	        		</div>
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Nama Login</label>
-	        			<div class="col-lg-6 col-sm-12">
-	        				<input type="text" class="form-control" name="reqNamaLogin" id="reqNamaLogin" required value="<?=$reqNamaLogin?>" />
-	        			</div>
-	        		</div>
-	        		<?
-                    if($reqId=="")
-                    {
-                        ?>
-                        <div class="form-group row">
-                            <label class="col-form-label text-right col-lg-2 col-sm-12">Password</label>
-                            <div class="col-lg-4 col-sm-12">
-                                <input type="password" class="form-control" name="reqPassword" id="reqPassword" value="<?=$reqPassword?>" />
-                            </div>
-                        </div>
-                        <?
-                    }
-                    ?>
-
-                    <div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">User Group</label>
-	        			<div class="col-lg-6 col-sm-12">
-	        				<select name="reqUserGroup" class="form-control">
-	        					<? 
-	        					while($user_grup->nextRow())
-	        					{
-	        						?>     
-	        						<option value="<?=$user_grup->getField('USER_GROUP_ID')?>" <? if($reqUserGroup == $user_grup->getField('USER_GROUP_ID')) echo 'selected'?>> <?=$user_grup->getField('NAMA')?></option>
-	        						<? 
-	        					}
-	        					?>
-	        				</select>
-	        			</div>
-	        		</div>
-
-	        		<div class="form-group row">
-	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Satker</label>
-	        			<div class="col-lg-6 col-sm-12">
-	        				<input type="hidden" id="reqSatkerId" name="reqSatkerId" value="<?=$reqSatkerId?>" />
-	        				<textarea id="reqSatkerNama" class="form-control" name="reqSatkerNama" cols="50" rows="2" required readonly="readonly" ><?=$reqSatkerNama?></textarea>
-	        				<br/>* tekan enter pada kolom NIP untuk mencari pegawai
-	        				<img src="images/icn_search.gif" onClick="openPencarian()">
-	        			</div>
-	        		</div>
+	        
 	        		
 	        		<div class="card-footer">
 	        		<div class="row">
@@ -155,27 +107,13 @@ $user_grup->selectByParams(array(),-1,-1);
 		// $('[data-toggle="tooltip"]').tooltip()
 	})
 
-	$('#reqNIP').bind('keyup paste', function(){
-		this.value = this.value.replace(/[^0-9]/g, '');
-	});
 
-	function openPencarian()
-	{
-		openAdd('app/loadUrl/main/satuan_kerja_pencarian')
-	}
-
-	function setSatker(values)
-	{
-		console.log(values);
-		$('#reqSatkerId').val(values.SATKER_ID);
-		$('#reqSatkerNama').val(values.SATKER);
-	}
 
 
 	var _buttonSpinnerClasses = 'spinner spinner-right spinner-white pr-15';
 	jQuery(document).ready(function() {
 		var form = KTUtil.getById('ktloginform');
-		var formSubmitUrl = "json-main/user_json/add";
+		var formSubmitUrl = "json-main/user_json/reset";
 		var formSubmitButton = KTUtil.getById('ktloginformsubmitbutton');
 		if (!form) {
 			return;

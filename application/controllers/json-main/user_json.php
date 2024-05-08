@@ -3,6 +3,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 include_once("functions/string.func.php");
 include_once("functions/date.func.php");
+include_once("functions/encrypt.func.php");
+
 include_once("functions/class-list-util.php");
 include_once("functions/class-list-util-serverside.php");
 
@@ -280,6 +282,140 @@ class user_json extends CI_Controller {
 		echo json_encode( $result, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);	
 	}
 
+	function json_log()
+	{
+		$this->load->model("base/Users");
+
+		$reqId= $this->input->get('reqId');
+
+
+		$set= new Users();
+
+		if ( isset( $_REQUEST['columnsDef'] ) && is_array( $_REQUEST['columnsDef'] ) ) {
+			$columnsDefault = [];
+			foreach ( $_REQUEST['columnsDef'] as $field ) {
+				$columnsDefault[ $field ] = "true";
+			}
+		}
+		// print_r($columnsDefault);exit;
+
+		$displaystart= -1;
+		$displaylength= -1;
+		$no=1;
+
+		$arrinfodata= [];
+
+		$child= new Users();
+		$child->selectByParams(array("USER_APP_ID"=>$reqId),-1,-1);
+		$child->firstRow();
+		//echo $child->query;
+		$statement= $child->getField("USER_LOGIN");
+		unset($child);
+
+
+		// $statement= "";
+		// $sOrder = " ORDER BY A.TANGGAL ASC";
+		$sOrder = "  ";
+		$set->selectByParamsMonitorLog(array(), $displaylength, $displaystart, $statement, $sOrder);
+		// echo $set->query;exit;
+		while ($set->nextRow()) 
+		{
+			$row= [];
+			foreach($columnsDefault as $valkey => $valitem) 
+			{
+				if ($valkey == "SORDERDEFAULT")
+					$row[$valkey]= "1";
+				else if ($valkey == "TANGGAL")
+				{
+					$row[$valkey]= dateToPageCheck($set->getField($valkey));
+				}
+				else if ($valkey == "NO")
+				{
+					$row[$valkey]= $no;
+				}
+				else
+					$row[$valkey]= $set->getField($valkey);
+			}
+			$no++;
+			array_push($arrinfodata, $row);
+		}
+
+		// get all raw data
+		$alldata = $arrinfodata;
+		// print_r($alldata);exit;
+
+		$data = [];
+		// internal use; filter selected columns only from raw data
+		foreach ( $alldata as $d ) {
+			// $data[] = filterArray( $d, $columnsDefault );
+			$data[] = $d;
+		}
+
+		// count data
+		$totalRecords = $totalDisplay = count( $data );
+
+		// filter by general search keyword
+		if ( isset( $_REQUEST['search'] ) ) {
+			$data         = filterKeyword( $data, $_REQUEST['search'] );
+			$totalDisplay = count( $data );
+		}
+
+		if ( isset( $_REQUEST['columns'] ) && is_array( $_REQUEST['columns'] ) ) {
+			foreach ( $_REQUEST['columns'] as $column ) {
+				if ( isset( $column['search'] ) ) {
+					$data         = filterKeyword( $data, $column['search'], $column['data'] );
+					$totalDisplay = count( $data );
+				}
+			}
+		}
+
+		// sort
+		if ( isset( $_REQUEST['order'][0]['column'] ) && $_REQUEST['order'][0]['dir'] ) {
+			$column = $_REQUEST['order'][0]['column'];
+			if(count($columnsDefault) - 2 == $column){}
+			else
+			{
+				$dir    = $_REQUEST['order'][0]['dir'];
+				usort( $data, function ( $a, $b ) use ( $column, $dir ) {
+					$a = array_slice( $a, $column, 1 );
+					$b = array_slice( $b, $column, 1 );
+					$a = array_pop( $a );
+					$b = array_pop( $b );
+
+					if ( $dir === 'asc' ) {
+						return $a > $b ? true : false;
+					}
+
+					return $a < $b ? true : false;
+				} );
+			}
+		}
+
+		// pagination length
+		if ( isset( $_REQUEST['length'] ) ) {
+			$data = array_splice( $data, $_REQUEST['start'], $_REQUEST['length'] );
+		}
+
+		// return array values only without the keys
+		if ( isset( $_REQUEST['array_values'] ) && $_REQUEST['array_values'] ) {
+			$tmp  = $data;
+			$data = [];
+			foreach ( $tmp as $d ) {
+				$data[] = array_values( $d );
+			}
+		}
+
+		$result = [
+		    'recordsTotal'    => $totalRecords,
+		    'recordsFiltered' => $totalDisplay,
+		    'data'            => $data,
+		];
+
+		header('Content-Type: application/json');
+		echo json_encode( $result, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);	
+	}
+
+
 
 	function add()
 	{
@@ -296,6 +432,9 @@ class user_json extends CI_Controller {
 		$reqUserGroup= $this->input->post("reqUserGroup");
 		$reqSatkerId= $this->input->post("reqSatkerId");
 
+		$reqkunci="S1mP3g_M0k3r";
+
+
 		$set->setField("USER_APP_ID", $reqId);
 
 		$set->setField('USER_GROUP_ID', $reqUserGroup);
@@ -305,7 +444,7 @@ class user_json extends CI_Controller {
 		$set->setField('ALAMAT', '');
 		$set->setField('EMAIL', '');
 		$set->setField('TELEPON', '');
-		$set->setField('PEGAWAI_ID', '');	
+		$set->setField('PEGAWAI_ID', ValToNullDB(''));	
 		$set->setField('SATKER_ID', $reqSatkerId);		
 
 		
@@ -346,11 +485,11 @@ class user_json extends CI_Controller {
 						$user_check->firstRow();
 						if($user_check->getField('USER_PASS_ENC') == mencrypt($reqPassword,$reqkunci))
 						{
-							echo json_response(400, "Password tidak boleh sama dengan yang lama");	
+							echo json_response(400, "Password tidak boleh sama dengan yang lama");exit;	
 						}
 						if(!$validasi)
 						{
-							echo json_response(400, "Password harus terdapat minimal 1 huruf besar, 1 huruf kecil, 1 digit angka dan panjang minimal 8 karakter");	
+							echo json_response(400, "Password harus terdapat minimal 1 huruf besar, 1 huruf kecil, 1 digit angka dan panjang minimal 8 karakter");exit;
 						}
 						else
 						{
@@ -370,6 +509,68 @@ class user_json extends CI_Controller {
 		}
 	}
 
+	function reset()
+	{
+		$this->load->model('base/Users');
+		
+		$set= new Users();
+		
+		$reqMode= $this->input->post("reqMode");
+		$reqId= $this->input->post("reqId");
+
+		$reqNama= $this->input->post("reqNama");
+		$reqSearchKeyword= $this->input->post("reqSearchKeyword");
+
+		$reqkunci="S1mP3g_M0k3r";
+		
+		$user_check = new Users();
+		$user_check->selectByParams(array("USER_APP_ID" => $reqId),-1,-1);
+
+		$user_check->firstRow();
+
+
+		// if($user_check->getField('USER_PASS_ENC') == mencrypt($reqSearchKeyword,$reqkunci))
+		if($user_check->getField('USER_PASS') == md5($reqSearchKeyword))
+		{
+			echo json_response(400, "Password tidak boleh sama dengan yang lama");exit;	
+		}
+		else
+		{	
+		// print_r($reqSearchKeyword);exit();
+			$set->setField("USER_APP_ID", $reqId);
+
+			$set->setField("LAST_UPDATE_USER", $this->LOGIN_USER);
+			$set->setField("LAST_UPDATE_DATE", "NOW()");	
+			$set->setField("LAST_UPDATE_SATKER", $userLogin->userSatkerId);
+			$set->setField("USER_PASS",$reqSearchKeyword);
+
+			$validasi=preg_match('/^(?=.{8,})(?=.*[a-z])(?=.*[A-Z]).*$/',$reqSearchKeyword);
+			if(!$validasi)
+			{
+				echo json_response(400, "Password harus terdapat minimal 1 huruf besar, 1 huruf kecil, 1 digit angka dan panjang minimal 8 karakter");exit;	
+			}
+			else
+			{
+				if($set->updatePassword($reqkunci))
+				{
+					$reqSimpan=1;
+				}
+			}
+
+		}		
+
+		
+	
+		if($reqSimpan == 1)
+		{
+			echo json_response(200, $reqId."-Data berhasil disimpan.");
+		}
+		else
+		{
+			echo json_response(400, "Data gagal disimpan");
+		}
+	}
+
 
 	function delete()
 	{
@@ -379,7 +580,7 @@ class user_json extends CI_Controller {
 		$reqMode= $this->input->get("reqMode");
 
 		$set= new Users();
-		$set->setField("PENDIDIKAN_ID", $reqId);
+		$set->setField("USER_APP_ID", $reqId);
 		
 		$pesan="Data gagal dihapus";
 		if($set->delete())

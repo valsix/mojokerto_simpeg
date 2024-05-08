@@ -7,12 +7,8 @@ $pgtitle= churuf(str_replace("_", " ", str_replace("master_", "", $pgtitle)));
 
 $arrtabledata= array(
      array("label"=>"No", "field"=> "NO", "display"=>"",  "width"=>"5")
-    , array("label"=>"Nama", "field"=> "NAMA", "display"=>"",  "width"=>"")
-    , array("label"=>"NIP", "field"=> "PEGAWAI_ID", "display"=>"",  "width"=>"")
-    , array("label"=>"Nama Login", "field"=> "USER_LOGIN", "display"=>"",  "width"=>"")
-    , array("label"=>"Satker", "field"=> "SATKER", "display"=>"",  "width"=>"")
-    , array("label"=>"User Group", "field"=> "USER_GROUP", "display"=>"",  "width"=>"")
-   
+    , array("label"=>"Aksi", "field"=> "AKSI", "display"=>"",  "width"=>"")
+    , array("label"=>"Tanggal", "field"=> "TANGGAL", "display"=>"",  "width"=>"")
     , array("label"=>"sorderdefault", "field"=> "SORDERDEFAULT", "display"=>"1", "width"=>"")
     , array("label"=>"fieldid", "field"=> "USER_APP_ID", "display"=>"1", "width"=>"")
 );
@@ -58,12 +54,7 @@ $arrtabledata= array(
                 <div class="card-toolbar">
                     <!--begin::Dropdown-->
                     <div class="dropdown dropdown-inline mr-2">
-                    	<button class="btn btn-light-primary" id="btnAdd"><i class="fa fa-plus" aria-hidden="true"></i> Tambah</button>
-	            		<button class="btn btn-light-warning" id="btnUbahData"><i class="fa fa-pen" aria-hidden="true"></i> Edit</button>
-	            		<button class="btn btn-light-danger" id="btnDelete"><i class="fa fa-trash" aria-hidden="true"></i> Hapus</button>
-                        <button class="btn btn-light-info" id="btnReset"><i class="fa fa-key" aria-hidden="true"></i> Reset Password</button>
-                        <button class="btn btn-light-success" id="btnLog"><i class="fa fa-history" aria-hidden="true"></i> Btn Log</button>
-	            	
+                    	<button class="btn btn-light-warning" id="btnKembali"  onclick="history.back()"><i class="fa fa-arrow-left" aria-hidden="true"></i> Kembali</button>
                     </div>
 
                 </div>
@@ -119,7 +110,7 @@ var valinfovalidasihapusid = '';
 
 
 jQuery(document).ready(function() {
-    var jsonurl= "json-main/user_json/json?reqId=<?=$reqId?>";
+    var jsonurl= "json-main/user_json/json_log?reqId=<?=$reqId?>";
     ajaxserverselectsingle.init(infotableid, jsonurl, arrdata);
 
     var infoid= [];
@@ -241,7 +232,7 @@ jQuery(document).ready(function() {
     $("#btnLog").on("click", function () {
         btnid= $(this).attr('id');
 
-        if(valinfoid == "" )
+        if(valinfoid == "" && btnid == "btnUbahData")
         {
             Swal.fire({
                 text: "Pilih salah satu data terlebih dahulu.",
@@ -255,7 +246,10 @@ jQuery(document).ready(function() {
             return false;
         }
 
-        vpilihid= valinfoid;
+        if(btnid == "btnUbahData")
+            vpilihid= valinfoid;
+        else
+            vpilihid= "";
 
         varurl= "app/index/master_user_log?reqId="+vpilihid;
         
