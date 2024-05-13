@@ -26,6 +26,48 @@ DESCRIPTION			:
 	{
       $this->Entity(); 
     }
+
+    function insert()
+	{
+		
+		$str = "INSERT INTO SATKER (
+				   SATKER_ID, PROPINSI_ID, KABUPATEN_ID, 
+				   KECAMATAN_ID, KELURAHAN_ID, SATKER_ID_PARENT, 
+				   KODE, NAMA, SIFAT, 
+				   ALAMAT, TELEPON, FAXIMILE, 
+				   KODEPOS, EMAIL, LAST_CREATE_USER, LAST_CREATE_DATE, LAST_CREATE_SATKER,ESELON_ID,PANGKAT_ID,PEGAWAI_ID,NAMA_JABATAN,TMT_JABATAN) 
+				VALUES (
+				  '".$this->getField("SATKER_ID")."',
+				  ".$this->getField("PROPINSI_ID").",
+				  ".$this->getField("KABUPATEN_ID").",
+				  ".$this->getField("KECAMATAN_ID").",
+				  ".$this->getField("KELURAHAN_ID").",
+				  '".$this->getField("SATKER_ID_PARENT")."',
+				  '".$this->getField("KODE")."',
+				  '".$this->getField("NAMA")."',
+				  '".$this->getField("SIFAT")."',
+				  '".$this->getField("ALAMAT")."',
+				  '".$this->getField("TELEPON")."',
+				  '".$this->getField("FAXIMILE")."',
+				  '".$this->getField("KODEPOS")."',
+				  '".$this->getField("EMAIL")."',				 
+				  '".$this->getField("LAST_CREATE_USER")."',
+				  ".$this->getField("LAST_CREATE_DATE").",
+				  '".$this->getField("LAST_CREATE_SATKER")."',
+				  ".$this->getField("ESELON_ID").",
+				  ".$this->getField("PANGKAT_ID").",
+				  ".$this->getField("PEGAWAI_ID").",
+				  '".$this->getField("NAMA_JABATAN")."',
+				  ".$this->getField("TMT_JABATAN")."
+				)"; 
+
+		// untuk buat log data
+		$this->setlogdata($str);
+	
+		$this->query = $str;
+		 // echo $str;exit();
+		return $this->execQuery($str);
+    }
 	
 	function insertbak()
 	{
@@ -96,6 +138,36 @@ DESCRIPTION			:
 		, SATUAN_KERJA_SEDIAAN= ".$this->getField("SATUAN_KERJA_SEDIAAN")."
 		, RUMPUN_ID= ".$this->getField("RUMPUN_ID")."
 		WHERE SATUAN_KERJA_ID= ".$this->getField("SATUAN_KERJA_ID")."
+		";
+		$this->query = $str;
+		// echo $str;exit();
+		return $this->execQuery($str);
+    }
+
+    function updatemaster()
+	{
+		$str = "		
+		UPDATE SATKER
+		SET    
+		PROPINSI_ID       = ".$this->getField("PROPINSI_ID").",
+		KABUPATEN_ID    = ".$this->getField("KABUPATEN_ID").",
+		KECAMATAN_ID             = ".$this->getField("KECAMATAN_ID").",
+		KELURAHAN_ID     = ".$this->getField("KELURAHAN_ID").",					   
+		ALAMAT        = '".$this->getField("ALAMAT")."',
+		TELEPON       = '".$this->getField("TELEPON")."',
+		FAXIMILE      = '".$this->getField("FAXIMILE")."',
+		KODEPOS   = '".$this->getField("KODEPOS")."',
+		EMAIL             = '".$this->getField("EMAIL")."',
+		NAMA  = '".$this->getField("NAMA")."',
+		KODE  = '".$this->getField("KODE")."',
+		SIFAT = '".$this->getField("SIFAT")."',
+		ESELON_ID = '".$this->getField("ESELON_ID")."',
+		PANGKAT_ID = ".$this->getField("PANGKAT_ID").",
+		PEGAWAI_ID = ".$this->getField("PEGAWAI_ID").",
+		LAST_UPDATE_USER	= '".$this->getField("LAST_UPDATE_USER")."',
+		LAST_UPDATE_DATE	= ".$this->getField("LAST_UPDATE_DATE").",
+		LAST_UPDATE_SATKER	= '".$this->getField("LAST_UPDATE_SATKER")."'
+		WHERE SATKER_ID= '".$this->getField("SATKER_ID")."'
 		";
 		$this->query = $str;
 		// echo $str;exit();
@@ -208,6 +280,91 @@ DESCRIPTION			:
 		$this->query = $str;
 		return $this->selectLimit($str,$limit,$from); 
 		
+    }
+
+    function selectByParamsMaster($paramsArray=array(),$limit=-1,$from=-1, $statement='')
+	{
+		$str = "
+				SELECT A.SATKER_ID, A.PROPINSI_ID, A.KABUPATEN_ID, 
+                   A.KECAMATAN_ID, A.KELURAHAN_ID, A.SATKER_ID_PARENT, 
+                   A.KODE KODE_SATKER, A.NAMA, A.SIFAT,A.NAMA_JABATAN, 
+                   A.ALAMAT, A.TELEPON, A.FAXIMILE, 
+				   AMBIL_SATKER_NAMA(A.SATKER_ID) SATKER_FULL,
+                   A.KODEPOS, A.EMAIL, A.PANGKAT_ID,
+                   A.ESELON_ID, B.NAMA ESELON, 
+                   A.PEGAWAI_ID PEGAWAI_ID, C.NAMA NAMA_PEGAWAI,
+                    C.NIP_BARU NIP_BARU,
+                     D.NAMA NAMA_PANGKAT, D.KODE  KODE,  
+                     A.TMT_JABATAN,
+					 E.GOLONGAN GOLONGAN, E.PENDIDIKAN PENDIDIKAN, E.DIKLAT DIKLAT, E.KURSUS KURSUS, 
+					 E.PENGALAMAN_KERJA PENGALAMAN_KERJA,  E.PENGETAHUAN_KERJA PENGETAHUAN_KERJA, 
+					 E.KETRAMPILAN_KERJA KETRAMPILAN_KERJA
+					 , C.STATUS_PEGAWAI
+                FROM SATKER A
+                LEFT JOIN ESELON B ON A.ESELON_ID = B.ESELON_ID
+                LEFT JOIN PEGAWAI C ON A.PEGAWAI_ID = C.PEGAWAI_ID
+                LEFT JOIN PANGKAT D ON A.PANGKAT_ID = D.PANGKAT_ID
+				LEFT JOIN SATKER_PROFIL_JABATAN E on A.SATKER_ID=E.SATKER_ID
+                WHERE A.SATKER_ID IS NOT NULL
+				"; 
+		
+		while(list($key,$val) = each($paramsArray))
+		{
+			$str .= " AND $key = '$val' ";
+		}
+		
+		$str .= $statement." ORDER BY A.SATKER_ID ASC";
+		$this->query = $str;
+		//echo $str;		
+		return $this->selectLimit($str,$limit,$from); 
+    }
+
+    function selectByParamsTreeMaster($paramsArray=array(),$limit=-1,$from=-1, $statement='')
+	{
+		$str = "
+				SELECT A.SATKER_ID, A.PROPINSI_ID, A.KABUPATEN_ID, 
+                   A.KECAMATAN_ID, A.KELURAHAN_ID, A.SATKER_ID_PARENT, 
+                   A.KODE KODE_SATKER, A.NAMA, A.SIFAT,A.NAMA_JABATAN, 
+                   A.ALAMAT, A.TELEPON, A.FAXIMILE, 
+				   AMBIL_SATKER_NAMA(A.SATKER_ID) SATKER_FULL,
+                   A.KODEPOS, A.EMAIL, A.PANGKAT_ID,
+                   A.ESELON_ID, B.NAMA ESELON, 
+                   A.PEGAWAI_ID PEGAWAI_ID, C.NAMA NAMA_PEGAWAI,
+                    C.NIP_BARU NIP_BARU,
+                     D.NAMA NAMA_PANGKAT, D.KODE  KODE,  
+                     A.TMT_JABATAN,
+					 E.GOLONGAN GOLONGAN, E.PENDIDIKAN PENDIDIKAN, E.DIKLAT DIKLAT, E.KURSUS KURSUS, 
+					 E.PENGALAMAN_KERJA PENGALAMAN_KERJA,  E.PENGETAHUAN_KERJA PENGETAHUAN_KERJA, 
+					 E.KETRAMPILAN_KERJA KETRAMPILAN_KERJA
+					 , C.STATUS_PEGAWAI
+					 , CASE WHEN A.SATKER_ID IS NULL THEN 
+					 ''
+					 ELSE
+					 '<a onClick=\"openurl(''app/index/master_satker_add?reqId=' || TRIM(A.SATKER_ID) || '&reqMode=insert'')\" 
+					 style=\"cursor:pointer\" title=\"Tambah\"><i class=\"fa fa-user-plus\"></i></a>'
+					 '<a onClick=\"openurl(''app/index/master_satker_add?reqId=' || TRIM(A.SATKER_ID) || '&reqMode=update'')\" 
+					 style=\"cursor:pointer\" title=\"Ubah\"><i class=\"fa fa-user-edit\"></i></a>'
+					 -- '<a onClick=\"delete_data(''' || TRIM(A.SATKER_ID) || ''')\" 
+					 -- style=\"cursor:pointer\" title=\"Hapus\"><i class=\"fa fa-trash\"></i></a>'
+					 END
+					 LINK_URL_INFO
+                FROM SATKER A
+                LEFT JOIN ESELON B ON A.ESELON_ID = B.ESELON_ID
+                LEFT JOIN PEGAWAI C ON A.PEGAWAI_ID = C.PEGAWAI_ID
+                LEFT JOIN PANGKAT D ON A.PANGKAT_ID = D.PANGKAT_ID
+				LEFT JOIN SATKER_PROFIL_JABATAN E on A.SATKER_ID=E.SATKER_ID
+                WHERE A.SATKER_ID IS NOT NULL
+				"; 
+		
+		while(list($key,$val) = each($paramsArray))
+		{
+			$str .= " AND $key = '$val' ";
+		}
+		
+		$str .= $statement." ORDER BY A.SATKER_ID ASC";
+		$this->query = $str;
+		//echo $str;		
+		return $this->selectLimit($str,$limit,$from); 
     }
 	
 	function selectByParamsData($paramsArray=array(),$limit=-1,$from=-1, $statement='',$order=' ORDER BY A.SATUAN_KERJA_ID ASC')
@@ -335,6 +492,18 @@ DESCRIPTION			:
 			return $id;  
     }
 
+
+	function getMaxIdTree($satker_id)
+	{
+		$str = "SELECT SATKER_GENERATE('".$satker_id."') ROWCOUNT"; 
+
+		$this->select($str); 
+		if($this->firstRow()) 
+			return $this->getField("ROWCOUNT"); 
+		else 
+			return 0; 
+    }	
+
     function selectByParamsUrutanPegawai($paramsArray=array(),$limit=-1,$from=-1, $statement='')
 		{
 			$str = "SELECT 
@@ -368,6 +537,43 @@ DESCRIPTION			:
 			$str .= " AND $key = '$val' ";
 		}
 		$str .= $statement." ".$sOrder;
+		return $this->selectLimit($str,$limit,$from); 
+	}
+
+	function selectByParamsPejabat($paramsArray=array(),$limit=-1,$from=-1, $statement='')
+	{
+		$str = "SELECT  C.ESELON_ID, A.PEGAWAI_ID, NIP_LAMA, AMBIL_FORMAT_NIP_BARU(NIP_BARU) NIP_BARU,
+		CASE
+		WHEN GELAR_DEPAN IS NULL THEN '' else GELAR_DEPAN || ' '   END  || A.NAMA || 
+		CASE
+		WHEN GELAR_BELAKANG IS NULL THEN '' else ' ' || GELAR_BELAKANG  END  NAMA,
+		B.GOL_RUANG,
+		TO_CHAR(B.TMT_PANGKAT, 'DD MON YYYY') TMT_PANGKAT,
+		C.ESELON,
+		B.PANGKAT_ID,
+		C.ESELON_ID,
+		C.JABATAN,
+		TO_CHAR(C.TMT_JABATAN, 'DD-MM-YYYY') TMT_JABATAN,
+		A.SATKER_ID
+		FROM PEGAWAI A,  
+			(SELECT TMT_PANGKAT, GOL_RUANG, PEGAWAI_ID, PANGKAT_ID FROM PANGKAT_TERAKHIR) B,
+			(SELECT PEGAWAI_ID, TMT_JABATAN, ESELON, JABATAN, COALESCE(ESELON_ID, 99) ESELON_ID FROM JABATAN_TERAKHIR) C,
+			(SELECT PEGAWAI_ID, TAHUN LULUS, PENDIDIKAN FROM PENDIDIKAN_TERAKHIR X) F
+		WHERE
+		A.PEGAWAI_ID = B.PEGAWAI_ID AND
+		A.PEGAWAI_ID = C.PEGAWAI_ID::bigint AND
+		A.PEGAWAI_ID = F.PEGAWAI_ID AND
+		A.STATUS_PEGAWAI IN (1,2)
+		"; 
+		
+		while(list($key,$val) = each($paramsArray))
+		{
+			$str .= " AND $key = '$val' ";
+		}
+
+		$str .= $statement." ";
+		$this->query = $str;
+		//echo $str;		
 		return $this->selectLimit($str,$limit,$from); 
 	}
 

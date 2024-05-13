@@ -40,3 +40,38 @@ $BODY$
 ALTER FUNCTION ambil_jab_fung_nama(character varying)
   OWNER TO postgres;
 
+
+-- Function: satker_generate(character varying)
+
+-- DROP FUNCTION satker_generate(character varying);
+
+CREATE OR REPLACE FUNCTION satker_generate(satkerid character varying)
+  RETURNS character varying AS
+$BODY$
+DECLARE 
+  tmpSatker VARCHAR(50);
+
+BEGIN
+
+  IF(SATKERID = '0') THEN
+  SELECT COALESCE(CASE WHEN LENGTH(SATKER_ID) = 1 THEN ('0' || SATKER_ID) ELSE (SATKER_ID) END, '01') INTO tmpSatker
+  FROM (SELECT (MAX(SATKER_ID)::int + 1)::text SATKER_ID FROM SATKER WHERE SATKER_ID_PARENT = '0') A;
+     RETURN(tmpSatker);    
+
+  ELSE
+  SELECT  COALESCE(CASE WHEN LENGTH(SATKER_ID) = 1 THEN ('0' || SATKER_ID) ELSE (SATKER_ID) END, '01') INTO tmpSatker FROM 
+   (SELECT (MAX(SUBSTR(SATKER_ID, LENGTH(SATKERID) + 1, 2))::int + 1)::text SATKER_ID
+    FROM SATKER
+   WHERE LENGTH (SATKER_ID) = LENGTH(SATKERID) + 2 AND SATKER_ID LIKE SATKERID || '%') A;
+     RETURN(SATKERID || tmpSatker);    
+  END IF;
+
+END;
+
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION satker_generate(character varying)
+  OWNER TO postgres;
+
+
