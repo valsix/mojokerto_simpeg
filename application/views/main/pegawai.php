@@ -144,11 +144,11 @@ html.dark table.dataTable tr.dt-hasChild td.dt-control:before,
 
                     <div class="dropdown dropdown-inline mr-2">
                         <button class="filter btn btn-light-primary pull-right">Filter <i class="fa fa-caret-down" aria-hidden="true"></i></button>
-                        <a class="filter btn btn-light-primary pull-right" id='btnAdd'>Tambah </a>
-                        <a class="filter btn btn-light-primary pull-right" id='btnUbahData'>Ubah</a>
-                        <a class="filter btn btn-light-primary pull-right" id='btnDelete'>Hapus </a>
+                        <a class="filter btn btn-light-primary pull-right" id='btnAdd' style="margin-right:5px">Tambah </a>
+                        <a class="filter btn btn-light-primary pull-right" id='btnUbahData' style="margin-right:5px">Ubah</a>
+                        <a class="filter btn btn-light-primary pull-right" id='btnDelete' style="margin-right:5px">Hapus </a>
 
-                        <button type="button" class="btn btn-light-primary font-weight-bolder dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button type="button" class="btn btn-light-primary font-weight-bolder dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-right:5px">
                             <span class="svg-icon svg-icon-md"></span>Cetak
                         </button>
 
@@ -199,7 +199,7 @@ html.dark table.dataTable tr.dt-hasChild td.dt-control:before,
                         </div>
                     </div>
 
-                    <button class="btn btn-light-primary" onclick="showhidesatker()"><i class="fa fa-sitemap" aria-hidden="true"></i> Satker</button>
+                    <button class="btn btn-light-primary" onclick="showhidesatker()" style="margin-right:5px" ><i class="fa fa-sitemap" aria-hidden="true"></i> Satker</button>
 
                     <div id="divcarisatuankerja" style="display: none; position: absolute; z-index: 1; top: 60px; right: 30px; background-color: #FFFFFF; border: 1px solid #ebedf3; padding: 15px; border-radius: 0.42rem; ">
                         <label><i>Ketikkan nama satker...</i> </label>
