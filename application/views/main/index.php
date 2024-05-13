@@ -89,6 +89,12 @@ $arrcarimenuparent= $vfpeg->cariparentmenu($arrparam);
         <script src="assets/plugins/custom/jstree/jstree.bundle.js"></script>
 
         <script src="assets/emodal/eModal.min.js"></script>
+
+        <link rel="stylesheet" type="text/css" href="lib/jquery-easyui-1.4.2/themes/default/easyui.css">
+        <link rel="stylesheet" type="text/css" href="lib/jquery-easyui-1.4.2/themes/icon.css">
+
+        <script type="text/javascript" src="lib/jquery-easyui-1.4.2/jquery.easyui.min.js"></script>
+
         <script>
             function openAdd(pageUrl) {
                 eModal.iframe(pageUrl, 'Aplikasi')
