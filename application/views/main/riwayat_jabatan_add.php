@@ -361,8 +361,10 @@ if(!empty($arrambilfile))
         				$infolabel= $value["infolabel"];
 
         				$vkeydetil= $vriwayattable.";".$reqRowId.";".$riwayatfield;
+        				$arrcheck= in_array_column($vkeydetil, "vkeydetil", $arrambilfile);
 
-        				$vframeiframe= base_url()."uploads/196212261989032006/fwniFj40ec20240514.pdf";
+        				$vframeiframe= $arrambilfile[$arrcheck[0]]["vurl"];
+        				// $vframeiframe= base_url()."uploads/196212261989032006/fwniFj40ec20240514.pdf";
 	        		?>
 			        <div id="<?=$vkeydetil?>" class="w3-container w3-border city" style="display:none">
 					    <div class="card-title">
