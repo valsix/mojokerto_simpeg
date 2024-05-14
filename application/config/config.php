@@ -30,6 +30,8 @@ $config['base_url'] .= preg_replace('@/+$@','',dirname($_SERVER['SCRIPT_NAME']))
 
 // untuk mengkondisikan session setiap folder
 $config['vlxsessfolder']= str_replace("/", "", dirname($_SERVER['SCRIPT_NAME']));
+$config['lokasiupload']= "uploads/";
+$config['serverlokal']= "1";
 
 
 /*$config['base_report'] = "http://www.valsix.xyz/kemenag_ci/";

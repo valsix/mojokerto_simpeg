@@ -1,0 +1,33 @@
+-- drop table if exists pegawai_file;
+create table pegawai_file
+(
+	pegawai_file_id numeric not null
+	, pegawai_id numeric
+	, riwayat_table character varying
+	, riwayat_field character varying
+	, riwayat_id numeric
+	, file_kualitas_id numeric
+	, path character varying
+	, status_verifikasi character varying(1)
+	, keterangan character varying
+	, status character varying(1)
+	, kategori_file_id numeric
+	, temp_validasi_belum_id numeric
+	, temp_validasi_id numeric
+	, vqr character varying
+	, v_bkn_link character varying
+	, last_user character varying
+	, last_date timestamp without time zone
+	, last_level numeric
+	, user_login_id numeric
+	, user_login_pegawai_id numeric
+	, ipclient character varying
+	, macaddress character varying
+	, namaclient character varying
+	, path_asli character varying
+	, create_user character varying
+	, ext character varying
+	, prioritas character varying(1)
+	, constraint pk_pegawai_file primary key (pegawai_file_id)
+	--, constraint fk_pegawai__pegawaifi_pegawai foreign key (pegawai_id) references pegawai (pegawai_id) match simple on update restrict on delete restrict
+);

@@ -162,6 +162,9 @@ class riwayat_jabatan_json extends CI_Controller {
 
 	function add()
 	{
+		$this->load->library('globalfilepegawai');
+		$reqLinkFile= $_FILES['reqLinkFile'];
+		
 		$this->load->model("base/RiwayatJabatan");
 		$this->load->model("base/PejabatPenetap");
 
@@ -200,7 +203,7 @@ class riwayat_jabatan_json extends CI_Controller {
 		$set->setField('TUNJANGAN', $reqTunjangan);
 		$set->setField('BULAN_DIBAYAR', dateToDBCheck($reqBlnDibayar));			
 		$set->setField('KETERANGAN_BUP', $reqKeteranganBUP);
-		$set->setField('ANGKA_KREDIT', $reqKredit);
+		$set->setField('ANGKA_KREDIT', ValToNullDB(dotToNo($reqKredit)));
 		$set->setField('TENTANG_JABATAN', $reqTentangJabatan);
 		$set->setField('JENIS_JABATAN', $reqJenisJabatan);
 		$set->setField('KODE_JABATAN', $reqKodeJabatan);
@@ -238,6 +241,11 @@ class riwayat_jabatan_json extends CI_Controller {
 
 		if($reqSimpan == 1)
 		{
+			// untuk simpan file
+			$vpost= $this->input->post();
+			$vsimpanfilepegawai= new globalfilepegawai();
+			$vsimpanfilepegawai->simpanfilepegawai($vpost, $reqRowId, $reqLinkFile);
+
 			echo json_response(200, $reqRowId."-Data berhasil disimpan.");
 		}
 		else
