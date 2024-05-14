@@ -76,7 +76,7 @@ $reqTipePegawaiId= $pegawai->getField('TIPE_PEGAWAI_ID');
 
 // untuk kondisi file
 $vfpeg= new globalfilepegawai();
-$riwayattable= "TUGAS_RIWAYAT";
+$riwayattable= "JABATAN_TAMBAHAN";
 $reqDokumenKategoriFileId= "0"; // ambil dari table KATEGORI_FILE, cek sesuai mode
 $arrsetriwayatfield= $vfpeg->setriwayatfield($riwayattable);
 // print_r($arrsetriwayatfield);exit;
