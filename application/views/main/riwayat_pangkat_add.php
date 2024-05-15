@@ -199,11 +199,11 @@ $readonly = "readonly";
 			        			<div class="col-lg-3 col-sm-12">
 			        				<input type="text" class="form-control" name="reqTh" id="reqTh" value="<?=$reqTh?>" />
 			        			</div>
-			        			<label class="col-form-label">Tahun </label>
+			        			<label class="col-form-label">Thn</label>
 			        			<div class="col-lg-3 col-sm-12">
 			        				<input type="text" class="form-control" name="reqBl" id="reqBl" value="<?=$reqBl?>" />
 			        			</div>
-			        			<label class="col-form-label">Bulan</label>
+			        			<label class="col-form-label">Bln</label>
 			        		</div>	        			
 	        			</div>
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Gaji Pokok</label>
