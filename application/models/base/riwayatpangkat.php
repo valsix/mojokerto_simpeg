@@ -133,11 +133,11 @@ class RiwayatPangkat extends Entity{
 			, MASA_KERJA_BULAN= '".$this->getField("MASA_KERJA_BULAN")."'
 			, TANGGAL_SK= ".$this->getField("TANGGAL_SK")."
 			, TMT_PANGKAT= ".$this->getField("TMT_PANGKAT")."
-			, KREDIT= '".$this->getField("KREDIT")."'
+			, KREDIT= ".$this->getField("KREDIT")."
 			, JENIS_KP= '".$this->getField("JENIS_KP")."'
 			, KETERANGAN= '".$this->getField("KETERANGAN")."'
 			, TANGGAL_UPDATE= current_date
-			, GAJI_POKOK= '".$this->getField("GAJI_POKOK")."'
+			, GAJI_POKOK= ".$this->getField("GAJI_POKOK")."
 			, LAST_UPDATE_USER= '".$this->getField("LAST_UPDATE_USER")."'
 			, LAST_UPDATE_DATE= ".$this->getField("LAST_UPDATE_DATE")."
 			, LAST_UPDATE_SATKER= '".$this->getField("LAST_UPDATE_SATKER")."'

@@ -195,10 +195,10 @@ class riwayat_pangkat_json extends CI_Controller {
 		$set->setField('PEGAWAI_ID', $reqId);
 		$set->setField('MASA_KERJA_TAHUN', $reqTh);
 		$set->setField('MASA_KERJA_BULAN', $reqBl);	
-		$set->setField('KREDIT', $reqKredit);
+		$set->setField('KREDIT', ValToNullDB($reqKredit));
 		$set->setField('JENIS_KP', $reqJenisKP);
 		$set->setField('KETERANGAN', $reqKeterangan);		
-		$set->setField('GAJI_POKOK', $reqGajiPokok);		
+		$set->setField('GAJI_POKOK', ValToNullDB($reqGajiPokok));		
 		$set->setField('PANGKAT_RIWAYAT_ID', $reqRowId);		
 		$set->setField('TANGGAL_STLUD', dateToDBCheck($reqTglSTLUD));
 		$set->setField('TANGGAL_NOTA', dateToDBCheck($reqTglNota));
