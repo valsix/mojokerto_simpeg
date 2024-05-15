@@ -78,7 +78,7 @@ $sessvgenertecaptcha= $this->sessvgenertecaptcha;
                                     
 
                                     <input type="hidden" name="reqNewCaptcha" id="reqNewCaptcha" value="<?=$sessvgenertecaptcha?>" />
-                                      <input type="text" placeholder="Capcha..." class="form-password form-control" name="reqCaptcha" id="reqCaptcha" required=""  style="text-transform:uppercase"/>
+                                      <input type="text" placeholder="Capcha..." class="form-password form-control" name="reqCaptcha" id="reqCaptcha" required=""  oninput="this.value = this.value.toUpperCase()"/>
                                         
 
 
