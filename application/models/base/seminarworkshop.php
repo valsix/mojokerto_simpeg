@@ -40,7 +40,6 @@ class SeminarWorkshop extends Entity{
 
 		$this->id= $this->getField("SEMINAR_ID");
 		$this->query = $str;
-		// echo $str;exit;
 
 		// untuk buat log data
 		// parse pertama sesuai nama table
