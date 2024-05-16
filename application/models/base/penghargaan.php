@@ -24,10 +24,10 @@ class Penghargaan extends Entity{
 		(
 			".$this->getField("PENGHARGAAN_ID")."
 			, '".$this->getField("PEGAWAI_ID")."'
-			, '".$this->getField("PEJABAT_PENETAP_ID")."'
+			, ".$this->getField("PEJABAT_PENETAP_ID")."
 			, '".$this->getField("PEJABAT_PENETAP")."'
 			, '".$this->getField("NAMA")."'
-			, '".$this->getField("NO_SK")."'
+			, ".$this->getField("NO_SK")."
 			, ".$this->getField("TANGGAL_SK")."
 			, '".$this->getField("TAHUN")."'
 			, '".$this->getField("LAST_CREATE_USER")."'
@@ -37,6 +37,7 @@ class Penghargaan extends Entity{
 		
 		$this->id= $this->getField("PENGHARGAAN_ID");
 		$this->query = $str;
+		// echo $str;
 
 		// untuk buat log data
 		// parse pertama sesuai nama table
