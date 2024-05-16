@@ -30,7 +30,7 @@ else
 
 // untuk kondisi file
 $vfpeg= new globalfilepegawai();
-$riwayattable= "SERTIFIKAT_PROFESI";
+$riwayattable= "SERTIFIKAT_PENDIDIK";
 $reqDokumenKategoriFileId= "0"; // ambil dari table KATEGORI_FILE, cek sesuai mode
 $arrsetriwayatfield= $vfpeg->setriwayatfield($riwayattable);
 // print_r($arrsetriwayatfield);exit;
