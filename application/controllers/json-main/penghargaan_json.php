@@ -159,6 +159,9 @@ class penghargaan_json extends CI_Controller {
 
 	function add()
 	{
+		$this->load->library('globalfilepegawai');
+		$reqLinkFile= $_FILES['reqLinkFile'];
+
 		$this->load->model("base/Penghargaan");
 		$this->load->model("base/PejabatPenetap");
 
@@ -207,13 +210,13 @@ class penghargaan_json extends CI_Controller {
 		}
 
 		$set = new Penghargaan();
-		$set->setField('PEJABAT_PENETAP_ID', $reqTemp);	
+		$set->setField('PEJABAT_PENETAP_ID', ValToNullDB($reqTemp));	
 		$set->setField('PEJABAT_PENETAP', strtoupper($reqPjPenetap));	
 
 		$set->setField('NAMA', $reqNamaPenghargaan);
 		$set->setField('TAHUN', $reqTahun);
 		$set->setField('TANGGAL_SK', dateToDBCheck($reqTglSK));
-		$set->setField('NO_SK', $reqNoSK);
+		$set->setField('NO_SK', ValToNullDB($reqNoSK));
 		$set->setField('PEGAWAI_ID', $reqId);
 
 		$set->setField('PENGHARGAAN_ID', $reqRowId);
@@ -231,6 +234,7 @@ class penghargaan_json extends CI_Controller {
 	
 			if($set->insert())
 			{
+				$reqRowId=$set->id;
 				$reqSimpan= 1;
 			}
 		}
@@ -248,6 +252,11 @@ class penghargaan_json extends CI_Controller {
 
 		if($reqSimpan == 1)
 		{
+			// untuk simpan file
+			$vpost= $this->input->post();
+			$vsimpanfilepegawai= new globalfilepegawai();
+			$vsimpanfilepegawai->simpanfilepegawai($vpost, $reqRowId, $reqLinkFile);
+
 			echo json_response(200, $reqRowId."-Data berhasil disimpan.");
 		}
 		else
