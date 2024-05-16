@@ -159,6 +159,9 @@ class pelatihan_teknis_json extends CI_Controller {
 
 	function add()
 	{
+		$this->load->library('globalfilepegawai');
+		$reqLinkFile= $_FILES['reqLinkFile'];
+		
 		$this->load->model("base/PelatihanTeknis");
 
 		$reqId= $this->input->post("reqId");
@@ -220,6 +223,11 @@ class pelatihan_teknis_json extends CI_Controller {
 
 		if($reqSimpan == 1)
 		{
+			// untuk simpan file
+			$vpost= $this->input->post();
+			$vsimpanfilepegawai= new globalfilepegawai();
+			$vsimpanfilepegawai->simpanfilepegawai($vpost, $reqRowId, $reqLinkFile);
+
 			echo json_response(200, $reqRowId."-Data berhasil disimpan.");
 		}
 		else
