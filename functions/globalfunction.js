@@ -1,3 +1,31 @@
+$(document).ready( function () {
+	$('.angkavalsix').bind('keyup paste', function(){
+		this.value = this.value.replace(/[^0-9]/g, '');
+	});
+});
+
+function kreditvalidate(evt, ele) 
+{
+	var theEvent = evt || window.event;
+	var key = theEvent.keyCode || theEvent.which;
+	kondisikey= key;
+	key= String.fromCharCode( key );
+	//alert(kondisikey);
+	
+	var value = ele.value + key;
+	var regex = /^\d+(,\d{0,3})?$/;
+	
+	if(kondisikey == 8){}
+	else
+	{
+		if( !regex.test(value) ) {
+			theEvent.returnValue = false;
+			if(theEvent.preventDefault) 
+			theEvent.preventDefault();
+		}
+	}
+}
+
 function CekNumber(id)
 	{
 		var txt = document.getElementById(id);

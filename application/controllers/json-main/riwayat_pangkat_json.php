@@ -163,7 +163,11 @@ class riwayat_pangkat_json extends CI_Controller {
 
 	function add()
 	{
+		$this->load->library('globalfilepegawai');
+		$reqLinkFile= $_FILES['reqLinkFile'];
+
 		$this->load->model("base/RiwayatPangkat");
+		$this->load->model("base/PejabatPenetap");
 
 		$reqId= $this->input->post("reqId");
 		$reqRowId= $this->input->post("reqRowId");
@@ -185,40 +189,73 @@ class riwayat_pangkat_json extends CI_Controller {
 		$reqTMTGol= $this->input->post("reqTMTGol");
 		$reqGajiPokok= $this->input->post("reqGajiPokok");
 
+		if($reqStatusPejabatPenetap=='baru'){
+			$stat= " AND UPPER(JABATAN)='".strtoupper($reqPjPenetap_Baru)."'";
+			$cek_set=new PejabatPenetap();
+			$cek_set->selectByParams(array(),-1,-1,$stat);
+			$cek_set->firstRow();
+
+			if($cek_set->getField("JABATAN") == ''){
+				$setdetil=new PejabatPenetap();
+				$setdetil->setField('JABATAN', strtoupper($reqPjPenetap_Baru));	
+				$setdetil->setField("LAST_CREATE_USER", $adminusernama);
+				$setdetil->setField("LAST_CREATE_DATE", "NOW()");	
+				$setdetil->setField("LAST_CREATE_SATKER", $userSatkerId);
+
+				$setdetil->insert();
+				$reqPjPenetap=$reqPjPenetap_Baru;
+				$reqTemp=$setdetil->id;
+			}else{
+				$reqPjPenetap=$reqPjPenetap_Baru;
+				$reqTemp=$cek_set->getField("PEJABAT_PENETAP_ID");
+			}
+			unset($setdetil);unset($cek_set);
+		}else{
+			$reqTemp=$reqPjPenetap;
+			if(!empty($reqTemp))
+			{
+				$setdetil=new PejabatPenetap();
+				$setdetil->selectByParams(array("PEJABAT_PENETAP_ID"=>$reqPjPenetap));
+				$setdetil->firstRow();
+				$reqPjPenetap=strtoupper($setdetil->getField('JABATAN'));
+				unset($setdetil);
+			}
+		}
+
 		$set = new RiwayatPangkat();
-		$set->setField('PANGKAT_ID', $reqGolRuang);
-		$set->setField('PEJABAT_PENETAP_ID', $reqPjPenetap);	
+		$set->setField('PANGKAT_ID', ValToNullDB($reqGolRuang));
+		$set->setField("PEJABAT_PENETAP_ID", ValToNullDB($reqTemp));
+		$set->setField("PEJABAT_PENETAP", strtoupper($reqPjPenetap));
 		$set->setField('STLUD', $reqSTLUD);
 		$set->setField('NO_STLUD', $reqNoSTLUD);
 		$set->setField('NO_NOTA', $reqNoNota);
 		$set->setField('NO_SK', $reqNoSK);
 		$set->setField('PEGAWAI_ID', $reqId);
-		$set->setField('MASA_KERJA_TAHUN', $reqTh);
-		$set->setField('MASA_KERJA_BULAN', $reqBl);	
-		$set->setField('KREDIT', ValToNullDB($reqKredit));
-		$set->setField('JENIS_KP', $reqJenisKP);
-		$set->setField('KETERANGAN', $reqKeterangan);		
-		$set->setField('GAJI_POKOK', ValToNullDB($reqGajiPokok));		
+		$set->setField('MASA_KERJA_TAHUN', ValToNullDB($reqTh));
+		$set->setField('MASA_KERJA_BULAN', ValToNullDB($reqBl));
+		$set->setField('KREDIT', ValToNullDB(CommaToDot($reqKredit)));
+		$set->setField('JENIS_KP', ValToNullDB($reqJenisKP));
+		$set->setField('KETERANGAN', $reqKeterangan);
+		$set->setField('GAJI_POKOK', ValToNullDB(dotToNo($reqGajiPokok)));
 		$set->setField('PANGKAT_RIWAYAT_ID', $reqRowId);		
 		$set->setField('TANGGAL_STLUD', dateToDBCheck($reqTglSTLUD));
 		$set->setField('TANGGAL_NOTA', dateToDBCheck($reqTglNota));
 		$set->setField('TANGGAL_SK', dateToDBCheck($reqTglSK));
 		$set->setField('TMT_PANGKAT', dateToDBCheck($reqTMTGol));
-	
 
 		$adminusernama= $this->adminuserloginnama;
 		$userSatkerId= $this->adminsatkerid;
 
 		$reqSimpan= "";
-		if ($reqRowId == "")
+		if ($reqRowId == "" || $reqRowId == "-1")
 		{
-
 			$set->setField("LAST_CREATE_USER", $adminusernama);
 			$set->setField("LAST_CREATE_DATE", "NOW()");	
 			$set->setField("LAST_CREATE_SATKER", $userSatkerId);
 	
 			if($set->insert())
 			{
+				$reqRowId= $set->id;
 				$reqSimpan= 1;
 			}
 		}
@@ -235,6 +272,11 @@ class riwayat_pangkat_json extends CI_Controller {
 
 		if($reqSimpan == 1)
 		{
+			// untuk simpan file
+			$vpost= $this->input->post();
+			$vsimpanfilepegawai= new globalfilepegawai();
+			$vsimpanfilepegawai->simpanfilepegawai($vpost, $reqRowId, $reqLinkFile);
+
 			echo json_response(200, $reqRowId."-Data berhasil disimpan.");
 		}
 		else

@@ -7,7 +7,35 @@ class globalfilepegawai
 	function setriwayatfield($riwayattable, $kategorifileid="")
 	{
 		$vreturn= [];
-		if (1==2){}
+		if($riwayattable == "PANGKAT_RIWAYAT")
+		{
+			$arrdata= [];
+			$arrdata["riwayatfield"]= "";
+			$arrdata["vriwayattable"]= $riwayattable;
+			$arrdata["riwayatfieldinfo"]= "Cek EFile";
+			$arrdata["labelupload"]= "Upload File";
+			$arrdata["infolabel"]= "File";
+			$arrdata["riwayatfieldtipe"]= "";
+			$arrdata["riwayatfieldstyle"]= "";
+			$riwayatfieldrequired= "1";
+			$arrdata["riwayatfieldrequired"]= $riwayatfieldrequired;
+			$arrdata["riwayatfieldrequiredinfo"]= $this->setfilerequiredinfo($riwayatfieldrequired);
+			array_push($vreturn, $arrdata);
+
+			$arrdata= [];
+			$arrdata["riwayatfield"]= "stlud";
+			$arrdata["vriwayattable"]= $riwayattable;
+			$arrdata["riwayatfieldinfo"]= "Cek EFile";
+			$arrdata["labelupload"]= "Upload STLUD File";
+			$arrdata["infolabel"]= "File STLUD";
+			$arrdata["riwayatfieldtipe"]= "";
+			$arrdata["riwayatfieldstyle"]= "";
+			$riwayatfieldrequired= "1";
+			$arrdata["riwayatfieldrequired"]= $riwayatfieldrequired;
+			$arrdata["riwayatfieldrequiredinfo"]= $this->setfilerequiredinfo($riwayatfieldrequired);
+			array_push($vreturn, $arrdata);
+		}
+		else if (1==2){}
 		else
 		{
 			$arrdata= [];
@@ -246,9 +274,15 @@ class globalfilepegawai
 			}
 			// echo $fileuploadexe;exit;
 
-			$ambilriwayatfield= "1";
+			$ambilriwayatfield= "";
+			if(!empty($fileuploadexe))
+			{
+				$ambilriwayatfield= "1";
+			}
+
 			// kalau sama baru proses simpan
-			if($reqRiwayatId == $reqRowId || $ambilriwayatfield == "1")
+			// if($reqRiwayatId == $reqRowId || $ambilriwayatfield == "1")
+			if($ambilriwayatfield == "1")
 			{
 				// echo $reqDokumenPilih;exit;
 				// $reqRiwayatTable= $setfile->getField("RIWAYAT_TABLE");

@@ -10,41 +10,53 @@ $reqRowId= $this->input->get('reqRowId');
 
 if(empty($reqRowId)) $reqRowId= -1;
 
-$jabatan_riwayat= new RiwayatJabatan();
-$jabatan_riwayat->selectByParams(array('JABATAN_RIWAYAT_ID'=>$reqRowId, 'PEGAWAI_ID'=> $reqId));
-// $jabatan_riwayat->query;exit;
-$jabatan_riwayat->firstRow();
-if( $jabatan_riwayat->getField('PEJABAT_PENETAP_ID')==''){
+if(empty($reqRowId) || $reqRowId== -1)
+{
+	$reqMode="insert";
+
 	$reqStatus='baru';
 	$reqDisplayBaru='';
 	$reqDisplay='none';
-}else{
-	$reqDisplayBaru='none';
-	$reqDisplay='';
 }
-$reqPjPenetapNama= $jabatan_riwayat->getField('PEJABAT_PENETAP');
-$reqPjPenetapId= $jabatan_riwayat->getField('PEJABAT_PENETAP_ID');
+else
+{
+	$reqMode="update";
+	$jabatan_riwayat= new RiwayatJabatan();
+	$jabatan_riwayat->selectByParams(array('JABATAN_RIWAYAT_ID'=>$reqRowId, 'PEGAWAI_ID'=> $reqId));
+	// $jabatan_riwayat->query;exit;
+	$jabatan_riwayat->firstRow();
+	if( $jabatan_riwayat->getField('PEJABAT_PENETAP_ID')==''){
+		$reqStatus='baru';
+		$reqDisplayBaru='';
+		$reqDisplay='none';
+	}else{
+		$reqDisplayBaru='none';
+		$reqDisplay='';
+	}
+	$reqPjPenetapNama= $jabatan_riwayat->getField('PEJABAT_PENETAP');
+	$reqPjPenetapId= $jabatan_riwayat->getField('PEJABAT_PENETAP_ID');
 
-$reqSatkerId= $jabatan_riwayat->getField('SATKER_ID');
-$reqNoSK= $jabatan_riwayat->getField('NO_SK');
-$reqEselon= $jabatan_riwayat->getField('ESELON_ID');
-$reqNamaJabatan= $jabatan_riwayat->getField('NAMA');
-$reqNoPelantikan= $jabatan_riwayat->getField('NO_PELANTIKAN');
-$reqTunjangan= $jabatan_riwayat->getField('TUNJANGAN');
-$reqTglSK= dateToPageCheck($jabatan_riwayat->getField('TANGGAL_SK'));
-$reqTMTJabatan= dateToPageCheck($jabatan_riwayat->getField('TMT_JABATAN'));
-$reqTMTEselon= dateToPageCheck($jabatan_riwayat->getField('TMT_ESELON'));
-$reqTglPelantikan= dateToPageCheck($jabatan_riwayat->getField('TANGGAL_PELANTIKAN'));
-$reqBlnDibayar= dateToPageCheck($jabatan_riwayat->getField('BULAN_DIBAYAR'));
-$reqMataPelajaran= $jabatan_riwayat->getField('MATA_PELAJARAN');
-$reqTMTJabatanFungsional= dateToPageCheck($jabatan_riwayat->getField('TMT_JABATAN_FUNGSIONAL'));
-$reqTMTTugasTambahan= dateToPageCheck($jabatan_riwayat->getField('TMT_TUGAS_TAMBAHAN'));
-$reqKeteranganBUP= $jabatan_riwayat->getField('KETERANGAN_BUP');
-$reqKredit= $jabatan_riwayat->getField('ANGKA_KREDIT');
-$reqJenisJabatan= $jabatan_riwayat->getField('JENIS_JABATAN');
-$reqTentangJabatan= $jabatan_riwayat->getField('TENTANG_JABATAN');
-$reqKodeJabatan= $jabatan_riwayat->getField('KODE_JABATAN');
-$reqSatker= $jabatan_riwayat->getField('SATKER');
+	$reqSatkerId= $jabatan_riwayat->getField('SATKER_ID');
+	$reqNoSK= $jabatan_riwayat->getField('NO_SK');
+	$reqEselon= $jabatan_riwayat->getField('ESELON_ID');
+	$reqNamaJabatan= $jabatan_riwayat->getField('NAMA');
+	$reqNoPelantikan= $jabatan_riwayat->getField('NO_PELANTIKAN');
+	$reqTunjangan= $jabatan_riwayat->getField('TUNJANGAN');
+	$reqTglSK= dateToPageCheck($jabatan_riwayat->getField('TANGGAL_SK'));
+	$reqTMTJabatan= dateToPageCheck($jabatan_riwayat->getField('TMT_JABATAN'));
+	$reqTMTEselon= dateToPageCheck($jabatan_riwayat->getField('TMT_ESELON'));
+	$reqTglPelantikan= dateToPageCheck($jabatan_riwayat->getField('TANGGAL_PELANTIKAN'));
+	$reqBlnDibayar= dateToPageCheck($jabatan_riwayat->getField('BULAN_DIBAYAR'));
+	$reqMataPelajaran= $jabatan_riwayat->getField('MATA_PELAJARAN');
+	$reqTMTJabatanFungsional= dateToPageCheck($jabatan_riwayat->getField('TMT_JABATAN_FUNGSIONAL'));
+	$reqTMTTugasTambahan= dateToPageCheck($jabatan_riwayat->getField('TMT_TUGAS_TAMBAHAN'));
+	$reqKeteranganBUP= $jabatan_riwayat->getField('KETERANGAN_BUP');
+	$reqKredit= $jabatan_riwayat->getField('ANGKA_KREDIT');
+	$reqJenisJabatan= $jabatan_riwayat->getField('JENIS_JABATAN');
+	$reqTentangJabatan= $jabatan_riwayat->getField('TENTANG_JABATAN');
+	$reqKodeJabatan= $jabatan_riwayat->getField('KODE_JABATAN');
+	$reqSatker= $jabatan_riwayat->getField('SATKER');
+}
 
 $eselon= new Core();
 $eselon->selectByParamsEselon(array());
@@ -52,7 +64,6 @@ $eselon->selectByParamsEselon(array());
 $pejabatpenetap= new Core();
 $pejabatpenetap->selectByParamsPejabatPenetap(array());
 // echo $reqTmtJabatan;exit;
-$reqMode="update";
 // $reqMode="insert";
 $readonly = "readonly";
 

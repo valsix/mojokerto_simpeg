@@ -86,6 +86,7 @@ $arrcarimenuparent= $vfpeg->cariparentmenu($arrparam);
     
         <script src="assets/plugins/custom/datatables/datatables.bundle.js"></script>
         <script src="assets/js/valsix-serverside.js"></script>
+        <script type="text/javascript" src="functions/globalfunction.js"></script>
         <script src="assets/plugins/custom/jstree/jstree.bundle.js"></script>
 
         <script src="assets/emodal/eModal.min.js"></script>

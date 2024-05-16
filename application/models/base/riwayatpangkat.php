@@ -81,8 +81,8 @@ class RiwayatPangkat extends Entity{
 		(
 			".$this->getField("PANGKAT_RIWAYAT_ID")."
 			, '".$this->getField("PEGAWAI_ID")."'
-			, '".$this->getField("PANGKAT_ID")."'
-			, '".$this->getField("PEJABAT_PENETAP_ID")."'
+			, ".$this->getField("PANGKAT_ID")."
+			, ".$this->getField("PEJABAT_PENETAP_ID")."
 			, '".$this->getField("PEJABAT_PENETAP")."'
 			, '".$this->getField("STLUD")."'
 			, '".$this->getField("NO_STLUD")."'
@@ -90,13 +90,13 @@ class RiwayatPangkat extends Entity{
 			, '".$this->getField("NO_NOTA")."'
 			, ".$this->getField("TANGGAL_NOTA")."
 			, '".$this->getField("NO_SK")."'
-			, '".$this->getField("MASA_KERJA_TAHUN")."'
-			, '".$this->getField("MASA_KERJA_BULAN")."'
-			, '".$this->getField("GAJI_POKOK")."'
+			, ".$this->getField("MASA_KERJA_TAHUN")."
+			, ".$this->getField("MASA_KERJA_BULAN")."
+			, ".$this->getField("GAJI_POKOK")."
 			, ".$this->getField("TANGGAL_SK")."
 			, ".$this->getField("TMT_PANGKAT")."
-			, '".$this->getField("KREDIT")."'
-			, '".$this->getField("JENIS_KP")."'
+			, ".$this->getField("KREDIT")."
+			, ".$this->getField("JENIS_KP")."
 			, '".$this->getField("KETERANGAN")."'
 			, current_date
 			, '".$this->getField("LAST_CREATE_USER")."'
@@ -120,8 +120,8 @@ class RiwayatPangkat extends Entity{
 		/*Auto-generate primary key(s) by next max value (integer) */
 		$str = "UPDATE PANGKAT_RIWAYAT
 		SET    
-			PANGKAT_ID= '".$this->getField("PANGKAT_ID")."'
-			, PEJABAT_PENETAP_ID= '".$this->getField("PEJABAT_PENETAP_ID")."'
+			PANGKAT_ID= ".$this->getField("PANGKAT_ID")."
+			, PEJABAT_PENETAP_ID= ".$this->getField("PEJABAT_PENETAP_ID")."
 			, PEJABAT_PENETAP= '".$this->getField("PEJABAT_PENETAP")."'
 			, STLUD= '".$this->getField("STLUD")."'
 			, NO_STLUD= '".$this->getField("NO_STLUD")."'
@@ -129,12 +129,12 @@ class RiwayatPangkat extends Entity{
 			, NO_NOTA= '".$this->getField("NO_NOTA")."'
 			, TANGGAL_NOTA= ".$this->getField("TANGGAL_NOTA")."
 			, NO_SK= '".$this->getField("NO_SK")."'
-			, MASA_KERJA_TAHUN= '".$this->getField("MASA_KERJA_TAHUN")."'
-			, MASA_KERJA_BULAN= '".$this->getField("MASA_KERJA_BULAN")."'
+			, MASA_KERJA_TAHUN= ".$this->getField("MASA_KERJA_TAHUN")."
+			, MASA_KERJA_BULAN= ".$this->getField("MASA_KERJA_BULAN")."
 			, TANGGAL_SK= ".$this->getField("TANGGAL_SK")."
 			, TMT_PANGKAT= ".$this->getField("TMT_PANGKAT")."
 			, KREDIT= ".$this->getField("KREDIT")."
-			, JENIS_KP= '".$this->getField("JENIS_KP")."'
+			, JENIS_KP= ".$this->getField("JENIS_KP")."
 			, KETERANGAN= '".$this->getField("KETERANGAN")."'
 			, TANGGAL_UPDATE= current_date
 			, GAJI_POKOK= ".$this->getField("GAJI_POKOK")."
