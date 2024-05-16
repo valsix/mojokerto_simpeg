@@ -35,6 +35,34 @@ class globalfilepegawai
 			$arrdata["riwayatfieldrequiredinfo"]= $this->setfilerequiredinfo($riwayatfieldrequired);
 			array_push($vreturn, $arrdata);
 		}
+		else if($riwayattable == "PENDIDIKAN_RIWAYAT")
+		{
+			$arrdata= [];
+			$arrdata["riwayatfield"]= "";
+			$arrdata["vriwayattable"]= $riwayattable;
+			$arrdata["riwayatfieldinfo"]= "Cek EFile";
+			$arrdata["labelupload"]= "Upload SURAT";
+			$arrdata["infolabel"]= "File";
+			$arrdata["riwayatfieldtipe"]= "";
+			$arrdata["riwayatfieldstyle"]= "";
+			$riwayatfieldrequired= "1";
+			$arrdata["riwayatfieldrequired"]= $riwayatfieldrequired;
+			$arrdata["riwayatfieldrequiredinfo"]= $this->setfilerequiredinfo($riwayatfieldrequired);
+			array_push($vreturn, $arrdata);
+
+			$arrdata= [];
+			$arrdata["riwayatfield"]= "stlud";
+			$arrdata["vriwayattable"]= $riwayattable;
+			$arrdata["riwayatfieldinfo"]= "Cek EFile";
+			$arrdata["labelupload"]= "Upload Transkrip File";
+			$arrdata["infolabel"]= "File Transkrip";
+			$arrdata["riwayatfieldtipe"]= "";
+			$arrdata["riwayatfieldstyle"]= "";
+			$riwayatfieldrequired= "1";
+			$arrdata["riwayatfieldrequired"]= $riwayatfieldrequired;
+			$arrdata["riwayatfieldrequiredinfo"]= $this->setfilerequiredinfo($riwayatfieldrequired);
+			array_push($vreturn, $arrdata);
+		}
 		else if (1==2){}
 		else
 		{
