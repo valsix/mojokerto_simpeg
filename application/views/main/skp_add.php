@@ -43,7 +43,7 @@ $readonly = "readonly";
 
 // untuk kondisi file
 $vfpeg= new globalfilepegawai();
-$riwayattable= "GAJI_RIWAYAT";
+$riwayattable= "SKP";
 $reqDokumenKategoriFileId= "0"; // ambil dari table KATEGORI_FILE, cek sesuai mode
 $arrsetriwayatfield= $vfpeg->setriwayatfield($riwayattable);
 // print_r($arrsetriwayatfield);exit;
