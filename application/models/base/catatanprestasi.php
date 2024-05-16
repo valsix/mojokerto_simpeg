@@ -30,7 +30,7 @@ class CatatanPrestasi extends Entity{
 			, ".$this->getField("TANGGAL_SK")."
 			, '".$this->getField("PEJABAT_PENETAP")."'
 			, '".$this->getField("TAHUN")."'
-			, '".$this->getField("PEJABAT_PENETAP_ID")."'
+			, ".$this->getField("PEJABAT_PENETAP_ID")."
 			, '".$this->getField("LAST_CREATE_USER")."'
 			, ".$this->getField("LAST_CREATE_DATE")."
 			, '".$this->getField("LAST_CREATE_SATKER")."'
@@ -38,6 +38,7 @@ class CatatanPrestasi extends Entity{
 		
 		$this->id= $this->getField("PRESTASI_KERJA_ID");
 		$this->query = $str;
+		// echo$str;
 
 		// untuk buat log data
 		// parse pertama sesuai nama table
@@ -59,7 +60,7 @@ class CatatanPrestasi extends Entity{
 			, TANGGAL_SK= ".$this->getField("TANGGAL_SK")."
 			, TAHUN= '".$this->getField("TAHUN")."'
 			, PEJABAT_PENETAP= '".$this->getField("PEJABAT_PENETAP")."'
-			, PEJABAT_PENETAP_ID= '".$this->getField("PEJABAT_PENETAP_ID")."'
+			, PEJABAT_PENETAP_ID= ".$this->getField("PEJABAT_PENETAP_ID")."
 			, LAST_UPDATE_USER= '".$this->getField("LAST_UPDATE_USER")."'
 			, LAST_UPDATE_DATE= ".$this->getField("LAST_UPDATE_DATE")."
 			, LAST_UPDATE_SATKER= '".$this->getField("LAST_UPDATE_SATKER")."'

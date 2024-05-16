@@ -159,6 +159,9 @@ class catatan_prestasi_json extends CI_Controller {
 
 	function add()
 	{
+		$this->load->library('globalfilepegawai');
+		$reqLinkFile= $_FILES['reqLinkFile'];
+
 		$this->load->model("base/CatatanPrestasi");
 		$this->load->model("base/PejabatPenetap");
 
@@ -211,7 +214,7 @@ class catatan_prestasi_json extends CI_Controller {
 		}
 
 		$set = new CatatanPrestasi();
-		$set->setField('PEJABAT_PENETAP_ID', $reqTemp);	
+		$set->setField('PEJABAT_PENETAP_ID', ValToNullDB($reqTemp));	
 		$set->setField('PEJABAT_PENETAP', strtoupper($reqPjPenetap));	
 
 		$set->setField('TAHUN', $reqTahun);
@@ -235,6 +238,7 @@ class catatan_prestasi_json extends CI_Controller {
 	
 			if($set->insert())
 			{
+				$reqRowId=$set->id;
 				$reqSimpan= 1;
 			}
 		}
@@ -251,12 +255,17 @@ class catatan_prestasi_json extends CI_Controller {
 
 		if($reqSimpan == 1)
 		{
+			// untuk simpan file
+			$vpost= $this->input->post();
+			$vsimpanfilepegawai= new globalfilepegawai();
+			$vsimpanfilepegawai->simpanfilepegawai($vpost, $reqRowId, $reqLinkFile);
+
 			echo json_response(200, $reqRowId."-Data berhasil disimpan.");
 		}
 		else
 		{
 			echo json_response(400, "Data gagal disimpan");
-		}		
+		}
 	}
 
 	function delete()
