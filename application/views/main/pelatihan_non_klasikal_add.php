@@ -31,7 +31,7 @@ $readonly = "readonly";
 
 // untuk kondisi file
 $vfpeg= new globalfilepegawai();
-$riwayattable= "JABATAN_RIWAYAT";
+$riwayattable= "KURSUS";
 $reqDokumenKategoriFileId= "0"; // ambil dari table KATEGORI_FILE, cek sesuai mode
 $arrsetriwayatfield= $vfpeg->setriwayatfield($riwayattable);
 // print_r($arrsetriwayatfield);exit;
