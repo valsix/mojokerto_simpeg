@@ -207,6 +207,7 @@ class pelatihan_teknis_json extends CI_Controller {
 	
 			if($set->insert())
 			{
+				$reqRowId=$set->id;
 				$reqSimpan= 1;
 			}
 		}

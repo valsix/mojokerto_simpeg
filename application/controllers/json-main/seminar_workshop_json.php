@@ -159,6 +159,9 @@ class seminar_workshop_json extends CI_Controller {
 
 	function add()
 	{
+		$this->load->library('globalfilepegawai');
+		$reqLinkFile= $_FILES['reqLinkFile'];
+
 		$this->load->model("base/SeminarWorkshop");
 
 		$reqId= $this->input->post("reqId");
@@ -200,6 +203,7 @@ class seminar_workshop_json extends CI_Controller {
 	
 			if($set->insert())
 			{
+				$reqRowId=$set->id;
 				$reqSimpan= 1;
 			}
 		}
@@ -216,6 +220,11 @@ class seminar_workshop_json extends CI_Controller {
 
 		if($reqSimpan == 1)
 		{
+			// untuk simpan file
+			$vpost= $this->input->post();
+			$vsimpanfilepegawai= new globalfilepegawai();
+			$vsimpanfilepegawai->simpanfilepegawai($vpost, $reqRowId, $reqLinkFile);
+
 			echo json_response(200, $reqRowId."-Data berhasil disimpan.");
 		}
 		else
