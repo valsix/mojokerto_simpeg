@@ -51,7 +51,7 @@ class globalfilepegawai
 			array_push($vreturn, $arrdata);
 
 			$arrdata= [];
-			$arrdata["riwayatfield"]= "stlud";
+			$arrdata["riwayatfield"]= "transkrip";
 			$arrdata["vriwayattable"]= $riwayattable;
 			$arrdata["riwayatfieldinfo"]= "Cek EFile";
 			$arrdata["labelupload"]= "Upload Transkrip File";
