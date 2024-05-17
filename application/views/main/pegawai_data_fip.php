@@ -3,8 +3,15 @@ include_once("functions/personal.func.php");
 
 $this->load->model("base/Pegawai");
 $this->load->model("base/Core");
+$this->load->library('globalfilepegawai');
+
 
 $reqId= $this->input->get('reqId');
+$reqRowId= $this->input->get('reqRowId');
+
+
+if(empty($reqRowId)) $reqRowId= -1;
+
 
 $pegawai= new Pegawai();
 $pegawai->selectByParams(array("p.PEGAWAI_ID" => $reqId)); 
@@ -119,6 +126,26 @@ if (!empty($reqId))
 $arrsatkertree= $this->sesstree;
 $arrsatkerdata= $this->sessdatatree;
 
+// untuk kondisi file
+$vfpeg= new globalfilepegawai();
+$riwayattable= "PEGAWAI";
+$reqDokumenKategoriFileId= "0"; // ambil dari table KATEGORI_FILE, cek sesuai mode
+$arrsetriwayatfield= $vfpeg->setriwayatfield($riwayattable);
+// print_r($arrsetriwayatfield);exit;
+
+$arrparam= array("reqId"=>$reqId, "reqRowId"=>$reqRowId, "riwayattable"=>$riwayattable, "lihatquery"=>"");
+$arrambilfile= $vfpeg->ambilfile($arrparam);
+// print_r($arrambilfile);exit;
+
+$keycari= $riwayattable.";".$reqRowId;
+
+$infofile= 0;
+if(!empty($arrambilfile))
+{
+	$infofile= count(in_array_column($keycari, "vkey", $arrambilfile));
+}
+// echo $infofile;exit;
+
 // print_r($arrsatkertree);exit();
 ?>
 <!-- <style type="text/css">
@@ -142,6 +169,9 @@ $arrsatkerdata= $this->sessdatatree;
 <!-- <link href="lib/bootstrap-3.3.7/dist/css/bootstrap.min.css" rel="stylesheet"> -->
 <link href="lib/bootstrap-3.3.7/docs/examples/navbar/navbar.css" rel="stylesheet">
 <!-- <script src="lib/bootstrap-3.3.7/dist/js/bootstrap.min.js"></script> -->
+
+<link href="assets/css/w3.css" rel="stylesheet" type="text/css" />
+
 
 <link href="lib/select2totreemaster/src/select2totree.css" rel="stylesheet">
 <script src="lib/select2/select2.min.js"></script>
@@ -179,6 +209,40 @@ $arrsatkerdata= $this->sessdatatree;
             </div>
             <form class="form" id="ktloginform" method="POST" enctype="multipart/form-data">
 	        	<div class="card-body">
+	        		<?
+	        		if($infofile > 0)
+	        		{
+	        		?>
+	        		<div class="w3-bar w3-black">
+					    <a class="w3-bar-item w3-button tablink w3-red" onclick="opennewtab(event,'vformdata')">Data</a>
+					    <?
+			              	// area untuk upload file
+		        			foreach ($arrsetriwayatfield as $key => $value)
+		        			{
+		        				$riwayatfield= $value["riwayatfield"];
+		        				$vriwayattable= $value["vriwayattable"];
+		        				$infolabel= $value["infolabel"];
+
+		        				$vkeydetil= $vriwayattable.";".$reqRowId.";".$riwayatfield;
+		        		?>
+					    	<a class="w3-bar-item w3-button tablink" onclick="opennewtab(event, '<?=$vkeydetil?>')"><?=$infolabel?></a>
+					    <?
+							}
+					    ?>
+					</div>
+					<?
+					}
+					?>
+
+					<?
+	        		if($infofile > 0)
+	        		{
+	        		?>
+	        		<div id="vformdata" class="w3-container w3-border city">
+	        		<?
+	        		}
+	        		?>
+
 	        		<div class="row">
 	        			<div class="col-md-6">
 	        				<div class="form-group row">
@@ -814,18 +878,111 @@ $arrsatkerdata= $this->sessdatatree;
 		        			</div>
 			        	</div>
 	        		</div>
-	        	</div>
 
-	        	<div class="card-footer">
-	        		<div class="row">
-	        			<div class="col-lg-9">
-	        				<input type="hidden" name="reqMode" value="<?=$reqMode?>">
-	        				<input type="hidden" name="reqPegawaiId" value="<?=$reqId?>">
-	        				<input type="hidden" name="reqTempValidasiId" value="<?=$reqTempValidasiId?>">
-	        				<button type="submit" id="ktloginformsubmitbutton"  class="btn btn-primary font-weight-bold mr-2">Simpan</button>
+	        		<div class="form-group row">
+	        			<label class="col-form-label text-right col-lg-2 col-sm-12"></label>
+	        			<?
+			              	// area untuk upload file
+	        			foreach ($arrsetriwayatfield as $key => $value)
+	        			{
+	        				$riwayatfield= $value["riwayatfield"];
+	        				$riwayatfieldtipe= $value["riwayatfieldtipe"];
+	        				$vriwayatfieldinfo= $value["riwayatfieldinfo"];
+	        				$riwayatfieldinfo= " - ".$vriwayatfieldinfo;
+	        				$riwayatfieldrequired= $value["riwayatfieldrequired"];
+	        				$riwayatfieldrequiredinfo= $value["riwayatfieldrequiredinfo"];
+	        				$vriwayattable= $value["vriwayattable"];
+	        				$vlabelupload= $value["labelupload"];
+	        				$vriwayatid= "";
+	        				$vpegawairowfile= $reqDokumenKategoriFileId."-".$vriwayattable."-".$riwayatfield."-".$vriwayatid;
+	        				?>
+
+	        				<input type="hidden" id="reqDokumenRequired<?=$riwayatfield?>" name="reqDokumenRequired[]" value="<?=$riwayatfieldrequired?>" />
+	        				<input type="hidden" id="reqDokumenRequiredNama<?=$riwayatfield?>" name="reqDokumenRequiredNama[]" value="<?=$vriwayatfieldinfo?>" />
+	        				<input type="hidden" id="reqDokumenRequiredTable<?=$riwayatfield?>" name="reqDokumenRequiredTable[]" value="<?=$vriwayattable?>" />
+	        				<input type="hidden" id="reqDokumenRequiredTableRow<?=$riwayatfield?>" name="reqDokumenRequiredTableRow[]" value="<?=$vpegawairowfile?>" />
+	        				<input type="hidden" id="reqDokumenFileId<?=$riwayatfield?>" name="reqDokumenFileId[]" />
+	        				<input type="hidden" id="reqDokumenKategoriFileId<?=$riwayatfield?>" name="reqDokumenKategoriFileId[]" value="<?=$reqDokumenKategoriFileId?>" />
+	        				<input type="hidden" id="reqDokumenKategoriField<?=$riwayatfield?>" name="reqDokumenKategoriField[]" value="<?=$riwayatfield?>" />
+	        				<input type="hidden" id="reqDokumenPath<?=$riwayatfield?>" name="reqDokumenPath[]" value="" />
+	        				<input type="hidden" id="reqDokumenTipe<?=$riwayatfield?>" name="reqDokumenTipe[]" value="<?=$riwayatfieldtipe?>" />
+
+	        				<input type="hidden" id="reqDokumenIndexId<?=$riwayatfield?>" name="reqDokumenIndexId[]" value="" />
+	        				<input type="hidden" id="reqDokumenPilih<?=$riwayatfield?>" name="reqDokumenPilih[]" value="1" />
+	        				<input type="hidden" id="reqDokumenFileKualitasId<?=$riwayatfield?>" name="reqDokumenFileKualitasId[]" value="1" />
+
+	        				<div class="col-form-label col-lg-2 col-sm-12">
+	        					<label class="labelupload">
+	        						<i class="mdi-file-file-upload" style="font-family: "Roboto",sans-serif,Material-Design-Icons !important; font-size: 14px !important;"><?=$vlabelupload?></i>
+	        						<input id="file_input_file" name="reqLinkFile[]" class="none" type="file" />
+	        					</label>
+	        				</div>
+	        				<?
+	        			}
+	        			?>
+	        		</div>
+
+	        		<div class="card-footer">
+	        			<div class="row">
+	        				<div class="col-lg-9">
+	        					<input type="hidden" name="reqMode" value="<?=$reqMode?>">
+	        					<input type="hidden" name="reqPegawaiId" value="<?=$reqId?>">
+	        					<input type="hidden" name="reqTempValidasiId" value="<?=$reqTempValidasiId?>">
+	        					<input type="hidden" name="reqRowId" value="<?=$reqRowId?>">
+	        					<input type="hidden" name="reqId" value="<?=$reqId?>">
+	        					<button type="submit" id="ktloginformsubmitbutton"  class="btn btn-primary font-weight-bold mr-2">Simpan</button>
+	        				</div>
 	        			</div>
 	        		</div>
+
+
 	        	</div>
+
+
+	        	<?
+	        	if($infofile > 0)
+	        	{
+	        	?>
+			    </div>
+			    <?
+				}
+				?>
+
+				<?
+	              	// area untuk upload file
+        			foreach ($arrsetriwayatfield as $key => $value)
+        			{
+        				$riwayatfield= $value["riwayatfield"];
+        				$vriwayattable= $value["vriwayattable"];
+        				$infolabel= $value["infolabel"];
+
+        				$vkeydetil= $vriwayattable.";".$reqRowId.";".$riwayatfield;
+        				$arrcheck= in_array_column($vkeydetil, "vkeydetil", $arrambilfile);
+
+        				$vframeiframe= $arrambilfile[$arrcheck[0]]["vurl"];
+        				// $vframeiframe= base_url()."uploads/196212261989032006/fwniFj40ec20240514.pdf";
+	        		?>
+			        <div id="<?=$vkeydetil?>" class="w3-container w3-border city" style="display:none">
+					    <div class="card-title">
+		                    <?
+		                    if(empty($vframeiframe))
+		                    {
+		                    ?>
+		                    <h3 class="card-label">Belum ada file</h3>
+		                    <?
+		                    }
+		                    else
+		                    {
+		                    ?>
+		                    <iframe id="infonewframe" style="width: 100%; height: 100vh" src="<?=$vframeiframe?>"></iframe>
+		                    <?
+		                	}
+		                    ?>
+		                </div>
+					</div>
+				<?
+				}
+				?>
 	        </form>
         </div>
     </div>

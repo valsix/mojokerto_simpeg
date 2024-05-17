@@ -36,7 +36,12 @@ class info_data_json extends CI_Controller {
 	{
 		$this->load->model("base/Pegawai");
 
+		$this->load->library('globalfilepegawai');
+		$reqLinkFile= $_FILES['reqLinkFile'];
+
 		$reqPegawaiId= $this->input->post("reqPegawaiId");
+		$reqId= $this->input->post("reqId");
+		$reqRowId= $this->input->post("reqRowId");
 
 		$reqNIP1= $this->input->post("reqNIP1");
 		$reqNIP2= $this->input->post("reqNIP2");
@@ -257,10 +262,15 @@ class info_data_json extends CI_Controller {
 		}
 
 		// exit;
-
-
 		if($reqSimpan == 1 )
 		{
+
+			// untuk simpan file
+			$vpost= $this->input->post();
+			$vsimpanfilepegawai= new globalfilepegawai();
+			$vsimpanfilepegawai->simpanfilepegawai($vpost, $reqRowId, $reqLinkFile);
+
+
 			echo json_response(200, 'Data berhasil disimpan');
 		}
 		else

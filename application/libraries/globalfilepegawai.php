@@ -63,6 +63,138 @@ class globalfilepegawai
 			$arrdata["riwayatfieldrequiredinfo"]= $this->setfilerequiredinfo($riwayatfieldrequired);
 			array_push($vreturn, $arrdata);
 		}
+		else if($riwayattable == "PEGAWAI")
+		{
+			$arrdata= [];
+			$arrdata["riwayatfield"]= "";
+			$arrdata["vriwayattable"]= $riwayattable;
+			$arrdata["riwayatfieldinfo"]= "Cek EFile";
+			$arrdata["labelupload"]= "Upload File";
+			$arrdata["infolabel"]= "File";
+			$arrdata["riwayatfieldtipe"]= "";
+			$arrdata["riwayatfieldstyle"]= "";
+			$riwayatfieldrequired= "1";
+			$arrdata["riwayatfieldrequired"]= $riwayatfieldrequired;
+			$arrdata["riwayatfieldrequiredinfo"]= $this->setfilerequiredinfo($riwayatfieldrequired);
+			array_push($vreturn, $arrdata);
+
+			$arrdata= [];
+			$arrdata["riwayatfield"]= "karpeg";
+			$arrdata["vriwayattable"]= $riwayattable;
+			$arrdata["riwayatfieldinfo"]= "Cek EFile";
+			$arrdata["labelupload"]= "Upload Karpeg";
+			$arrdata["infolabel"]= "File Karpeg";
+			$arrdata["riwayatfieldtipe"]= "";
+			$arrdata["riwayatfieldstyle"]= "";
+			$riwayatfieldrequired= "1";
+			$arrdata["riwayatfieldrequired"]= $riwayatfieldrequired;
+			$arrdata["riwayatfieldrequiredinfo"]= $this->setfilerequiredinfo($riwayatfieldrequired);
+			array_push($vreturn, $arrdata);
+
+			$arrdata= [];
+			$arrdata["riwayatfield"]= "askes";
+			$arrdata["vriwayattable"]= $riwayattable;
+			$arrdata["riwayatfieldinfo"]= "Cek EFile";
+			$arrdata["labelupload"]= "Upload Askes";
+			$arrdata["infolabel"]= "File Askes";
+			$arrdata["riwayatfieldtipe"]= "";
+			$arrdata["riwayatfieldstyle"]= "";
+			$riwayatfieldrequired= "1";
+			$arrdata["riwayatfieldrequired"]= $riwayatfieldrequired;
+			$arrdata["riwayatfieldrequiredinfo"]= $this->setfilerequiredinfo($riwayatfieldrequired);
+			array_push($vreturn, $arrdata);
+
+			$arrdata= [];
+			$arrdata["riwayatfield"]= "taspen";
+			$arrdata["vriwayattable"]= $riwayattable;
+			$arrdata["riwayatfieldinfo"]= "Cek EFile";
+			$arrdata["labelupload"]= "Upload Taspen File";
+			$arrdata["infolabel"]= "File Taspen";
+			$arrdata["riwayatfieldtipe"]= "";
+			$arrdata["riwayatfieldstyle"]= "";
+			$riwayatfieldrequired= "1";
+			$arrdata["riwayatfieldrequired"]= $riwayatfieldrequired;
+			$arrdata["riwayatfieldrequiredinfo"]= $this->setfilerequiredinfo($riwayatfieldrequired);
+			array_push($vreturn, $arrdata);
+
+			$arrdata= [];
+			$arrdata["riwayatfield"]= "npwp";
+			$arrdata["vriwayattable"]= $riwayattable;
+			$arrdata["riwayatfieldinfo"]= "Cek EFile";
+			$arrdata["labelupload"]= "Upload Transkrip File";
+			$arrdata["infolabel"]= "File Transkrip";
+			$arrdata["riwayatfieldtipe"]= "";
+			$arrdata["riwayatfieldstyle"]= "";
+			$riwayatfieldrequired= "1";
+			$arrdata["riwayatfieldrequired"]= $riwayatfieldrequired;
+			$arrdata["riwayatfieldrequiredinfo"]= $this->setfilerequiredinfo($riwayatfieldrequired);
+			array_push($vreturn, $arrdata);
+
+			$arrdata= [];
+			$arrdata["riwayatfield"]= "kk";
+			$arrdata["vriwayattable"]= $riwayattable;
+			$arrdata["riwayatfieldinfo"]= "Cek EFile";
+			$arrdata["labelupload"]= "Upload KK File";
+			$arrdata["infolabel"]= "File KK";
+			$arrdata["riwayatfieldtipe"]= "";
+			$arrdata["riwayatfieldstyle"]= "";
+			$riwayatfieldrequired= "1";
+			$arrdata["riwayatfieldrequired"]= $riwayatfieldrequired;
+			$arrdata["riwayatfieldrequiredinfo"]= $this->setfilerequiredinfo($riwayatfieldrequired);
+			array_push($vreturn, $arrdata);
+
+			$arrdata= [];
+			$arrdata["riwayatfield"]= "istri";
+			$arrdata["vriwayattable"]= $riwayattable;
+			$arrdata["riwayatfieldinfo"]= "Cek EFile";
+			$arrdata["labelupload"]= "Upload Istri File";
+			$arrdata["infolabel"]= "File Istri";
+			$arrdata["riwayatfieldtipe"]= "";
+			$arrdata["riwayatfieldstyle"]= "";
+			$riwayatfieldrequired= "1";
+			$arrdata["riwayatfieldrequired"]= $riwayatfieldrequired;
+			$arrdata["riwayatfieldrequiredinfo"]= $this->setfilerequiredinfo($riwayatfieldrequired);
+			array_push($vreturn, $arrdata);
+
+			$arrdata= [];
+			$arrdata["riwayatfield"]= "ktp";
+			$arrdata["vriwayattable"]= $riwayattable;
+			$arrdata["riwayatfieldinfo"]= "Cek EFile";
+			$arrdata["labelupload"]= "Upload Ktp File";
+			$arrdata["infolabel"]= "File Ktp";
+			$arrdata["riwayatfieldtipe"]= "";
+			$arrdata["riwayatfieldstyle"]= "";
+			$riwayatfieldrequired= "1";
+			$arrdata["riwayatfieldrequired"]= $riwayatfieldrequired;
+			$arrdata["riwayatfieldrequiredinfo"]= $this->setfilerequiredinfo($riwayatfieldrequired);
+			array_push($vreturn, $arrdata);
+
+			$arrdata= [];
+			$arrdata["riwayatfield"]= "drh";
+			$arrdata["vriwayattable"]= $riwayattable;
+			$arrdata["riwayatfieldinfo"]= "Cek EFile";
+			$arrdata["labelupload"]= "Upload Drh File";
+			$arrdata["infolabel"]= "File Drh";
+			$arrdata["riwayatfieldtipe"]= "";
+			$arrdata["riwayatfieldstyle"]= "";
+			$riwayatfieldrequired= "1";
+			$arrdata["riwayatfieldrequired"]= $riwayatfieldrequired;
+			$arrdata["riwayatfieldrequiredinfo"]= $this->setfilerequiredinfo($riwayatfieldrequired);
+			array_push($vreturn, $arrdata);
+
+			$arrdata= [];
+			$arrdata["riwayatfield"]= "suami";
+			$arrdata["vriwayattable"]= $riwayattable;
+			$arrdata["riwayatfieldinfo"]= "Cek EFile";
+			$arrdata["labelupload"]= "Upload Suami File";
+			$arrdata["infolabel"]= "File Suami";
+			$arrdata["riwayatfieldtipe"]= "";
+			$arrdata["riwayatfieldstyle"]= "";
+			$riwayatfieldrequired= "1";
+			$arrdata["riwayatfieldrequired"]= $riwayatfieldrequired;
+			$arrdata["riwayatfieldrequiredinfo"]= $this->setfilerequiredinfo($riwayatfieldrequired);
+			array_push($vreturn, $arrdata);
+		}
 		else if (1==2){}
 		else
 		{
@@ -308,6 +440,7 @@ class globalfilepegawai
 				$ambilriwayatfield= "1";
 			}
 
+
 			// kalau sama baru proses simpan
 			// if($reqRiwayatId == $reqRowId || $ambilriwayatfield == "1")
 			if($ambilriwayatfield == "1")
@@ -323,7 +456,7 @@ class globalfilepegawai
 				$reqKategoriFileId= $reqDokumenKategoriFileId;
 				
 				if(empty($reqRowId) || $reqRowId == "-1")
-					$reqRiwayatId= "";
+					$reqRiwayatId= $reqRowId;
 				else
 					$reqRiwayatId= $reqRowId;
 
