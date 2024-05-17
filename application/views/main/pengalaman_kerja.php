@@ -239,7 +239,7 @@ jQuery(document).ready(function() {
                         },
                         success : function(data) { 
                             swal.fire({
-                                position: 'top-right',
+                                position: 'center',
                                 icon: "success",
                                 type: 'success',
                                 title: data.message,

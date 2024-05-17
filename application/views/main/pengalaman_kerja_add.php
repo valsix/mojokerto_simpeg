@@ -65,7 +65,7 @@ $readonly = "readonly";
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">
 		        			Tanggal Mulai Kerja
 		        		</label>
-	        			<div class="col-lg-10 col-sm-12">
+	        			<div class="col-lg-2 col-sm-12">
 	        				<div class="input-group date">
 		        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTglMulaiKerja" value="<?=$reqTglMulaiKerja?>" />
 		        				<div class="input-group-append">

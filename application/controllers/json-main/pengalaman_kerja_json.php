@@ -225,9 +225,21 @@ class pengalaman_kerja_json extends CI_Controller {
 
 		$set= new PengalamanKerja();
 		$set->setField("PENGALAMAN_ID", $reqId);
-		$set->delete();
+		$reqSimpan="";
+		if($set->delete())
+		{
+			$reqSimpan=1;
+		}
 
-		echo json_response(200, $reqId.'-Data berhasil Dihapus');
+
+		if($reqSimpan == 1 )
+		{
+			echo json_response(200, 'Data berhasil dihapus');
+		}
+		else
+		{
+			echo json_response(400, 'Data gagal dihapus');
+		}
 	}
 }
 ?>
