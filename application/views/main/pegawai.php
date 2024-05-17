@@ -9,6 +9,7 @@ else
 
 $arrtabledata= array(
     array("label"=>"", "field"=> "", "display"=>"", "width"=>"", "class"=>"dt-control", "orderable"=>"1")
+    , array("label"=>"FOTO", "field"=> "FOTO", "display"=>"", "width"=>"")
     , array("label"=>"NIP", "field"=> "NIP_LAMA", "display"=>"", "width"=>"")
     , array("label"=>"NIP Baru", "field"=> "NIP_BARU", "display"=>"", "width"=>"", "nowrap"=>'1')
     , array("label"=>"Nama ", "field"=> "NAMA", "display"=>"", "width"=>"", "nowrap"=>'1')

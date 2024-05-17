@@ -141,6 +141,7 @@ class pegawai_json extends CI_Controller {
 
 		*/
 
+		$statement.= " AND A.PEGAWAI_ID IN (235162200007, 235160100843)";
 		$sOrder= "ORDER BY C.ESELON_ID ASC, A.TUGAS_TAMBAHAN_NEW ASC, B.PANGKAT_ID DESC, B.TMT_PANGKAT ASC";
 		// $statement .= " AND A.PEGAWAI_ID IN (995865801606, 995865800180, 235164100003, 235162000001)";
 
@@ -165,6 +166,16 @@ class pegawai_json extends CI_Controller {
 				else if(in_array($valkey, $arrtgl))
 				{
 					$row[$valkey]= dateToPageCheck($set->getField($valkey));
+				}
+				else if($valkey == "FOTO")
+				{
+					$vpath= $set->getField("FOTO_BLOB");
+					if(empty($vpath))
+					{
+						$vpath= "images/foto-profile.jpg";
+					}
+
+					$row[$valkey] = '<img src="'.$vpath.'" style="width:60px;height:90px" />';
 				}
 				else
 				{

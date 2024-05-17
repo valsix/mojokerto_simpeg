@@ -566,7 +566,7 @@ if(!empty($arrambilfile))
 			        <div class="row">
 	        			<div class="col-md-6">
 	        				<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Foto Setengah Badan</label>
+			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Foto Seluruh Badan</label>
 			        			<div class="col-lg-9 col-sm-12">
 			        				<input type="file" class="form-control"  name="reqGambar" id="reqGambar" value="<?=$reqGambar?>" accept="image/png, image/jpeg" />
 			        				<input type="hidden" class="form-control"  name="reqLinkGambar" id="reqLinkGambar" value="<?=$reqGambar?>" />
@@ -586,7 +586,7 @@ if(!empty($arrambilfile))
 			        	</div>
 			        	<div class="col-md-6">
 	        				<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Foto Seluruh Badan</label>
+			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Foto Setengah Badan</label>
 			        			<div class="col-lg-9 col-sm-12">
 			        				<input type="file" class="form-control"  name="reqGambarSetengah" id="reqGambarSetengah" value="<?=$reqGambarSetengah?>"  accept="image/png, image/jpeg" />
 			        				<input type="hidden" class="form-control"  name="reqLinkGambarSetengah" id="reqLinkGambarSetengah" value="<?=$reqGambarSetengah?>" />
