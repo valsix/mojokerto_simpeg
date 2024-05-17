@@ -1669,6 +1669,59 @@ function vgethostname()
     return $host;
 }
 
+function checkFile($tipe,$jenis)
+{
+	$acceptable = array();
+
+	if($jenis==1)
+	{
+		//gambar
+		$acceptable = array(
+			'image/jpeg'
+			,'image/png'
+		);
+	}
+	else if($jenis==2)
+	{
+		//dokumen
+		$acceptable = array(
+			'application/pdf' //pdf
+			,'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' // xlsx
+			,'application/vnd.ms-excel' // xls
+			,'application/msword' //doc
+			,'application/vnd.openxmlformats-officedocument.wordprocessingml.document' // docx
+		);
+	}
+	else if($jenis==3)
+	{
+		//all
+		$acceptable = array(
+			'application/pdf' //pdf
+			,'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' // xlsx
+			,'application/vnd.ms-excel' // xls
+			,'application/msword' //doc
+			,'application/vnd.openxmlformats-officedocument.wordprocessingml.document' // docx
+			,'image/jpeg'
+			,'image/png'
+		);
+	}
+	else
+	{
+		$acceptable = array(
+			'application/pdf'
+		);
+	}
+	
+	if((in_array($tipe, $acceptable))) {
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+
 // <option value=''></option>
 //         <option value='' selected='selected'></option>
 //         <option value=''></option>

@@ -96,6 +96,15 @@ class info_data_json extends CI_Controller {
 		$reqKtpPasangan= $this->input->post("reqKtpPasangan");
 		$reqDrh= $this->input->post("reqDrh");
 		$reqMode= $this->input->post("reqMode");
+		$reqLinkGambar= $this->input->post("reqLinkGambar");
+		$reqLinkGambarSetengah= $this->input->post("reqLinkGambarSetengah");
+
+		$reqGambar = $_FILES['reqGambar']['name'];
+		$reqGambarSetengah = $_FILES['reqGambarSetengah']['name'];
+
+		$CI = &get_instance();
+		$configdata= $CI->config;
+		$configlokasiupload= $configdata->config["lokasiupload"];
 
 
 		$set= new Pegawai();	
@@ -140,9 +149,90 @@ class info_data_json extends CI_Controller {
 		$set->setField("KK", $reqNomorKK);
 		$set->setField("KTP_PASANGAN", $reqKtpPasangan);
 		$set->setField("DRH", setQuote($reqDrh));
+		$set->setField("FOTO_BLOB", $reqLinkGambar);
+		$set->setField("FOTO_BLOB_OTHER", $reqLinkGambarSetengah);
 
 		$adminusernama= $this->adminuserloginnama;
-		$userSatkerId= $this->adminsatkerid;		
+		$userSatkerId= $this->adminsatkerid;
+
+		if(!empty($reqGambar))
+		{
+			$reqTipeFile=$_FILES['reqGambar']['type'];
+
+			if(!empty($reqTipeFile))
+			{
+				$checkfile=checkFile($reqTipeFile,1);
+
+				if(empty($checkfile))
+				{
+					echo json_response(400, 'File Gagal diupload, Pastikan File berformat png,jpg');exit;
+				}
+			}
+
+			
+			$fileName= basename($_FILES["reqGambar"]["name"]);
+			$fileNameInfo = substr($fileName, 0, strpos($fileName, "."));
+			$file_name = preg_replace( '/[^a-zA-Z0-9_]+/', '_', $fileNameInfo);
+			$infoext= pathinfo($_FILES['reqGambar']['name']);
+			$ext= $infoext['extension'];
+
+			$lokasi_folder=$configlokasiupload.$reqNIP2."/";
+
+			$tglnow= date("Ymd");
+			$vpathasli= $file_name;
+			$namagenerate= generateRandomString().$tglnow.".".$ext;
+			$vpathsimpan= $lokasi_folder.$namagenerate;
+			// $vnewpathsimpan= str_replace($configlokasiupload, "", $vpathsimpan);
+
+			if (!is_dir($lokasi_folder)) {
+				makedirs($lokasi_folder);
+			}
+			$reqLinkFile=$_FILES['reqGambar']['tmp_name'];
+					// print_r($vpathsimpan);exit;
+			if(move_uploaded_file($reqLinkFile, $vpathsimpan))
+			{
+				$set->setField("FOTO_BLOB", $vpathsimpan);
+			}
+		}
+
+		if(!empty($reqGambarSetengah))
+		{
+			$reqTipeFile=$_FILES['reqGambarSetengah']['type'];
+
+			if(!empty($reqTipeFile))
+			{
+				$checkfile=checkFile($reqTipeFile,1);
+
+				if(empty($checkfile))
+				{
+					echo json_response(400, 'File Gagal diupload, Pastikan File berformat png,jpg');exit;
+				}
+			}
+
+			$fileName= basename($_FILES["reqGambarSetengah"]["name"]);
+			$fileNameInfo = substr($fileName, 0, strpos($fileName, "."));
+			$file_name = preg_replace( '/[^a-zA-Z0-9_]+/', '_', $fileNameInfo);
+			$infoext= pathinfo($_FILES['reqGambarSetengah']['name']);
+			$ext= $infoext['extension'];
+
+			$lokasi_folder=$configlokasiupload.$reqNIP2."/";
+
+			$tglnow= date("Ymd");
+			$vpathasli= $file_name;
+			$namagenerate= generateRandomString().$tglnow.".".$ext;
+			$vpathsimpan= $lokasi_folder.$namagenerate;
+			// $vnewpathsimpan= str_replace($configlokasiupload, "", $vpathsimpan);
+
+			if (!is_dir($lokasi_folder)) {
+				makedirs($lokasi_folder);
+			}
+			$reqLinkFile=$_FILES['reqGambarSetengah']['tmp_name'];
+					// print_r($vpathsimpan);exit;
+			if(move_uploaded_file($reqLinkFile, $vpathsimpan))
+			{
+				$set->setField("FOTO_BLOB_OTHER", $vpathsimpan);
+			}
+		}		
 	
 		if($reqMode == "insert")
 		{
@@ -165,6 +255,9 @@ class info_data_json extends CI_Controller {
 				$reqSimpan = 1;
 			}
 		}
+
+		// exit;
+
 
 		if($reqSimpan == 1 )
 		{
@@ -1739,5 +1832,64 @@ class info_data_json extends CI_Controller {
 		}
 				
 	}
+
+	function deletegambar()
+	{
+		$this->load->model("base/Pegawai");
+		$set = new Pegawai();
+		
+		$reqId =  $this->input->get('reqId');
+		$reqMode =  $this->input->get('reqMode');
+
+		$statement=" AND A.PEGAWAI_ID = ".$reqId." ";
+
+		$setcheck = new Pegawai();
+		$setcheck->selectByParamsCheckFoto(array(), -1,-1,$statement);
+		$setcheck->firstRow();
+		$reqLinkFoto=$setcheck->getField("FOTO_BLOB");
+		$reqLinkFotoSetengah=$setcheck->getField("FOTO_BLOB_OTHER");
+
+		// print_r($reqLinkFotoSetengah);exit;
+
+		$set->setField("PEGAWAI_ID", $reqId);
+		if($reqMode=="gambar")
+		{
+			if(!empty($reqLinkFoto))
+			{
+				unlink($reqLinkFoto);
+				$set->setField("FOTO_BLOB", "");
+				if($set->updatefoto())
+				{
+					$reqSimpan = 1;
+				}
+			}
+		}
+		else
+		{
+			if(!empty($reqLinkFotoSetengah))
+			{
+				unlink($reqLinkFotoSetengah);
+				$set->setField("FOTO_BLOB_OTHER", "");
+				if($set->updatefotosetengah())
+				{
+					$reqSimpan = 1;
+				}
+			}
+			
+		}
+
+		if($reqSimpan == 1 )
+		{
+			$arrJson["PESAN"] = "Lampiran berhasil dihapus.";
+		}
+		else
+		{
+			$arrJson["PESAN"] = "Lampiran gagal dihapus.";	
+		}
+
+		echo json_encode( $arrJson, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+
+	}
+
 }
 ?>

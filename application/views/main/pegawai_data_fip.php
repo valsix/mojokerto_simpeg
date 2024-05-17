@@ -71,9 +71,8 @@ $data_askes= $pegawai->getField('DOSIR_ASKES');
 $data_taspen= $pegawai->getField('DOSIR_TASPEN');
 $data_npwp= $pegawai->getField('DOSIR_NPWP');
 			
-$reqGambarTmp   		= $pegawai->getField('FOTO_BLOB');
+$reqGambar   		= $pegawai->getField('FOTO_BLOB');
 $reqGambarSetengah		= $pegawai->getField('FOTO_BLOB_OTHER');
-$reqGambarTmpSetengah	= $pegawai->getField('FOTO_BLOB_OTHER');
 
 
 $agama= new Core();
@@ -505,32 +504,39 @@ $arrsatkerdata= $this->sessdatatree;
 	        				<div class="form-group row">
 			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Foto Setengah Badan</label>
 			        			<div class="col-lg-9 col-sm-12">
-			        				<input type="file" class="form-control"  name="reqGambar" id="reqGambar" value="<?=$reqGambar?>" />
+			        				<input type="file" class="form-control"  name="reqGambar" id="reqGambar" value="<?=$reqGambar?>" accept="image/png, image/jpeg" />
+			        				<input type="hidden" class="form-control"  name="reqLinkGambar" id="reqLinkGambar" value="<?=$reqGambar?>" />
 			        			</div>
 			        			<label class="col-form-label text-right col-lg-3 col-sm-12"></label>
 			        			<div class="col-lg-4 col-sm-12">
 			        				<!-- <img src="http://192.168.88.100/mojokerto/simpeg_online/main/image_script.php?reqPegawaiId=235164100003&reqMode=pegawai"> -->
 
-			        				<?if (file_exists($filename)) {?>
-				        				 <img src="image_script.php?reqPegawaiId=<?=$reqPegawaiId?>&reqMode=pegawai" width=150 height=200>
-
+			        				<?if (file_exists($reqGambar)) {?>
+				        				 <img src="<?=$reqGambar?>" width=150 height=200>
 									<?}?>
 			        			</div>
+			        			<?if (file_exists($reqGambar)) {?>
+			        			 <a style="margin-top: 170px" onclick='HapusGambar("gambar","<?=$reqId?>")'><i class="fa fa-trash fa-2x" aria-hidden="true"></i></a>
+			        			 <?}?>
 			        		</div>
 			        	</div>
 			        	<div class="col-md-6">
 	        				<div class="form-group row">
 			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Foto Seluruh Badan</label>
 			        			<div class="col-lg-9 col-sm-12">
-			        				<input type="file" class="form-control"  name="reqGambarSetengah" id="reqGambarSetengah" value="<?=$reqGambarSetengah?>" />
+			        				<input type="file" class="form-control"  name="reqGambarSetengah" id="reqGambarSetengah" value="<?=$reqGambarSetengah?>"  accept="image/png, image/jpeg" />
+			        				<input type="hidden" class="form-control"  name="reqLinkGambarSetengah" id="reqLinkGambarSetengah" value="<?=$reqGambarSetengah?>" />
 			        			</div>
 			        			<label class="col-form-label text-right col-lg-3 col-sm-12"></label>
 			        			<div class="col-lg-4 col-sm-12">
 			        				<!-- <img src="http://192.168.88.100/mojokerto/simpeg_online/main/image_script.php?reqPegawaiId=235164100003&reqMode=pegawai"> -->
-			        				<?if (file_exists($filename)) {?>
-				        				 <img src="image_script.php?reqPegawaiId=<?=$reqPegawaiId?>&reqMode=pegawai_other" width=150 height=200>
+			        				<?if (file_exists($reqGambarSetengah)) {?>
+				        				 <img src="<?=$reqGambarSetengah?>" width=150 height=200>
 									<?}?>
 			        			</div>
+			        			<?if (file_exists($reqGambarSetengah)) {?>
+			        			 <a style="margin-top: 170px" onclick='HapusGambar("setengah","<?=$reqId?>")'><i class="fa fa-trash fa-2x" aria-hidden="true"></i></a>
+			        			 <?}?>
 			        		</div>
 			        	</div>
 			        </div>
@@ -843,6 +849,19 @@ $arrsatkerdata= $this->sessdatatree;
 	// $('#ktjeniskelamin').select2({
 	// 	placeholder: "Pilih jenis kelamin"
 	// });
+
+	 function HapusGambar(reqMode,reqId) {
+        $.messager.confirm('Konfirmasi',"Hapus Lampiran terpilih?",function(r){
+            if (r){
+                $.getJSON("json-data/info_data_json/deletegambar?reqMode="+reqMode+"&reqId="+reqId,
+                    function(data){
+                    // console.log(data);return false;
+                    $.messager.alert('Info', data.PESAN, 'info');                    
+                    location.reload();
+                });
+            }
+        }); 
+    }
 
 	arrows= {leftArrow: '<i class="la la-angle-left"></i>', rightArrow: '<i class="la la-angle-right"></i>'};
 	$('#kttanggallahir').datepicker({

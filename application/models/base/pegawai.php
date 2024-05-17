@@ -24,7 +24,7 @@ class Pegawai extends Entity{
 			, KELURAHAN_ID, BANK_ID, NO_REKENING, SATKER_ID, TIPE_PEGAWAI_ID, TUGAS_TAMBAHAN_NEW
 			, STATUS_PEGAWAI, TANGGAL_PENSIUN, JENIS_PEGAWAI_ID, KEDUDUKAN_ID, KARTU_PEGAWAI, ASKES
 			, TASPEN, NPWP, NIK, KTP_PNS, KK, KTP_PASANGAN, DRH
-			, LAST_CREATE_USER, LAST_CREATE_DATE, LAST_CREATE_SATKER
+			, LAST_CREATE_USER, LAST_CREATE_DATE, LAST_CREATE_SATKER,FOTO_BLOB,FOTO_BLOB_OTHER
 		) 
 		VALUES
 		(
@@ -72,6 +72,8 @@ class Pegawai extends Entity{
 			, '".$this->getField("LAST_CREATE_USER")."'
 			, ".$this->getField("LAST_CREATE_DATE")."
 			, '".$this->getField("LAST_CREATE_SATKER")."'
+			, '".$this->getField("FOTO_BLOB")."'
+			, '".$this->getField("FOTO_BLOB_OTHER")."'
 		)
 		"; 	
 		// echo $str;exit();
@@ -126,6 +128,35 @@ class Pegawai extends Entity{
 		, LAST_UPDATE_USER= '".$this->getField("LAST_UPDATE_USER")."'
 		, LAST_UPDATE_DATE= ".$this->getField("LAST_UPDATE_DATE")."
 		, LAST_UPDATE_SATKER= '".$this->getField("LAST_UPDATE_SATKER")."'
+		, FOTO_BLOB= '".$this->getField("FOTO_BLOB")."'
+		, FOTO_BLOB_OTHER= '".$this->getField("FOTO_BLOB_OTHER")."'
+		WHERE PEGAWAI_ID= '".$this->getField("PEGAWAI_ID")."'
+		";
+		$this->query = $str;
+		// echo $str;exit();
+		$this->setlogdata("pegawai", "UPDATE", $str);
+		return $this->execQuery($str);
+    }
+
+    function updatefoto()
+	{
+		$str = "		
+		UPDATE PEGAWAI
+		SET    		
+		FOTO_BLOB= '".$this->getField("FOTO_BLOB")."'
+		WHERE PEGAWAI_ID= '".$this->getField("PEGAWAI_ID")."'
+		";
+		$this->query = $str;
+		// echo $str;exit();
+		$this->setlogdata("pegawai", "UPDATE", $str);
+		return $this->execQuery($str);
+    }
+    function updatefotosetengah()
+	{
+		$str = "		
+		UPDATE PEGAWAI
+		SET    		
+		FOTO_BLOB_OTHER= '".$this->getField("FOTO_BLOB_OTHER")."'
 		WHERE PEGAWAI_ID= '".$this->getField("PEGAWAI_ID")."'
 		";
 		$this->query = $str;
@@ -505,6 +536,27 @@ class Pegawai extends Entity{
 
 		
 				
+		return $this->selectLimit($str,$limit,$from); 
+    }
+
+    function selectByParamsCheckFoto($paramsArray=array(),$limit=-1,$from=-1, $statement='')
+	{
+		$str = "
+		SELECT 
+			A.PEGAWAI_ID,  A.FOTO_BLOB, A.FOTO_BLOB_OTHER
+		FROM PEGAWAI A
+		WHERE 1 = 1
+ 		"; 
+		
+		while(list($key,$val) = each($paramsArray))
+		{
+			$str .= " AND $key = '$val' ";
+		}
+	
+		$str .= $statement." ";
+		$this->query = $str;
+		// echo $str;exit;
+		
 		return $this->selectLimit($str,$limit,$from); 
     }
 } 
