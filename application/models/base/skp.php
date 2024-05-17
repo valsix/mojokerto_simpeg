@@ -29,7 +29,7 @@ class SKP extends Entity{
 			, ".$this->getField("PEJABAT_ID")."
 			, ".$this->getField("ATASAN_PEJABAT_ID")."
 			, ".$this->getField("TAHUN")."
-			, '".$this->getField("NILAI")."'
+			, ".$this->getField("NILAI")."
 			, '".$this->getField("ORIENTASI_PELAYANAN")."'
 			, '".$this->getField("INTEGRITAS")."'
 			, '".$this->getField("KOMITMEN")."'
@@ -63,7 +63,7 @@ class SKP extends Entity{
 			, PEJABAT_ID= ".$this->getField("PEJABAT_ID")."
 			, ATASAN_PEJABAT_ID= ".$this->getField("ATASAN_PEJABAT_ID")."
 			, TAHUN= ".$this->getField("TAHUN")."
-			, NILAI= '".$this->getField("NILAI")."'
+			, NILAI= ".$this->getField("NILAI")."
 			, ORIENTASI_PELAYANAN= '".$this->getField("ORIENTASI_PELAYANAN")."'
 			, INTEGRITAS= '".$this->getField("INTEGRITAS")."'
 			, KOMITMEN= '".$this->getField("KOMITMEN")."'

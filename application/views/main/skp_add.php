@@ -145,8 +145,8 @@ if(!empty($arrambilfile))
 
 	        		<div class="form-group row">
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Tahun</label>
-	        			<div class="col-lg-3 col-sm-12">
-	        				<input type="text" class="form-control" name="reqTahun" id="reqTahun" value="<?=$reqTahun?>" />
+	        			<div class="col-lg-2 col-sm-12">
+	        				<input type="text" class="form-control" name="reqTahun" id="reqTahun" maxlength="4" value="<?=$reqTahun?>" />
 	        			</div>
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">NIP Pejabat Penilai</label>
 	        			<div class="col-lg-4 col-sm-12">
@@ -159,7 +159,7 @@ if(!empty($arrambilfile))
 	        		</div>
 	        		<div class="form-group row">
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Nilai Skp</label>
-	        			<div class="col-lg-3 col-sm-12">
+	        			<div class="col-lg-2 col-sm-12">
 	        				<input type="text" class="form-control" name="reqNilai" id="reqNilai" value="<?=$reqNilai?>" />
 	        			</div>
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">NIP Atasan Pejabat Penilai</label>

@@ -183,14 +183,14 @@ class skp_json extends CI_Controller {
 		$reqPejabatId	= $this->input->post("reqPejabatId");
 		$reqAtasanId	= $this->input->post("reqAtasanId");
 		$reqInisiatif	= $this->input->post("reqInisiatif");
-
+		
 
 		$set= new Skp();
 		$set->setField('PEGAWAI_ID', $reqPegawaiId);
 		$set->setField('PEJABAT_ID', ValToNullDB($reqPejabatId));
 		$set->setField('ATASAN_PEJABAT_ID', ValToNullDB($reqAtasanId));
 		$set->setField('TAHUN', $reqTahun);
-		$set->setField('NILAI', str_replace(",", ".", $reqNilai));
+		$set->setField('NILAI', ValToNullDB(str_replace(",", ".", $reqNilai)));
 		$set->setField('ORIENTASI_PELAYANAN', $reqOrientasi);
 		$set->setField('INTEGRITAS', $reqIntegritas);
 		$set->setField('KOMITMEN', $reqKomitmen);
