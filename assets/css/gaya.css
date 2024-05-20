@@ -1068,6 +1068,7 @@ ul.breadcrumb li a.text-muted {
   padding: 0px;
   background-color: #D0D0D0;
   z-index: 1;
+  overflow: visible;
 }
 
 #wrapper.menu ul {
@@ -1084,7 +1085,8 @@ ul.breadcrumb li a.text-muted {
 #wrapper.menu ul li {
   display: block;
   position: relative;
-  width: 150px;
+  /*width: 150px;*/
+  width: 100%;
 }
 
 #wrapper.menu li ul {
