@@ -76,7 +76,7 @@ else
 	        		<div class="form-group row">
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Tahun</label>
 	        			<div class="col-lg-4 col-sm-12">
-	        				<input type="text" style="width:150px" <?=$read?> class="form-control" name="reqTahun" id="reqTahun" value="<?=$reqTahun?>" title="Tahun harus diisi" required />
+	        				<input type="text" style="width:150px" <?=$read?> class="form-control" maxlength="4" name="reqTahun" id="reqTahun" value="<?=$reqTahun?>" title="Tahun harus diisi" required />
 	        			</div>
 	        		</div>
 
