@@ -257,7 +257,6 @@ function submitForm() {
    $("#ktloginformsubmitbutton").click(); 
 }
 
-v
     
 </script>
                 
