@@ -146,7 +146,7 @@ if(!empty($arrambilfile))
 		        		<div class="form-group row">
 		        			<label  class="col-form-label text-right col-lg-2 col-sm-12">Tahun</label>
 		        			<div class="col-lg-3 col-sm-12">
-		        				<input type="text" style="width:100px" name="reqTahun" <?=$read?> value="<?=$reqTahun?>" id="reqTahun" title="Tahun harus diisi" required class="form-control" />
+		        				<input type="text" style="width:100px" name="reqTahun" <?=$read?> maxlength="4" value="<?=$reqTahun?>" id="reqTahun" title="Tahun harus diisi" required class="form-control" />
 		        			</div>
 		        		</div>
 		        		<div class="form-group row">
@@ -353,6 +353,13 @@ if(!empty($arrambilfile))
 			{
 				fields: {
 					reqTahun: {
+						validators: {
+							notEmpty: {
+								message: 'Area ini harus diisi'
+							},
+						}
+					},
+					reqNoSK: {
 						validators: {
 							notEmpty: {
 								message: 'Area ini harus diisi'
