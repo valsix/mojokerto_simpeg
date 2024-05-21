@@ -849,3 +849,253 @@ end;
 $body$
 language plpgsql volatile strict cost 100 rows 1000;
 alter function validasi.validasi_pegawai(numeric, character varying, character varying) owner to postgres;
+
+
+create or replace function validasi.validasi_pegawai()
+  returns trigger as
+$body$
+declare
+
+    rec record;
+    pinfoperubahan character varying;
+    thequery character varying;
+    
+    begin
+
+	if new.validasi = 1 or new.validasi is null then
+		pinfoperubahan := '{ "0" : "0" ';
+		if new.pegawai_id is null then
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('propinsi_id'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('kabupaten_id'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('kecamatan_id'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('kelurahan_id'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('satker_id'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('kedudukan_id'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('jenis_pegawai_id'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('bank_id'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('nip_lama'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('nip_baru'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('nama'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('gelar_depan'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('gelar_belakang'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('tempat_lahir'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('tanggal_lahir'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('jenis_kelamin'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('status_kawin'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('suku_bangsa'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('golongan_darah'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('email'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('alamat'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('rt'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('rw'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('telepon'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('kodepos'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('status_pegawai'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('kartu_pegawai'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('askes'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('taspen'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('npwp'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('nik'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('no_rekening'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('tipe_pegawai_id'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('agama_id'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('tanggal_pindah'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('keterangan_pindah'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('tugas_tambahan'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('bup'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('ktp_pns'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('drh'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('kk'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('ktp_pasangan'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('tugas_tambahan_new'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('jenis_mapel_id'), ''::character varying, 'valsixdatabaru'::character varying);
+			
+		else
+			for rec in select * from pegawai a where a.pegawai_id = new.pegawai_id
+			loop
+				if new.validasi is null then
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('propinsi_id'), new.propinsi_id::character varying, rec.propinsi_id::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('kabupaten_id'), new.kabupaten_id::character varying, rec.kabupaten_id::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('kecamatan_id'), new.kecamatan_id::character varying, rec.kecamatan_id::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('kelurahan_id'), new.kelurahan_id::character varying, rec.kelurahan_id::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('satker_id'), new.satker_id::character varying, rec.satker_id::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('kedudukan_id'), new.kedudukan_id::character varying, rec.kedudukan_id::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('jenis_pegawai_id'), new.jenis_pegawai_id::character varying, rec.jenis_pegawai_id::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('bank_id'), new.bank_id::character varying, rec.bank_id::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('nip_lama'), new.nip_lama::character varying, rec.nip_lama::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('nip_baru'), new.nip_baru::character varying, rec.nip_baru::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('nama'), new.nama::character varying, rec.nama::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('gelar_depan'), new.gelar_depan::character varying, rec.gelar_depan::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('gelar_belakang'), new.gelar_belakang::character varying, rec.gelar_belakang::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('tempat_lahir'), new.tempat_lahir::character varying, rec.tempat_lahir::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('tanggal_lahir'), new.tanggal_lahir::character varying, rec.tanggal_lahir::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('jenis_kelamin'), new.jenis_kelamin::character varying, rec.jenis_kelamin::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('status_kawin'), new.status_kawin::character varying, rec.status_kawin::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('suku_bangsa'), new.suku_bangsa::character varying, rec.suku_bangsa::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('golongan_darah'), new.golongan_darah::character varying, rec.golongan_darah::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('email'), new.email::character varying, rec.email::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('alamat'), new.alamat::character varying, rec.alamat::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('rt'), new.rt::character varying, rec.rt::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('rw'), new.rw::character varying, rec.rw::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('telepon'), new.telepon::character varying, rec.telepon::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('kodepos'), new.kodepos::character varying, rec.kodepos::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('status_pegawai'), new.status_pegawai::character varying, rec.status_pegawai::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('kartu_pegawai'), new.kartu_pegawai::character varying, rec.kartu_pegawai::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('askes'), new.askes::character varying, rec.askes::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('taspen'), new.taspen::character varying, rec.taspen::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('npwp'), new.npwp::character varying, rec.npwp::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('nik'), new.nik::character varying, rec.nik::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('no_rekening'), new.no_rekening::character varying, rec.no_rekening::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('tipe_pegawai_id'), new.tipe_pegawai_id::character varying, rec.tipe_pegawai_id::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('agama_id'), new.agama_id::character varying, rec.agama_id::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('tanggal_pindah'), new.tanggal_pindah::character varying, rec.tanggal_pindah::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('keterangan_pindah'), new.keterangan_pindah::character varying, rec.keterangan_pindah::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('tugas_tambahan'), new.tugas_tambahan::character varying, rec.tugas_tambahan::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('bup'), new.bup::character varying, rec.bup::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('ktp_pns'), new.ktp_pns::character varying, rec.ktp_pns::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('drh'), new.drh::character varying, rec.drh::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('kk'), new.kk::character varying, rec.kk::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('ktp_pasangan'), new.ktp_pasangan::character varying, rec.ktp_pasangan::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('tugas_tambahan_new'), new.tugas_tambahan_new::character varying, rec.tugas_tambahan_new::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('jenis_mapel_id'), new.jenis_mapel_id::character varying, rec.jenis_mapel_id::character varying);
+					
+				else
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('propinsi_id'), rec.propinsi_id::character varying, new.propinsi_id::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('kabupaten_id'), rec.kabupaten_id::character varying, new.kabupaten_id::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('kecamatan_id'), rec.kecamatan_id::character varying, new.kecamatan_id::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('kelurahan_id'), rec.kelurahan_id::character varying, new.kelurahan_id::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('satker_id'), rec.satker_id::character varying, new.satker_id::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('kedudukan_id'), rec.kedudukan_id::character varying, new.kedudukan_id::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('jenis_pegawai_id'), rec.jenis_pegawai_id::character varying, new.jenis_pegawai_id::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('bank_id'), rec.bank_id::character varying, new.bank_id::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('nip_lama'), rec.nip_lama::character varying, new.nip_lama::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('nip_baru'), rec.nip_baru::character varying, new.nip_baru::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('nama'), rec.nama::character varying, new.nama::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('gelar_depan'), rec.gelar_depan::character varying, new.gelar_depan::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('gelar_belakang'), rec.gelar_belakang::character varying, new.gelar_belakang::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('tempat_lahir'), rec.tempat_lahir::character varying, new.tempat_lahir::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('tanggal_lahir'), rec.tanggal_lahir::character varying, new.tanggal_lahir::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('jenis_kelamin'), rec.jenis_kelamin::character varying, new.jenis_kelamin::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('status_kawin'), rec.status_kawin::character varying, new.status_kawin::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('suku_bangsa'), rec.suku_bangsa::character varying, new.suku_bangsa::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('golongan_darah'), rec.golongan_darah::character varying, new.golongan_darah::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('email'), rec.email::character varying, new.email::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('alamat'), rec.alamat::character varying, new.alamat::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('rt'), rec.rt::character varying, new.rt::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('rw'), rec.rw::character varying, new.rw::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('telepon'), rec.telepon::character varying, new.telepon::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('kodepos'), rec.kodepos::character varying, new.kodepos::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('status_pegawai'), rec.status_pegawai::character varying, new.status_pegawai::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('kartu_pegawai'), rec.kartu_pegawai::character varying, new.kartu_pegawai::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('askes'), rec.askes::character varying, new.askes::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('taspen'), rec.taspen::character varying, new.taspen::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('npwp'), rec.npwp::character varying, new.npwp::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('nik'), rec.nik::character varying, new.nik::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('no_rekening'), rec.no_rekening::character varying, new.no_rekening::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('tipe_pegawai_id'), rec.tipe_pegawai_id::character varying, new.tipe_pegawai_id::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('agama_id'), rec.agama_id::character varying, new.agama_id::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('tanggal_pindah'), rec.tanggal_pindah::character varying, new.tanggal_pindah::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('keterangan_pindah'), rec.keterangan_pindah::character varying, new.keterangan_pindah::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('tugas_tambahan'), rec.tugas_tambahan::character varying, new.tugas_tambahan::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('bup'), rec.bup::character varying, new.bup::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('ktp_pns'), rec.ktp_pns::character varying, new.ktp_pns::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('drh'), rec.drh::character varying, new.drh::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('kk'), rec.kk::character varying, new.kk::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('ktp_pasangan'), rec.ktp_pasangan::character varying, new.ktp_pasangan::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('tugas_tambahan_new'), rec.tugas_tambahan_new::character varying, new.tugas_tambahan_new::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('jenis_mapel_id'), rec.jenis_mapel_id::character varying, new.jenis_mapel_id::character varying);
+
+					/*, foto character varying(188)
+					, tanggal_mati date
+					, tanggal_pensiun date
+					, tanggal_terusan date
+					, tanggal_update date
+					, satker_id_lama character varying(25)
+					, foto_setengah character varying(188)
+					, foto_blob text
+					, foto_blob_other text
+					, dosir_karpeg text
+					, format_karpeg character varying(255)
+					, ukuran_karpeg numeric
+					, dosir_askes text
+					, format_askes character varying(255)
+					, ukuran_askes numeric
+					, dosir_taspen text
+					, format_taspen character varying(255)
+					, ukuran_taspen numeric
+					, dosir_npwp text
+					, format_npwp character varying(255)
+					, ukuran_npwp numeric
+					, link_file_apps character varying(255)
+					, link_file_apps_karpeg character varying(255)
+					, link_file_apps_askes character varying(255)
+					, link_file_apps_taspen character varying(255)
+					, link_file_apps_npwp character varying(255)
+					, hasil_asessment character varying(1000)
+					, status_profil integer
+					, password_skp character varying(255)
+					, link_file_apps_kk character varying(255)
+					, link_file_apps_istri character varying(255)
+					, link_file_apps_ktp character varying(255)
+					, link_file_apps_drh character varying(255)
+					, link_file_apps_suami character varying(255)
+					, format_drh character varying(255)
+					, ukuran_drh numeric
+					, format_ktp character varying(255)
+					, ukuran_ktp numeric
+					, format_kk character varying(255)
+					, ukuran_kk numeric
+					, format_istri character varying(255)
+					, ukuran_istri numeric
+					, format_suami character varying(255)
+					, ukuran_suami numeric
+					, id_pns_siasn character varying(255)*/
+
+				end if;
+				
+			end loop;
+		end if;
+		
+		pinfoperubahan:= pinfoperubahan || ' }';
+		--raise notice 'sql %', pinfoperubahan;
+	end if;
+	
+	if new.validasi = 1 then 
+		if new.pegawai_id is null then
+			if new.tanggal_validasi is null then
+				new.perubahan_verifikator_data= pinfoperubahan;
+			else
+				--raise notice 'sql %', '';
+			end if;
+		else
+			if new.tanggal_validasi is null then
+				new.perubahan_verifikator_data= pinfoperubahan;
+			else
+				select validasi.vupdateinfo('pegawai', new.pegawai_id, new.temp_validasi_id, new.last_user, new.last_level) into thequery;
+
+				if thequery is not null then
+					--new.last_level:= old.last_level;
+					execute thequery;
+				end if;
+			end if;
+			--raise notice 'sql %', thequery;
+			--return null;
+		end if;
+	elsif new.validasi = 2 then 
+		--raise notice 'sql %', '';
+	else
+		new.perubahan_data := pinfoperubahan;
+	end if;
+
+	return new;
+    end;
+$body$
+language plpgsql volatilecost 100;
+alter function validasi.validasi_pegawai() owner to postgres;
+
+drop trigger if exists validasi_pegawai_trigger on validasi.pegawai;
+create trigger validasi_pegawai_trigger
+before insert or update
+on validasi.pegawai
+for each row
+execute procedure validasi.validasi_pegawai();
