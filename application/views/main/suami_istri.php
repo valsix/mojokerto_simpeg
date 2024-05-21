@@ -315,6 +315,13 @@ $readonly = "readonly";
 								message: 'Area ini harus diisi'
 							},
 						}
+					},
+					reqTempatLahir: {
+						validators: {
+							notEmpty: {
+								message: 'Area ini harus diisi'
+							},
+						}
 					},					
 				},
 				plugins: {
