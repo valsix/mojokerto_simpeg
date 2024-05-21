@@ -140,7 +140,7 @@ if(!empty($arrambilfile))
 		        		<div class="form-group row">
 		        			<label  class="col-form-label text-right col-lg-2 col-sm-12">Tahun</label>
 		        			<div class="col-lg-3 col-sm-12">
-		        				<input type="text" style="width:100px" id="reqTahun" name="reqTahun" <?=$read?> value="<?=$reqTahun?>" title="Tahun harus diisi" required class="form-control" /></td>
+		        				<input type="text" style="width:100px" id="reqTahun" name="reqTahun" <?=$read?> value="<?=$reqTahun?>" maxlength="4" title="Tahun harus diisi" required class="form-control" /></td>
 		        			</div>
 		        		</div>
 		        		<div class="form-group row">

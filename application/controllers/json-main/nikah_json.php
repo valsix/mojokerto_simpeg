@@ -177,6 +177,15 @@ class nikah_json extends CI_Controller {
 		$reqPekerjaan= $this->input->post("reqPekerjaan");
 		$reqPegawaiId= $this->input->post("reqPegawaiId");
 
+		if($reqPNS==1)
+		{
+			if(empty($reqNIP))
+			{
+				echo json_response(400, "Data gagal disimpan, pastikan form NIP sudah terisi");exit;
+			}
+			
+		}
+
 		$set= new SuamiIstri();
 		$set->setField('SUAMI_ISTRI_ID', $reqRowId);
 		$set->setField('SK_CERAI', $reqNoSKPengadilan);
