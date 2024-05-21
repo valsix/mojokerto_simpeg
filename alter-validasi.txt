@@ -1,0 +1,851 @@
+drop schema if exists validasi;
+create schema validasi authorization postgres;
+
+create or replace function validasi.vupdateinfo(vtable character varying, vinfoid numeric, vinforowid numeric, vlastuser character varying, vlastlevel numeric)
+  returns character varying as
+$body$
+declare 
+	thequery character varying;
+	inforeturn character varying;
+	pjsonperubahan json;
+	recperubahandata record;
+	vseparator character varying;
+	vupdateheader character varying;
+	vupdateheaderdetil character varying;
+begin
+	inforeturn:= '';
+	vupdateheaderdetil:= '';
+	
+	if vinfoid is not null and vinforowid is not null then
+		vseparator:= '';
+		vupdateheader:= 'update '||vtable||' set ';
+		vupdateheaderdetil:= '';
+					
+		thequery:= '
+		select regexp_replace(perubahan_data, e''[\\n\\r\\u2028]+'', '' '', ''g'' )
+		from validasi.'|| vtable ||' where temp_validasi_id = ' || vinforowid;
+		execute thequery into pjsonperubahan using vtable, vinforowid;
+	end if;
+
+	for recperubahandata in select key from json_each(pjsonperubahan) where not key = '0' 
+	loop
+		if coalesce(nullif(vupdateheaderdetil, ''), null) is not null then
+			vseparator:= ', ';
+		end if;
+
+		vupdateheaderdetil:= vupdateheaderdetil || vseparator || recperubahandata.key || ' = ' || '(select ' || recperubahandata.key || ' from validasi.'|| vtable ||' where temp_validasi_id = ' || vinforowid || ')';
+		
+	end loop;
+
+	if coalesce(nullif(vupdateheaderdetil, ''), null) is not null then
+		/*
+		if lower(vtable) = 'sk_cpns' then
+			vupdateheaderdetil:= vupdateheaderdetil || ', triger_pangkat = null';
+		end if;
+		*/
+		
+		vupdateheaderdetil:= vupdateheaderdetil || ', last_user = ''' || vlastuser || ''' , last_level = ''' || vlastlevel || ''', last_date = now()';
+		inforeturn:= vupdateheader || vupdateheaderdetil || ' where '|| vtable ||'_id = ' || vinfoid;
+	end if;
+
+	return inforeturn;
+end;
+
+$body$
+language plpgsql volatile cost 100;
+alter function validasi.vupdateinfo(character varying, numeric, numeric, character varying, numeric) owner to postgres;
+
+create or replace function validasi.collectinfo(infoperubahan character varying, infolabel character varying, dataperubahan character varying, datamaster character varying)
+  returns character varying as
+$body$
+declare 
+    infochek character varying;
+begin
+	if not coalesce(dataperubahan, '') = coalesce(datamaster, '') then
+		if lower(datamaster) = 'valsixdatabaru' then
+			infoperubahan := infoperubahan || ', "' || infolabel || '" : ["' || coalesce(dataperubahan, '') || '", "' || infolabel || '"]'; 
+		else
+			infoperubahan := infoperubahan || ', "' || infolabel || '" : ["' || coalesce(datamaster, '') || '", "' || infolabel || '"]'; 
+		end if;
+	end if;
+
+	return infoperubahan;
+end;
+
+$body$
+language plpgsql volatile cost 100;
+alter function validasi.collectinfo(character varying, character varying, character varying, character varying) owner to postgres;
+
+create or replace function validasi.tipejenisinfo(infojenis character varying, infolabel character varying)
+  returns character varying as
+$body$
+declare 
+    inforeturn character varying;
+begin
+	if infojenis = 'jenis' then
+		if coalesce(nullif(infolabel, ''), null) is null then
+			inforeturn:= 'Baru';
+		elsif infolabel = 'xxx' then
+			inforeturn:= 'Hapus';
+		else
+			inforeturn:= 'Update';
+		end if;
+	elsif infojenis = 'status' then
+		if coalesce(nullif(infolabel, ''), null) is null then
+			inforeturn:= 'Proses';
+		elsif infolabel = '1' then
+			inforeturn:= 'Terklarifikasi';
+		else
+			inforeturn:= 'Ditolak';
+		end if;
+	elsif infojenis = 'hak' then
+		if infolabel = '1' then
+			inforeturn:= 'Sesuai Unit Kerja';
+		elsif infolabel = '20' then
+			inforeturn:= 'Unit Kerja / Induk Unit Kerja';
+		elsif infolabel = '30' then
+			inforeturn:= 'BKDPP';
+		else
+			inforeturn:= 'Belum ditentukan';
+		end if;
+	elsif infojenis = 'riwayat' then
+		select nama into inforeturn from validasi.riwayat_update where riwayat_update_id = infolabel::numeric;
+	end if;
+
+	return inforeturn;
+end;
+
+$body$
+language plpgsql volatile cost 100;
+alter function validasi.tipejenisinfo(character varying, character varying) owner to postgres;
+
+drop table if exists validasi.hapus_data;
+create table validasi.hapus_data
+(
+	hapus_data_id integer
+	, pegawai_id numeric not null
+	, temp_validasi_id integer not null
+	, hapus_nama character varying
+	, last_create_user character varying
+	, last_create_date timestamp without time zone
+	, last_user character varying
+	, last_date timestamp without time zone
+	, validasi integer
+	, tanggal_validasi timestamp without time zone
+);
+
+drop type if exists validasi.pegawai_type;
+create type validasi.pegawai_type as
+(
+	pegawai_id bigint
+	, propinsi_id integer
+	, kabupaten_id integer
+	, kecamatan_id integer
+	, kelurahan_id integer
+	, satker_id character varying(25)
+	, kedudukan_id integer
+	, jenis_pegawai_id integer
+	, bank_id integer
+	, nip_lama character varying(50)
+	, nip_baru character varying(50)
+	, nama character varying(100)
+	, gelar_depan character varying(40)
+	, gelar_belakang character varying(40)
+	, tempat_lahir character varying(50)
+	, tanggal_lahir date
+	, jenis_kelamin character(1)
+	, status_kawin integer
+	, suku_bangsa character varying(50)
+	, golongan_darah character(2)
+	, email character varying(50)
+	, alamat character varying(255)
+	, rt character(5)
+	, rw character(5)
+	, telepon character varying(30)
+	, kodepos character varying(20)
+	, status_pegawai integer
+	, kartu_pegawai character varying(50)
+	, askes character varying(50)
+	, taspen character varying(50)
+	, npwp character varying(50)
+	, nik character varying(50)
+	, foto character varying(188)
+	, no_rekening character varying(50)
+	, tanggal_mati date
+	, tanggal_pensiun date
+	, tanggal_terusan date
+	, tanggal_update date
+	, tipe_pegawai_id character varying(20)
+	, agama_id integer
+	, satker_id_lama character varying(25)
+	, foto_setengah character varying(188)
+	, foto_blob text
+	, foto_blob_other text
+	, dosir_karpeg text
+	, format_karpeg character varying(255)
+	, ukuran_karpeg numeric
+	, dosir_askes text
+	, format_askes character varying(255)
+	, ukuran_askes numeric
+	, dosir_taspen text
+	, format_taspen character varying(255)
+	, ukuran_taspen numeric
+	, dosir_npwp text
+	, format_npwp character varying(255)
+	, ukuran_npwp numeric
+	, tanggal_pindah date
+	, keterangan_pindah character varying(255)
+	, tugas_tambahan integer
+	, link_file_apps character varying(255)
+	, link_file_apps_karpeg character varying(255)
+	, link_file_apps_askes character varying(255)
+	, link_file_apps_taspen character varying(255)
+	, link_file_apps_npwp character varying(255)
+	, hasil_asessment character varying(1000)
+	, status_profil integer
+	, password_skp character varying(255)
+	, bup numeric
+	, link_file_apps_kk character varying(255)
+	, link_file_apps_istri character varying(255)
+	, link_file_apps_ktp character varying(255)
+	, link_file_apps_drh character varying(255)
+	, link_file_apps_suami character varying(255)
+	, format_drh character varying(255)
+	, ukuran_drh numeric
+	, format_ktp character varying(255)
+	, ukuran_ktp numeric
+	, format_kk character varying(255)
+	, ukuran_kk numeric
+	, format_istri character varying(255)
+	, ukuran_istri numeric
+	, format_suami character varying(255)
+	, ukuran_suami numeric
+	, ktp_pns character varying(255)
+	, drh character varying(255)
+	, kk character varying(255)
+	, ktp_pasangan character varying(255)
+	, tugas_tambahan_new character varying(1)
+	, id_pns_siasn character varying(255)
+	, jenis_mapel_id numeric
+	, temp_validasi_id integer
+	, temp_validasi_hapus_id integer
+	, validasi integer
+	, validator character varying
+	, perubahan_data character varying
+	, tipe_perubahan_data character(1)
+	, tanggal_validasi timestamp without time zone
+);
+
+drop table if exists validasi.pegawai;
+create table validasi.pegawai
+(
+	pegawai_id bigint
+	, propinsi_id integer
+	, kabupaten_id integer
+	, kecamatan_id integer
+	, kelurahan_id integer
+	, satker_id character varying(25)
+	, kedudukan_id integer
+	, jenis_pegawai_id integer
+	, bank_id integer
+	, nip_lama character varying(50)
+	, nip_baru character varying(50)
+	, nama character varying(100)
+	, gelar_depan character varying(40)
+	, gelar_belakang character varying(40)
+	, tempat_lahir character varying(50)
+	, tanggal_lahir date
+	, jenis_kelamin character(1)
+	, status_kawin integer
+	, suku_bangsa character varying(50)
+	, golongan_darah character(2)
+	, email character varying(50)
+	, alamat character varying(255)
+	, rt character(5)
+	, rw character(5)
+	, telepon character varying(30)
+	, kodepos character varying(20)
+	, status_pegawai integer
+	, kartu_pegawai character varying(50)
+	, askes character varying(50)
+	, taspen character varying(50)
+	, npwp character varying(50)
+	, nik character varying(50)
+	, foto character varying(188)
+	, no_rekening character varying(50)
+	, tanggal_mati date
+	, tanggal_pensiun date
+	, tanggal_terusan date
+	, tanggal_update date
+	, tipe_pegawai_id character varying(20)
+	, agama_id integer
+	, satker_id_lama character varying(25)
+	, foto_setengah character varying(188)
+	, foto_blob text
+	, foto_blob_other text
+	, dosir_karpeg text
+	, format_karpeg character varying(255)
+	, ukuran_karpeg numeric
+	, dosir_askes text
+	, format_askes character varying(255)
+	, ukuran_askes numeric
+	, dosir_taspen text
+	, format_taspen character varying(255)
+	, ukuran_taspen numeric
+	, dosir_npwp text
+	, format_npwp character varying(255)
+	, ukuran_npwp numeric
+	, tanggal_pindah date
+	, keterangan_pindah character varying(255)
+	, tugas_tambahan integer
+	, link_file_apps character varying(255)
+	, link_file_apps_karpeg character varying(255)
+	, link_file_apps_askes character varying(255)
+	, link_file_apps_taspen character varying(255)
+	, link_file_apps_npwp character varying(255)
+	, hasil_asessment character varying(1000)
+	, status_profil integer
+	, password_skp character varying(255)
+	, bup numeric
+	, link_file_apps_kk character varying(255)
+	, link_file_apps_istri character varying(255)
+	, link_file_apps_ktp character varying(255)
+	, link_file_apps_drh character varying(255)
+	, link_file_apps_suami character varying(255)
+	, format_drh character varying(255)
+	, ukuran_drh numeric
+	, format_ktp character varying(255)
+	, ukuran_ktp numeric
+	, format_kk character varying(255)
+	, ukuran_kk numeric
+	, format_istri character varying(255)
+	, ukuran_istri numeric
+	, format_suami character varying(255)
+	, ukuran_suami numeric
+	, ktp_pns character varying(255)
+	, drh character varying(255)
+	, kk character varying(255)
+	, ktp_pasangan character varying(255)
+	, tugas_tambahan_new character varying(1)
+	, id_pns_siasn character varying(255)
+	, jenis_mapel_id numeric
+	, validasi integer
+	, validator character varying
+	, perubahan_data character varying
+	, perubahan_verifikator_data character varying
+	, tipe_perubahan_data character(1)
+	, tanggal_validasi timestamp without time zone
+	, temp_validasi_id integer NOT NULL
+);
+
+create or replace function validasi.validasi_pegawai(pegawaiid numeric, id character varying, rowid character varying)
+returns setof validasi.pegawai_type as
+$body$
+declare
+	cur refcursor;
+	query text;
+	rec validasi.pegawai_type%rowtype;
+begin
+	if coalesce(nullif(rowid, ''), null) is not null then
+		query := '
+		select
+		a.pegawai_id
+		, a.propinsi_id
+		, a.kabupaten_id
+		, a.kecamatan_id
+		, a.kelurahan_id
+		, a.satker_id
+		, a.kedudukan_id
+		, a.jenis_pegawai_id
+		, a.bank_id
+		, a.nip_lama
+		, a.nip_baru
+		, a.nama
+		, a.gelar_depan
+		, a.gelar_belakang
+		, a.tempat_lahir
+		, a.tanggal_lahir
+		, a.jenis_kelamin
+		, a.status_kawin
+		, a.suku_bangsa
+		, a.golongan_darah
+		, a.email
+		, a.alamat
+		, a.rt
+		, a.rw
+		, a.telepon
+		, a.kodepos
+		, a.status_pegawai
+		, a.kartu_pegawai
+		, a.askes
+		, a.taspen
+		, a.npwp
+		, a.nik
+		, a.foto
+		, a.no_rekening
+		, a.tanggal_mati
+		, a.tanggal_pensiun
+		, a.tanggal_terusan
+		, a.tanggal_update
+		, a.tipe_pegawai_id
+		, a.agama_id
+		, a.satker_id_lama
+		, a.foto_setengah
+		, a.foto_blob
+		, a.foto_blob_other
+		, a.dosir_karpeg
+		, a.format_karpeg
+		, a.ukuran_karpeg
+		, a.dosir_askes
+		, a.format_askes
+		, a.ukuran_askes
+		, a.dosir_taspen
+		, a.format_taspen
+		, a.ukuran_taspen
+		, a.dosir_npwp
+		, a.format_npwp
+		, a.ukuran_npwp
+		, a.tanggal_pindah
+		, a.keterangan_pindah
+		, a.tugas_tambahan
+		, a.link_file_apps
+		, a.link_file_apps_karpeg
+		, a.link_file_apps_askes
+		, a.link_file_apps_taspen
+		, a.link_file_apps_npwp
+		, a.hasil_asessment
+		, a.status_profil
+		, a.password_skp
+		, a.bup
+		, a.link_file_apps_kk
+		, a.link_file_apps_istri
+		, a.link_file_apps_ktp
+		, a.link_file_apps_drh
+		, a.link_file_apps_suami
+		, a.format_drh
+		, a.ukuran_drh
+		, a.format_ktp
+		, a.ukuran_ktp
+		, a.format_kk
+		, a.ukuran_kk
+		, a.format_istri
+		, a.ukuran_istri
+		, a.format_suami
+		, a.ukuran_suami
+		, a.ktp_pns
+		, a.drh
+		, a.kk
+		, a.ktp_pasangan
+		, a.tugas_tambahan_new
+		, a.id_pns_siasn
+		, a.jenis_mapel_id
+		, a.temp_validasi_id, a.temp_validasi_hapus_id, a.validasi, a.validator, a.perubahan_data, a.tipe_perubahan_data, a.tanggal_validasi
+		from
+		(
+			select
+			a.pegawai_id
+			, a.propinsi_id
+			, a.kabupaten_id
+			, a.kecamatan_id
+			, a.kelurahan_id
+			, a.satker_id
+			, a.kedudukan_id
+			, a.jenis_pegawai_id
+			, a.bank_id
+			, a.nip_lama
+			, a.nip_baru
+			, a.nama
+			, a.gelar_depan
+			, a.gelar_belakang
+			, a.tempat_lahir
+			, a.tanggal_lahir
+			, a.jenis_kelamin
+			, a.status_kawin
+			, a.suku_bangsa
+			, a.golongan_darah
+			, a.email
+			, a.alamat
+			, a.rt
+			, a.rw
+			, a.telepon
+			, a.kodepos
+			, a.status_pegawai
+			, a.kartu_pegawai
+			, a.askes
+			, a.taspen
+			, a.npwp
+			, a.nik
+			, a.foto
+			, a.no_rekening
+			, a.tanggal_mati
+			, a.tanggal_pensiun
+			, a.tanggal_terusan
+			, a.tanggal_update
+			, a.tipe_pegawai_id
+			, a.agama_id
+			, a.satker_id_lama
+			, a.foto_setengah
+			, a.foto_blob
+			, a.foto_blob_other
+			, a.dosir_karpeg
+			, a.format_karpeg
+			, a.ukuran_karpeg
+			, a.dosir_askes
+			, a.format_askes
+			, a.ukuran_askes
+			, a.dosir_taspen
+			, a.format_taspen
+			, a.ukuran_taspen
+			, a.dosir_npwp
+			, a.format_npwp
+			, a.ukuran_npwp
+			, a.tanggal_pindah
+			, a.keterangan_pindah
+			, a.tugas_tambahan
+			, a.link_file_apps
+			, a.link_file_apps_karpeg
+			, a.link_file_apps_askes
+			, a.link_file_apps_taspen
+			, a.link_file_apps_npwp
+			, a.hasil_asessment
+			, a.status_profil
+			, a.password_skp
+			, a.bup
+			, a.link_file_apps_kk
+			, a.link_file_apps_istri
+			, a.link_file_apps_ktp
+			, a.link_file_apps_drh
+			, a.link_file_apps_suami
+			, a.format_drh
+			, a.ukuran_drh
+			, a.format_ktp
+			, a.ukuran_ktp
+			, a.format_kk
+			, a.ukuran_kk
+			, a.format_istri
+			, a.ukuran_istri
+			, a.format_suami
+			, a.ukuran_suami
+			, a.ktp_pns
+			, a.drh
+			, a.kk
+			, a.ktp_pasangan
+			, a.tugas_tambahan_new
+			, a.id_pns_siasn
+			, a.jenis_mapel_id
+			, a.temp_validasi_id, null temp_validasi_hapus_id, a.validasi, a.validator, a.perubahan_data, a.tipe_perubahan_data, a.tanggal_validasi
+			from validasi.pegawai a
+			where a.temp_validasi_id = '|| rowid ||'
+			and a.pegawai_id = '|| pegawaiid ||'
+		) a
+		';
+	  else
+		query := '
+		select
+		a.pegawai_id
+		, a.propinsi_id
+		, a.kabupaten_id
+		, a.kecamatan_id
+		, a.kelurahan_id
+		, a.satker_id
+		, a.kedudukan_id
+		, a.jenis_pegawai_id
+		, a.bank_id
+		, a.nip_lama
+		, a.nip_baru
+		, a.nama
+		, a.gelar_depan
+		, a.gelar_belakang
+		, a.tempat_lahir
+		, a.tanggal_lahir
+		, a.jenis_kelamin
+		, a.status_kawin
+		, a.suku_bangsa
+		, a.golongan_darah
+		, a.email
+		, a.alamat
+		, a.rt
+		, a.rw
+		, a.telepon
+		, a.kodepos
+		, a.status_pegawai
+		, a.kartu_pegawai
+		, a.askes
+		, a.taspen
+		, a.npwp
+		, a.nik
+		, a.foto
+		, a.no_rekening
+		, a.tanggal_mati
+		, a.tanggal_pensiun
+		, a.tanggal_terusan
+		, a.tanggal_update
+		, a.tipe_pegawai_id
+		, a.agama_id
+		, a.satker_id_lama
+		, a.foto_setengah
+		, a.foto_blob
+		, a.foto_blob_other
+		, a.dosir_karpeg
+		, a.format_karpeg
+		, a.ukuran_karpeg
+		, a.dosir_askes
+		, a.format_askes
+		, a.ukuran_askes
+		, a.dosir_taspen
+		, a.format_taspen
+		, a.ukuran_taspen
+		, a.dosir_npwp
+		, a.format_npwp
+		, a.ukuran_npwp
+		, a.tanggal_pindah
+		, a.keterangan_pindah
+		, a.tugas_tambahan
+		, a.link_file_apps
+		, a.link_file_apps_karpeg
+		, a.link_file_apps_askes
+		, a.link_file_apps_taspen
+		, a.link_file_apps_npwp
+		, a.hasil_asessment
+		, a.status_profil
+		, a.password_skp
+		, a.bup
+		, a.link_file_apps_kk
+		, a.link_file_apps_istri
+		, a.link_file_apps_ktp
+		, a.link_file_apps_drh
+		, a.link_file_apps_suami
+		, a.format_drh
+		, a.ukuran_drh
+		, a.format_ktp
+		, a.ukuran_ktp
+		, a.format_kk
+		, a.ukuran_kk
+		, a.format_istri
+		, a.ukuran_istri
+		, a.format_suami
+		, a.ukuran_suami
+		, a.ktp_pns
+		, a.drh
+		, a.kk
+		, a.ktp_pasangan
+		, a.tugas_tambahan_new
+		, a.id_pns_siasn
+		, a.jenis_mapel_id
+		, a.temp_validasi_id, a.temp_validasi_hapus_id, a.validasi, a.validator, a.perubahan_data, a.tipe_perubahan_data, a.tanggal_validasi
+		from
+		(
+			select
+			a.pegawai_id
+			, coalesce(b.propinsi_id, a.propinsi_id) propinsi_id
+			, coalesce(b.kabupaten_id, a.kabupaten_id) kabupaten_id
+			, coalesce(b.kecamatan_id, a.kecamatan_id) kecamatan_id
+			, coalesce(b.kelurahan_id, a.kelurahan_id) kelurahan_id
+			, coalesce(b.satker_id, a.satker_id) satker_id
+			, coalesce(b.kedudukan_id, a.kedudukan_id) kedudukan_id
+			, coalesce(b.jenis_pegawai_id, a.jenis_pegawai_id) jenis_pegawai_id
+			, coalesce(b.bank_id, a.bank_id) bank_id
+			, coalesce(b.nip_lama, a.nip_lama) nip_lama
+			, coalesce(b.nip_baru, a.nip_baru) nip_baru
+			, coalesce(b.nama, a.nama) nama
+			, coalesce(b.gelar_depan, a.gelar_depan) gelar_depan
+			, coalesce(b.gelar_belakang, a.gelar_belakang) gelar_belakang
+			, coalesce(b.tempat_lahir, a.tempat_lahir) tempat_lahir
+			, coalesce(b.tanggal_lahir, a.tanggal_lahir) tanggal_lahir
+			, coalesce(b.jenis_kelamin, a.jenis_kelamin) jenis_kelamin
+			, coalesce(b.status_kawin, a.status_kawin) status_kawin
+			, coalesce(b.suku_bangsa, a.suku_bangsa) suku_bangsa
+			, coalesce(b.golongan_darah, a.golongan_darah) golongan_darah
+			, coalesce(b.email, a.email) email
+			, coalesce(b.alamat, a.alamat) alamat
+			, coalesce(b.rt, a.rt) rt
+			, coalesce(b.rw, a.rw) rw
+			, coalesce(b.telepon, a.telepon) telepon
+			, coalesce(b.kodepos, a.kodepos) kodepos
+			, coalesce(b.status_pegawai, a.status_pegawai) status_pegawai
+			, coalesce(b.kartu_pegawai, a.kartu_pegawai) kartu_pegawai
+			, coalesce(b.askes, a.askes) askes
+			, coalesce(b.taspen, a.taspen) taspen
+			, coalesce(b.npwp, a.npwp) npwp
+			, coalesce(b.nik, a.nik) nik
+			, coalesce(b.foto, a.foto) foto
+			, coalesce(b.no_rekening, a.no_rekening) no_rekening
+			, coalesce(b.tanggal_mati, a.tanggal_mati) tanggal_mati
+			, coalesce(b.tanggal_pensiun, a.tanggal_pensiun) tanggal_pensiun
+			, coalesce(b.tanggal_terusan, a.tanggal_terusan) tanggal_terusan
+			, coalesce(b.tanggal_update, a.tanggal_update) tanggal_update
+			, coalesce(b.tipe_pegawai_id, a.tipe_pegawai_id) tipe_pegawai_id
+			, coalesce(b.agama_id, a.agama_id) agama_id
+			, coalesce(b.satker_id_lama, a.satker_id_lama) satker_id_lama
+			, coalesce(b.foto_setengah, a.foto_setengah) foto_setengah
+			, coalesce(b.foto_blob, a.foto_blob) foto_blob
+			, coalesce(b.foto_blob_other, a.foto_blob_other) foto_blob_other
+			, coalesce(b.dosir_karpeg, a.dosir_karpeg) dosir_karpeg
+			, coalesce(b.format_karpeg, a.format_karpeg) format_karpeg
+			, coalesce(b.ukuran_karpeg, a.ukuran_karpeg) ukuran_karpeg
+			, coalesce(b.dosir_askes, a.dosir_askes) dosir_askes
+			, coalesce(b.format_askes, a.format_askes) format_askes
+			, coalesce(b.ukuran_askes, a.ukuran_askes) ukuran_askes
+			, coalesce(b.dosir_taspen, a.dosir_taspen) dosir_taspen
+			, coalesce(b.format_taspen, a.format_taspen) format_taspen
+			, coalesce(b.ukuran_taspen, a.ukuran_taspen) ukuran_taspen
+			, coalesce(b.dosir_npwp, a.dosir_npwp) dosir_npwp
+			, coalesce(b.format_npwp, a.format_npwp) format_npwp
+			, coalesce(b.ukuran_npwp, a.ukuran_npwp) ukuran_npwp
+			, coalesce(b.tanggal_pindah, a.tanggal_pindah) tanggal_pindah
+			, coalesce(b.keterangan_pindah, a.keterangan_pindah) keterangan_pindah
+			, coalesce(b.tugas_tambahan, a.tugas_tambahan) tugas_tambahan
+			, coalesce(b.link_file_apps, a.link_file_apps) link_file_apps
+			, coalesce(b.link_file_apps_karpeg, a.link_file_apps_karpeg) link_file_apps_karpeg
+			, coalesce(b.link_file_apps_askes, a.link_file_apps_askes) link_file_apps_askes
+			, coalesce(b.link_file_apps_taspen, a.link_file_apps_taspen) link_file_apps_taspen
+			, coalesce(b.link_file_apps_npwp, a.link_file_apps_npwp) link_file_apps_npwp
+			, coalesce(b.hasil_asessment, a.hasil_asessment) hasil_asessment
+			, coalesce(b.status_profil, a.status_profil) status_profil
+			, coalesce(b.password_skp, a.password_skp) password_skp
+			, coalesce(b.bup, a.bup) bup
+			, coalesce(b.link_file_apps_kk, a.link_file_apps_kk) link_file_apps_kk
+			, coalesce(b.link_file_apps_istri, a.link_file_apps_istri) link_file_apps_istri
+			, coalesce(b.link_file_apps_ktp, a.link_file_apps_ktp) link_file_apps_ktp
+			, coalesce(b.link_file_apps_drh, a.link_file_apps_drh) link_file_apps_drh
+			, coalesce(b.link_file_apps_suami, a.link_file_apps_suami) link_file_apps_suami
+			, coalesce(b.format_drh, a.format_drh) format_drh
+			, coalesce(b.ukuran_drh, a.ukuran_drh) ukuran_drh
+			, coalesce(b.format_ktp, a.format_ktp) format_ktp
+			, coalesce(b.ukuran_ktp, a.ukuran_ktp) ukuran_ktp
+			, coalesce(b.format_kk, a.format_kk) format_kk
+			, coalesce(b.ukuran_kk, a.ukuran_kk) ukuran_kk
+			, coalesce(b.format_istri, a.format_istri) format_istri
+			, coalesce(b.ukuran_istri, a.ukuran_istri) ukuran_istri
+			, coalesce(b.format_suami, a.format_suami) format_suami
+			, coalesce(b.ukuran_suami, a.ukuran_suami) ukuran_suami
+			, coalesce(b.ktp_pns, a.ktp_pns) ktp_pns
+			, coalesce(b.drh, a.drh) drh
+			, coalesce(b.kk, a.kk) kk
+			, coalesce(b.ktp_pasangan, a.ktp_pasangan) ktp_pasangan
+			, coalesce(b.tugas_tambahan_new, a.tugas_tambahan_new) tugas_tambahan_new
+			, coalesce(b.id_pns_siasn, a.id_pns_siasn) id_pns_siasn
+			, coalesce(b.jenis_mapel_id, a.jenis_mapel_id) jenis_mapel_id
+			, b.temp_validasi_id, c.temp_validasi_id temp_validasi_hapus_id, b.validasi, b.validator, b.perubahan_data, b.tipe_perubahan_data, b.tanggal_validasi
+			from pegawai a
+			left join validasi.pegawai b on a.pegawai_id = b.pegawai_id and b.validasi is null
+			left join validasi.hapus_data c on c.hapus_nama::text = ''pegawai''::text and a.pegawai_id = c.temp_validasi_id::numeric and c.validasi is null
+			where a.pegawai_id = '|| pegawaiid ||'
+			union all
+			select
+			a.pegawai_id
+			, a.propinsi_id
+			, a.kabupaten_id
+			, a.kecamatan_id
+			, a.kelurahan_id
+			, a.satker_id
+			, a.kedudukan_id
+			, a.jenis_pegawai_id
+			, a.bank_id
+			, a.nip_lama
+			, a.nip_baru
+			, a.nama
+			, a.gelar_depan
+			, a.gelar_belakang
+			, a.tempat_lahir
+			, a.tanggal_lahir
+			, a.jenis_kelamin
+			, a.status_kawin
+			, a.suku_bangsa
+			, a.golongan_darah
+			, a.email
+			, a.alamat
+			, a.rt
+			, a.rw
+			, a.telepon
+			, a.kodepos
+			, a.status_pegawai
+			, a.kartu_pegawai
+			, a.askes
+			, a.taspen
+			, a.npwp
+			, a.nik
+			, a.foto
+			, a.no_rekening
+			, a.tanggal_mati
+			, a.tanggal_pensiun
+			, a.tanggal_terusan
+			, a.tanggal_update
+			, a.tipe_pegawai_id
+			, a.agama_id
+			, a.satker_id_lama
+			, a.foto_setengah
+			, a.foto_blob
+			, a.foto_blob_other
+			, a.dosir_karpeg
+			, a.format_karpeg
+			, a.ukuran_karpeg
+			, a.dosir_askes
+			, a.format_askes
+			, a.ukuran_askes
+			, a.dosir_taspen
+			, a.format_taspen
+			, a.ukuran_taspen
+			, a.dosir_npwp
+			, a.format_npwp
+			, a.ukuran_npwp
+			, a.tanggal_pindah
+			, a.keterangan_pindah
+			, a.tugas_tambahan
+			, a.link_file_apps
+			, a.link_file_apps_karpeg
+			, a.link_file_apps_askes
+			, a.link_file_apps_taspen
+			, a.link_file_apps_npwp
+			, a.hasil_asessment
+			, a.status_profil
+			, a.password_skp
+			, a.bup
+			, a.link_file_apps_kk
+			, a.link_file_apps_istri
+			, a.link_file_apps_ktp
+			, a.link_file_apps_drh
+			, a.link_file_apps_suami
+			, a.format_drh
+			, a.ukuran_drh
+			, a.format_ktp
+			, a.ukuran_ktp
+			, a.format_kk
+			, a.ukuran_kk
+			, a.format_istri
+			, a.ukuran_istri
+			, a.format_suami
+			, a.ukuran_suami
+			, a.ktp_pns
+			, a.drh
+			, a.kk
+			, a.ktp_pasangan
+			, a.tugas_tambahan_new
+			, a.id_pns_siasn
+			, a.jenis_mapel_id
+			, a.temp_validasi_id, null temp_validasi_hapus_id, a.validasi, a.validator, a.perubahan_data, a.tipe_perubahan_data, a.tanggal_validasi
+			from validasi.pegawai a
+			where a.validasi is null and a.pegawai_id is null
+			and a.pegawai_id = '|| pegawaiid ||'
+		) a
+		where 1=1
+		';
+
+		if coalesce(nullif(id, ''), null) is not null then
+			query := query || ' and a.pegawai_id = ' || id;
+		end if;
+		raise notice 'sql %', query;
+		
+	end if;
+		
+	open cur for execute query;
+		fetch cur into rec;
+		while found loop
+			return next rec;
+		fetch cur into rec;
+			end loop;
+	close cur;
+end;
+$body$
+language plpgsql volatile strict cost 100 rows 1000;
+alter function validasi.validasi_pegawai(numeric, character varying, character varying) owner to postgres;
