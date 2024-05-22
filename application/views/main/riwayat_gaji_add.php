@@ -298,7 +298,7 @@ if(!empty($arrambilfile))
 
 		        			<div class="col-form-label col-lg-2 col-sm-12">
 		        				<label class="labelupload">
-		        					<i class="mdi-file-file-upload" style="font-family: "Roboto",sans-serif,Material-Design-Icons !important; font-size: 14px !important;"><?=$vlabelupload?></i>
+		        					<i class="mdi-file-file-upload" style="font-family: Roboto,sans-serif,Material-Design-Icons !important; font-size: 14px !important;"><?=$vlabelupload?></i>
 		        					<input id="file_input_file" name="reqLinkFile[]" class="none" type="file" />
 		        				</label>
 		        			</div>
@@ -359,6 +359,48 @@ if(!empty($arrambilfile))
 </div>
 
 <script type="text/javascript">
+
+	$(function(){
+		$("#reqGolRuang").change(function(){
+			$.getJSON("json-main/combo_json/getGaji?reqGolId="+$("#reqGolRuang").val()+"&reqTahun="+$("#reqTh").val(),
+				function(data){
+					$("#reqGajiPokok").val(data.GAJI);
+				});		    		
+		});
+		
+		$("#reqTh").keypress(function(e) {
+			if( e.which!=8 && e.which!=0 && (e.which<48 || e.which>57))
+			{
+				return false;
+			}
+			else
+			{
+				return true;
+			}
+		});
+		$("#reqTh").keyup(function(e) {
+			if(isNaN($("#reqTh").val()))
+			{
+
+			}
+			else
+			{
+				$.getJSON("json-main/combo_json/getGaji?reqGolId="+$("#reqGolRuang").val()+"&reqTahun="+$("#reqTh").val(),
+					function(data){
+						$("#reqGajiPokok").val(data.GAJI);
+					});
+			}
+		});
+		$("#reqBl").keypress(function(e) {
+			if( e.which!=8 && e.which!=0 && (e.which<48 || e.which>57))
+			{
+				return false;
+			}
+
+		});
+		
+		
+	});
 
 	function ShowHiddenId(status){
 		if(status=='baru'){
