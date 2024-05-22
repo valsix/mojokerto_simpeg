@@ -195,9 +195,9 @@ class riwayat_jabatan_json extends CI_Controller {
 		$set->setField('TANGGAL_SK', dateToDBCheck($reqTglSK));
 		$set->setField('NAMA', $reqNamaJabatan);
 		$set->setField('TMT_JABATAN', dateToDBCheck($reqTMTJabatan));
-		$set->setField('ESELON_ID', $reqEselon);
+		$set->setField('ESELON_ID', ValToNullDB($reqEselon));
 		$set->setField('TMT_ESELON', dateToDBCheck($reqTMTEselon));
-		$set->setField('PEJABAT_PENETAP_ID', $reqPjPenetap);
+		$set->setField('PEJABAT_PENETAP_ID', ValToNullDB($reqPjPenetap));
 		$set->setField('NO_PELANTIKAN', $reqNoPelantikan);
 		$set->setField('TANGGAL_PELANTIKAN', dateToDBCheck($reqTglPelantikan));
 		$set->setField('TUNJANGAN', $reqTunjangan);
@@ -216,7 +216,7 @@ class riwayat_jabatan_json extends CI_Controller {
 		$userSatkerId= $this->adminsatkerid;
 
 		$reqSimpan= "";
-		if ($reqRowId == "")
+		if ($reqMode == "insert")
 		{
 
 			$set->setField("LAST_CREATE_USER", $adminusernama);

@@ -33,7 +33,7 @@ class RiwayatJabatan extends Entity{
 			, ".$this->getField("TMT_JABATAN")."
 			, ".$this->getField("ESELON_ID")."
 			, ".$this->getField("TMT_ESELON")."
-			, '".$this->getField("PEJABAT_PENETAP_ID")."'
+			, ".$this->getField("PEJABAT_PENETAP_ID")."
 			, '".$this->getField("NO_PELANTIKAN")."'
 			, ".$this->getField("TANGGAL_PELANTIKAN")."
 			, '".$this->getField("TUNJANGAN")."'
@@ -68,9 +68,9 @@ class RiwayatJabatan extends Entity{
 			NO_SK= '".$this->getField("NO_SK")."'
 			, TANGGAL_SK= ".$this->getField("TANGGAL_SK")."
 			, TMT_JABATAN= ".$this->getField("TMT_JABATAN")."
-			, ESELON_ID= '".$this->getField("ESELON_ID")."'
+			, ESELON_ID= ".$this->getField("ESELON_ID")."
 			, TMT_ESELON= ".$this->getField("TMT_ESELON")."
-			, PEJABAT_PENETAP_ID= '".$this->getField("PEJABAT_PENETAP_ID")."'
+			, PEJABAT_PENETAP_ID= ".$this->getField("PEJABAT_PENETAP_ID")."
 			, NO_PELANTIKAN= '".$this->getField("NO_PELANTIKAN")."'
 			, TANGGAL_PELANTIKAN= ".$this->getField("TANGGAL_PELANTIKAN")."
 			, TUNJANGAN= '".$this->getField("TUNJANGAN")."'
@@ -91,6 +91,7 @@ class RiwayatJabatan extends Entity{
 		// untuk buat log data
 		// parse pertama sesuai nama table
 		// parse ke dua sesuai aksi
+		// echo $str;exit;
 		$this->setlogdata("JABATAN_RIWAYAT", "UPDATE", $str);
 
 		return $this->execQuery($str);

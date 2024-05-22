@@ -258,9 +258,18 @@ if(!empty($arrambilfile))
 		        			<div class="col-lg-4 col-sm-12">
 		        				<input type="text" class="form-control" name="reqTunjangan" id="reqTunjangan" value="<?=$reqTunjangan?>" />
 		        			</div>
-		        			<label class="col-form-label text-right col-lg-2 col-sm-12">Bln. Dibayar</label>
+		        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+			        			Bln. Dibayar
+			        		</label>
 		        			<div class="col-lg-4 col-sm-12">
-		        				<input type="text" class="form-control" name="reqBlnDibayar" id="reqBlnDibayar" value="<?=$reqBlnDibayar?>" />
+		        				<div class="input-group date">
+			        				<input type="text" autocomplete="off" class="form-control" id="reqBlnDibayar" name="reqBlnDibayar" value="<?=$reqBlnDibayar?>" />
+			        				<div class="input-group-append">
+			        					<span class="input-group-text">
+			        						<i class="la la-calendar"></i>
+			        					</span>
+			        				</div>
+			        			</div>
 		        			</div>
 		        		</div>
 		        		<div class="form-group row">
@@ -284,13 +293,13 @@ if(!empty($arrambilfile))
 		        		<div class="form-group row">
 		        			<label class="col-form-label text-right col-lg-2 col-sm-12">Jenis Jabatan</label>
 		        			<div class="col-lg-10 col-sm-12">
-		        				<input type="text" class="form-control" name="reqJenisJabatan" id="reqJenisJabatan" value="<?=$reqJenisJabatan?>" />
+		        				<input type="text" class="form-control" readonly name="reqJenisJabatan" id="reqJenisJabatan" value="<?=$reqJenisJabatan?>" />
 		        			</div>
 		        		</div>
 		        		<div class="form-group row">
 		        			<label class="col-form-label text-right col-lg-2 col-sm-12">Kode Jabatan</label>
 		        			<div class="col-lg-10 col-sm-12">
-		        				<input type="text" class="form-control" name="reqKodeJabatan" id="reqKodeJabatan" value="<?=$reqKodeJabatan?>" />
+		        				<input type="text" class="form-control" readonly name="reqKodeJabatan" id="reqKodeJabatan" value="<?=$reqKodeJabatan?>" />
 		        			</div>
 		        		</div>
 		        		<div class="form-group row">
@@ -334,7 +343,7 @@ if(!empty($arrambilfile))
 
 		        			<div class="col-form-label col-lg-2 col-sm-12">
 		        				<label class="labelupload">
-		        					<i class="mdi-file-file-upload" style="font-family: "Roboto",sans-serif,Material-Design-Icons !important; font-size: 14px !important;"><?=$vlabelupload?></i>
+		        					<i class="mdi-file-file-upload" style="font-family: Roboto,sans-serif,Material-Design-Icons !important; font-size: 14px !important;"><?=$vlabelupload?></i>
 		        					<input id="file_input_file" name="reqLinkFile[]" class="none" type="file" />
 		        				</label>
 		        			</div>
@@ -394,6 +403,20 @@ if(!empty($arrambilfile))
 </div>
 
 <script type="text/javascript">
+
+	$("#reqTunjangan,#reqNoPelantikan").keypress(function(e) {
+		if( e.which!=8 && e.which!=0 && (e.which<48 || e.which>57))
+		{
+		return false;
+		}
+	});
+	$("#reqKredit").keypress(function(e) {
+		//alert(e.which);
+		if( e.which!=46 && e.which!=8 && e.which!=0 && (e.which<48 || e.which>57))
+		{
+		return false;
+		}
+	});
 
 	$(function () {
 		$("[rel=tooltip]").tooltip({ placement: 'right'});
@@ -498,7 +521,7 @@ if(!empty($arrambilfile))
 	});
 
 	arrows= {leftArrow: '<i class="la la-angle-left"></i>', rightArrow: '<i class="la la-angle-right"></i>'};
-	$('#reqTMTJabatan,#reqTMTEselon,#reqTglPelantikan,#reqTglSK').datepicker({
+	$('#reqTMTJabatan,#reqTMTEselon,#reqTglPelantikan,#reqTglSK,#reqBlnDibayar').datepicker({
 		todayHighlight: true
 		, autoclose: true
 		, orientation: "bottom left"
