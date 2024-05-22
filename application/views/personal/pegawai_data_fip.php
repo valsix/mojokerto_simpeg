@@ -39,16 +39,13 @@ $reqRowId= $set->getField('PEGAWAI_ID');
 $reqNIP1= $set->getField('NIP_LAMA');$valNIP1= checkwarna($reqPerubahanData, 'NIP_LAMA');
 $reqNIP2= $set->getField('NIP_BARU');
 $reqNama= $set->getField('NAMA');
-$reqTipePegawai= $set->getField('TIPE_PEGAWAI_ID');$valTipePegawai= checkwarna($reqPerubahanData, 'TIPE_PEGAWAI_ID');
 $reqGelarDepan= $set->getField('GELAR_DEPAN');$valGelarDepan= checkwarna($reqPerubahanData, 'GELAR_DEPAN');
 $reqGelarBelakang= $set->getField('GELAR_BELAKANG');$valGelarBelakang= checkwarna($reqPerubahanData, 'GELAR_BELAKANG');
-$reqStatusPegawai= $set->getField('STATUS_PEGAWAI');$valStatusPegawai= checkwarna($reqPerubahanData, 'STATUS_PEGAWAI');
 $reqTempatLahir= $set->getField('TEMPAT_LAHIR');$valTempatLahir= checkwarna($reqPerubahanData, 'TEMPAT_LAHIR');
 $reqTanggalLahir= dateToPageCheck($set->getField('TANGGAL_LAHIR'));$valTanggalLahir= checkwarna($reqPerubahanData, 'TANGGAL_LAHIR', "date");
 $reqTglPensiun= dateToPageCheck($set->getField('TANGGAL_PENSIUN'));$valTglPensiun= checkwarna($reqPerubahanData, 'TANGGAL_PENSIUN', "date");
 $reqTglPindah= dateToPageCheck($set->getField('TANGGAL_PINDAH'));$valTglPindah= checkwarna($reqPerubahanData, 'TANGGAL_PINDAH', "date");
 $reqKeteranganPindah= $set->getField('KETERANGAN_PINDAH');$valKeteranganPindah= checkwarna($reqPerubahanData, 'KETERANGAN_PINDAH');
-$reqJenisPegawai= $set->getField('JENIS_PEGAWAI_ID');$valJenisPegawai= checkwarna($reqPerubahanData, 'JENIS_PEGAWAI_ID');
 $reqKeterangan= $set->getField('KETERANGAN_PINDAH');$valKeterangan= checkwarna($reqPerubahanData, 'KETERANGAN_PINDAH');
 $reqKartuPegawai= $set->getField('KARTU_PEGAWAI');$valKartuPegawai= checkwarna($reqPerubahanData, 'KARTU_PEGAWAI');
 $reqSukuBangsa= $set->getField('SUKU_BANGSA');$valSukuBangsa= checkwarna($reqPerubahanData, 'SUKU_BANGSA');
@@ -60,7 +57,6 @@ $reqNIK= $set->getField('NIK');$valNIK= checkwarna($reqPerubahanData, 'NIK');
 $reqRT= $set->getField('RT');$valRT= checkwarna($reqPerubahanData, 'RT');
 $reqRW= $set->getField('RW');$valRW= checkwarna($reqPerubahanData, 'RW');
 $reqEmail= $set->getField('EMAIL');$valEmail= checkwarna($reqPerubahanData, 'EMAIL');
-$reqBank= $set->getField('BANK_ID');$valBank= checkwarna($reqPerubahanData, 'BANK_ID');
 $reqNoRekening= $set->getField('NO_REKENING');$valNoRekening= checkwarna($reqPerubahanData, 'NO_REKENING');
 $reqPangkatTerkahir= $set->getField('GOL_RUANG');$valPangkatTerkahir= checkwarna($reqPerubahanData, 'GOL_RUANG');
 $reqTMTPangkat= $set->getField('TMT_PANGKAT');$valTMTPangkat= checkwarna($reqPerubahanData, 'TMT_PANGKAT');
@@ -72,7 +68,6 @@ $reqTahunLulus= $set->getField('TAHUN');$valTahunLulus= checkwarna($reqPerubahan
 $reqGambar= $set->getField('FOTO_BLOB');$valGambar= checkwarna($reqPerubahanData, 'FOTO_BLOB');
 $reqTelepon= $set->getField('TELEPON');$valTelepon= checkwarna($reqPerubahanData, 'TELEPON');
 $reqKodePos= $set->getField('KODEPOS');$valKodePos= checkwarna($reqPerubahanData, 'KODEPOS');
-$reqKedudukanId= $set->getField('KEDUDUKAN_ID');$valKedudukanId= checkwarna($reqPerubahanData, 'KEDUDUKAN_ID');
 $reqSatkerNama= $set->getField('SATKER_FULL');$valSatkerNama= checkwarna($reqPerubahanData, 'SATKER_FULL');
 $reqSatkerId= $set->getField('SATKER_ID');$valSatkerId= checkwarna($reqPerubahanData, 'SATKER_ID');
 
@@ -80,7 +75,6 @@ $reqNikPns= $set->getField('KTP_PNS');$valNikPns= checkwarna($reqPerubahanData, 
 $reqDrh= $set->getField('DRH');$valDrh= checkwarna($reqPerubahanData, 'DRH');
 $reqNomorKK= $set->getField('KK');$valNomorKK= checkwarna($reqPerubahanData, 'KK');
 $reqKtpPasangan= $set->getField('KTP_PASANGAN');$valKtpPasangan= checkwarna($reqPerubahanData, 'KTP_PASANGAN');
-$reqTugasTambahan= $set->getField('TUGAS_TAMBAHAN_NEW');$valTugasTambahan= checkwarna($reqPerubahanData, 'TUGAS_TAMBAHAN_NEW');
 $reqJenisMapelId= $set->getField('JENIS_MAPEL_ID');$valJenisMapelId= checkwarna($reqPerubahanData, 'JENIS_MAPEL_ID');
 $data= $set->getField('FOTO_BLOB');$valdata= checkwarna($reqPerubahanData, 'FOTO_BLOB');
 $data_karpeg= $set->getField('DOSIR_KARPEG');$valdata_karpeg= checkwarna($reqPerubahanData, 'DOSIR_KARPEG');
@@ -173,20 +167,67 @@ while ($desa->nextRow()){
 $reqDesa= $set->getField('KELURAHAN_ID');
 $valDesa= checkwarna($reqPerubahanData, 'KELURAHAN_ID', $arrDesa, array("id", "text"));
 
+$arrBank= [];
+$arrComboBank= [];
 $bank= new Core();
 $bank->selectByParamsBank(); 
+while ($bank->nextRow()){
+	array_push($arrComboBank,array("id"=>$bank->getField('BANK_ID') , "text"=>$bank->getField('NAMA')));
+}
+$reqBank= $set->getField('BANK_ID');
+$valBank= checkwarna($reqPerubahanData, 'BANK_ID', $arrDesa, array("id", "text"));
 
+$arrTipePegawai= [];
+$arrComboTipePegawai= [];
 $tipepegawai= new Core();
 $tipepegawai->selectByParamsTipePegawai(); 
+while ($tipepegawai->nextRow()){
+	array_push($arrComboTipePegawai,array("id"=>$tipepegawai->getField('TIPE_PEGAWAI_ID') , "text"=>$tipepegawai->getField('NAMA'), "parentid"=>$tipepegawai->getField('TIPE_PEGAWAI_ID_PARENT')));
+}
+$reqTipePegawai= $set->getField('TIPE_PEGAWAI_ID');
+$valTipePegawai= checkwarna($reqPerubahanData, 'TIPE_PEGAWAI_ID', $arrDesa, array("id", "text"));
 
+$arrTugasTambahan= [];
+$arrComboTugasTambahan= [];
+$arrComboTugasTambahan= array(
+	array("id"=>"1", "text"=>"Kepala Sekolah")
+	, array("id"=>"2", "text"=>"Kepala Puskesmas")
+	, array("id"=>"3", "text"=>"Sub Koordinator")
+);
+$reqTugasTambahan= $set->getField('TUGAS_TAMBAHAN_NEW');
+$valTugasTambahan= checkwarna($reqPerubahanData, 'TUGAS_TAMBAHAN_NEW', $arrTugasTambahan, array("id", "text"));
+
+$arrStatusPegawai= [];
+$arrComboStatusPegawai= [];
 $status_pegawai= new Core();
 $status_pegawai->selectByParamsStatusPegawai(); 
+while ($status_pegawai->nextRow()){
+	array_push($arrComboStatusPegawai,array("id"=>$status_pegawai->getField('STATUS_PEGAWAI_ID') , "text"=>$status_pegawai->getField('NAMA')));
+}
+$reqStatusPegawai= $set->getField('STATUS_PEGAWAI');
+$valStatusPegawai= checkwarna($reqPerubahanData, 'STATUS_PEGAWAI_ID', $arrStatusPegawai, array("id", "text"));
 
+$arrJenisPegawai= [];
+$arrComboJenisPegawai= [];
 $jenis_pegawai= new Core();
-$jenis_pegawai->selectByParamsJenisPegawai(); 
+$jenis_pegawai->selectByParamsJenisPegawai();  
+while ($jenis_pegawai->nextRow()){
+	array_push($arrComboJenisPegawai,array("id"=>$jenis_pegawai->getField('JENIS_PEGAWAI_ID') , "text"=>$jenis_pegawai->getField('NAMA')));
+}
+$reqJenisPegawai= $set->getField('JENIS_PEGAWAI_ID');
+$valJenisPegawai= checkwarna($reqPerubahanData, 'JENIS_PEGAWAI_ID', $arrJenisPegawai, array("id", "text"));
 
+$arrKedudukan= [];
+$arrComboKedudukan= [];
 $kedudukan= new Core();
-$kedudukan->selectByParamsKedudukan(); 
+$kedudukan->selectByParamsKedudukan();  
+while ($kedudukan->nextRow()){
+	array_push($arrComboKedudukan,array("id"=>$kedudukan->getField('KEDUDUKAN_ID') , "text"=>$kedudukan->getField('NAMA')));
+}
+$reqKedudukanId= $set->getField('KEDUDUKAN_ID');
+$valKedudukanId= checkwarna($reqPerubahanData, 'KEDUDUKAN_ID', $arrJenisPegawai, array("id", "text"));
+
+
 
 // echo $reqTmtJabatan;exit;
 // $reqMode="update";
@@ -900,7 +941,17 @@ if(!empty($arrambilfile))
 			        			</label>
 			        			<div class="col-lg-9 col-sm-12">
 			        				<select class="js-states form-control" id="reqKelurahan" name="reqDesa">
-			        					<option value="" <?if($reqKelurahan=='') echo 'selected' ?> disabled></option>
+			        					<option value=""></option>
+										<?
+										foreach($arrComboDesa as $item) 
+										{
+											$selectvalid= $item["id"];
+											$selectvaltext= $item["text"];
+											?>
+											<option value="<?=$selectvalid?>" <? if($reqDesa == $selectvalid) echo "selected";?>><?=$selectvaltext?></option>
+											<?
+										}
+										?>
 										
 			        				</select>
 			        			</div>
@@ -911,19 +962,36 @@ if(!empty($arrambilfile))
 			        <div class="row">
 	        			<div class="col-md-6">
 	        				<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Bank</label>
+			        			<?
+	        					$vpdata= $valBank['data'];
+	        					$vpwarna= $valBank['warna'];
+	        					?>
+			        			<label class="col-form-label text-right col-lg-3 col-sm-12 <?=$vpwarna?>">
+			        				Bank
+			        				<?
+			        				if(!empty($vpdata))
+			        				{
+			        				?>
+			        				<a class="tooltipe" href="javascript:void(0)">
+			        					<i class="fa fa-question-circle text-white"></i><span class="classic"><?=$vpdata?></span>
+			        				</a>
+			        				<?
+			        				}
+			        				?>
+			        			</label>
 			        			<div class="col-lg-9 col-sm-12">
 			        				<select class="js-states form-control" id="reqBank" name="reqBank">
-			        					<option value="" <?if($reqBank=='') echo 'selected' ?> disabled>Pilih Bank</option>
-										<?while($bank->nextRow())
-										 {
+			        					<option value=""></option>
+										<?
+										foreach($arrComboBank as $item) 
+										{
+											$selectvalid= $item["id"];
+											$selectvaltext= $item["text"];
+											?>
+											<option value="<?=$selectvalid?>" <? if($reqBank == $selectvalid) echo "selected";?>><?=$selectvaltext?></option>
+											<?
+										}
 										?>
-											<option value="<?=$bank->getField('BANK_ID')?>" <? if($bank->getField('BANK_ID') == $reqBank) echo 'selected' ?>>
-					                        	<?=$bank->getField('NAMA')?>
-					                        </option>
-					                    <?
-										 }
-										 ?>
 			        				</select>
 			        			</div>
 			        		</div>
@@ -1015,7 +1083,23 @@ if(!empty($arrambilfile))
 			        <div class="row">
 	        			<div class="col-md-6">
 	        				<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Satuan Kerja</label>
+			        			<?
+	        					$vpdata= $valSatkerId['data'];
+	        					$vpwarna= $valSatkerId['warna'];
+	        					?>
+			        			<label class="col-form-label text-right col-lg-3 col-sm-12 <?=$vpwarna?>">
+			        				Satuan Kerja
+			        				<?
+			        				if(!empty($vpdata))
+			        				{
+			        				?>
+			        				<a class="tooltipe" href="javascript:void(0)">
+			        					<i class="fa fa-question-circle text-white"></i><span class="classic"><?=$vpdata?></span>
+			        				</a>
+			        				<?
+			        				}
+			        				?>
+			        			</label>
 			        			<div class="col-lg-9 col-sm-12">
 			        				<!-- <textarea  class="form-control" name="reqSatuanKerjaNama"  id="reqSatkerNama"></textarea> -->
 			        				<!-- <input type="text" class="form-control" name="reqSatuanKerjaNama"  id="reqSatkerNama"> -->
@@ -1027,21 +1111,46 @@ if(!empty($arrambilfile))
 			        	</div>
 			        	<div class="col-md-6">
 	        				<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Tipe Pegawai</label>
+			        			<?
+	        					$vpdata= $valTipePegawai['data'];
+	        					$vpwarna= $valTipePegawai['warna'];
+	        					?>
+			        			<label class="col-form-label text-right col-lg-3 col-sm-12 <?=$vpwarna?>">
+			        				Tipe Pegawai
+			        				<?
+			        				if(!empty($vpdata))
+			        				{
+			        				?>
+			        				<a class="tooltipe" href="javascript:void(0)">
+			        					<i class="fa fa-question-circle text-white"></i><span class="classic"><?=$vpdata?></span>
+			        				</a>
+			        				<?
+			        				}
+			        				?>
+			        			</label>
 			        			<div class="col-lg-9 col-sm-12">
 			        				<select class="js-states form-control" name="reqTipePegawai" id="reqTipePegawai" >
-			        					<option value="" <?if($reqBank=='') echo 'selected' ?> disabled>Pilih Bank</option>
-			        					
-			        					<? while ($tipepegawai->nextRow()){?>
-										<option value="<?=$tipepegawai->getField('TIPE_PEGAWAI_ID')?>"
-										<? if ($tipepegawai->getField('TIPE_PEGAWAI_ID') == $reqTipePegawai) echo 'selected'?>>
+			        					<option value=""></option>
 										<?
-										if($tipepegawai->getField('TIPE_PEGAWAI_ID_PARENT') == 0)  
-											echo $tipepegawai->getField('TIPE_PEGAWAI_ID').'.'.$tipepegawai->getField('NAMA');
-										else														
-											echo substr($tipepegawai->getField('TIPE_PEGAWAI_ID'),0,1).'.'.substr($tipepegawai->getField('TIPE_PEGAWAI_ID'),1).'.'.$tipepegawai->getField('NAMA');
-										?></option>
-										<? } ?>
+										foreach($arrComboTipePegawai as $item) 
+										{
+											$selectvalid= $item["id"];
+											$selectvaltext= $item["text"];
+											$selectvalparentid= $item["parentid"];
+											?>
+											<option value="<?=$selectvalid?>"
+											<? if ($selectvalid == $reqTipePegawai) echo 'selected'?> >
+											<?
+											if($selectvalparentid== 0)  {
+												echo $selectvalid.'.'.$selectvaltext.'.'.$reqTipePegawai;
+											}
+											else{										
+												echo substr($selectvalid,0,1).'.'.substr($selectvalid,1).'.'.$selectvaltext;
+											}
+											?>												
+											</option>
+										<?}
+										?>
 			        				</select>
 			        			</div>
 			        		</div>
@@ -1051,31 +1160,70 @@ if(!empty($arrambilfile))
 			        <div class="row">
 	        			<div class="col-md-6">
 	        				<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Tugas Tambahan</label>
+			        			<?
+	        					$vpdata= $valTugasTambahan['data'];
+	        					$vpwarna= $valTugasTambahan['warna'];
+	        					?>
+			        			<label class="col-form-label text-right col-lg-3 col-sm-12 <?=$vpwarna?>">
+			        				Tugas Tambahan
+			        				<?
+			        				if(!empty($vpdata))
+			        				{
+			        				?>
+			        				<a class="tooltipe" href="javascript:void(0)">
+			        					<i class="fa fa-question-circle text-white"></i><span class="classic"><?=$vpdata?></span>
+			        				</a>
+			        				<?
+			        				}
+			        				?>
+			        			</label>
 			        			<div class="col-lg-9 col-sm-12">
 			        				<select class="js-states form-control" name="reqTugasTambahan" id="reqTugasTambahan">
-			        					<option value="" <? if($reqTugasTambahan == "") echo 'selected'?> disabled>Pilih Tugas Tambahan</option>
-										<option value="1" <? if($reqTugasTambahan == "1") echo 'selected'?>>Kepala Sekolah</option>
-										<option value="2" <? if($reqTugasTambahan == "2") echo 'selected'?>>Kepala Puskesmas</option>
-										<option value="3" <? if($reqTugasTambahan == "3") echo 'selected'?>>Sub Koordinator</option>
+			        					<option value=""></option>
+										<?
+										foreach($arrComboTugasTambahan as $item) 
+										{
+											$selectvalid= $item["id"];
+											$selectvaltext= $item["text"];
+											?>
+											<option value="<?=$selectvalid?>" <? if($reqTugasTambahan == $selectvalid) echo "selected";?>><?=$selectvaltext?></option>
+											<?
+										}
+										?>
 			        				</select>
 			        			</div>
 			        		</div>
 			        	</div>
 			        	<div class="col-md-6">
 	        				<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-3 col-sm-12">
-				        			Status Pegawai
-				        		</label>
+			        			<?
+	        					$vpdata= $valStatusPegawai['data'];
+	        					$vpwarna= $valStatusPegawai['warna'];
+	        					?>
+			        			<label class="col-form-label text-right col-lg-3 col-sm-12 <?=$vpwarna?>">
+			        				Status Pegawai
+			        				<?
+			        				if(!empty($vpdata))
+			        				{
+			        				?>
+			        				<a class="tooltipe" href="javascript:void(0)">
+			        					<i class="fa fa-question-circle text-white"></i><span class="classic"><?=$vpdata?></span>
+			        				</a>
+			        				<?
+			        				}
+			        				?>
+			        			</label>
 			        			<div class="col-lg-9 col-sm-12">
 			        				<select class="js-states form-control"  name = "reqStatusPegawai" id="reqStatusPegawai">
 			        					<option value="" <? if($reqStatusPegawai == "") echo 'selected'?> disabled>Pilih Status Pegawai</option>
 			        					<?
-						                while($status_pegawai->nextRow())
+										foreach($arrComboStatusPegawai as $item) 
 										{
-										?>
-											<option value="<?=$status_pegawai->getField("STATUS_PEGAWAI_ID")?>" <? if($reqStatusPegawai == $status_pegawai->getField("STATUS_PEGAWAI_ID")) echo 'selected' ?>><?=$status_pegawai->getField("NAMA")?></option>
-						                <?
+											$selectvalid= $item["id"];
+											$selectvaltext= $item["text"];
+											?>
+											<option value="<?=$selectvalid?>" <? if($reqStatusPegawai == $selectvalid) echo "selected";?>><?=$selectvaltext?></option>
+											<?
 										}
 										?>
 			        				</select>
@@ -1118,16 +1266,36 @@ if(!empty($arrambilfile))
 			        	</div>
 			        	<div class="col-md-6">
 	        				<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Jenis Pegawai</label>
+			        			<?
+	        					$vpdata= $valJenisPegawai['data'];
+	        					$vpwarna= $valJenisPegawai['warna'];
+	        					?>
+			        			<label class="col-form-label text-right col-lg-3 col-sm-12 <?=$vpwarna?>">
+			        				Jenis Pegawai
+			        				<?
+			        				if(!empty($vpdata))
+			        				{
+			        				?>
+			        				<a class="tooltipe" href="javascript:void(0)">
+			        					<i class="fa fa-question-circle text-white"></i><span class="classic"><?=$vpdata?></span>
+			        				</a>
+			        				<?
+			        				}
+			        				?>
+			        			</label>
 			        			<div class="col-lg-9 col-sm-12">
 			        				<select class="js-states form-control" name = "reqJenisPegawai" id="reqJenisPegawai">
-			        					<option value="" <? if($reqJenisPegawai == "") echo 'selected'?> disabled>Pilih Jenis Pegawai</option>
-			        					<? while ($jenis_pegawai->nextRow()){?>
-					                        <option value="<?=$jenis_pegawai->getField('JENIS_PEGAWAI_ID')?>"
-					                        <? if ($jenis_pegawai->getField('JENIS_PEGAWAI_ID') == $reqJenisPegawai) echo 'selected'?>>
-					                        <?=$jenis_pegawai->getField('NAMA')?>
-					                        </option>
-										<? } ?>
+			        					<option value=""></option>
+										<?
+										foreach($arrComboJenisPegawai as $item) 
+										{
+											$selectvalid= $item["id"];
+											$selectvaltext= $item["text"];
+											?>
+											<option value="<?=$selectvalid?>" <? if($reqJenisPegawai == $selectvalid) echo "selected";?>><?=$selectvaltext?></option>
+											<?
+										}
+										?>
 			        				</select>
 			        			</div>
 			        		</div>
@@ -1137,16 +1305,36 @@ if(!empty($arrambilfile))
 			        <div class="row">
 	        			<div class="col-md-6">
 	        				<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Kedudukan</label>
+			        			<?
+	        					$vpdata= $valKedudukanId['data'];
+	        					$vpwarna= $valKedudukanId['warna'];
+	        					?>
+			        			<label class="col-form-label text-right col-lg-3 col-sm-12 <?=$vpwarna?>">
+			        				Kedudukan
+			        				<?
+			        				if(!empty($vpdata))
+			        				{
+			        				?>
+			        				<a class="tooltipe" href="javascript:void(0)">
+			        					<i class="fa fa-question-circle text-white"></i><span class="classic"><?=$vpdata?></span>
+			        				</a>
+			        				<?
+			        				}
+			        				?>
+			        			</label>
 			        			<div class="col-lg-9 col-sm-12">
 			        				<select class="js-states form-control" name = "reqKedudukanId" id="reqKedudukanId">
 			        					<option value="" <? if($reqKedudukanId == "") echo 'selected'?> disabled>Pilih Kedudukan</option>
-			        					<? while ($kedudukan->nextRow()){?>
-					                        <option value="<?=$kedudukan->getField('KEDUDUKAN_ID')?>"
-					                        <? if ($kedudukan->getField('KEDUDUKAN_ID') == $reqKedudukanId) echo 'selected'?>>
-					                        <?=$kedudukan->getField('NAMA')?>
-					                        </option>
-										<? } ?>
+			        					<?
+										foreach($arrComboKedudukan as $item) 
+										{
+											$selectvalid= $item["id"];
+											$selectvaltext= $item["text"];
+											?>
+											<option value="<?=$selectvalid?>" <? if($reqKedudukanId == $selectvalid) echo "selected";?>><?=$selectvaltext?></option>
+											<?
+										}
+										?>
 			        				</select>
 			        			</div>
 			        		</div>
