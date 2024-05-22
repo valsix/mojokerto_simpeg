@@ -60,10 +60,6 @@ $reqNIK= $set->getField('NIK');$valNIK= checkwarna($reqPerubahanData, 'NIK');
 $reqRT= $set->getField('RT');$valRT= checkwarna($reqPerubahanData, 'RT');
 $reqRW= $set->getField('RW');$valRW= checkwarna($reqPerubahanData, 'RW');
 $reqEmail= $set->getField('EMAIL');$valEmail= checkwarna($reqPerubahanData, 'EMAIL');
-$reqPropinsi= $set->getField('PROPINSI_ID');$valPropinsi= checkwarna($reqPerubahanData, 'PROPINSI_ID');
-$reqKabupaten= $set->getField('KABUPATEN_ID');$valKabupaten= checkwarna($reqPerubahanData, 'KABUPATEN_ID');
-$reqKecamatan= $set->getField('KECAMATAN_ID');$valKecamatan= checkwarna($reqPerubahanData, 'KECAMATAN_ID');
-$reqDesa= $set->getField('KELURAHAN_ID');$valDesa= checkwarna($reqPerubahanData, 'KELURAHAN_ID');
 $reqBank= $set->getField('BANK_ID');$valBank= checkwarna($reqPerubahanData, 'BANK_ID');
 $reqNoRekening= $set->getField('NO_REKENING');$valNoRekening= checkwarna($reqPerubahanData, 'NO_REKENING');
 $reqPangkatTerkahir= $set->getField('GOL_RUANG');$valPangkatTerkahir= checkwarna($reqPerubahanData, 'GOL_RUANG');
@@ -79,7 +75,7 @@ $reqKodePos= $set->getField('KODEPOS');$valKodePos= checkwarna($reqPerubahanData
 $reqKedudukanId= $set->getField('KEDUDUKAN_ID');$valKedudukanId= checkwarna($reqPerubahanData, 'KEDUDUKAN_ID');
 $reqSatkerNama= $set->getField('SATKER_FULL');$valSatkerNama= checkwarna($reqPerubahanData, 'SATKER_FULL');
 $reqSatkerId= $set->getField('SATKER_ID');$valSatkerId= checkwarna($reqPerubahanData, 'SATKER_ID');
-// print_r($valNoRekening);exit;
+
 $reqNikPns= $set->getField('KTP_PNS');$valNikPns= checkwarna($reqPerubahanData, 'KTP_PNS');
 $reqDrh= $set->getField('DRH');$valDrh= checkwarna($reqPerubahanData, 'DRH');
 $reqNomorKK= $set->getField('KK');$valNomorKK= checkwarna($reqPerubahanData, 'KK');
@@ -137,6 +133,46 @@ $arrComboGoldar= array(
 $reqGolDarah= str_replace(" ","",$set->getField('GOLONGAN_DARAH'));
 $valGolonganDarah= checkwarna($reqPerubahanData, 'GOLONGAN_DARAH', $arrgoldarah, array("id", "text"));
 
+$arrPropinsi= [];
+$arrComboPropinsi= [];
+$propinsi= new Core();
+$propinsi->selectByParamsPropinsi(); 
+while ($propinsi->nextRow()){
+	array_push($arrComboPropinsi,array("id"=>$propinsi->getField('PROPINSI_ID') , "text"=>$propinsi->getField('NAMA')));
+}
+$reqPropinsi= $set->getField('PROPINSI_ID');
+$valPropinsi= checkwarna($reqPerubahanData, 'PROPINSI_ID', $arrPropinsi, array("id", "text"));
+
+$arrKabupaten= [];
+$arrComboKabupaten= [];
+$kabupaten= new Core();
+$kabupaten->selectByParamsKabupaten(array('PROPINSI_ID'=>$reqPropinsi)); 
+while ($kabupaten->nextRow()){
+	array_push($arrComboKabupaten,array("id"=>$kabupaten->getField('KABUPATEN_ID') , "text"=>$kabupaten->getField('NAMA')));
+}
+$reqKabupaten= $set->getField('KABUPATEN_ID');
+$valKabupaten= checkwarna($reqPerubahanData, 'KABUPATEN_ID', $arrKabupaten, array("id", "text"));
+
+$arrKecamatan= [];
+$arrComboKecamatan= [];
+$kecamatan= new Core();
+$kecamatan->selectByParamsKecamatan(array('PROPINSI_ID'=>$reqPropinsi, 'KABUPATEN_ID'=>$reqKabupaten)); 
+while ($kecamatan->nextRow()){
+	array_push($arrComboKecamatan,array("id"=>$kecamatan->getField('KECAMATAN_ID') , "text"=>$kecamatan->getField('NAMA')));
+}
+$reqKecamatan= $set->getField('KECAMATAN_ID');
+$valKecamatan= checkwarna($reqPerubahanData, 'KECAMATAN_ID', $arrKecamatan, array("id", "text"));
+
+$arrDesa= [];
+$arrComboDesa= [];
+$desa= new Core();
+$desa->selectByParamsKelurahan(array('PROPINSI_ID'=>$reqPropinsi, 'KABUPATEN_ID'=>$reqKabupaten,'KECAMATAN_ID'=>$reqKecamatan)); 
+while ($desa->nextRow()){
+	array_push($arrComboDesa,array("id"=>$desa->getField('KELURAHAN_ID') , "text"=>$desa->getField('NAMA')));
+}
+$reqDesa= $set->getField('KELURAHAN_ID');
+$valDesa= checkwarna($reqPerubahanData, 'KELURAHAN_ID', $arrDesa, array("id", "text"));
+
 $bank= new Core();
 $bank->selectByParamsBank(); 
 
@@ -151,18 +187,6 @@ $jenis_pegawai->selectByParamsJenisPegawai();
 
 $kedudukan= new Core();
 $kedudukan->selectByParamsKedudukan(); 
-
-$propinsi= new Core();
-$propinsi->selectByParamsPropinsi(); 
-
-$kabupaten= new Core();
-$kabupaten->selectByParamsKabupaten(array('PROPINSI_ID'=>$reqPropinsi)); 
-
-$kecamatan= new Core();
-$kecamatan->selectByParamsKecamatan(array('PROPINSI_ID'=>$reqPropinsi, 'KABUPATEN_ID'=>$reqKabupaten)); 
-
-$kelurahan= new Core();
-$kelurahan->selectByParamsKelurahan(array('PROPINSI_ID'=>$reqPropinsi, 'KABUPATEN_ID'=>$reqKabupaten,'KECAMATAN_ID'=>$reqKecamatan)); 
 
 // echo $reqTmtJabatan;exit;
 // $reqMode="update";
@@ -744,19 +768,36 @@ if(!empty($arrambilfile))
 			        <div class="row">
 	        			<div class="col-md-6">
 	        				<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Propinsi</label>
+			        			<?
+	        					$vpdata= $valPropinsi['data'];
+	        					$vpwarna= $valPropinsi['warna'];
+	        					?>
+			        			<label class="col-form-label text-right col-lg-3 col-sm-12 <?=$vpwarna?>">
+			        				Propinsi
+			        				<?
+			        				if(!empty($vpdata))
+			        				{
+			        				?>
+			        				<a class="tooltipe" href="javascript:void(0)">
+			        					<i class="fa fa-question-circle text-white"></i><span class="classic"><?=$vpdata?></span>
+			        				</a>
+			        				<?
+			        				}
+			        				?>
+			        			</label>
 			        			<div class="col-lg-9 col-sm-12">
 			        				<select class="js-states form-control" id='reqPropinsi' name='reqPropinsi'>
-			        					<option value="" <?if($reqPropinsi=='') echo 'selected' ?> disabled></option>
-										<?while($propinsi->nextRow())
-										 {
+			        					<option value=""></option>
+										<?
+										foreach($arrComboPropinsi as $item) 
+										{
+											$selectvalid= $item["id"];
+											$selectvaltext= $item["text"];
+											?>
+											<option value="<?=$selectvalid?>" <? if($reqPropinsi == $selectvalid) echo "selected";?>><?=$selectvaltext?></option>
+											<?
+										}
 										?>
-											<option value="<?=$propinsi->getField('PROPINSI_ID')?>" <? if($propinsi->getField('PROPINSI_ID') == $reqPropinsi) echo 'selected' ?>>
-					                        	<?=$propinsi->getField('NAMA')?>
-					                        </option>
-					                    <?
-										 }
-										 ?>
 
 			        				</select>
 			        			</div>
@@ -764,19 +805,37 @@ if(!empty($arrambilfile))
 			        	</div>
 			        	<div class="col-md-6">
 	        				<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Kabupaten</label>
+			        			<?
+	        					$vpdata= $valKabupaten['data'];
+	        					$vpwarna= $valKabupaten['warna'];
+	        					?>
+			        			<label class="col-form-label text-right col-lg-3 col-sm-12 <?=$vpwarna?>">
+			        				Kabupaten
+			        				<?
+			        				if(!empty($vpdata))
+			        				{
+			        				?>
+			        				<a class="tooltipe" href="javascript:void(0)">
+			        					<i class="fa fa-question-circle text-white"></i><span class="classic"><?=$vpdata?></span>
+			        				</a>
+			        				<?
+			        				}
+			        				?>
+			        			</label>
 			        			<div class="col-lg-9 col-sm-12">
 			        				<select class="js-states form-control" id='reqKabupaten' name='reqKabupaten'>
-			        					<option value="" <?if($reqKabupaten=='') echo 'selected' ?> disabled></option>
-										<?while($kabupaten->nextRow())
-										 {
+			        					<option value=""></option>
+										<?
+										foreach($arrComboKabupaten as $item) 
+										{
+											$selectvalid= $item["id"];
+											$selectvaltext= $item["text"];
+											?>
+											<option value="<?=$selectvalid?>" <? if($reqKabupaten == $selectvalid) echo "selected";?>><?=$selectvaltext?></option>
+											<?
+										}
 										?>
-											<option value="<?=$kabupaten->getField('KABUPATEN_ID')?>" <? if($kabupaten->getField('KABUPATEN_ID') == $reqKabupaten) echo 'selected' ?>>
-					                        	<?=$kabupaten->getField('NAMA')?>
-					                        </option>
-					                    <?
-										 }
-										 ?>
+
 			        				</select>
 			        			</div>
 			        		</div>
@@ -786,38 +845,63 @@ if(!empty($arrambilfile))
 			        <div class="row">
 			        	<div class="col-md-6">
 	        				<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Kecamatan</label>
+			        			<?
+	        					$vpdata= $valKecamatan['data'];
+	        					$vpwarna= $valKecamatan['warna'];
+	        					?>
+			        			<label class="col-form-label text-right col-lg-3 col-sm-12 <?=$vpwarna?>">
+			        				Kecamatan
+			        				<?
+			        				if(!empty($vpdata))
+			        				{
+			        				?>
+			        				<a class="tooltipe" href="javascript:void(0)">
+			        					<i class="fa fa-question-circle text-white"></i><span class="classic"><?=$vpdata?></span>
+			        				</a>
+			        				<?
+			        				}
+			        				?>
+			        			</label>
 			        			<div class="col-lg-9 col-sm-12">
 			        				<select class="js-states form-control" id="reqKecamatan" name="reqKecamatan">
-			        					<option value="" <?if($reqKecamatan=='') echo 'selected' ?> disabled></option>
-										<?while($kecamatan->nextRow())
-										 {
+			        					<option value=""></option>
+										<?
+										foreach($arrComboKecamatan as $item) 
+										{
+											$selectvalid= $item["id"];
+											$selectvaltext= $item["text"];
+											?>
+											<option value="<?=$selectvalid?>" <? if($reqKecamatan == $selectvalid) echo "selected";?>><?=$selectvaltext?></option>
+											<?
+										}
 										?>
-											<option value="<?=$kecamatan->getField('KECAMATAN_ID')?>" <? if($kecamatan->getField('KECAMATAN_ID') == $reqKecamatan) echo 'selected' ?>>
-					                        	<?=$kecamatan->getField('NAMA')?>
-					                        </option>
-					                    <?
-										 }
-										 ?>
 			        				</select>
 			        			</div>
 			        		</div>
 			        	</div>
 			        	<div class="col-md-6">
 	        				<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Desa</label>
+			        			<?
+	        					$vpdata= $valDesa['data'];
+	        					$vpwarna= $valDesa['warna'];
+	        					?>
+			        			<label class="col-form-label text-right col-lg-3 col-sm-12 <?=$vpwarna?>">
+			        				Desa
+			        				<?
+			        				if(!empty($vpdata))
+			        				{
+			        				?>
+			        				<a class="tooltipe" href="javascript:void(0)">
+			        					<i class="fa fa-question-circle text-white"></i><span class="classic"><?=$vpdata?></span>
+			        				</a>
+			        				<?
+			        				}
+			        				?>
+			        			</label>
 			        			<div class="col-lg-9 col-sm-12">
 			        				<select class="js-states form-control" id="reqKelurahan" name="reqDesa">
 			        					<option value="" <?if($reqKelurahan=='') echo 'selected' ?> disabled></option>
-										<?while($kelurahan->nextRow())
-										 {
-										?>
-											<option value="<?=$kelurahan->getField('KELURAHAN_ID')?>" <? if($kelurahan->getField('KELURAHAN_ID') == $reqDesa) echo 'selected' ?>>
-					                        	<?=$kelurahan->getField('NAMA')?>
-					                        </option>
-					                    <?
-										 }
-										 ?>
+										
 			        				</select>
 			        			</div>
 			        		</div>
@@ -851,7 +935,7 @@ if(!empty($arrambilfile))
 	        					$vpwarna= $valNoRekening['warna'];
 	        					?>
 			        			<label class="col-form-label text-right col-lg-3 col-sm-12 <?=$vpwarna?>">
-			        				Telpon
+			        				No Rekening
 			        				<?
 			        				if(!empty($vpdata))
 			        				{
@@ -863,7 +947,6 @@ if(!empty($arrambilfile))
 			        				}
 			        				?>
 			        			</label>
-			        			<label class="col-form-label text-right col-lg-3 col-sm-12">No Rekening</label>
 			        			<div class="col-lg-9 col-sm-12">
 			        				<input type="text" class="form-control"  name="reqNoRekening" id="reqNoRekening" value="<?=$reqNoRekening?>" />
 			        			</div>
@@ -1004,7 +1087,23 @@ if(!empty($arrambilfile))
 			        <div class="row">
 	        			<div class="col-md-6">
 	        				<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Tgl Pensiun</label>
+	        					<?
+	        					$vpdata= $valTglPensiun['data'];
+	        					$vpwarna= $valTglPensiun['warna'];
+	        					?>
+			        			<label class="col-form-label text-right col-lg-3 col-sm-12 <?=$vpwarna?>">
+			        				Tgl Pensiun
+			        				<?
+			        				if(!empty($vpdata))
+			        				{
+			        				?>
+			        				<a class="tooltipe" href="javascript:void(0)">
+			        					<i class="fa fa-question-circle text-white"></i><span class="classic"><?=$vpdata?></span>
+			        				</a>
+			        				<?
+			        				}
+			        				?>
+			        			</label>
 			        			<div class="col-lg-9 col-sm-12">
 				        			<div class="input-group date">
 				        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTglPensiun" value="<?=$reqTglPensiun?>" />
@@ -1054,7 +1153,23 @@ if(!empty($arrambilfile))
 			        	</div>
 			        	<div class="col-md-6">
 	        				<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Kartu Pegawai</label>
+			        			<?
+	        					$vpdata= $valKartuPegawai['data'];
+	        					$vpwarna= $valKartuPegawai['warna'];
+	        					?>
+			        			<label class="col-form-label text-right col-lg-3 col-sm-12 <?=$vpwarna?>">
+			        				Kartu Pegawai
+			        				<?
+			        				if(!empty($vpdata))
+			        				{
+			        				?>
+			        				<a class="tooltipe" href="javascript:void(0)">
+			        					<i class="fa fa-question-circle text-white"></i><span class="classic"><?=$vpdata?></span>
+			        				</a>
+			        				<?
+			        				}
+			        				?>
+			        			</label>
 			        			<div class="col-lg-9 col-sm-12">
 			        				<input type="text" class="form-control"  name="reqKartuPegawai" id="reqKartuPegawai" value="<?=$reqKartuPegawai?>" />
 			        			</div>
@@ -1065,7 +1180,23 @@ if(!empty($arrambilfile))
 			        <div class="row">
 	        			<div class="col-md-6">
 	        				<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-3 col-sm-12">BPJS</label>
+			        			<?
+	        					$vpdata= $valAkses['data'];
+	        					$vpwarna= $valAkses['warna'];
+	        					?>
+			        			<label class="col-form-label text-right col-lg-3 col-sm-12 <?=$vpwarna?>">
+			        				BPJS
+			        				<?
+			        				if(!empty($vpdata))
+			        				{
+			        				?>
+			        				<a class="tooltipe" href="javascript:void(0)">
+			        					<i class="fa fa-question-circle text-white"></i><span class="classic"><?=$vpdata?></span>
+			        				</a>
+			        				<?
+			        				}
+			        				?>
+			        			</label>
 			        			<div class="col-lg-9 col-sm-12">
 			        				<input type="text" class="form-control"  name="reqAkses" id="reqAkses" value="<?=$reqAkses?>" />
 			        			</div>
@@ -1073,7 +1204,23 @@ if(!empty($arrambilfile))
 			        	</div>
 			        	<div class="col-md-6">
 	        				<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Taspen</label>
+			        			<?
+	        					$vpdata= $valTaspen['data'];
+	        					$vpwarna= $valTaspen['warna'];
+	        					?>
+			        			<label class="col-form-label text-right col-lg-3 col-sm-12 <?=$vpwarna?>">
+			        				Taspen
+			        				<?
+			        				if(!empty($vpdata))
+			        				{
+			        				?>
+			        				<a class="tooltipe" href="javascript:void(0)">
+			        					<i class="fa fa-question-circle text-white"></i><span class="classic"><?=$vpdata?></span>
+			        				</a>
+			        				<?
+			        				}
+			        				?>
+			        			</label>
 			        			<div class="col-lg-9 col-sm-12">
 			        				<input type="text" class="form-control"  name="reqTaspen" id="reqTaspen" value="<?=$reqTaspen?>" />
 			        			</div>
@@ -1084,7 +1231,23 @@ if(!empty($arrambilfile))
 			        <div class="row">
 	        			<div class="col-md-6">
 	        				<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-3 col-sm-12">NPWP</label>
+			        			<?
+	        					$vpdata= $valNPWP['data'];
+	        					$vpwarna= $valNPWP['warna'];
+	        					?>
+			        			<label class="col-form-label text-right col-lg-3 col-sm-12 <?=$vpwarna?>">
+			        				NPWP
+			        				<?
+			        				if(!empty($vpdata))
+			        				{
+			        				?>
+			        				<a class="tooltipe" href="javascript:void(0)">
+			        					<i class="fa fa-question-circle text-white"></i><span class="classic"><?=$vpdata?></span>
+			        				</a>
+			        				<?
+			        				}
+			        				?>
+			        			</label>
 			        			<div class="col-lg-9 col-sm-12">
 			        				<input type="text" class="form-control"  name="reqNPWP" id="reqNPWP" value="<?=$reqNPWP?>" />
 			        			</div>
@@ -1092,7 +1255,23 @@ if(!empty($arrambilfile))
 			        	</div>
 			        	<div class="col-md-6">
 	        				<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-3 col-sm-12">NIK</label>
+			        			<?
+	        					$vpdata= $valNIK['data'];
+	        					$vpwarna= $valNIK['warna'];
+	        					?>
+			        			<label class="col-form-label text-right col-lg-3 col-sm-12 <?=$vpwarna?>">
+			        				NIK
+			        				<?
+			        				if(!empty($vpdata))
+			        				{
+			        				?>
+			        				<a class="tooltipe" href="javascript:void(0)">
+			        					<i class="fa fa-question-circle text-white"></i><span class="classic"><?=$vpdata?></span>
+			        				</a>
+			        				<?
+			        				}
+			        				?>
+			        			</label>
 			        			<div class="col-lg-9 col-sm-12">
 			        				<input type="text" class="form-control"  name="reqNIK" id="reqNIK" value="<?=$reqNIK?>" />
 			        			</div>
@@ -1111,7 +1290,23 @@ if(!empty($arrambilfile))
 	        			</div>
 			        	<div class="col-md-6">
 	        				<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-3 col-sm-12">KTP PNS</label>
+			        			<?
+	        					$vpdata= $valNikPns['data'];
+	        					$vpwarna= $valNikPns['warna'];
+	        					?>
+			        			<label class="col-form-label text-right col-lg-3 col-sm-12 <?=$vpwarna?>">
+			        				KTP PNS
+			        				<?
+			        				if(!empty($vpdata))
+			        				{
+			        				?>
+			        				<a class="tooltipe" href="javascript:void(0)">
+			        					<i class="fa fa-question-circle text-white"></i><span class="classic"><?=$vpdata?></span>
+			        				</a>
+			        				<?
+			        				}
+			        				?>
+			        			</label>
 			        			<div class="col-lg-9 col-sm-12">
 			        				<input type="text" class="form-control"  name="reqNikPns" id="reqNikPns" value="<?=$reqNikPns?>" />
 			        			</div>
@@ -1122,7 +1317,23 @@ if(!empty($arrambilfile))
 			        <div class="row">
 	        			<div class="col-md-6">
 	        				<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Nomor KK</label>
+			        			<?
+	        					$vpdata= $valNomorKK['data'];
+	        					$vpwarna= $valNomorKK['warna'];
+	        					?>
+			        			<label class="col-form-label text-right col-lg-3 col-sm-12 <?=$vpwarna?>">
+			        				Nomor KK
+			        				<?
+			        				if(!empty($vpdata))
+			        				{
+			        				?>
+			        				<a class="tooltipe" href="javascript:void(0)">
+			        					<i class="fa fa-question-circle text-white"></i><span class="classic"><?=$vpdata?></span>
+			        				</a>
+			        				<?
+			        				}
+			        				?>
+			        			</label>
 			        			<div class="col-lg-9 col-sm-12">
 			        				<input type="text" class="form-control"  name="reqNomorKK" id="reqNomorKK" value="<?=$reqNomorKK?>" />
 			        			</div>
@@ -1130,7 +1341,23 @@ if(!empty($arrambilfile))
 			        	</div>
 			        	<div class="col-md-6">
 	        				<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-3 col-sm-12">KTP Pasangan</label>
+			        			<?
+	        					$vpdata= $valKtpPasangan['data'];
+	        					$vpwarna= $valKtpPasangan['warna'];
+	        					?>
+			        			<label class="col-form-label text-right col-lg-3 col-sm-12 <?=$vpwarna?>">
+			        				KTP Pasangan
+			        				<?
+			        				if(!empty($vpdata))
+			        				{
+			        				?>
+			        				<a class="tooltipe" href="javascript:void(0)">
+			        					<i class="fa fa-question-circle text-white"></i><span class="classic"><?=$vpdata?></span>
+			        				</a>
+			        				<?
+			        				}
+			        				?>
+			        			</label>
 			        			<div class="col-lg-9 col-sm-12">
 			        				<input type="text" class="form-control"  name="reqKtpPasangan" id="reqKtpPasangan" value="<?=$reqKtpPasangan?>" />
 			        			</div>
@@ -1174,7 +1401,23 @@ if(!empty($arrambilfile))
 	        		<div class="row">
 	        			<div class="col-md-2" style="max-width: 11%;">
 	        				<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-12 col-sm-12">Daftar Riwayat Hidup</label>			        			
+			        			<?
+	        					$vpdata= $valDrh['data'];
+	        					$vpwarna= $valDrh['warna'];
+	        					?>
+			        			<label class="col-form-label text-right col-lg-12 col-sm-12 <?=$vpwarna?>">
+			        				Daftar Riwayat Hidup
+			        				<?
+			        				if(!empty($vpdata))
+			        				{
+			        				?>
+			        				<a class="tooltipe" href="javascript:void(0)">
+			        					<i class="fa fa-question-circle text-white"></i><span class="classic"><?=$vpdata?></span>
+			        				</a>
+			        				<?
+			        				}
+			        				?>
+			        			</label>	        			
 			        		</div>
 			        	</div>
 	        			<div class="col-md-10">
