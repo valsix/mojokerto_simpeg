@@ -81,6 +81,21 @@ class GajiPokok extends Entity{
 		return $this->selectLimit($str,$limit,$from); 
     }
 
+    function selectByParamsOnly($paramsArray=array(),$limit=-1,$from=-1, $statement='')
+	{
+		$str = "SELECT GAJI_POKOK_ID, MASA_KERJA, GAJI, PANGKAT_ID
+				FROM GAJI_POKOK WHERE 1=1"; 
+		
+		while(list($key,$val) = each($paramsArray))
+		{
+			$str .= " AND $key = '$val' ";
+		}
+				
+		$str .= $statement." ORDER BY PANGKAT_ID ASC";
+		$this->query = $str;		
+		return $this->selectLimit($str,$limit,$from); 
+    }
+
     function getCountByParams($paramsArray=array())
 	{
 		$str = "SELECT COUNT(GAJI_POKOK_ID) AS ROWCOUNT FROM GAJI_POKOK WHERE GAJI_POKOK_ID IS NOT NULL "; 

@@ -129,6 +129,29 @@ class combo_json extends CI_Controller {
 
 	}
 
+	function getGaji()
+	{
+		$this->load->model("base/GajiPokok");
+
+		$reqGolId= $this->input->get('reqGolId');
+		$reqTahun= $this->input->get('reqTahun');
+	
+		$gaji_pokok = new GajiPokok();
+		$gaji_pokok->selectByParamsOnly(array('MASA_KERJA'=>$reqTahun, 'PANGKAT_ID'=>$reqGolId));
+		$gaji_pokok->firstRow();
+		//echo $gaji_pokok->query;
+		$tempGajiPokok = $gaji_pokok->getField('GAJI');
+
+		$arrFinal = array("GAJI" => $tempGajiPokok);
+
+		header('Content-Type: application/json');
+
+		// echo json_encode($arrFinal);
+
+		echo json_encode( $arrFinal, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);	
+
+	}
+
 
 
 }

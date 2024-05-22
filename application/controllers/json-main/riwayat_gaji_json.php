@@ -78,6 +78,10 @@ class riwayat_gaji_json extends CI_Controller {
 				{
 					$row[$valkey]= $set->getField('MASA_KERJA_TAHUN')."-".$set->getField('MASA_KERJA_BULAN');
 				}
+				else if ($valkey == "GAJI_POKOK")
+				{
+					$row[$valkey]= currencyToPage($set->getField($valkey));
+				}
 				else
 				{
 					$row[$valkey]= $set->getField($valkey);
