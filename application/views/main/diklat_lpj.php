@@ -95,7 +95,7 @@ $readonly = "readonly";
 	        		<div class="form-group row">
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Angkatan</label>
 	        			<div class="col-lg-4 col-sm-12">
-	        				<input type="text" class="form-control valsixnumbering" name="reqAngkatan" id="reqAngkatan" value="<?=$reqAngkatan?>" />
+	        				<input type="text" class="form-control " name="reqAngkatan" id="reqAngkatan" value="<?=$reqAngkatan?>" />
 	        			</div>
 	        			<label class="col-form-label text-right col-lg-2 col-sm-12">Tahun</label>
 	        			<div class="col-lg-4 col-sm-12">
