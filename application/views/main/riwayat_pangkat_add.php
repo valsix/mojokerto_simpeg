@@ -390,6 +390,48 @@ if(!empty($arrambilfile))
 
 <script type="text/javascript">
 
+	$(function(){
+		$("#reqGolRuang").change(function(){
+			$.getJSON("json-main/combo_json/getGaji?reqGolId="+$("#reqGolRuang").val()+"&reqTahun="+$("#reqTh").val(),
+				function(data){
+					$("#reqGajiPokok").val(data.GAJI);
+				});		    		
+		});
+		
+		$("#reqTh").keypress(function(e) {
+			if( e.which!=8 && e.which!=0 && (e.which<48 || e.which>57))
+			{
+				return false;
+			}
+			else
+			{
+				return true;
+			}
+		});
+		$("#reqTh").keyup(function(e) {
+			if(isNaN($("#reqTh").val()))
+			{
+
+			}
+			else
+			{
+				$.getJSON("json-main/combo_json/getGaji?reqGolId="+$("#reqGolRuang").val()+"&reqTahun="+$("#reqTh").val(),
+					function(data){
+						$("#reqGajiPokok").val(data.GAJI);
+					});
+			}
+		});
+		$("#reqBl").keypress(function(e) {
+			if( e.which!=8 && e.which!=0 && (e.which<48 || e.which>57))
+			{
+				return false;
+			}
+
+		});
+		
+		
+	});
+
 	$(function () {
 		$("[rel=tooltip]").tooltip({ placement: 'right'});
 		// $('[data-toggle="tooltip"]').tooltip()
@@ -442,7 +484,7 @@ if(!empty($arrambilfile))
 					type: 'POST',
 					dataType: 'json',
 					success: function (response) {
-			        	console.log(response); return false;
+			        	// console.log(response); return false;
 			        	data= response.message;
 			        	data= data.split("-");
 			        	rowid= data[0];
