@@ -134,6 +134,7 @@ create table validasi.hapus_data
 	, tanggal_validasi timestamp without time zone
 );
 
+--========================================================================================================================
 drop type if exists validasi.pegawai_type;
 create type validasi.pegawai_type as
 (
@@ -735,7 +736,7 @@ begin
 			, b.temp_validasi_id, c.temp_validasi_id temp_validasi_hapus_id, b.validasi, b.validator, b.perubahan_data, b.tipe_perubahan_data, b.tanggal_validasi
 			from pegawai a
 			left join validasi.pegawai b on a.pegawai_id = b.pegawai_id and b.validasi is null
-			left join validasi.hapus_data c on c.hapus_nama::text = ''pegawai''::text and a.pegawai_id = c.temp_validasi_id::numeric and c.validasi is null
+			left join validasi.hapus_data c on upper(c.hapus_nama)::text = upper(''pegawai'')::text and a.pegawai_id = c.temp_validasi_id::numeric and c.validasi is null
 			where a.pegawai_id = '|| pegawaiid ||'
 			union all
 			select
@@ -1104,3 +1105,496 @@ before insert or update
 on validasi.pegawai
 for each row
 execute procedure validasi.validasi_pegawai();
+
+--========================================================================================================================
+drop function if exists validasi.validasi_pegawai_pangkat_riwayat(numeric, character varying, character varying);
+drop type if exists validasi.pangkat_riwayat_type;
+create type validasi.pangkat_riwayat_type as
+(
+	pangkat_riwayat_id integer
+	, pegawai_id bigint
+	, pejabat_penetap_id integer
+	, pangkat_id integer
+	, stlud character varying(80)
+	, no_stlud character varying(80)
+	, tanggal_stlud date
+	, no_nota character varying(45)
+	, tanggal_nota date
+	, no_sk character varying(50)
+	, tanggal_sk date
+	, tmt_pangkat date
+	, kredit numeric
+	, jenis_kp integer
+	, keterangan character varying(255)
+	, masa_kerja_tahun integer
+	, masa_kerja_bulan integer
+	, tanggal_update date
+	, flag_data_terakhir integer
+	, pejabat_penetap character varying(255)
+	, foto_blob text
+	, format character varying(255)
+	, ukuran numeric
+	, user_app_id integer
+	, gaji_pokok integer
+	, temp_validasi_id integer
+	, temp_validasi_hapus_id integer
+	, validasi integer
+	, validator character varying
+	, perubahan_data character varying
+	, tipe_perubahan_data character(1)
+	, tanggal_validasi timestamp without time zone
+);
+
+drop table if exists validasi.pangkat_riwayat;
+create table validasi.pangkat_riwayat
+(
+	pangkat_riwayat_id integer
+	, pegawai_id bigint
+	, pejabat_penetap_id integer
+	, pangkat_id integer
+	, stlud character varying(80)
+	, no_stlud character varying(80)
+	, tanggal_stlud date
+	, no_nota character varying(45)
+	, tanggal_nota date
+	, no_sk character varying(50)
+	, tanggal_sk date
+	, tmt_pangkat date
+	, kredit numeric
+	, jenis_kp integer
+	, keterangan character varying(255)
+	, masa_kerja_tahun integer
+	, masa_kerja_bulan integer
+	, tanggal_update date
+	, flag_data_terakhir integer default 1
+	, pejabat_penetap character varying(255)
+	, foto_blob text
+	, format character varying(255)
+	, ukuran numeric
+	, user_app_id integer
+	, gaji_pokok integer
+	, last_create_user character varying(100)
+	, last_create_date date
+	, last_update_user character varying(100)
+	, last_update_date date
+	, last_create_satker character varying(25)
+	, last_update_satker character varying(25)
+	, validasi integer
+	, validator character varying
+	, perubahan_data character varying
+	, perubahan_verifikator_data character varying
+	, tipe_perubahan_data character(1)
+	, tanggal_validasi timestamp without time zone
+	, temp_validasi_id integer NOT NULL
+	, constraint vpangkat_riwayat_pkey primary key (temp_validasi_id)
+);
+
+create or replace function validasi.validasi_pegawai_pangkat_riwayat(pegawaiid numeric, id character varying, rowid character varying)
+returns setof validasi.pangkat_riwayat_type as
+$body$
+declare
+	cur refcursor;
+	query text;
+	rec validasi.pangkat_riwayat_type%rowtype;
+begin
+	if coalesce(nullif(rowid, ''), null) is not null then
+		query := '
+		select
+		a.pangkat_riwayat_id, a.pegawai_id
+		, a.pejabat_penetap_id, a.pangkat_id, a.stlud, a.no_stlud, a.tanggal_stlud, a.no_nota, a.tanggal_nota
+		, a.no_sk, a.tanggal_sk, a.tmt_pangkat, a.kredit, a.jenis_kp, a.keterangan
+		, a.masa_kerja_tahun, a.masa_kerja_bulan, a.tanggal_update, a.flag_data_terakhir, a.pejabat_penetap
+		, a.foto_blob, a.format, a.ukuran, a.user_app_id, a.gaji_pokok
+		, a.temp_validasi_id, a.temp_validasi_hapus_id, a.validasi, a.validator, a.perubahan_data, a.tipe_perubahan_data, a.tanggal_validasi
+		from
+		(
+			select
+			a.pangkat_riwayat_id, a.pegawai_id
+			, a.pejabat_penetap_id, a.pangkat_id, a.stlud, a.no_stlud, a.tanggal_stlud, a.no_nota, a.tanggal_nota
+			, a.no_sk, a.tanggal_sk, a.tmt_pangkat, a.kredit, a.jenis_kp, a.keterangan
+			, a.masa_kerja_tahun, a.masa_kerja_bulan, a.tanggal_update, a.flag_data_terakhir, a.pejabat_penetap
+			, a.foto_blob, a.format, a.ukuran, a.user_app_id, a.gaji_pokok
+			, a.temp_validasi_id, null temp_validasi_hapus_id, a.validasi, a.validator, a.perubahan_data, a.tipe_perubahan_data, a.tanggal_validasi
+			from validasi.pangkat_riwayat a
+			where a.temp_validasi_id = '|| rowid ||'
+			and a.pegawai_id = '|| pegawaiid ||'
+		) a
+		';
+	  else
+		query := '
+		select
+		a.pangkat_riwayat_id, a.pegawai_id
+		, a.pejabat_penetap_id, a.pangkat_id, a.stlud, a.no_stlud, a.tanggal_stlud, a.no_nota, a.tanggal_nota
+		, a.no_sk, a.tanggal_sk, a.tmt_pangkat, a.kredit, a.jenis_kp, a.keterangan
+		, a.masa_kerja_tahun, a.masa_kerja_bulan, a.tanggal_update, a.flag_data_terakhir, a.pejabat_penetap
+		, a.foto_blob, a.format, a.ukuran, a.user_app_id, a.gaji_pokok
+		, a.temp_validasi_id, a.temp_validasi_hapus_id, a.validasi, a.validator, a.perubahan_data, a.tipe_perubahan_data, a.tanggal_validasi
+		from
+		(
+			select
+			a.pangkat_riwayat_id, a.pegawai_id
+			, coalesce(b.pejabat_penetap_id, a.pejabat_penetap_id) pejabat_penetap_id
+			, coalesce(b.pangkat_id, a.pangkat_id) pangkat_id
+			, coalesce(b.stlud, a.stlud) stlud
+			, coalesce(b.no_stlud, a.no_stlud) no_stlud
+			, coalesce(b.tanggal_stlud, a.tanggal_stlud) tanggal_stlud
+			, coalesce(b.no_nota, a.no_nota) no_nota
+			, coalesce(b.tanggal_nota, a.tanggal_nota) tanggal_nota
+			, coalesce(b.no_sk, a.no_sk) no_sk
+			, coalesce(b.tanggal_sk, a.tanggal_sk) tanggal_sk
+			, coalesce(b.tmt_pangkat, a.tmt_pangkat) tmt_pangkat
+			, coalesce(b.kredit, a.kredit) kredit
+			, coalesce(b.jenis_kp, a.jenis_kp) jenis_kp
+			, coalesce(b.keterangan, a.keterangan) keterangan
+			, coalesce(b.masa_kerja_tahun, a.masa_kerja_tahun) masa_kerja_tahun
+			, coalesce(b.masa_kerja_bulan, a.masa_kerja_bulan) masa_kerja_bulan
+			, coalesce(b.tanggal_update, a.tanggal_update) tanggal_update
+			, coalesce(b.flag_data_terakhir, a.flag_data_terakhir) flag_data_terakhir
+			, coalesce(b.pejabat_penetap, a.pejabat_penetap) pejabat_penetap
+			, coalesce(b.foto_blob, a.foto_blob) foto_blob
+			, coalesce(b.format, a.format) format
+			, coalesce(b.ukuran, a.ukuran) ukuran
+			, coalesce(b.gaji_pokok, a.gaji_pokok) user_app_id
+			, coalesce(b.gaji_pokok, a.gaji_pokok) gaji_pokok
+			, b.temp_validasi_id, c.temp_validasi_id temp_validasi_hapus_id, b.validasi, b.validator, b.perubahan_data, b.tipe_perubahan_data, b.tanggal_validasi
+			from pangkat_riwayat a
+			left join validasi.pangkat_riwayat b on a.pangkat_riwayat_id = b.pangkat_riwayat_id and b.validasi is null
+			left join validasi.hapus_data c on upper(c.hapus_nama)::text = upper(''pangkat_riwayat'')::text and a.pegawai_id = c.temp_validasi_id::numeric and c.validasi is null
+			where a.pegawai_id = '|| pegawaiid ||'
+			union all
+			select
+			a.pangkat_riwayat_id, a.pegawai_id
+			, a.pejabat_penetap_id, a.pangkat_id, a.stlud, a.no_stlud, a.tanggal_stlud, a.no_nota, a.tanggal_nota
+			, a.no_sk, a.tanggal_sk, a.tmt_pangkat, a.kredit, a.jenis_kp, a.keterangan
+			, a.masa_kerja_tahun, a.masa_kerja_bulan, a.tanggal_update, a.flag_data_terakhir, a.pejabat_penetap
+			, a.foto_blob, a.format, a.ukuran, a.user_app_id, a.gaji_pokok
+			, a.temp_validasi_id, null temp_validasi_hapus_id, a.validasi, a.validator, a.perubahan_data, a.tipe_perubahan_data, a.tanggal_validasi
+			from validasi.pangkat_riwayat a
+			where a.validasi is null and a.pangkat_riwayat_id is null
+			and a.pegawai_id = '|| pegawaiid ||'
+		) a
+		where 1=1
+		';
+
+		if coalesce(nullif(id, ''), null) is not null then
+			query := query || ' and a.pangkat_riwayat_id = ' || id;
+		end if;
+		raise notice 'sql %', query;
+		
+	end if;
+		
+	open cur for execute query;
+		fetch cur into rec;
+		while found loop
+			return next rec;
+		fetch cur into rec;
+			end loop;
+	close cur;
+end;
+$body$
+language plpgsql volatile strict cost 100 rows 1000;
+alter function validasi.validasi_pegawai_pangkat_riwayat(numeric, character varying, character varying) owner to postgres;
+
+create or replace function validasi.p_pangkat_riwayat()
+  returns trigger as
+$body$
+declare
+
+    rec record;
+    pinfoperubahan character varying;
+    thequery character varying;
+    
+    begin
+
+	if new.validasi = 1 or new.validasi is null then
+		pinfoperubahan := '{ "0" : "0" ';
+		if new.pangkat_riwayat_id is null then
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('pejabat_penetap_id'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('pejabat_penetap'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('pangkat_id'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('stlud'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('no_stlud'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('tanggal_stlud'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('no_nota'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('tanggal_nota'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('no_sk'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('tanggal_sk'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('tmt_pangkat'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('kredit'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('jenis_kp'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('keterangan'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('masa_kerja_tahun'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('masa_kerja_bulan'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('gaji_pokok'), ''::character varying, 'valsixdatabaru'::character varying);
+
+		else
+			for rec in select * from pangkat_riwayat a where a.pegawai_id = new.pegawai_id and a.pangkat_riwayat_id = new.pangkat_riwayat_id
+			loop
+				if new.validasi is null then
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('pejabat_penetap_id'), new.pejabat_penetap_id::character varying, rec.pejabat_penetap_id::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('pejabat_penetap'), new.pejabat_penetap::character varying, rec.pejabat_penetap::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('pangkat_id'), new.pangkat_id::character varying, rec.pangkat_id::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('stlud'), new.stlud::character varying, rec.stlud::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('no_stlud'), new.no_stlud::character varying, rec.no_stlud::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('tanggal_stlud'), new.tanggal_stlud::character varying, rec.tanggal_stlud::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('no_nota'), new.no_nota::character varying, rec.no_nota::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('tanggal_nota'), new.tanggal_nota::character varying, rec.tanggal_nota::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('no_sk'), new.no_sk::character varying, rec.no_sk::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('tanggal_sk'), new.tanggal_sk::character varying, rec.tanggal_sk::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('tmt_pangkat'), new.tmt_pangkat::character varying, rec.tmt_pangkat::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('kredit'), new.kredit::character varying, rec.kredit::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('jenis_kp'), new.jenis_kp::character varying, rec.jenis_kp::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('keterangan'), new.keterangan::character varying, rec.keterangan::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('masa_kerja_tahun'), new.masa_kerja_tahun::character varying, rec.masa_kerja_tahun::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('masa_kerja_bulan'), new.masa_kerja_bulan::character varying, rec.masa_kerja_bulan::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('gaji_pokok'), new.gaji_pokok::character varying, rec.gaji_pokok::character varying);
+					
+				else
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('pejabat_penetap_id'), rec.pejabat_penetap_id::character varying, new.pejabat_penetap_id::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('pejabat_penetap'), rec.pejabat_penetap::character varying, new.pejabat_penetap::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('pangkat_id'), rec.pangkat_id::character varying, new.pangkat_id::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('stlud'), rec.stlud::character varying, new.stlud::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('no_stlud'), rec.no_stlud::character varying, new.no_stlud::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('tanggal_stlud'), rec.tanggal_stlud::character varying, new.tanggal_stlud::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('no_nota'), rec.no_nota::character varying, new.no_nota::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('tanggal_nota'), rec.tanggal_nota::character varying, new.tanggal_nota::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('no_sk'), rec.no_sk::character varying, new.no_sk::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('tanggal_sk'), rec.tanggal_sk::character varying, new.tanggal_sk::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('tmt_pangkat'), rec.tmt_pangkat::character varying, new.tmt_pangkat::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('kredit'), rec.kredit::character varying, new.kredit::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('jenis_kp'), rec.jenis_kp::character varying, new.jenis_kp::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('keterangan'), rec.keterangan::character varying, new.keterangan::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('masa_kerja_tahun'), rec.masa_kerja_tahun::character varying, new.masa_kerja_tahun::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('masa_kerja_bulan'), rec.masa_kerja_bulan::character varying, new.masa_kerja_bulan::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('gaji_pokok'), rec.gaji_pokok::character varying, new.gaji_pokok::character varying);
+
+				end if;
+				
+			end loop;
+		end if;
+		
+		pinfoperubahan:= pinfoperubahan || ' }';
+		--raise notice 'sql %', pinfoperubahan;
+	end if;
+	
+	if new.validasi = 1 then 
+		if new.pangkat_riwayat_id is null then
+			if new.tanggal_validasi is null then
+				new.perubahan_verifikator_data= pinfoperubahan;
+			else
+				insert into pangkat_riwayat 
+				(
+					pangkat_riwayat_id, pegawai_id, pejabat_penetap_id, pejabat_penetap, pangkat_id, stlud, no_stlud, 
+					tanggal_stlud, no_nota, tanggal_nota, no_sk, tanggal_sk, tmt_pangkat, kredit, jenis_kp, 
+					keterangan, masa_kerja_tahun, masa_kerja_bulan, gaji_pokok, last_create_user, last_create_date, last_create_satker, last_update_user, last_update_date, last_update_satker
+				)
+				values 
+				(
+					(select coalesce(max(pangkat_riwayat_id), 0) + 1 from pangkat_riwayat)
+					, new.pegawai_id
+					, new.pejabat_penetap_id
+					, new.pejabat_penetap
+					, new.pangkat_id
+					, new.stlud
+					, new.no_stlud
+					, new.tanggal_stlud
+					, new.no_nota
+					, new.tanggal_nota
+					, new.no_sk
+					, new.tanggal_sk
+					, new.tmt_pangkat
+					, new.kredit
+					, new.jenis_kp
+					, new.keterangan
+					, new.masa_kerja_tahun
+					, new.masa_kerja_bulan
+					, new.gaji_pokok
+					, new.last_create_user, new.last_create_date, new.last_create_satker
+					, new.last_update_user, new.last_update_date, new.last_update_satker
+				);
+				--raise notice 'sql %', '';
+			end if;
+		else
+			if new.tanggal_validasi is null then
+				new.perubahan_verifikator_data= pinfoperubahan;
+			else
+				select validasi.vupdateinfo('pegawai', new.pangkat_riwayat_id, new.temp_validasi_id, new.last_user, new.last_level) into thequery;
+
+				if thequery is not null then
+					--new.last_level:= old.last_level;
+					execute thequery;
+				end if;
+			end if;
+			--raise notice 'sql %', thequery;
+			--return null;
+		end if;
+	elsif new.validasi = 2 then 
+		--raise notice 'sql %', '';
+	else
+		new.perubahan_data := pinfoperubahan;
+	end if;
+
+	return new;
+    end;
+$body$
+language plpgsql volatile cost 100;
+alter function validasi.p_pangkat_riwayat() owner to postgres;
+
+drop trigger if exists t_pangkat_riwayat on validasi.pangkat_riwayat;
+create trigger t_pangkat_riwayat
+before insert or update
+on validasi.pangkat_riwayat
+for each row
+execute procedure validasi.p_pangkat_riwayat();
+
+--========================================================================================================================
+drop table if exists validasi.jabatan_riwayat;
+create table validasi.jabatan_riwayat
+(
+	jabatan_riwayat_id integer
+	, pegawai_id bigint
+	, pejabat_penetap_id integer
+	, eselon_id integer
+	, jabatan_fungsional_id character varying(50)
+	, no_sk character varying(50)
+	, tanggal_sk date
+	, tmt_jabatan date
+	, tmt_eselon date
+	, nama character varying(255)
+	, no_pelantikan character varying(50)
+	, tanggal_pelantikan date
+	, tunjangan integer
+	, kredit integer
+	, bulan_dibayar date
+	, sudah_dibayar integer
+	, tanggal_update date
+	, flag_data_terakhir integer default 1
+	, satker_id character varying(100)
+	, pejabat_penetap character varying(255)
+	, foto_blob text
+	, tmt_jabatan_fungsional date
+	, tmt_tugas_tambahan date
+	, format character varying(255)
+	, ukuran numeric
+	, user_app_id integer
+	, last_create_user character varying(100)
+	, last_create_date date
+	, last_update_user character varying(100)
+	, last_update_date date
+	, last_create_satker character varying(25)
+	, last_update_satker character varying(25)
+	, keterangan_bup character varying(100)
+	, mata_pelajaran character varying(255)
+	, kode_jabatan character varying(6)
+	, angka_kredit numeric
+	, tentang_jabatan character varying(250)
+	, jenis_jabatan character varying(255)
+	, satker character varying(255)
+	, validasi integer
+	, validator character varying
+	, perubahan_data character varying
+	, perubahan_verifikator_data character varying
+	, tipe_perubahan_data character(1)
+	, tanggal_validasi timestamp without time zone
+	, temp_validasi_id integer NOT NULL
+	, constraint vjabatan_riwayat_pkey primary key (temp_validasi_id)
+);
+
+--========================================================================================================================
+drop table if exists validasi.pak;
+create table validasi.pak
+(
+	pak_id bigint
+	, pegawai_id bigint
+	, format character varying(255)
+	, ukuran numeric
+	, user_app_id integer
+	, nomor_surat character varying(255)
+	, tahun numeric
+	, nomor_sk character varying(255)
+	, tgl_sk date
+	, angka_kredit character varying(50)
+	, bulan_mulai character varying(5)
+	, tahun_mulai numeric
+	, bulan_selesai character varying(5)
+	, tahun_selesai numeric
+	, last_create_user character varying(100)
+	, last_create_date date
+	, last_update_user character varying(100)
+	, last_update_date date
+	, last_create_satker character varying(25)
+	, last_update_satker character varying(25)
+	, validasi integer
+	, validator character varying
+	, perubahan_data character varying
+	, perubahan_verifikator_data character varying
+	, tipe_perubahan_data character(1)
+	, tanggal_validasi timestamp without time zone
+	, temp_validasi_id integer NOT NULL
+	, constraint vpak_pkey primary key (temp_validasi_id)
+);
+
+--========================================================================================================================
+drop table if exists validasi.skp;
+create table validasi.skp
+(
+	skp_id integer
+	, pegawai_id bigint
+	, pejabat_id bigint
+	, atasan_pejabat_id bigint
+	, tahun integer
+	, nilai numeric
+	, orientasi_pelayanan character varying(255)
+	, integritas character varying(255)
+	, komitmen character varying(255)
+	, disiplin character varying(255)
+	, kerjasama character varying(255)
+	, kepemimpinan character varying(255)
+	, format character varying(255)
+	, ukuran numeric
+	, user_app_id bigint
+	, inisiatif_kerja character varying(255)
+	, last_create_user character varying(100)
+	, last_create_date date
+	, last_update_user character varying(100)
+	, last_update_date date
+	, last_create_satker character varying(25)
+	, last_update_satker character varying(25)
+	, validasi integer
+	, validator character varying
+	, perubahan_data character varying
+	, perubahan_verifikator_data character varying
+	, tipe_perubahan_data character(1)
+	, tanggal_validasi timestamp without time zone
+	, temp_validasi_id integer NOT NULL
+	, constraint vskp_pkey primary key (temp_validasi_id)
+);
+
+--========================================================================================================================
+drop table if exists validasi.kinerja;
+create table validasi.kinerja
+(
+	kinerja_id integer not null
+	, pegawai_id bigint
+	, user_app_id integer
+	, tahun numeric
+	, hasil_kerja character varying(255)
+	, perilaku_kerja character varying(255)
+	, predikat_kinerja character varying(255)
+	, nip_pejabat_penilai character varying(100)
+	, nama_pejabat_penilai character varying(255)
+	, last_create_user character varying(100)
+	, last_create_date date
+	, last_update_user character varying(100)
+	, last_update_date date
+	, last_create_satker character varying(25)
+	, last_update_satker character varying(25)
+	, validasi integer
+	, validator character varying
+	, perubahan_data character varying
+	, perubahan_verifikator_data character varying
+	, tipe_perubahan_data character(1)
+	, tanggal_validasi timestamp without time zone
+	, temp_validasi_id integer NOT NULL
+	, constraint vkinerja_pkey primary key (temp_validasi_id)
+);

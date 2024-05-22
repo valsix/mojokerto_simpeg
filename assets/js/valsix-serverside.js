@@ -1,3 +1,20 @@
+function hapusdata(varrowid, vartable, status, vreturn)
+{
+    swal.fire({
+        title: 'Apakah anda yakin untuk batal ?',
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Ya'
+    }).then(function(result) { 
+        if (result.value) {
+            urlAjax= "json-validasi/general/hapusdata?reqRowId="+varrowid+"&reqTable="+vartable+"&reqStatus="+status;
+            // console.log(vreturn);return false;
+            $.ajax({'url': urlAjax,'success': function(data){
+                document.location.href = vreturn;
+            }});
+        }
+    });
+}
 
 var ajaxserverselectsingle = function() {
     var cekreturn = function(checkvaldata) {

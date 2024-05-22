@@ -152,7 +152,7 @@ class Pegawai extends Entity{
 		";
 		$this->query = $str;
 		// echo $str;exit();
-		$this->setlogdata("pegawai", "UPDATE", $str);
+		// $this->setlogdata("pegawai", "UPDATE", $str);
 		return $this->execQuery($str);
     }
 
@@ -166,7 +166,7 @@ class Pegawai extends Entity{
 		";
 		$this->query = $str;
 		// echo $str;exit();
-		$this->setlogdata("pegawai", "UPDATE", $str);
+		// $this->setlogdata("pegawai", "UPDATE", $str);
 		return $this->execQuery($str);
     }
 
