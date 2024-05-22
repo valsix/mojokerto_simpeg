@@ -284,7 +284,7 @@ if(!empty($arrambilfile))
 		        		</label>
 	        			<div class="col-lg-2 col-sm-12">
 	        				<div class="input-group date">
-		        				<input type="text" <?=$read?> autocomplete="off" class="form-control kttanggal" name="reqTMTJabatanFungsional" value="<?=$reqTMTJabatanFungsional?>" />
+		        				<input type="text" <?=$read?> autocomplete="off" class="form-control kttanggal" name="reqTMTJabatanFungsional" id="reqTMTJabatanFungsional" value="<?=$reqTMTJabatanFungsional?>" />
 		        				<div class="input-group-append">
 		        					<span class="input-group-text">
 		        						<i class="la la-calendar"></i>
@@ -297,7 +297,7 @@ if(!empty($arrambilfile))
 		        		</label>
 	        			<div class="col-lg-2 col-sm-12">
 	        				<div class="input-group date">
-		        				<input type="text" <?=$read?> autocomplete="off" class="form-control kttanggal" name="reqTMTTugasTambahan" value="<?=$reqTMTTugasTambahan?>" />
+		        				<input type="text" <?=$read?> autocomplete="off" class="form-control kttanggal" name="reqTMTTugasTambahan" id="reqTMTTugasTambahan" value="<?=$reqTMTTugasTambahan?>" />
 		        				<div class="input-group-append">
 		        					<span class="input-group-text">
 		        						<i class="la la-calendar"></i>
@@ -310,7 +310,7 @@ if(!empty($arrambilfile))
 		        		</label>
 	        			<div class="col-lg-2 col-sm-12">
 	        				<div class="input-group date">
-		        				<input type="text" <?=$read?> autocomplete="off" class="form-control kttanggal" name="reqTglBerakhir" value="<?=$reqTglBerakhir?>" />
+		        				<input type="text" <?=$read?> autocomplete="off" class="form-control kttanggal" name="reqTglBerakhir" id="reqTglBerakhir" value="<?=$reqTglBerakhir?>" />
 		        				<div class="input-group-append">
 		        					<span class="input-group-text">
 		        						<i class="la la-calendar"></i>
@@ -362,7 +362,7 @@ if(!empty($arrambilfile))
 		        		</label>
 	        			<div class="col-lg-2 col-sm-12">
 	        				<div class="input-group date">
-		        				<input type="text" <?=$read?> autocomplete="off" class="form-control kttanggal" name="reqTglPelantikan" value="<?=$reqTglPelantikan?>" />
+		        				<input type="text" <?=$read?> autocomplete="off" class="form-control kttanggal" name="reqTglPelantikan"  id="reqTglPelantikan" value="<?=$reqTglPelantikan?>" />
 		        				<div class="input-group-append">
 		        					<span class="input-group-text">
 		        						<i class="la la-calendar"></i>
@@ -493,6 +493,13 @@ if(!empty($arrambilfile))
 </div>
 
 <script type="text/javascript">
+
+	$("#reqNoPelantikan").keypress(function(e) {
+		if( e.which!=8 && e.which!=0 && (e.which<48 || e.which>57))
+		{
+		return false;
+		}
+	});
 
 	function ShowHiddenId(status){
 		if(status=='baru'){
