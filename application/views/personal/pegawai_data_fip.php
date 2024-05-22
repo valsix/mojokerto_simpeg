@@ -39,69 +39,103 @@ $reqRowId= $set->getField('PEGAWAI_ID');
 $reqNIP1= $set->getField('NIP_LAMA');$valNIP1= checkwarna($reqPerubahanData, 'NIP_LAMA');
 $reqNIP2= $set->getField('NIP_BARU');
 $reqNama= $set->getField('NAMA');
-$reqTipePegawai= $set->getField('TIPE_PEGAWAI_ID');
+$reqTipePegawai= $set->getField('TIPE_PEGAWAI_ID');$valTipePegawai= checkwarna($reqPerubahanData, 'TIPE_PEGAWAI_ID');
 $reqGelarDepan= $set->getField('GELAR_DEPAN');$valGelarDepan= checkwarna($reqPerubahanData, 'GELAR_DEPAN');
 $reqGelarBelakang= $set->getField('GELAR_BELAKANG');$valGelarBelakang= checkwarna($reqPerubahanData, 'GELAR_BELAKANG');
-$reqStatusPegawai= $set->getField('STATUS_PEGAWAI');
-$reqTempatLahir= $set->getField('TEMPAT_LAHIR');
+$reqStatusPegawai= $set->getField('STATUS_PEGAWAI');$valStatusPegawai= checkwarna($reqPerubahanData, 'STATUS_PEGAWAI');
+$reqTempatLahir= $set->getField('TEMPAT_LAHIR');$valTempatLahir= checkwarna($reqPerubahanData, 'TEMPAT_LAHIR');
 $reqTanggalLahir= dateToPageCheck($set->getField('TANGGAL_LAHIR'));$valTanggalLahir= checkwarna($reqPerubahanData, 'TANGGAL_LAHIR', "date");
-$reqTglPensiun= dateToPageCheck($set->getField('TANGGAL_PENSIUN'));
-$reqTglPindah= dateToPageCheck($set->getField('TANGGAL_PINDAH'));
-$reqKeteranganPindah= $set->getField('KETERANGAN_PINDAH');
-$reqJenisKelamin= $set->getField('JENIS_KELAMIN');
-$reqJenisPegawai= $set->getField('JENIS_PEGAWAI_ID');
-$reqKeterangan= $set->getField('KETERANGAN_PINDAH');
-$reqStatusPernikahan= $set->getField('STATUS_KAWIN');
-$reqKartuPegawai= $set->getField('KARTU_PEGAWAI');
-$reqSukuBangsa= $set->getField('SUKU_BANGSA');
-$reqGolDarah= $set->getField('GOLONGAN_DARAH');
-$reqAkses= $set->getField('ASKES');
-$reqTaspen= $set->getField('TASPEN');
-$reqAlamat= $set->getField('ALAMAT');
-$reqNPWP= $set->getField('NPWP');
-$reqNIK= $set->getField('NIK');
-$reqRT= $set->getField('RT');
-$reqRW= $set->getField('RW');
-$reqEmail= $set->getField('EMAIL');
-$reqPropinsi= $set->getField('PROPINSI_ID');
-$reqKabupaten= $set->getField('KABUPATEN_ID');
-$reqKecamatan= $set->getField('KECAMATAN_ID');
-$reqDesa= $set->getField('KELURAHAN_ID');
-$reqBank= $set->getField('BANK_ID');
-$reqNoRekening= $set->getField('NO_REKENING');
-$reqPangkatTerkahir= $set->getField('GOL_RUANG');
-$reqTMTPangkat= $set->getField('TMT_PANGKAT');
-$reqJabatanTerkahir= $set->getField('JABATAN');
-$reqTMTJabatan= $set->getField('TMT_JABATAN');
-$reqPendidikanTerakhir= $set->getField('PENDIDIKAN');
-$reqJurusanTerakhir= $set->getField('JURUSAN');
-$reqTahunLulus= $set->getField('TAHUN');
-$reqGambar= $set->getField('FOTO_BLOB');
-$reqAgamaId= $set->getField('AGAMA_ID');
-$reqTelepon= $set->getField('TELEPON');
-$reqKodePos= $set->getField('KODEPOS');
-$reqKedudukanId= $set->getField('KEDUDUKAN_ID');
-$reqSatkerNama= $set->getField('SATKER_FULL');
-$reqSatkerId= $set->getField('SATKER_ID');
-
-$reqNikPns= $set->getField('KTP_PNS');
-$reqDrh= $set->getField('DRH');
-$reqNomorKK= $set->getField('KK');
-$reqKtpPasangan= $set->getField('KTP_PASANGAN');
-$reqTugasTambahan= $set->getField('TUGAS_TAMBAHAN_NEW');
-$reqJenisMapelId= $set->getField('JENIS_MAPEL_ID');
-$data= $set->getField('FOTO_BLOB');
-$data_karpeg= $set->getField('DOSIR_KARPEG');
-$data_askes= $set->getField('DOSIR_ASKES');
-$data_taspen= $set->getField('DOSIR_TASPEN');
-$data_npwp= $set->getField('DOSIR_NPWP');
+$reqTglPensiun= dateToPageCheck($set->getField('TANGGAL_PENSIUN'));$valTglPensiun= checkwarna($reqPerubahanData, 'TANGGAL_PENSIUN', "date");
+$reqTglPindah= dateToPageCheck($set->getField('TANGGAL_PINDAH'));$valTglPindah= checkwarna($reqPerubahanData, 'TANGGAL_PINDAH', "date");
+$reqKeteranganPindah= $set->getField('KETERANGAN_PINDAH');$valKeteranganPindah= checkwarna($reqPerubahanData, 'KETERANGAN_PINDAH');
+$reqJenisPegawai= $set->getField('JENIS_PEGAWAI_ID');$valJenisPegawai= checkwarna($reqPerubahanData, 'JENIS_PEGAWAI_ID');
+$reqKeterangan= $set->getField('KETERANGAN_PINDAH');$valKeterangan= checkwarna($reqPerubahanData, 'KETERANGAN_PINDAH');
+$reqKartuPegawai= $set->getField('KARTU_PEGAWAI');$valKartuPegawai= checkwarna($reqPerubahanData, 'KARTU_PEGAWAI');
+$reqSukuBangsa= $set->getField('SUKU_BANGSA');$valSukuBangsa= checkwarna($reqPerubahanData, 'SUKU_BANGSA');
+$reqAkses= $set->getField('ASKES');$valAkses= checkwarna($reqPerubahanData, 'ASKES');
+$reqTaspen= $set->getField('TASPEN');$valTaspen= checkwarna($reqPerubahanData, 'TASPEN');
+$reqAlamat= $set->getField('ALAMAT');$valAlamat= checkwarna($reqPerubahanData, 'ALAMAT');
+$reqNPWP= $set->getField('NPWP');$valNPWP= checkwarna($reqPerubahanData, 'NPWP');
+$reqNIK= $set->getField('NIK');$valNIK= checkwarna($reqPerubahanData, 'NIK');
+$reqRT= $set->getField('RT');$valRT= checkwarna($reqPerubahanData, 'RT');
+$reqRW= $set->getField('RW');$valRW= checkwarna($reqPerubahanData, 'RW');
+$reqEmail= $set->getField('EMAIL');$valEmail= checkwarna($reqPerubahanData, 'EMAIL');
+$reqPropinsi= $set->getField('PROPINSI_ID');$valPropinsi= checkwarna($reqPerubahanData, 'PROPINSI_ID');
+$reqKabupaten= $set->getField('KABUPATEN_ID');$valKabupaten= checkwarna($reqPerubahanData, 'KABUPATEN_ID');
+$reqKecamatan= $set->getField('KECAMATAN_ID');$valKecamatan= checkwarna($reqPerubahanData, 'KECAMATAN_ID');
+$reqDesa= $set->getField('KELURAHAN_ID');$valDesa= checkwarna($reqPerubahanData, 'KELURAHAN_ID');
+$reqBank= $set->getField('BANK_ID');$valBank= checkwarna($reqPerubahanData, 'BANK_ID');
+$reqNoRekening= $set->getField('NO_REKENING');$valNoRekening= checkwarna($reqPerubahanData, 'NO_REKENING');
+$reqPangkatTerkahir= $set->getField('GOL_RUANG');$valPangkatTerkahir= checkwarna($reqPerubahanData, 'GOL_RUANG');
+$reqTMTPangkat= $set->getField('TMT_PANGKAT');$valTMTPangkat= checkwarna($reqPerubahanData, 'TMT_PANGKAT');
+$reqJabatanTerkahir= $set->getField('JABATAN');$valJabatanTerkahir= checkwarna($reqPerubahanData, 'JABATAN');
+$reqTMTJabatan= $set->getField('TMT_JABATAN');$valTMTJabatan= checkwarna($reqPerubahanData, 'TMT_JABATAN');
+$reqPendidikanTerakhir= $set->getField('PENDIDIKAN');$valPendidikanTerakhir= checkwarna($reqPerubahanData, 'PENDIDIKAN');
+$reqJurusanTerakhir= $set->getField('JURUSAN');$valJurusanTerakhir= checkwarna($reqPerubahanData, 'JURUSAN');
+$reqTahunLulus= $set->getField('TAHUN');$valTahunLulus= checkwarna($reqPerubahanData, 'TAHUN');
+$reqGambar= $set->getField('FOTO_BLOB');$valGambar= checkwarna($reqPerubahanData, 'FOTO_BLOB');
+$reqTelepon= $set->getField('TELEPON');$valTelepon= checkwarna($reqPerubahanData, 'TELEPON');
+$reqKodePos= $set->getField('KODEPOS');$valKodePos= checkwarna($reqPerubahanData, 'KODEPOS');
+$reqKedudukanId= $set->getField('KEDUDUKAN_ID');$valKedudukanId= checkwarna($reqPerubahanData, 'KEDUDUKAN_ID');
+$reqSatkerNama= $set->getField('SATKER_FULL');$valSatkerNama= checkwarna($reqPerubahanData, 'SATKER_FULL');
+$reqSatkerId= $set->getField('SATKER_ID');$valSatkerId= checkwarna($reqPerubahanData, 'SATKER_ID');
+// print_r($valNoRekening);exit;
+$reqNikPns= $set->getField('KTP_PNS');$valNikPns= checkwarna($reqPerubahanData, 'KTP_PNS');
+$reqDrh= $set->getField('DRH');$valDrh= checkwarna($reqPerubahanData, 'DRH');
+$reqNomorKK= $set->getField('KK');$valNomorKK= checkwarna($reqPerubahanData, 'KK');
+$reqKtpPasangan= $set->getField('KTP_PASANGAN');$valKtpPasangan= checkwarna($reqPerubahanData, 'KTP_PASANGAN');
+$reqTugasTambahan= $set->getField('TUGAS_TAMBAHAN_NEW');$valTugasTambahan= checkwarna($reqPerubahanData, 'TUGAS_TAMBAHAN_NEW');
+$reqJenisMapelId= $set->getField('JENIS_MAPEL_ID');$valJenisMapelId= checkwarna($reqPerubahanData, 'JENIS_MAPEL_ID');
+$data= $set->getField('FOTO_BLOB');$valdata= checkwarna($reqPerubahanData, 'FOTO_BLOB');
+$data_karpeg= $set->getField('DOSIR_KARPEG');$valdata_karpeg= checkwarna($reqPerubahanData, 'DOSIR_KARPEG');
+$data_askes= $set->getField('DOSIR_ASKES');$valdata_askes= checkwarna($reqPerubahanData, 'DOSIR_ASKES');
+$data_taspen= $set->getField('DOSIR_TASPEN');$valdata_taspen= checkwarna($reqPerubahanData, 'DOSIR_TASPEN');
+$data_npwp= $set->getField('DOSIR_NPWP');$valdata_npwp= checkwarna($reqPerubahanData, 'DOSIR_NPWP');
 
 $reqGambar= $set->getField('FOTO_BLOB');
 $reqGambarSetengah= $set->getField('FOTO_BLOB_OTHER');
 
+$arrJenisKelamin= [];
+$arrComboJenisKelamin= [];
+$arrComboJenisKelamin= array(
+	array("id"=>"L", "text"=>"Laki laki")
+	, array("id"=>"P", "text"=>"Perempuan")
+);
+$reqJenisKelamin= $set->getField("JENIS_KELAMIN");
+$valJenisKelamin= checkwarna($reqPerubahanData, 'JENIS_KELAMIN', $arrJenisKelamin, array("id", "text"));
 
+$arrAgama= [];
+$arrComboAgama= [];
 $agama= new Core();
 $agama->selectByParamsAgama(); 
+while ($agama->nextRow()){
+	array_push($arrComboAgama,array("id"=>$agama->getField('AGAMA_ID') , "text"=>$agama->getField('NAMA')));
+}
+$reqAgama= $set->getField('AGAMA_ID');
+$valAgama= checkwarna($reqPerubahanData, 'AGAMA_ID', $arrAgama, array("id", "text"));
+
+$arrStatusPernikahan= [];
+$arrComboStatusPernikahan= [];
+$arrComboStatusPernikahan= array(
+	array("id"=>"1", "text"=>"Belum Kawin")
+	, array("id"=>"2", "text"=>"Kawin")
+	, array("id"=>"3", "text"=>"Janda")
+	, array("id"=>"4", "text"=>"Duda")
+);
+$reqStatusPernikahan= $set->getField("STATUS_KAWIN");
+$valStatusPernikahan= checkwarna($reqPerubahanData, 'STATUS_KAWIN', $arrStatusPernikahan, array("id", "text"));
+
+$arrgoldarah= [];
+$arrComboGoldar= [];
+$arrComboGoldar= array(
+	array("id"=>"A", "text"=>"A")
+	, array("id"=>"B", "text"=>"B")
+	, array("id"=>"AB", "text"=>"AB")
+	, array("id"=>"O", "text"=>"O")
+
+);
+$reqGolDarah= str_replace(" ","",$set->getField('GOLONGAN_DARAH'));
+$valGolonganDarah= checkwarna($reqPerubahanData, 'GOLONGAN_DARAH', $arrgoldarah, array("id", "text"));
 
 $bank= new Core();
 $bank->selectByParamsBank(); 
@@ -338,9 +372,23 @@ if(!empty($arrambilfile))
 			        <div class="row">
 	        			<div class="col-md-6">
 	        				<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-3 col-sm-12">
-				        			Tempat Lahir
-				        		</label>
+			        			<?
+	        					$vpdata= $valTempatLahir['data'];
+	        					$vpwarna= $valTempatLahir['warna'];
+	        					?>
+			        			<label class="col-form-label text-right col-lg-3 col-sm-12 <?=$vpwarna?>">
+			        				Tempat Lahir
+			        				<?
+			        				if(!empty($vpdata))
+			        				{
+			        				?>
+			        				<a class="tooltipe" href="javascript:void(0)">
+			        					<i class="fa fa-question-circle text-white"></i><span class="classic"><?=$vpdata?></span>
+			        				</a>
+			        				<?
+			        				}
+			        				?>
+			        			</label>
 			        			<div class="col-lg-9 col-sm-12">
 			        				<input type="text" class="form-control"  name="reqTempatLahir" id="reqTempatLahir" value="<?=$reqTempatLahir?>" />
 			        			</div>
@@ -348,9 +396,23 @@ if(!empty($arrambilfile))
 			        	</div>
 			        	<div class="col-md-6">
 	        				<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-3 col-sm-12">
-				        			Tanggal Lahir
-				        		</label>
+	        					<?
+	        					$vpdata= $valTanggalLahir['data'];
+	        					$vpwarna= $valTanggalLahir['warna'];
+	        					?>
+			        			<label class="col-form-label text-right col-lg-3 col-sm-12 <?=$vpwarna?>">
+			        				Tanggal Lahir
+			        				<?
+			        				if(!empty($vpdata))
+			        				{
+			        				?>
+			        				<a class="tooltipe" href="javascript:void(0)">
+			        					<i class="fa fa-question-circle text-white"></i><span class="classic"><?=$vpdata?></span>
+			        				</a>
+			        				<?
+			        				}
+			        				?>
+			        			</label>
 			        			<div class="col-lg-9 col-sm-12">
 			        				<div class="input-group date">
 				        				<input type="text" autocomplete="off" class="form-control" id="kttanggallahir" name="reqTanggalLahir" value="<?=$reqTanggalLahir?>" />
@@ -365,33 +427,76 @@ if(!empty($arrambilfile))
 			        	</div>
 			        </div>
 
+
 			        <div class="row">
 	        			<div class="col-md-6">
 	        				<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Jenis Kelamin</label>
+			        			<?
+	        					$vpdata= $valJenisKelamin['data'];
+	        					$vpwarna= $valJenisKelamin['warna'];
+	        					?>
+			        			<label class="col-form-label text-right col-lg-3 col-sm-12 <?=$vpwarna?>">
+			        				Jenis Kelamin
+			        				<?
+			        				if(!empty($vpdata))
+			        				{
+			        				?>
+			        				<a class="tooltipe" href="javascript:void(0)">
+			        					<i class="fa fa-question-circle text-white"></i><span class="classic"><?=$vpdata?></span>
+			        				</a>
+			        				<?
+			        				}
+			        				?>
+			        			</label>
 			        			<div class="col-lg-9 col-sm-12">
 			        				<select class="js-states form-control" id='reqJenisKelamin' name='reqJenisKelamin'>
-			        					<option <?if ($reqJenisKelamin=='') echo "selected";?> disabled value=''> Pilih Jenis Kelamin</option>
-			        					<option value="L" <?if ($reqJenisKelamin=='L'){echo "selected";}?>> Laki laki</option>
-			        					<option value="P" <?if ($reqJenisKelamin=='P'){echo "selected";}?>> Perempuan</option>
-			        				</select>
+										<option value=""></option>
+										<?
+										foreach($arrComboJenisKelamin as $item) 
+										{
+											$selectvalid= $item["id"];
+											$selectvaltext= $item["text"];
+											?>
+											<option value="<?=$selectvalid?>" <? if($reqJenisKelamin == $selectvalid) echo "selected";?>><?=$selectvaltext?></option>
+											<?
+										}
+										?>
+									</select>
 			        			</div>
 			        		</div>
 			        	</div>
 			        	<div class="col-md-6">
 	        				<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-3 col-sm-12">
-				        			Agama
-				        		</label>
+			        			<?
+	        					$vpdata= $valAgama['data'];
+	        					$vpwarna= $valAgama['warna'];
+	        					?>
+			        			<label class="col-form-label text-right col-lg-3 col-sm-12 <?=$vpwarna?>">
+			        				Agama
+			        				<?
+			        				if(!empty($vpdata))
+			        				{
+			        				?>
+			        				<a class="tooltipe" href="javascript:void(0)">
+			        					<i class="fa fa-question-circle text-white"></i><span class="classic"><?=$vpdata?></span>
+			        				</a>
+			        				<?
+			        				}
+			        				?>
+			        			</label>
 			        			<div class="col-lg-9 col-sm-12">
 			        				<select class="js-states form-control"  id='reqAgama' name='reqAgama'>
-			        					<option <?if($reqAgamaId==''){echo "selected";}?> disabled value=''>Pilih Agama</option>
-			        					<?while ($agama->nextRow()){?>
-					                        <option value="<?=$agama->getField('AGAMA_ID')?>"
-					                        <? if ($agama->getField('AGAMA_ID') == $reqAgamaId) echo 'selected'?>>
-					                        <?=$agama->getField('NAMA')?>
-					                        </option>
-										<? } ?>
+			        					<option value=""></option>
+										<?
+										foreach($arrComboAgama as $item) 
+										{
+											$selectvalid= $item["id"];
+											$selectvaltext= $item["text"];
+											?>
+											<option value="<?=$selectvalid?>" <? if($reqAgama == $selectvalid) echo "selected";?>><?=$selectvaltext?></option>
+											<?
+										}
+										?>
 			        				</select>
 			        			</div>
 			        		</div>
@@ -401,21 +506,59 @@ if(!empty($arrambilfile))
 			        <div class="row">
 	        			<div class="col-md-6">
 	        				<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Status Pernikahan</label>
+			        			<?
+	        					$vpdata= $valStatusPernikahan['data'];
+	        					$vpwarna= $valStatusPernikahan['warna'];
+	        					?>
+			        			<label class="col-form-label text-right col-lg-3 col-sm-12 <?=$vpwarna?>">
+			        				Status Pernikahan
+			        				<?
+			        				if(!empty($vpdata))
+			        				{
+			        				?>
+			        				<a class="tooltipe" href="javascript:void(0)">
+			        					<i class="fa fa-question-circle text-white"></i><span class="classic"><?=$vpdata?></span>
+			        				</a>
+			        				<?
+			        				}
+			        				?>
+			        			</label>
 			        			<div class="col-lg-9 col-sm-12">
 			        				<select class="js-states form-control" id='reqStatusPernikahan' name='reqStatusPernikahan'>
-			        					<option  <? if($reqStatusPernikahan == "") echo 'selected'?> disabled value=''>Pilih Status Pernikahan</option>
-			        					<option value="1" <? if($reqStatusPernikahan == "1") echo 'selected'?>>Belum Kawin</option>
-										<option value="2" <? if($reqStatusPernikahan == "2") echo 'selected'?>>Kawin</option>
-										<option value="3" <? if($reqStatusPernikahan == "3") echo 'selected'?>>Janda</option>
-										<option value="4" <? if($reqStatusPernikahan == "4") echo 'selected'?>>Duda</option>
+			        					<option value=""></option>
+										<?
+										foreach($arrComboStatusPernikahan as $item) 
+										{
+											$selectvalid= $item["id"];
+											$selectvaltext= $item["text"];
+											?>
+											<option value="<?=$selectvalid?>" <? if($reqStatusPernikahan == $selectvalid) echo "selected";?>><?=$selectvaltext?></option>
+											<?
+										}
+										?>
 			        				</select>
 			        			</div>
 			        		</div>
 			        	</div>
 			        	<div class="col-md-6">
 	        				<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Suku Bangsa</label>
+			        			<?
+	        					$vpdata= $valSukuBangsa['data'];
+	        					$vpwarna= $valSukuBangsa['warna'];
+	        					?>
+	        					<label class="col-form-label text-right col-lg-3 col-sm-12 <?=$vpwarna?>">
+	        						Suku Bangsa
+	        						<?
+			        				if(!empty($vpdata))
+			        				{
+			        				?>
+			        				<a class="tooltipe" href="javascript:void(0)">
+			        					<i class="fa fa-question-circle text-white"></i><span class="classic"><?=$vpdata?></span>
+			        				</a>
+			        				<?
+			        				}
+			        				?>
+	        					</label>
 			        			<div class="col-lg-9 col-sm-12">
 			        				<input type="text" class="form-control"  name="reqSukuBangsa" id="reqSukuBangsa" value="<?=$reqSukuBangsa?>" />
 			        			</div>
@@ -426,25 +569,61 @@ if(!empty($arrambilfile))
 			        <div class="row">
 	        			<div class="col-md-6">
 	        				<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-3 col-sm-12">
-				        			Gol Darah 
-				        		</label>
+			        			<?
+	        					$vpdata= $valGolonganDarah['data'];
+	        					$vpwarna= $valGolonganDarah['warna'];
+	        					?>
+			        			<label class="col-form-label text-right col-lg-3 col-sm-12 <?=$vpwarna?>">
+			        				Gol Darah
+			        				<?
+			        				if(!empty($vpdata))
+			        				{
+			        				?>
+			        				<a class="tooltipe" href="javascript:void(0)">
+			        					<i class="fa fa-question-circle text-white"></i><span class="classic"><?=$vpdata?></span>
+			        				</a>
+			        				<?
+			        				}
+			        				?>
+			        			</label>
 			        			<div class="col-lg-9 col-sm-12">
 			        				<select class="js-states form-control" id='reqGolDarah' name='reqGolDarah'>
-			        					<option value=""  <? if($reqGolDarah == "") echo 'selected'?> disabled>Pilih Golongan Darah</option>
-			        					<option value="A" <? if($reqGolDarah == "A") echo 'selected'?>>A</option>
-										<option value="B" <? if($reqGolDarah == "B") echo 'selected'?>>B</option>
-										<option value="AB" <? if($reqGolDarah == "AB") echo 'selected'?>>AB</option>
-										<option value="O" <? if($reqGolDarah == "O") echo 'selected'?>>O</option>
+			        					<option value=""></option>
+										<?
+										foreach($arrComboGoldar as $item) 
+										{
+											$selectvalid= $item["id"];
+											$selectvaltext= $item["text"];
+											?>
+											<option value="<?=$selectvalid?>" <? if($reqGolDarah == $selectvalid) echo "selected";?>><?=$selectvaltext?></option>
+											<?
+										}
+										?>
 			        				</select>
 			        			</div>
 			        		</div>
 			        	</div>
 	        			<div class="col-md-6">
 				        	<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Telpon</label>
+				        		<?
+	        					$vpdata= $valTelepon['data'];
+	        					$vpwarna= $valTelepon['warna'];
+	        					?>
+			        			<label class="col-form-label text-right col-lg-3 col-sm-12 <?=$vpwarna?>">
+			        				Telpon
+			        				<?
+			        				if(!empty($vpdata))
+			        				{
+			        				?>
+			        				<a class="tooltipe" href="javascript:void(0)">
+			        					<i class="fa fa-question-circle text-white"></i><span class="classic"><?=$vpdata?></span>
+			        				</a>
+			        				<?
+			        				}
+			        				?>
+			        			</label>
 			        			<div class="col-lg-9 col-sm-12">
-			        				<input type="text" class="form-control"  name="reqTelepon" id="reqTelepon" value="<?=$reqTelepon?>" />
+			        				<input type="text" class="form-control"  name="reqTelepon" id="reqTelepon" value="<?=$reqTelepon?>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"/>
 			        			</div>
 			        		</div>
 			        	</div>
@@ -453,7 +632,23 @@ if(!empty($arrambilfile))
 			        <div class="row">
 	        			<div class="col-md-6">
 	        				<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Email</label>
+			        			<?
+	        					$vpdata= $valEmail['data'];
+	        					$vpwarna= $valEmail['warna'];
+	        					?>
+			        			<label class="col-form-label text-right col-lg-3 col-sm-12 <?=$vpwarna?>">
+			        				Email
+			        				<?
+			        				if(!empty($vpdata))
+			        				{
+			        				?>
+			        				<a class="tooltipe" href="javascript:void(0)">
+			        					<i class="fa fa-question-circle text-white"></i><span class="classic"><?=$vpdata?></span>
+			        				</a>
+			        				<?
+			        				}
+			        				?>
+			        			</label>
 			        			<div class="col-lg-9 col-sm-12">
 			        				<input type="text" class="form-control"  name="reqEmail" id="reqEmail" value="<?=$reqEmail?>" />
 			        			</div>
@@ -472,7 +667,23 @@ if(!empty($arrambilfile))
 			        <div class="row">
 	        			<div class="col-md-6">
 	        				<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Alamat</label>
+	        					<?
+	        					$vpdata= $valAlamat['data'];
+	        					$vpwarna= $valAlamat['warna'];
+	        					?>
+			        			<label class="col-form-label text-right col-lg-3 col-sm-12 <?=$vpwarna?>">
+			        				Alamat
+			        				<?
+			        				if(!empty($vpdata))
+			        				{
+			        				?>
+			        				<a class="tooltipe" href="javascript:void(0)">
+			        					<i class="fa fa-question-circle text-white"></i><span class="classic"><?=$vpdata?></span>
+			        				</a>
+			        				<?
+			        				}
+			        				?>
+			        			</label>
 			        			<div class="col-lg-9 col-sm-12">
 			        				<textarea class="form-control" id='reqAlamat' name="reqAlamat"  style="height: 90px;"><?=$reqAlamat?></textarea>
 			        			</div>
@@ -480,13 +691,43 @@ if(!empty($arrambilfile))
 			        	</div>
 			        	<div class="col-md-6">
 	        				<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-3 col-sm-12" style="margin-bottom:20px ;">RT</label>
+			        			<?
+	        					$vpdata= $valRT['data'];
+	        					$vpwarna= $valRT['warna'];
+	        					?>
+			        			<label class="col-form-label text-right col-lg-3 col-sm-12 <?=$vpwarna?>" style="margin-bottom:20px ;">
+			        				RT
+			        				<?
+			        				if(!empty($vpdata))
+			        				{
+			        				?>
+			        				<a class="tooltipe" href="javascript:void(0)">
+			        					<i class="fa fa-question-circle text-white"></i><span class="classic"><?=$vpdata?></span>
+			        				</a>
+			        				<?
+			        				}
+			        				?>
+			        			</label>
 			        			<div class="col-lg-3 col-sm-12">
 			        				<input type="text" class="form-control"  name="reqRT" id="reqRT" value="<?=$reqRT?>" />
 			        			</div>
-			        			<label class="col-form-label text-right col-lg-3 col-sm-12">
-				        			RW 
-				        		</label>
+			        			<?
+	        					$vpdata= $valRW['data'];
+	        					$vpwarna= $valRW['warna'];
+	        					?>
+			        			<label class="col-form-label text-right col-lg-3 col-sm-12 <?=$vpwarna?>">
+			        				RW
+			        				<?
+			        				if(!empty($vpdata))
+			        				{
+			        				?>
+			        				<a class="tooltipe" href="javascript:void(0)">
+			        					<i class="fa fa-question-circle text-white"></i><span class="classic"><?=$vpdata?></span>
+			        				</a>
+			        				<?
+			        				}
+			        				?>
+			        			</label>
 			        			<div class="col-lg-3 col-sm-12">
 			        				<input type="text" class="form-control"  name="reqRW" id="reqRW" value="<?=$reqRW?>" />
 			        			</div>
@@ -605,6 +846,23 @@ if(!empty($arrambilfile))
 			        	</div>
 			        	<div class="col-md-6">
 	        				<div class="form-group row">
+			        			<?
+	        					$vpdata= $valNoRekening['data'];
+	        					$vpwarna= $valNoRekening['warna'];
+	        					?>
+			        			<label class="col-form-label text-right col-lg-3 col-sm-12 <?=$vpwarna?>">
+			        				Telpon
+			        				<?
+			        				if(!empty($vpdata))
+			        				{
+			        				?>
+			        				<a class="tooltipe" href="javascript:void(0)">
+			        					<i class="fa fa-question-circle text-white"></i><span class="classic"><?=$vpdata?></span>
+			        				</a>
+			        				<?
+			        				}
+			        				?>
+			        			</label>
 			        			<label class="col-form-label text-right col-lg-3 col-sm-12">No Rekening</label>
 			        			<div class="col-lg-9 col-sm-12">
 			        				<input type="text" class="form-control"  name="reqNoRekening" id="reqNoRekening" value="<?=$reqNoRekening?>" />
