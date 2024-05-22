@@ -469,6 +469,13 @@ $reqKeteranganLPJ				= $skpns->getField('KETERANGAN_LPJ');
     	allowClear: true
   	});
 
+	$("#reqTh,#reqBl").keypress(function(e) {
+		if( e.which!=8 && e.which!=0 && (e.which<48 || e.which>57))
+		{
+			return false;
+		}
+	});
+
 </script>
 
 <!-- <button onclick="tes()">tesss</button>
