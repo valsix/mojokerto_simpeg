@@ -1,85 +1,103 @@
 <?
 include_once("functions/personal.func.php");
 
-$this->load->model("base/Pegawai");
+$this->load->model("base-validasi/Pegawai");
 $this->load->model("base/Core");
 $this->load->library('globalfilepegawai');
 
-
 $reqId= $this->input->get('reqId');
 $reqRowId= $this->input->get('reqRowId');
+$p= $this->input->get('p');
 
+$reqFileRowId= -1;
 
-if(empty($reqRowId)) $reqRowId= -1;
+$statement= "";
+$set= new Pegawai();
+$infoperubahan= "Perubahan Data";
+if(!empty($reqRowHapusId))
+{
+  $infoperubahan= "Hapus Data";
+  $set->selectByPersonal(array(), -1, -1, $reqId, $reqRowHapusId, "", $statement);
+}
+else
+  $set->selectByPersonal(array(), -1, -1, $reqId, $reqRowHapusId, $reqRowId, $statement);
 
+// echo $set->query;exit;
+$set->firstRow();
+$reqTempValidasiId= $set->getField('TEMP_VALIDASI_ID');
+$reqTempValidasiHapusId= $set->getField('TEMP_VALIDASI_HAPUS_ID');
+$reqValidasi= $set->getField('VALIDASI');
+$reqPerubahanData= $set->getField('PERUBAHAN_DATA');
 
-$pegawai= new Pegawai();
-$pegawai->selectByParams(array("p.PEGAWAI_ID" => $reqId)); 
-$pegawai->firstRow();
-// echo $pegawai->query; exit;
+$reqValRowId= $set->getField('PEGAWAI_ID');
+if(empty($reqValRowId))
+{
+  $infoperubahan= "Data Baru";
+}
 
-$reqNIP1				= $pegawai->getField('NIP_LAMA');
-$reqNIP2				= $pegawai->getField('NIP_BARU');
-$reqNama				= $pegawai->getField('NAMA');
-$reqTipePegawai		= $pegawai->getField('TIPE_PEGAWAI_ID');
-$reqGelarDepan			= $pegawai->getField('GELAR_DEPAN');
-$reqGelarBelakang		= $pegawai->getField('GELAR_BELAKANG');
-$reqStatusPegawai		= $pegawai->getField('STATUS_PEGAWAI');
-$reqTempatLahir		= $pegawai->getField('TEMPAT_LAHIR');
-$reqTanggalLahir		= dateToPageCheck($pegawai->getField('TANGGAL_LAHIR'));
-$reqTglPensiun			= dateToPageCheck($pegawai->getField('TANGGAL_PENSIUN'));
-$reqTglPindah			= dateToPageCheck($pegawai->getField('TANGGAL_PINDAH'));
-$reqKeteranganPindah	= $pegawai->getField('KETERANGAN_PINDAH');
-$reqJenisKelamin		= $pegawai->getField('JENIS_KELAMIN');
-$reqJenisPegawai		= $pegawai->getField('JENIS_PEGAWAI_ID');
-$reqKeterangan			= $pegawai->getField('KETERANGAN_PINDAH');
-$reqStatusPernikahan	= $pegawai->getField('STATUS_KAWIN');
-$reqKartuPegawai		= $pegawai->getField('KARTU_PEGAWAI');
-$reqSukuBangsa			= $pegawai->getField('SUKU_BANGSA');
-$reqGolDarah			= $pegawai->getField('GOLONGAN_DARAH');
-$reqAkses				= $pegawai->getField('ASKES');
-$reqTaspen				= $pegawai->getField('TASPEN');
-$reqAlamat				= $pegawai->getField('ALAMAT');
-$reqNPWP				= $pegawai->getField('NPWP');
-$reqNIK				= $pegawai->getField('NIK');
-$reqRT					= $pegawai->getField('RT');
-$reqRW					= $pegawai->getField('RW');
-$reqEmail				= $pegawai->getField('EMAIL');
-$reqPropinsi			= $pegawai->getField('PROPINSI_ID');
-$reqKabupaten			= $pegawai->getField('KABUPATEN_ID');
-$reqKecamatan			= $pegawai->getField('KECAMATAN_ID');
-$reqDesa				= $pegawai->getField('KELURAHAN_ID');
-$reqBank				= $pegawai->getField('BANK_ID');
-$reqNoRekening			= $pegawai->getField('NO_REKENING');
-$reqPangkatTerkahir	= $pegawai->getField('GOL_RUANG');
-$reqTMTPangkat			= $pegawai->getField('TMT_PANGKAT');
-$reqJabatanTerkahir	= $pegawai->getField('JABATAN');
-$reqTMTJabatan			= $pegawai->getField('TMT_JABATAN');
-$reqPendidikanTerakhir	= $pegawai->getField('PENDIDIKAN');
-$reqJurusanTerakhir	= $pegawai->getField('JURUSAN');
-$reqTahunLulus			= $pegawai->getField('TAHUN');
-$reqGambar				= $pegawai->getField('FOTO_BLOB');
-$reqAgamaId			= $pegawai->getField('AGAMA_ID');
-$reqTelepon			= $pegawai->getField('TELEPON');
-$reqKodePos			= $pegawai->getField('KODEPOS');
-$reqKedudukanId		= $pegawai->getField('KEDUDUKAN_ID');
-$reqSatkerNama		= $pegawai->getField('SATKER_FULL');
-$reqSatkerId		= $pegawai->getField('SATKER_ID');
+$reqRowId= $set->getField('PEGAWAI_ID');
+$reqNIP1= $set->getField('NIP_LAMA');$valNIP1= checkwarna($reqPerubahanData, 'NIP_LAMA');
+$reqNIP2= $set->getField('NIP_BARU');
+$reqNama= $set->getField('NAMA');
+$reqTipePegawai= $set->getField('TIPE_PEGAWAI_ID');
+$reqGelarDepan= $set->getField('GELAR_DEPAN');$valGelarDepan= checkwarna($reqPerubahanData, 'GELAR_DEPAN');
+$reqGelarBelakang= $set->getField('GELAR_BELAKANG');$valGelarBelakang= checkwarna($reqPerubahanData, 'GELAR_BELAKANG');
+$reqStatusPegawai= $set->getField('STATUS_PEGAWAI');
+$reqTempatLahir= $set->getField('TEMPAT_LAHIR');
+$reqTanggalLahir= dateToPageCheck($set->getField('TANGGAL_LAHIR'));$valTanggalLahir= checkwarna($reqPerubahanData, 'TANGGAL_LAHIR', "date");
+$reqTglPensiun= dateToPageCheck($set->getField('TANGGAL_PENSIUN'));
+$reqTglPindah= dateToPageCheck($set->getField('TANGGAL_PINDAH'));
+$reqKeteranganPindah= $set->getField('KETERANGAN_PINDAH');
+$reqJenisKelamin= $set->getField('JENIS_KELAMIN');
+$reqJenisPegawai= $set->getField('JENIS_PEGAWAI_ID');
+$reqKeterangan= $set->getField('KETERANGAN_PINDAH');
+$reqStatusPernikahan= $set->getField('STATUS_KAWIN');
+$reqKartuPegawai= $set->getField('KARTU_PEGAWAI');
+$reqSukuBangsa= $set->getField('SUKU_BANGSA');
+$reqGolDarah= $set->getField('GOLONGAN_DARAH');
+$reqAkses= $set->getField('ASKES');
+$reqTaspen= $set->getField('TASPEN');
+$reqAlamat= $set->getField('ALAMAT');
+$reqNPWP= $set->getField('NPWP');
+$reqNIK= $set->getField('NIK');
+$reqRT= $set->getField('RT');
+$reqRW= $set->getField('RW');
+$reqEmail= $set->getField('EMAIL');
+$reqPropinsi= $set->getField('PROPINSI_ID');
+$reqKabupaten= $set->getField('KABUPATEN_ID');
+$reqKecamatan= $set->getField('KECAMATAN_ID');
+$reqDesa= $set->getField('KELURAHAN_ID');
+$reqBank= $set->getField('BANK_ID');
+$reqNoRekening= $set->getField('NO_REKENING');
+$reqPangkatTerkahir= $set->getField('GOL_RUANG');
+$reqTMTPangkat= $set->getField('TMT_PANGKAT');
+$reqJabatanTerkahir= $set->getField('JABATAN');
+$reqTMTJabatan= $set->getField('TMT_JABATAN');
+$reqPendidikanTerakhir= $set->getField('PENDIDIKAN');
+$reqJurusanTerakhir= $set->getField('JURUSAN');
+$reqTahunLulus= $set->getField('TAHUN');
+$reqGambar= $set->getField('FOTO_BLOB');
+$reqAgamaId= $set->getField('AGAMA_ID');
+$reqTelepon= $set->getField('TELEPON');
+$reqKodePos= $set->getField('KODEPOS');
+$reqKedudukanId= $set->getField('KEDUDUKAN_ID');
+$reqSatkerNama= $set->getField('SATKER_FULL');
+$reqSatkerId= $set->getField('SATKER_ID');
 
-$reqNikPns				= $pegawai->getField('KTP_PNS');
-$reqDrh				= $pegawai->getField('DRH');
-$reqNomorKK				= $pegawai->getField('KK');
-$reqKtpPasangan				= $pegawai->getField('KTP_PASANGAN');
-$reqTugasTambahan			= $pegawai->getField('TUGAS_TAMBAHAN_NEW');
-$reqJenisMapelId			= $pegawai->getField('JENIS_MAPEL_ID');
-$data = $pegawai->getField('FOTO_BLOB');
-$data_karpeg= $pegawai->getField('DOSIR_KARPEG');
-$data_askes= $pegawai->getField('DOSIR_ASKES');
-$data_taspen= $pegawai->getField('DOSIR_TASPEN');
-$data_npwp= $pegawai->getField('DOSIR_NPWP');
-			
-$reqGambar   		= $pegawai->getField('FOTO_BLOB');
-$reqGambarSetengah		= $pegawai->getField('FOTO_BLOB_OTHER');
+$reqNikPns= $set->getField('KTP_PNS');
+$reqDrh= $set->getField('DRH');
+$reqNomorKK= $set->getField('KK');
+$reqKtpPasangan= $set->getField('KTP_PASANGAN');
+$reqTugasTambahan= $set->getField('TUGAS_TAMBAHAN_NEW');
+$reqJenisMapelId= $set->getField('JENIS_MAPEL_ID');
+$data= $set->getField('FOTO_BLOB');
+$data_karpeg= $set->getField('DOSIR_KARPEG');
+$data_askes= $set->getField('DOSIR_ASKES');
+$data_taspen= $set->getField('DOSIR_TASPEN');
+$data_npwp= $set->getField('DOSIR_NPWP');
+
+$reqGambar= $set->getField('FOTO_BLOB');
+$reqGambarSetengah= $set->getField('FOTO_BLOB_OTHER');
 
 
 $agama= new Core();
@@ -133,11 +151,11 @@ $reqDokumenKategoriFileId= "0"; // ambil dari table KATEGORI_FILE, cek sesuai mo
 $arrsetriwayatfield= $vfpeg->setriwayatfield($riwayattable);
 // print_r($arrsetriwayatfield);exit;
 
-$arrparam= array("reqId"=>$reqId, "reqRowId"=>$reqRowId, "riwayattable"=>$riwayattable, "lihatquery"=>"");
+$arrparam= array("reqId"=>$reqId, "reqRowId"=>$reqFileRowId, "riwayattable"=>$riwayattable, "lihatquery"=>"");
 $arrambilfile= $vfpeg->ambilfile($arrparam);
 // print_r($arrambilfile);exit;
 
-$keycari= $riwayattable.";".$reqRowId;
+$keycari= $riwayattable.";".$reqFileRowId;
 
 $infofile= 0;
 if(!empty($arrambilfile))
@@ -223,7 +241,7 @@ if(!empty($arrambilfile))
 		        				$vriwayattable= $value["vriwayattable"];
 		        				$infolabel= $value["infolabel"];
 
-		        				$vkeydetil= $vriwayattable.";".$reqRowId.";".$riwayatfield;
+		        				$vkeydetil= $vriwayattable.";".$reqFileRowId.";".$riwayatfield;
 		        		?>
 					    	<a class="w3-bar-item w3-button tablink" onclick="opennewtab(event, '<?=$vkeydetil?>')"><?=$infolabel?></a>
 					    <?
@@ -269,11 +287,22 @@ if(!empty($arrambilfile))
 			        <div class="row">
 	        			<div class="col-md-6">
 	        				<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-3 col-sm-12 new-bg-danger text-white">
+	        					<?
+	        					$vpdata= $valGelarDepan['data'];
+	        					$vpwarna= $valGelarDepan['warna'];
+	        					?>
+			        			<label class="col-form-label text-right col-lg-3 col-sm-12 <?=$vpwarna?>">
 			        				Gelar Depan
+			        				<?
+			        				if(!empty($vpdata))
+			        				{
+			        				?>
 			        				<a class="tooltipe" href="javascript:void(0)">
-			        					<i class="fa fa-question-circle text-white"></i><span class="classic">Data kosong</span>
+			        					<i class="fa fa-question-circle text-white"></i><span class="classic"><?=$vpdata?></span>
 			        				</a>
+			        				<?
+			        				}
+			        				?>
 			        			</label>
 			        			<div class="col-lg-9 col-sm-12">
 			        				<input type="text" class="form-control" name="reqGelarDepan" id="reqGelarDepan" value="<?=$reqGelarDepan?>" />
@@ -282,7 +311,23 @@ if(!empty($arrambilfile))
 			        	</div>
 			        	<div class="col-md-6">
 	        				<div class="form-group row">
-			        			<label class="col-form-label text-right col-lg-3 col-sm-12">Gelar Belakang</label>
+	        					<?
+	        					$vpdata= $valGelarBelakang['data'];
+	        					$vpwarna= $valGelarBelakang['warna'];
+	        					?>
+	        					<label class="col-form-label text-right col-lg-3 col-sm-12 <?=$vpwarna?>">
+	        						Gelar Belakang
+	        						<?
+			        				if(!empty($vpdata))
+			        				{
+			        				?>
+			        				<a class="tooltipe" href="javascript:void(0)">
+			        					<i class="fa fa-question-circle text-white"></i><span class="classic"><?=$vpdata?></span>
+			        				</a>
+			        				<?
+			        				}
+			        				?>
+	        					</label>
 			        			<div class="col-lg-9 col-sm-12">
 			        				<input type="text" class="form-control"  name="reqGelarBelakang" id="reqGelarBelakang" value="<?=$reqGelarBelakang?>" />
 			        			</div>
@@ -578,8 +623,6 @@ if(!empty($arrambilfile))
 			        			</div>
 			        			<label class="col-form-label text-right col-lg-3 col-sm-12"></label>
 			        			<div class="col-lg-4 col-sm-12">
-			        				<!-- <img src="http://192.168.88.100/mojokerto/simpeg_online/main/image_script.php?reqPegawaiId=235164100003&reqMode=pegawai"> -->
-
 			        				<?if (file_exists($reqGambar)) {?>
 				        				 <img src="<?=$reqGambar?>" width=150 height=200>
 									<?}?>
@@ -598,7 +641,6 @@ if(!empty($arrambilfile))
 			        			</div>
 			        			<label class="col-form-label text-right col-lg-3 col-sm-12"></label>
 			        			<div class="col-lg-4 col-sm-12">
-			        				<!-- <img src="http://192.168.88.100/mojokerto/simpeg_online/main/image_script.php?reqPegawaiId=235164100003&reqMode=pegawai"> -->
 			        				<?if (file_exists($reqGambarSetengah)) {?>
 				        				 <img src="<?=$reqGambarSetengah?>" width=150 height=200>
 									<?}?>
@@ -930,11 +972,13 @@ if(!empty($arrambilfile))
 	        		<div class="card-footer">
 	        			<div class="row">
 	        				<div class="col-lg-9">
-	        					<input type="hidden" name="reqMode" value="<?=$reqMode?>">
+	        					<input type="hidden" name="reqMode" value="<?=$reqMode?>" />
 	        					<input type="hidden" name="reqPegawaiId" value="<?=$reqId?>">
-	        					<input type="hidden" name="reqTempValidasiId" value="<?=$reqTempValidasiId?>">
-	        					<input type="hidden" name="reqRowId" value="<?=$reqRowId?>">
-	        					<input type="hidden" name="reqId" value="<?=$reqId?>">
+	        					<input type="hidden" name="reqTempValidasiId" value="<?=$reqTempValidasiId?>" />
+	        					<input type="hidden" name="reqRowId" value="<?=$reqRowId?>" />
+	        					<input type="hidden" name="p" value="<?=$p?>" />
+	        					<input type="hidden" name="reqFileRowId" value="<?=$reqFileRowId?>" />
+	        					<input type="hidden" name="reqId" value="<?=$reqId?>" />
 	        					<button type="submit" id="ktloginformsubmitbutton"  class="btn btn-primary font-weight-bold mr-2">Simpan</button>
 	        				</div>
 	        			</div>
@@ -961,7 +1005,7 @@ if(!empty($arrambilfile))
         				$vriwayattable= $value["vriwayattable"];
         				$infolabel= $value["infolabel"];
 
-        				$vkeydetil= $vriwayattable.";".$reqRowId.";".$riwayatfield;
+        				$vkeydetil= $vriwayattable.";".$reqFileRowId.";".$riwayatfield;
         				$arrcheck= in_array_column($vkeydetil, "vkeydetil", $arrambilfile);
 
         				$vframeiframe= $arrambilfile[$arrcheck[0]]["vurl"];
@@ -1015,7 +1059,7 @@ if(!empty($arrambilfile))
 	 function HapusGambar(reqMode,reqId) {
         $.messager.confirm('Konfirmasi',"Hapus Lampiran terpilih?",function(r){
             if (r){
-                $.getJSON("json-data/info_data_json/deletegambar?reqMode="+reqMode+"&reqId="+reqId,
+                $.getJSON("json-validasi/pegawai_json/deletegambar?reqMode="+reqMode+"&reqId="+reqId,
                     function(data){
                     // console.log(data);return false;
                     $.messager.alert('Info', data.PESAN, 'info');                    
@@ -1038,7 +1082,7 @@ if(!empty($arrambilfile))
 	var _buttonSpinnerClasses = 'spinner spinner-right spinner-white pr-15';
 	jQuery(document).ready(function() {
 		var form = KTUtil.getById('ktloginform');
-		var formSubmitUrl = "json-data/info_data_json/indentitaspegawai";
+		var formSubmitUrl = "json-validasi/pegawai_json/add";
 		var formSubmitButton = KTUtil.getById('ktloginformsubmitbutton');
 		if (!form) {
 			return;
@@ -1100,7 +1144,16 @@ if(!empty($arrambilfile))
 			        			confirmButton: "btn font-weight-bold btn-light-primary"
 			        		}
 			        	}).then(function() {
-			        		document.location.href = "app/index/pegawai_data_fip?reqId=<?=$reqId?>";
+			        		vdetil= "";
+			        		<?
+			        		if(!empty($p))
+			        		{
+			        		?>
+			        		vdetil= "&p=<?=$p?>";
+			        		<?
+			        		}
+			        		?>
+			        		document.location.href = "personal/index/pegawai_data_fip?reqId=<?=$reqId?>"+vdetil;
 			        	});
 			        },
 			        error: function(xhr, status, error) {

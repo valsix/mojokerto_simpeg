@@ -329,6 +329,12 @@ create table validasi.pegawai
 	, tugas_tambahan_new character varying(1)
 	, id_pns_siasn character varying(255)
 	, jenis_mapel_id numeric
+	, last_create_user character varying(100)
+	, last_create_date date
+	, last_update_user character varying(100)
+	, last_update_date date
+	, last_create_satker character varying(25)
+	, last_update_satker character varying(25)
 	, validasi integer
 	, validator character varying
 	, perubahan_data character varying
@@ -850,7 +856,6 @@ $body$
 language plpgsql volatile strict cost 100 rows 1000;
 alter function validasi.validasi_pegawai(numeric, character varying, character varying) owner to postgres;
 
-
 create or replace function validasi.validasi_pegawai()
   returns trigger as
 $body$
@@ -1090,7 +1095,7 @@ declare
 	return new;
     end;
 $body$
-language plpgsql volatilecost 100;
+language plpgsql volatile cost 100;
 alter function validasi.validasi_pegawai() owner to postgres;
 
 drop trigger if exists validasi_pegawai_trigger on validasi.pegawai;
