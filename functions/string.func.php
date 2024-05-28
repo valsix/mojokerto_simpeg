@@ -1595,6 +1595,13 @@ function churuf($x, $style=3)
 	return $hasil;
 }
 
+function setToAlpha($parse, $row, $temp="0")
+{
+	$value= $row + $temp;
+	
+	return toAlpha($parse).$value;
+}
+
 function toAlpha($data){
     $alphabet =   array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
     $alpha_flip = array_flip($alphabet);

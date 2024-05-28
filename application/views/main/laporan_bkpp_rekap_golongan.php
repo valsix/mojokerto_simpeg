@@ -237,9 +237,9 @@ jQuery(document).ready(function() {
     });
 
     $("#btnCetak").on("click", function () {
-        reqFilter= $("#filter").val();
-        reqId= $("#reqSatkerId").val();
-        varurl= "json-main/cetak_report_json/golongan?reqId="+reqId+"&reqFilter="+reqFilter;
+        reqPeriode= $("#reqPeriode").val();
+        reqTahun= $("#reqTahun").val();
+        varurl= "json-main/cetak_report_json/golongan?reqPeriode="+reqPeriode+"&reqTahun="+reqTahun;
         // window.open(varurl, 'window name', 'window settings');
         window.open(varurl, '_blank');
     }); 

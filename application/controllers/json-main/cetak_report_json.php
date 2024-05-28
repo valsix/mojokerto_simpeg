@@ -43,15 +43,30 @@ class cetak_report_json extends CI_Controller {
 		include_once("functions/date.func.php");
 		include_once("functions/string.func.php");
 		include_once("functions/default.func.php");
-
-		$reqId= $this->input->get('reqId');
-		$reqFilter= $this->input->get('reqFilter');
-		$reqBulan= date('m');
-		$reqTahun= date('y');
-
 		//set_time_limit(3);
 		ini_set("memory_limit","500M");
 		ini_set('max_execution_time', 520);
+
+		$reqId= $this->input->get('reqId');
+		$reqFilter= $this->input->get('reqFilter');
+		$reqPeriode= $this->input->get('reqPeriode');
+		$reqTahun= $this->input->get('reqTahun');
+
+		if($reqPeriode == "1") 
+		{
+			$infoPeriode= 'Semester I';
+		}
+		elseif($reqPeriode == 2)
+		{
+			$infoPeriode= 'Semester II';
+		}
+		else
+		{
+			$infoPeriode= 'Semua Periode';
+		}
+
+		$tgl=date('Y-m-d');
+
 
 		$objPHPexcel= PHPExcel_IOFactory::load('Templates/report/golongan.xlsx');
 		$style = array(
@@ -99,6 +114,10 @@ class cetak_report_json extends CI_Controller {
 
 		}
 
+		$pesan= "KEADAAN ".strtoupper($infoPeriode)." TAHUN ".$reqTahun;
+
+		$objWorksheet->setCellValue("C4",$pesan);
+
 		$statement = "  ";
 
 		$this->load->model("base/Rekap");
@@ -107,7 +126,7 @@ class cetak_report_json extends CI_Controller {
 		// $urut=1;
 		$nomor=1;
 		$kolomawal=1;
-		$row = 5;
+		$row = 8;
 		// echo $set->query; exit; 
 		while($set->nextRow()){	
 
@@ -115,7 +134,8 @@ class cetak_report_json extends CI_Controller {
 
 			for($i=0; $i<count($field); $i++)
 			{
-				$kolom= toAlpha($index_kolom);
+			
+			$kolom= toAlpha($index_kolom);	$kolom= toAlpha($index_kolom);
 				// print_r($kolom);
 				$objWorksheet->getStyle($kolom.$row)->applyFromArray($style);
 				if($field[$i] == "NO")
@@ -136,18 +156,30 @@ class cetak_report_json extends CI_Controller {
 				$index_kolom++;
 			}
 
-			// $objWorksheet->getStyle("A".$no)->applyFromArray($styleT);
-			// $objWorksheet->getStyle("A".$no.':'."AF".$no)->applyFromArray($style);
 
 			$nomor++;
 			$row++;
 		} 
+		// print_r($index_kolom);exit;
+
+		$objWorksheet->mergeCells('A'.$row.':'.'B'.$row);
+		$objWorksheet->setCellValue("A".$row,"JUMLAH TOTAL");
+		$objWorksheet->getStyle("A".$row)->getFont()->setBold( true );
+		$objWorksheet->getStyle("A".$row)->applyFromArray($styleT);
+		
+		for($i=2; $i<=$index_kolom-1; $i++)
+		{
+			// print_r($kolom);
+			$kolom= toAlpha($i);
+			$rowAwal=setToAlpha($i, 8); $rowAkhir=setToAlpha($i, $row-1);
+			// print_r($kolom.$row-1."/"."=SUM(".$rowAwal.":".$rowAkhir.")");
+			$objWorksheet->setCellValue($kolom.$row,"=SUM(".$rowAwal.":".$rowAkhir.")");
+			$objWorksheet->getStyle($kolom.$row)->applyFromArray($styleT);
+		}
+
 
 		// exit;
 
-		// exit;
-
-		$currencyFormat= '_(Rp* #,##0_);_(Rp* (#,##0);_(Rp* "-"_);_(@_)';
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPexcel, 'Excel5');
 		$objWriter->save('Templates/report/laporan_bkpp_rekap_golongan.xls');
 
