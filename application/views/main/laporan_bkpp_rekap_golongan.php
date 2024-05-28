@@ -12,7 +12,7 @@ $arrtabledata= array(
     , array("label"=>"Gol I", "field"=> "", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
     , array("label"=>"Gol II", "field"=> "", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
     , array("label"=>"Gol III", "field"=> "", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
-    , array("label"=>">Gol IV", "field"=> "", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+    , array("label"=>"Gol IV", "field"=> "", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
     , array("label"=>"TOTAL", "field"=> "TOT", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
 
 
@@ -34,6 +34,9 @@ $arrtabledata= array(
     , array("label"=>"sorderdefault", "field"=> "SORDERDEFAULT", "display"=>"1", "width"=>"", "rowspan"=>"", "colspan"=>"")
     , array("label"=>"fieldid", "field"=> "PANGKAT_ID", "display"=>"1", "width"=>"", "rowspan"=>"", "colspan"=>"")
 );
+
+$arrTahun= setTahunLoop(1,2);
+
 
 
 ?>
@@ -79,6 +82,33 @@ $arrtabledata= array(
                     	<button class="btn btn-light-success" id="btnCetak"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Cetak</button>
                     </div>
 
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="area-filter">
+                    <div class="row mb-8">
+                        <div class="col-md-6" style="margin-top: 10px">
+                            <label>Periode:</label>
+                            <select name="reqPeriode" id="reqPeriode" class="form-control">
+                              <option value="1">Semester I (1 Januari - 30 Juni)</option>
+                              <option value="2">Semester II (1 Juli - 30 Desember)</option>          
+                          </select>
+                        </div>
+                        <div class="col-md-6" style="margin-top: 10px">
+                            <label>Tahun:</label>
+                            <select name="reqTahun" id="reqTahun" class="form-control">
+                              <?
+                              for($i=0;$i<count($arrTahun);$i++)
+                              {
+                                  ?>
+                                  <option value="<?=$arrTahun[$i]?>" <? if($reqTahun == $arrTahun[$i]) { ?> selected <? } ?>><?=$arrTahun[$i]?></option>
+                                  <?      
+                              }
+                              ?>    
+                          </select>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -205,6 +235,14 @@ jQuery(document).ready(function() {
             
         }
     });
+
+    $("#btnCetak").on("click", function () {
+        reqFilter= $("#filter").val();
+        reqId= $("#reqSatkerId").val();
+        varurl= "json-main/cetak_report_json/golongan?reqId="+reqId+"&reqFilter="+reqFilter;
+        // window.open(varurl, 'window name', 'window settings');
+        window.open(varurl, '_blank');
+    }); 
 
 });
 
