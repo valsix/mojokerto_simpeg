@@ -74,4 +74,26 @@ $BODY$
 ALTER FUNCTION satker_generate(character varying)
   OWNER TO postgres;
 
+-- Function: ambil_satker_induk(character varying)
+
+-- DROP FUNCTION ambil_satker_induk(character varying);
+
+CREATE OR REPLACE FUNCTION ambil_satker_induk(satkerid character varying)
+  RETURNS character varying AS
+$BODY$
+DECLARE
+tmpTahun VARCHAR;
+BEGIN
+    SELECT NAMA INTO tmpTahun
+     FROM SATKER
+    WHERE SATKER_ID = SUBSTR(SATKERID, 0, 2);
+   RETURN tmpTahun;
+END;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION ambil_satker_induk(character varying)
+  OWNER TO postgres;
+
+
 
