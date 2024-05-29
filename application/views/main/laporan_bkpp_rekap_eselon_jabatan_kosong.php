@@ -266,7 +266,7 @@ jQuery(document).ready(function() {
     $("#btnCetak").on("click", function () {
         reqPeriode= $("#reqPeriode").val();
         reqTahun= $("#reqTahun").val();
-        varurl= "json-main/cetak_report_json/golongan?reqPeriode="+reqPeriode+"&reqTahun="+reqTahun;
+        varurl= "json-main/cetak_report_json/eselon_kosong?reqPeriode="+reqPeriode+"&reqTahun="+reqTahun;
         // window.open(varurl, 'window name', 'window settings');
         window.open(varurl, '_blank');
     }); 
