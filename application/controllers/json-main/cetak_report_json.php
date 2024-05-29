@@ -103,6 +103,17 @@ class cetak_report_json extends CI_Controller {
 			),
 		);
 
+		$styleTengah = array(
+			'alignment' => array(
+				'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+			),
+			'font'  => array(
+				'size' => 8,
+				'name'  => 'Tahoma'
+
+			),
+		);
+
 
 
 		$objWorksheet = $objPHPexcel->getActiveSheet();
@@ -163,7 +174,7 @@ class cetak_report_json extends CI_Controller {
 		// print_r($index_kolom);exit;
 
 		$objWorksheet->mergeCells('A'.$row.':'.'B'.$row);
-		$objWorksheet->setCellValue("A".$row,"JUMLAH TOTAL");
+		$objWorksheet->setCellValue("A".$row,"JUMLAH DIPINDAHKAN");
 		$objWorksheet->getStyle("A".$row)->getFont()->setBold( true );
 		$objWorksheet->getStyle("A".$row)->applyFromArray($styleT);
 		
@@ -173,9 +184,45 @@ class cetak_report_json extends CI_Controller {
 			$kolom= toAlpha($i);
 			$rowAwal=setToAlpha($i, 8); $rowAkhir=setToAlpha($i, $row-1);
 			// print_r($kolom.$row-1."/"."=SUM(".$rowAwal.":".$rowAkhir.")");
-			$objWorksheet->setCellValue($kolom.$row,"=SUM(".$rowAwal.":".$rowAkhir.")");
+			// $objWorksheet->setCellValue($kolom.$row,"=SUM(".$rowAwal.":".$rowAkhir.")");
 			$objWorksheet->getStyle($kolom.$row)->applyFromArray($styleT);
 		}
+
+		$rowtotal=$row+1;
+
+		$objWorksheet->mergeCells('A'.$rowtotal.':'.'B'.$rowtotal);
+		$objWorksheet->setCellValue("A".$rowtotal,"JUMLAH TOTAL");
+		$objWorksheet->getStyle("A".$rowtotal)->getFont()->setBold( true );
+		$objWorksheet->getStyle("A".$rowtotal)->applyFromArray($styleT);
+		
+		for($i=2; $i<=$index_kolom-1; $i++)
+		{
+			// print_r($kolom);
+			$kolom= toAlpha($i);
+			$rowAwal=setToAlpha($i, 8); $rowAkhir=setToAlpha($i, $rowtotal-1);
+			// print_r($kolom.$row-1."/"."=SUM(".$rowAwal.":".$rowAkhir.")");
+			$objWorksheet->setCellValue($kolom.$rowtotal,"=SUM(".$rowAwal.":".$rowAkhir.")");
+			$objWorksheet->getStyle($kolom.$rowtotal)->applyFromArray($styleT);
+		}
+
+		$rowttd=$rowtotal+2;
+		$objWorksheet->setCellValue("X".$rowttd,"KEPALA BADAN KEPEGAWAIAN DAN");
+		$objWorksheet->getStyle("X".$rowttd)->getFont()->setBold( true );
+		$objWorksheet->getStyle("X".$rowttd)->applyFromArray($styleTengah);
+		$rowttd=$rowtotal+3;
+		$objWorksheet->setCellValue("X".$rowttd,"PENGEMBANGAN SUMBER DAYA MANUSIA");
+		$objWorksheet->getStyle("X".$rowttd)->getFont()->setBold( true );
+		$objWorksheet->getStyle("X".$rowttd)->applyFromArray($styleTengah);
+		$rowttd=$rowtotal+4;
+		$objWorksheet->setCellValue("X".$rowttd,"KABUPATEN MOJOKERTO");
+		$objWorksheet->getStyle("X".$rowttd)->getFont()->setBold( true );
+		$objWorksheet->getStyle("X".$rowttd)->applyFromArray($styleTengah);
+
+
+		$rowttd=$rowtotal+9;
+		$objWorksheet->setCellValue("V".$rowttd,"NIP :");
+		$objWorksheet->getStyle("V".$rowttd)->getFont()->setBold( true );
+		$objWorksheet->getStyle("V".$rowttd)->applyFromArray($styleTengah);
 
 
 		// exit;
