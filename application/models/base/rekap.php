@@ -317,6 +317,80 @@ class Rekap extends Entity{
 		//echo $str;
 		return $this->selectLimit($str,-1,-1); 
     }
+
+    function selectByParamsBkppRekapEselonJabatanKosong($paramsArray=array(),$limit=-1,$from=-1, $statement='')
+	{
+		$str = "
+		  
+		SELECT SATKER_ID,
+			AMBIL_SATKER_INDUK (SATKER_ID) UNIT_KERJA,
+			CASE
+			WHEN UPPER (A.NAMA) LIKE 'SEKRETARIAT%'
+			THEN
+			'SEKRETARIS' || SUBSTR (A.NAMA, 12, LENGTH (A.NAMA))
+			WHEN UPPER (A.NAMA) LIKE 'ASISTEN%'
+			THEN
+			A.NAMA
+			WHEN UPPER (A.NAMA) LIKE 'SEKRETARIS%'
+			THEN
+			A.NAMA
+			WHEN UPPER (A.NAMA) LIKE 'KECAMATAN%'
+			THEN
+			'Camat' || SUBSTR (A.NAMA, 10, LENGTH (A.NAMA))
+			WHEN UPPER (A.NAMA) LIKE 'KELURAHAN%'
+			THEN
+			'Lurah' || SUBSTR (A.NAMA, 10, LENGTH (A.NAMA))
+			WHEN UPPER (A.NAMA) LIKE 'BADAN%'
+			THEN
+			'KEPALA' || SUBSTR (A.NAMA, 6, LENGTH (A.NAMA))
+			WHEN UPPER (A.NAMA) LIKE 'DINAS%'
+			THEN
+			'KEPALA ' || A.NAMA
+			WHEN UPPER (A.NAMA) LIKE 'BAGIAN%'
+			THEN
+			'KEPALA ' || A.NAMA
+			WHEN UPPER (A.NAMA) LIKE 'BIDANG%'
+			THEN
+			'KEPALA ' || A.NAMA
+			WHEN UPPER (A.NAMA) LIKE 'SUB%'
+			THEN
+			'KEPALA ' || A.NAMA
+			WHEN UPPER (A.NAMA) LIKE 'SEKSI%'
+			THEN
+			'KEPALA ' || A.NAMA
+			WHEN UPPER (A.NAMA) LIKE 'STAF%'
+			THEN
+			A.NAMA
+			END
+			NAMA_JABATAN,
+			CASE WHEN ESELON_ID = 21
+			THEN 1 ELSE 0 END ESELON21,
+			CASE WHEN ESELON_ID = 22
+			THEN 1 ELSE 0 END ESELON22,
+			CASE WHEN ESELON_ID = 31
+			THEN 1 ELSE 0 END ESELON31,
+			CASE WHEN ESELON_ID = 32
+			THEN 1 ELSE 0 END ESELON32,
+			CASE WHEN ESELON_ID = 41
+			THEN 1 ELSE 0 END ESELON41,
+			CASE WHEN ESELON_ID = 42
+			THEN 1 ELSE 0 END ESELON42,
+			CASE WHEN ESELON_ID = 51
+			THEN 1 ELSE 0 END ESELON51,
+			CASE WHEN ESELON_ID = 52
+			THEN 1 ELSE 0 END ESELON52
+
+			FROM SATKER A
+			WHERE PEGAWAI_ID IS NULL AND ESELON_ID IS NOT NULL AND ESELON_ID <> 99
+			ORDER BY SATKER_ID ASC
+		"; 
+		
+		$str .= $statement;
+		$this->query = $str;
+		
+				
+		return $this->selectLimit($str,-1,-1); 
+    }
 	
 
    
