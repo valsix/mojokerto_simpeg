@@ -185,24 +185,24 @@ class report_json extends CI_Controller {
 		$statement= "";
 		$statement2= "";
 
-		if($this->adminsatkerid == "")//kondisi login sebagai admin
-		{
-			if($reqSatkerId == "")
-				$statement = " AND X.SATKER_ID LIKE '".$reqSatkerId."%' ";
-			else
-				$statement = " AND X.SATKER_ID LIKE '".$reqSatkerId."%' ";
-		}
-		else // kondisi login sebagai SKPD
-		{
-			if($reqSatkerId == "")
-				$statement = " AND X.SATKER_ID LIKE '".$this->adminsatkerid."%' ";
-			else
-				$statement = " AND X.SATKER_ID LIKE '".$reqSatkerId."%' ";
-		}
+		// if($this->adminsatkerid == "")//kondisi login sebagai admin
+		// {
+		// 	if($reqSatkerId == "")
+		// 		$statement = " AND X.SATKER_ID LIKE '".$reqSatkerId."%' ";
+		// 	else
+		// 		$statement = " AND X.SATKER_ID LIKE '".$reqSatkerId."%' ";
+		// }
+		// else // kondisi login sebagai SKPD
+		// {
+		// 	if($reqSatkerId == "")
+		// 		$statement = " AND X.SATKER_ID LIKE '".$this->adminsatkerid."%' ";
+		// 	else
+		// 		$statement = " AND X.SATKER_ID LIKE '".$reqSatkerId."%' ";
+		// }
 	
 		// $sOrder = " ORDER BY A.TANGGAL ASC";
 		$sOrder = " ";
-		$set->selectByParamsReportTribulanAll(array(), $displaylength, $displaystart, $statement,$statement2, $sOrder);
+		$set->selectByParamsBkppRekapKelKawinPendaga(array(), $displaylength, $displaystart, $statement);
 		// echo $set->query;exit;
 		while ($set->nextRow()) 
 		{

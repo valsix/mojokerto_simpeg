@@ -7,12 +7,73 @@ $pgtitle= churuf(str_replace("_", " ", str_replace("master_", "", $pgtitle)));
 
 
 
+
+$arrtabledatath1= array(
+     array("label"=>"UNIT KERJA", "field"=> "NAMA", "display"=>"",  "width"=>"", "rowspan"=>"2", "colspan"=>"")
+    , array("label"=>"JENIS KELAMIN", "field"=> "", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"3")
+    , array("label"=>"STATUS PERKAWINAN", "field"=> "", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"5")
+    , array("label"=>"PENDIDIKAN", "field"=> "", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"11")
+    , array("label"=>"AGAMA", "field"=> "", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"7")
+);
+
+$arrtabledatath2= array(
+     array("label"=>"L", "field"=> "TOT_L", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+    , array("label"=>"W", "field"=> "TOT_P", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+    , array("label"=>"JML", "field"=> "TOT_JK", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+    , array("label"=>"KW", "field"=> "SUDAH_KAWIN", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+    , array("label"=>"BL", "field"=> "BELUM_KAWIN", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+    , array("label"=>"JD", "field"=> "JANDA", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+    , array("label"=>"DD", "field"=> "DUDA", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+    , array("label"=>"JML", "field"=> "TOTAL_KAWIN", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+    , array("label"=>"SD", "field"=> "SD", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+    , array("label"=>"SLTP", "field"=> "SMP", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+    , array("label"=>"SLTA", "field"=> "SMA", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+    , array("label"=>"D1", "field"=> "D1", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+    , array("label"=>"D2", "field"=> "D2", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+    , array("label"=>"D3", "field"=> "D3", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+    , array("label"=>"D4", "field"=> "D4", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+    , array("label"=>"S1", "field"=> "S1", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+    , array("label"=>"S2", "field"=> "S2", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+    , array("label"=>"S3", "field"=> "S3", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+    , array("label"=>"JML", "field"=> "SEKOLAH", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+    , array("label"=>"IS", "field"=> "ISLAM", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+    , array("label"=>"KR", "field"=> "KRISTEN", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+    , array("label"=>"KT", "field"=> "KATOLIK", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+    , array("label"=>"HD", "field"=> "HINDU", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+    , array("label"=>"BD", "field"=> "BUDHA", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+    , array("label"=>"KP", "field"=> "KP", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+    , array("label"=>"JML", "field"=> "AGAMA", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+);
+
+
 $arrtabledata= array(
-     array("label"=>"Gol.Ruang", "field"=> "KODE", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
-    , array("label"=>"Jenis Kelamin", "field"=> "TOTAL_KELAMIN", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
-    , array("label"=>"Status Perkawinan", "field"=> "TOTAL_KAWIN", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
-    , array("label"=>"Agama", "field"=> "AGAMA", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
-    , array("label"=>"Pendidikan", "field"=> "SEKOLAH", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+     array("label"=>"UNIT KERJA", "field"=> "NAMA", "display"=>"",  "width"=>"", "rowspan"=>"2", "colspan"=>"")
+    , array("label"=>"L", "field"=> "TOT_L", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+    , array("label"=>"W", "field"=> "TOT_P", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+    , array("label"=>"JML", "field"=> "TOT_JK", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+    , array("label"=>"KW", "field"=> "SUDAH_KAWIN", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+    , array("label"=>"BL", "field"=> "BELUM_KAWIN", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+    , array("label"=>"JD", "field"=> "JANDA", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+    , array("label"=>"DD", "field"=> "DUDA", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+    , array("label"=>"JML", "field"=> "TOTAL_KAWIN", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+    , array("label"=>"SD", "field"=> "SD", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+    , array("label"=>"SLTP", "field"=> "SMP", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+    , array("label"=>"SLTA", "field"=> "SMA", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+    , array("label"=>"D1", "field"=> "D1", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+    , array("label"=>"D2", "field"=> "D2", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+    , array("label"=>"D3", "field"=> "D3", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+    , array("label"=>"D4", "field"=> "D4", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+    , array("label"=>"S1", "field"=> "S1", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+    , array("label"=>"S2", "field"=> "S2", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+    , array("label"=>"S3", "field"=> "S3", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+    , array("label"=>"JML", "field"=> "SEKOLAH", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+    , array("label"=>"IS", "field"=> "ISLAM", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+    , array("label"=>"KR", "field"=> "KRISTEN", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+    , array("label"=>"KT", "field"=> "KATOLIK", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+    , array("label"=>"HD", "field"=> "HINDU", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+    , array("label"=>"BD", "field"=> "BUDHA", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+    , array("label"=>"KP", "field"=> "KP", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+    , array("label"=>"JML", "field"=> "AGAMA", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
 );
 
 
@@ -96,16 +157,39 @@ $arrTahun= setTahunLoop(1,2);
             </div>
 
             <div class="card-body">
-                <table class="table table-bordered table-hover table-checkable" id="kt_datatable" style="margin-top: 13px !important">
+                <table class="table table-bordered table-hover table-checkable" id="kt_datatable" style="margin-top: 13px !important;width: 100%">
                     <thead>
                         <tr>
                             <?php
-                            foreach($arrtabledata as $valkey => $valitem) 
+                            foreach($arrtabledatath1 as $valkey => $valitem) 
                             {
                                 $infotablelabel= $valitem["label"];
                                 $infotablecolspan= $valitem["colspan"];
                                 $infotablerowspan= $valitem["rowspan"];
                                 $infowidth= $valitem["width"];
+
+                                if(!empty($infotablecolspan))
+                                {
+                                }
+
+                                if(!empty($infotablelabel))
+                                {
+                                    ?>
+                                    <th style="text-align:center; width: <?=$infowidth?>%" colspan='<?=$infotablecolspan?>' rowspan='<?=$infotablerowspan?>'><?=$infotablelabel?></th>
+                                    <?
+                                }
+                            }
+                            ?>
+                        </tr>
+
+                        <tr>
+                            <?php
+                            foreach($arrtabledatath2 as $valkeyn => $valitemn) 
+                            {
+                                $infotablelabel= $valitemn["label"];
+                                $infotablecolspan= $valitemn["colspan"];
+                                $infotablerowspan= $valitemn["rowspan"];
+                                $infowidth= $valitemn["width"];
 
                                 if(!empty($infotablecolspan))
                                 {

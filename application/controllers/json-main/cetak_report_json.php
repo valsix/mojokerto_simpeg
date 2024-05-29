@@ -36,6 +36,245 @@ class cetak_report_json extends CI_Controller {
 		$this->adminuserpegawaiid= $this->session->userdata("adminuserpegawaiid".$configvlxsessfolder);
 	}
 
+	function kel_kawin()
+	{
+		/* INCLUDE FILE */
+		require 'lib/PHPExcel.php';
+		include_once("functions/date.func.php");
+		include_once("functions/string.func.php");
+		include_once("functions/default.func.php");
+		//set_time_limit(3);
+		ini_set("memory_limit","500M");
+		ini_set('max_execution_time', 520);
+
+		$reqId= $this->input->get('reqId');
+		$reqFilter= $this->input->get('reqFilter');
+		$reqPeriode= $this->input->get('reqPeriode');
+		$reqTahun= $this->input->get('reqTahun');
+
+		if($reqPeriode == "1") 
+		{
+			$infoPeriode= 'Semester I (1 Januari - 30 Juni)';
+		}
+		elseif($reqPeriode == 2)
+		{
+			$infoPeriode= 'Semester II (1 Juli - 30 Desember)';
+		}
+		else
+		{
+			$infoPeriode= 'Semua Periode';
+		}
+
+		$tgl=date('Y-m-d');
+
+
+		$objPHPexcel= PHPExcel_IOFactory::load('Templates/report/kel_kawin.xlsx');
+		$style = array(
+			'borders' => array(
+				'allborders' => array(
+
+					'style' => PHPExcel_Style_Border::BORDER_THIN
+				)				
+			),
+			'alignment' => array(
+				'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+			),
+			'font'  => array(
+				'size' => 8,
+				'name'  => 'Tahoma'
+
+			),
+		);
+
+		$styleT = array(
+			'borders' => array(
+				'allborders' => array(
+
+					'style' => PHPExcel_Style_Border::BORDER_THIN
+				)				
+			),
+			'alignment' => array(
+				'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+			),
+			'font'  => array(
+				'size' => 8,
+				'name'  => 'Tahoma'
+
+			),
+		);
+
+		$styleTengah = array(
+			'alignment' => array(
+				'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+			),
+			'font'  => array(
+				'size' => 8,
+				'name'  => 'Tahoma'
+
+			),
+		);
+
+
+		$styleTengahC = array(
+			'borders' => array(
+				'allborders' => array(
+
+					'style' => PHPExcel_Style_Border::BORDER_THIN
+				)				
+			),
+			'alignment' => array(
+				'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+			),
+			'font'  => array(
+				'size' => 8,
+				'name'  => 'Tahoma'
+
+			),
+			'fill' => array(
+				'type' => PHPExcel_Style_Fill::FILL_SOLID,
+				'color' => array('rgb' => '9BC2E6')
+			),
+		);
+
+
+
+
+
+		$objWorksheet = $objPHPexcel->getActiveSheet();
+
+		$field= array("NO", "NAMA", "TOT_L", "TOT_P", "TOT_JK", "SUDAH_KAWIN", "BELUM_KAWIN", "JANDA", "DUDA","TOTAL_KAWIN","SD","SMP","SMA","D1","D2","D3","D4","S1","S2","S3","SEKOLAH","ISLAM","KRISTEN","KATOLIK","HINDU","BUDHA","KP","AGAMA");
+
+
+		if($reqFilter == ""){
+
+		}
+
+		$pesan= "KEADAAN ".strtoupper($infoPeriode)." TAHUN ".$reqTahun;
+
+		$objWorksheet->setCellValue("C4",$pesan);
+
+		$statement = "  ";
+
+		$this->load->model("base/Rekap");
+		$set = new Rekap();
+		$set->selectByParamsBkppRekapKelKawinPendaga(array(), -1, -1, $statement);	
+		// $urut=1;
+		$nomor=1;
+		$kolomawal=1;
+		$row = 9;
+		// echo $set->query; exit; 
+		while($set->nextRow()){	
+
+			$index_kolom= 0;
+
+			for($i=0; $i<count($field); $i++)
+			{
+			
+				$kolom= toAlpha($index_kolom);	$kolom= toAlpha($index_kolom);
+				// print_r($kolom);
+				$objWorksheet->getStyle($kolom.$row)->applyFromArray($style);
+				if($field[$i] == "NO")
+				{
+					$objWorksheet->setCellValueExplicit($kolom.$row,$nomor, PHPExcel_Cell_DataType::TYPE_STRING);
+					$objWorksheet->getStyle("A".$row)->applyFromArray($styleT);
+				}
+				else if($field[$i] == "NAMA"  )
+				{
+					$objWorksheet->setCellValue($kolom.$row,$set->getField($field[$i]));
+				}
+				else if($field[$i] == "JUMLAH" )
+				{
+					$objWorksheet->setCellValue($kolom.$row,1);
+					$objWorksheet->getStyle($kolom.$row)->applyFromArray($styleT);
+				}
+				else
+				{
+					$objWorksheet->setCellValue($kolom.$row,$set->getField($field[$i]));
+					$objWorksheet->getStyle($kolom.$row)->applyFromArray($styleT);
+				}
+
+				$index_kolom++;
+			}
+
+
+			$nomor++;
+			$row++;
+		} 
+		// print_r($index_kolom);exit;
+
+		$objWorksheet->mergeCells('A'.$row.':'.'B'.$row);
+		$objWorksheet->setCellValue("A".$row,"JUMLAH DIPINDAHKAN");
+		$objWorksheet->getStyle("A".$row)->getFont()->setBold( true );
+		$objWorksheet->getStyle("A".$row)->applyFromArray($styleTengahC);
+		
+		for($i=2; $i<=$index_kolom-1; $i++)
+		{
+			// print_r($kolom);
+			$kolom= toAlpha($i);
+			$rowAwal=setToAlpha($i, 11); $rowAkhir=setToAlpha($i, $row-1);
+			// print_r($kolom.$row-1."/"."=SUM(".$rowAwal.":".$rowAkhir.")");
+			// $objWorksheet->setCellValue($kolom.$row,"=SUM(".$rowAwal.":".$rowAkhir.")");
+			$objWorksheet->getStyle($kolom.$row)->applyFromArray($styleTengahC);
+		}
+
+		$rowtotal=$row+1;
+
+		$objWorksheet->mergeCells('A'.$rowtotal.':'.'B'.$rowtotal);
+		$objWorksheet->setCellValue("A".$rowtotal,"JUMLAH TOTAL");
+		$objWorksheet->getStyle("A".$rowtotal)->getFont()->setBold( true );
+		$objWorksheet->getStyle("A".$rowtotal)->applyFromArray($styleTengahC);
+		
+		for($i=2; $i<=$index_kolom-1; $i++)
+		{
+			// print_r($kolom);
+			$kolom= toAlpha($i);
+			$rowAwal=setToAlpha($i, 11); $rowAkhir=setToAlpha($i, $rowtotal-1);
+			// print_r($kolom.$row-1."/"."=SUM(".$rowAwal.":".$rowAkhir.")");
+			$objWorksheet->setCellValue($kolom.$rowtotal,"=SUM(".$rowAwal.":".$rowAkhir.")");
+			$objWorksheet->getStyle($kolom.$rowtotal)->applyFromArray($styleTengahC);
+		}
+
+		$rowttd=$rowtotal+2;
+
+		// print_r($rowttd);exit;
+		$objWorksheet->setCellValue("X".$rowttd,"KEPALA BADAN KEPEGAWAIAN DAN");
+		$objWorksheet->getStyle("X".$rowttd)->getFont()->setBold( true );
+		$objWorksheet->getStyle("X".$rowttd)->applyFromArray($styleTengah);
+		$rowttd=$rowtotal+3;
+		$objWorksheet->setCellValue("X".$rowttd,"PENGEMBANGAN SUMBER DAYA MANUSIA");
+		$objWorksheet->getStyle("X".$rowttd)->getFont()->setBold( true );
+		$objWorksheet->getStyle("X".$rowttd)->applyFromArray($styleTengah);
+		$rowttd=$rowtotal+4;
+		$objWorksheet->setCellValue("X".$rowttd,"KABUPATEN MOJOKERTO");
+		$objWorksheet->getStyle("X".$rowttd)->getFont()->setBold( true );
+		$objWorksheet->getStyle("X".$rowttd)->applyFromArray($styleTengah);
+
+
+		$rowttd=$rowtotal+9;
+		$objWorksheet->setCellValue("W".$rowttd,"NIP :");
+		$objWorksheet->getStyle("W".$rowttd)->getFont()->setBold( true );
+		$objWorksheet->getStyle("W".$rowttd)->applyFromArray($styleTengah);
+
+
+		// exit;
+
+		$objWriter = PHPExcel_IOFactory::createWriter($objPHPexcel, 'Excel5');
+		$objWriter->save('Templates/report/laporan_bkpp_rekap_kelkawinpendaga_excel.xls');
+
+		$down= 'Templates/report/laporan_bkpp_rekap_kelkawinpendaga_excel.xls';
+		header('Content-Description: File Transfer');
+		header('Content-Type: application/vnd.ms-excel');
+		header('Content-Disposition: attachment; filename='.basename($down));
+		header('Content-Transfer-Encoding: binary');
+		header('Expires: 0');
+		header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+		header('Pragma: public');
+		header('Content-Length: ' . filesize($down));
+		readfile($down);
+		unlink($down);
+	}
+
+
 	function eselon_kosong()
 	{
 		/* INCLUDE FILE */
