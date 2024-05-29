@@ -239,7 +239,6 @@ class Rekap extends Entity{
 						GROUP BY A.SATKER_ID, A.NAMA
 				) A
 				WHERE 1=1
-
 		"; 
 		$str .= $statement." ORDER BY A.SATKER_ID ";
 		$this->query = $str;

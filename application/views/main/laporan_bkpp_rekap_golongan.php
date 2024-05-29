@@ -5,17 +5,35 @@ $reqId= $this->input->get('reqId');
 $pgtitle= $pg;
 $pgtitle= churuf(str_replace("_", " ", str_replace("master_", "", $pgtitle)));
 
-$arrtabledata= array(
-     // array("label"=>"No", "field"=> "NO", "display"=>"",  "width"=>"5", "rowspan"=>"2", "colspan"=>"")
-     array("label"=>"UNIT KERJA", "field"=> "NAMA", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
-    , array("label"=>"CPNS", "field"=> "", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+$arrtabledatath1= array(
+     array("label"=>"UNIT KERJA", "field"=> "NAMA", "display"=>"",  "width"=>"", "rowspan"=>"2", "colspan"=>"")
+    , array("label"=>"CPNS", "field"=> "", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"9")
     , array("label"=>"Gol I", "field"=> "", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
     , array("label"=>"Gol II", "field"=> "", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
     , array("label"=>"Gol III", "field"=> "", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
     , array("label"=>"Gol IV", "field"=> "", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
-    , array("label"=>"TOTAL", "field"=> "TOT", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+    , array("label"=>"TOTAL", "field"=> "TOT", "display"=>"",  "width"=>"", "rowspan"=>"2", "colspan"=>"")
+);
+
+$arrtabledatath2= array(
+     array("label"=>"IA", "field"=> "TOTCPNS_11", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+    , array("label"=>"IB", "field"=> "TOTCPNS_12", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+    , array("label"=>"IC", "field"=> "TOTCPNS_13", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+    , array("label"=>"IIA", "field"=> "TOTCPNS_21", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+    , array("label"=>"IIB", "field"=> "TOTCPNS_22", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+    , array("label"=>"IIC", "field"=> "TOTCPNS_23", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+    , array("label"=>"IIIA", "field"=> "TOTCPNS_31", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+    , array("label"=>"IIIB", "field"=> "TOTCPNS_32", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+    , array("label"=>"JUMLAH", "field"=> "TOTCPNS", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+    , array("label"=>"JUMLAH", "field"=> "TOT_GOL1", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+    , array("label"=>"JUMLAH", "field"=> "TOT_GOL2", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+    , array("label"=>"JUMLAH", "field"=> "TOT_GOL3", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+    , array("label"=>"JUMLAH", "field"=> "TOT_GOL4", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
+);
 
 
+$arrtabledata= array(
+     array("label"=>"UNIT KERJA", "field"=> "NAMA", "display"=>"",  "width"=>"", "rowspan"=>"2", "colspan"=>"")
     , array("label"=>"IA", "field"=> "TOTCPNS_11", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
     , array("label"=>"IB", "field"=> "TOTCPNS_12", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
     , array("label"=>"IC", "field"=> "TOTCPNS_13", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
@@ -24,16 +42,15 @@ $arrtabledata= array(
     , array("label"=>"IIC", "field"=> "TOTCPNS_23", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
     , array("label"=>"IIIA", "field"=> "TOTCPNS_31", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
     , array("label"=>"IIIB", "field"=> "TOTCPNS_32", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
-
     , array("label"=>"JUMLAH", "field"=> "TOTCPNS", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
     , array("label"=>"JUMLAH", "field"=> "TOT_GOL1", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
     , array("label"=>"JUMLAH", "field"=> "TOT_GOL2", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
     , array("label"=>"JUMLAH", "field"=> "TOT_GOL3", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
     , array("label"=>"JUMLAH", "field"=> "TOT_GOL4", "display"=>"",  "width"=>"", "rowspan"=>"", "colspan"=>"")
-   
-    , array("label"=>"sorderdefault", "field"=> "SORDERDEFAULT", "display"=>"1", "width"=>"", "rowspan"=>"", "colspan"=>"")
-    , array("label"=>"fieldid", "field"=> "PANGKAT_ID", "display"=>"1", "width"=>"", "rowspan"=>"", "colspan"=>"")
+     , array("label"=>"TOTAL", "field"=> "TOT", "display"=>"",  "width"=>"", "rowspan"=>"2", "colspan"=>"")
 );
+
+
 
 $arrTahun= setTahunLoop(1,2);
 
@@ -117,12 +134,35 @@ $arrTahun= setTahunLoop(1,2);
                     <thead>
                         <tr>
                             <?php
-                            foreach($arrtabledata as $valkey => $valitem) 
+                            foreach($arrtabledatath1 as $valkey => $valitem) 
                             {
                                 $infotablelabel= $valitem["label"];
                                 $infotablecolspan= $valitem["colspan"];
                                 $infotablerowspan= $valitem["rowspan"];
                                 $infowidth= $valitem["width"];
+
+                                if(!empty($infotablecolspan))
+                                {
+                                }
+
+                                if(!empty($infotablelabel))
+                                {
+                                    ?>
+                                    <th style="text-align:center; width: <?=$infowidth?>%" colspan='<?=$infotablecolspan?>' rowspan='<?=$infotablerowspan?>'><?=$infotablelabel?></th>
+                                    <?
+                                }
+                            }
+                            ?>
+                        </tr>
+
+                        <tr>
+                            <?php
+                            foreach($arrtabledatath2 as $valkeyn => $valitemn) 
+                            {
+                                $infotablelabel= $valitemn["label"];
+                                $infotablecolspan= $valitemn["colspan"];
+                                $infotablerowspan= $valitemn["rowspan"];
+                                $infowidth= $valitemn["width"];
 
                                 if(!empty($infotablecolspan))
                                 {
