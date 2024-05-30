@@ -216,7 +216,7 @@ $arrcarimenuparent= $vfpeg->cariparentmenu($arrparam);
 
                     $arrmenuMaster= array("master_diklat","master_diklat_add","master_eselon","master_eselon_add","master_peraturan_gaji","master_peraturan_gaji_add","master_gaji_pokok","master_gaji_pokok_add","master_peraturan","master_peraturan_add","master_tingkat_hukuman","master_tingkat_hukuman_add","master_jenis_hukuman","master_jenis_hukuman_add","master_jurusan_pendidikan","master_jurusan_pendidikan_add","master_pangkat","master_pangkat_add","master_satker","master_satker_add","master_user","master_user_add","master_satker","master_pejabat_penetap","master_pejabat_penetap_add","master_pendidikan","master_pendidikan_add","master_user_group","master_user_group_add","master_user_rekap","master_jabatan_fungsional","master_jabatan_fungsional_add","master_user_reset_password","master_user_log");
 
-                    $arrmenuReport= array("laporan_bkpp_rekap_kelkawinpendaga","laporan_bkpp_rekap_golongan","laporan_bkpp_rekap_eselon_jabatan_kosong");
+                    $arrmenuReport= array("laporan_bkpp_rekap_kelkawinpendaga","laporan_bkpp_rekap_golongan","laporan_bkpp_rekap_eselon_jabatan_kosong","laporan_bkpp_rekap_eselon");
 
                     if(in_array($pg, $arrmenupegawaidetil))
                     {
@@ -608,6 +608,11 @@ $arrcarimenuparent= $vfpeg->cariparentmenu($arrparam);
                                         <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover" <?if($pg=='laporan_bkpp_rekap_golongan'){?>style="background-color: #EE9D01;"<?}?>>
                                             <a href="app/index/laporan_bkpp_rekap_golongan" class="menu-link ">
                                                 <span class="menu-text">Rekap Golongan</span>
+                                            </a>
+                                        </li>
+                                        <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover" <?if($pg=='laporan_bkpp_rekap_eselon'){?>style="background-color: #EE9D01;"<?}?>>
+                                            <a href="app/index/laporan_bkpp_rekap_eselon" class="menu-link ">
+                                                <span class="menu-text">Rekap Eselon</span>
                                             </a>
                                         </li>
                                        
