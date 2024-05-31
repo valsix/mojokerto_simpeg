@@ -448,6 +448,150 @@ class report_json extends CI_Controller {
 		echo json_encode( $result, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);	
 	}
 
+	function json_rekap_eselon_jabatan()
+	{
+		$this->load->model("base/Rekap");
+
+		$set= new Rekap();
+
+		if ( isset( $_REQUEST['columnsDef'] ) && is_array( $_REQUEST['columnsDef'] ) ) {
+			$columnsDefault = [];
+			foreach ( $_REQUEST['columnsDef'] as $field ) {
+				$columnsDefault[ $field ] = "true";
+			}
+		}
+		// print_r($columnsDefault);exit;
+
+		$displaystart= -1;
+		$displaylength= -1;
+		$no=1;
+
+		$arrinfodata= [];
+
+		$statement= "";
+		$statement2= "";
+
+		// if($this->adminsatkerid == "")//kondisi login sebagai admin
+		// {
+		// 	if($reqSatkerId == "")
+		// 		$statement = " AND X.SATKER_ID LIKE '".$reqSatkerId."%' ";
+		// 	else
+		// 		$statement = " AND X.SATKER_ID LIKE '".$reqSatkerId."%' ";
+		// }
+		// else // kondisi login sebagai SKPD
+		// {
+		// 	if($reqSatkerId == "")
+		// 		$statement = " AND X.SATKER_ID LIKE '".$this->adminsatkerid."%' ";
+		// 	else
+		// 		$statement = " AND X.SATKER_ID LIKE '".$reqSatkerId."%' ";
+		// }
+	
+		// $sOrder = " ORDER BY A.TANGGAL ASC";
+		$sOrder = " ";
+		$set->selectByParamsBkppRekapEselonJabatan(array(), $displaylength, $displaystart, $statement, $sOrder);
+		// echo $set->query;exit;
+		while ($set->nextRow()) 
+		{
+			$row= [];
+			foreach($columnsDefault as $valkey => $valitem) 
+			{
+				if ($valkey == "SORDERDEFAULT")
+					$row[$valkey]= "1";
+				else if ($valkey == "TANGGAL")
+				{
+					$row[$valkey]= dateToPageCheck($set->getField($valkey));
+				}
+				else if ($valkey == "NO")
+				{
+					$row[$valkey]= $no;
+				}
+				else if ($valkey == "GAJI"  )
+				{
+					$row[$valkey]= currencyToPage($set->getField(trim($valkey)));
+				}
+				else
+					$row[$valkey]= $set->getField($valkey);
+			}
+			$no++;
+			array_push($arrinfodata, $row);
+		}
+
+		// get all raw data
+		$alldata = $arrinfodata;
+		// print_r($alldata);exit;
+
+		$data = [];
+		// internal use; filter selected columns only from raw data
+		foreach ( $alldata as $d ) {
+			// $data[] = filterArray( $d, $columnsDefault );
+			$data[] = $d;
+		}
+
+		// count data
+		$totalRecords = $totalDisplay = count( $data );
+
+		// filter by general search keyword
+		if ( isset( $_REQUEST['search'] ) ) {
+			$data         = filterKeyword( $data, $_REQUEST['search'] );
+			$totalDisplay = count( $data );
+		}
+
+		if ( isset( $_REQUEST['columns'] ) && is_array( $_REQUEST['columns'] ) ) {
+			foreach ( $_REQUEST['columns'] as $column ) {
+				if ( isset( $column['search'] ) ) {
+					$data         = filterKeyword( $data, $column['search'], $column['data'] );
+					$totalDisplay = count( $data );
+				}
+			}
+		}
+
+		// sort
+		if ( isset( $_REQUEST['order'][0]['column'] ) && $_REQUEST['order'][0]['dir'] ) {
+			$column = $_REQUEST['order'][0]['column'];
+			if(count($columnsDefault) - 2 == $column){}
+			else
+			{
+				$dir    = $_REQUEST['order'][0]['dir'];
+				usort( $data, function ( $a, $b ) use ( $column, $dir ) {
+					$a = array_slice( $a, $column, 1 );
+					$b = array_slice( $b, $column, 1 );
+					$a = array_pop( $a );
+					$b = array_pop( $b );
+
+					if ( $dir === 'asc' ) {
+						return $a > $b ? true : false;
+					}
+
+					return $a < $b ? true : false;
+				} );
+			}
+		}
+
+		// pagination length
+		if ( isset( $_REQUEST['length'] ) ) {
+			$data = array_splice( $data, $_REQUEST['start'], $_REQUEST['length'] );
+		}
+
+		// return array values only without the keys
+		if ( isset( $_REQUEST['array_values'] ) && $_REQUEST['array_values'] ) {
+			$tmp  = $data;
+			$data = [];
+			foreach ( $tmp as $d ) {
+				$data[] = array_values( $d );
+			}
+		}
+
+		$result = [
+		    'recordsTotal'    => $totalRecords,
+		    'recordsFiltered' => $totalDisplay,
+		    'data'            => $data,
+		];
+
+		header('Content-Type: application/json');
+		echo json_encode( $result, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);	
+	}
+
+
 	function json_rekap_eselon_terisi()
 	{
 		$this->load->model("base/Rekap");
