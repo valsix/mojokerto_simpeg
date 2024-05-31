@@ -1716,7 +1716,8 @@ class Rekap extends Entity{
 				
 		return $this->selectLimit($str,-1,-1); 
     }
-	
+
+  
 
    
 
