@@ -216,7 +216,7 @@ $arrcarimenuparent= $vfpeg->cariparentmenu($arrparam);
 
                     $arrmenuMaster= array("master_diklat","master_diklat_add","master_eselon","master_eselon_add","master_peraturan_gaji","master_peraturan_gaji_add","master_gaji_pokok","master_gaji_pokok_add","master_peraturan","master_peraturan_add","master_tingkat_hukuman","master_tingkat_hukuman_add","master_jenis_hukuman","master_jenis_hukuman_add","master_jurusan_pendidikan","master_jurusan_pendidikan_add","master_pangkat","master_pangkat_add","master_satker","master_satker_add","master_user","master_user_add","master_satker","master_pejabat_penetap","master_pejabat_penetap_add","master_pendidikan","master_pendidikan_add","master_user_group","master_user_group_add","master_user_rekap","master_jabatan_fungsional","master_jabatan_fungsional_add","master_user_reset_password","master_user_log");
 
-                    $arrmenuReport= array("laporan_bkpp_rekap_kelkawinpendaga","laporan_bkpp_rekap_golongan","laporan_bkpp_rekap_eselon_jabatan_kosong","laporan_bkpp_rekap_eselon","laporan_bkpp_rekap_fungsional_staf","laporan_skpd_pensiun_all","laporan_bkpp_rekap_eselon_jabatan");
+                    $arrmenuReport= array("laporan_skpd_semester","laporan_skpd_semester_eselon","laporan_skpd_karis_karsu_karpeg","laporan_skpd_pensiun","laporan_skpd_diklat_struktural","laporan_skpd_jenis_kelamin","laporan_skpd_pendidikan","laporan_skpd_bezetting","laporan_bkpp_rekap_kelkawinpendaga","laporan_bkpp_rekap_golongan","laporan_bkpp_rekap_eselon_jabatan_kosong","laporan_bkpp_rekap_eselon","laporan_bkpp_rekap_fungsional_staf","laporan_skpd_pensiun_all","laporan_bkpp_rekap_eselon_jabatan");
 
                     if(in_array($pg, $arrmenupegawaidetil))
                     {
@@ -595,6 +595,47 @@ $arrcarimenuparent= $vfpeg->cariparentmenu($arrparam);
                                                 <i class="menu-arrow"></i>
                                             </a>
                                         </li>
+                                        <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover" <?if($pg=='laporan_skpd_semester'){?>style="background-color: #EE9D01;"<?}?>>
+                                            <a href="app/index/laporan_skpd_semester" class="menu-link ">
+                                                <span class="menu-text">KelKawinPendaga</span>
+                                            </a>
+                                        </li>
+                                        <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover" <?if($pg=='laporan_skpd_semester_eselon'){?>style="background-color: #EE9D01;"<?}?>>
+                                            <a href="app/index/laporan_skpd_semester_eselon" class="menu-link ">
+                                                <span class="menu-text">Eselon</span>
+                                            </a>
+                                        </li>
+                                        <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover" <?if($pg=='laporan_skpd_karis_karsu_karpeg'){?>style="background-color: #EE9D01;"<?}?>>
+                                            <a href="app/index/laporan_skpd_karis_karsu_karpeg" class="menu-link ">
+                                                <span class="menu-text">Karis / Karsu / Karpeg</span>
+                                            </a>
+                                        </li>
+                                        <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover" <?if($pg=='laporan_skpd_pensiun'){?>style="background-color: #EE9D01;"<?}?>>
+                                            <a href="app/index/laporan_skpd_pensiun" class="menu-link ">
+                                                <span class="menu-text">Pensiun</span>
+                                            </a>
+                                        </li>
+                                        <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover" <?if($pg=='laporan_skpd_diklat_struktural'){?>style="background-color: #EE9D01;"<?}?>>
+                                            <a href="app/index/laporan_skpd_diklat_struktural" class="menu-link ">
+                                                <span class="menu-text">Diklat Struktural</span>
+                                            </a>
+                                        </li>
+                                        <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover" <?if($pg=='laporan_skpd_jenis_kelamin'){?>style="background-color: #EE9D01;"<?}?>>
+                                            <a href="app/index/laporan_skpd_jenis_kelamin" class="menu-link ">
+                                                <span class="menu-text">Jenis Kelamin</span>
+                                            </a>
+                                        </li>
+                                        <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover" <?if($pg=='laporan_skpd_pendidikan'){?>style="background-color: #EE9D01;"<?}?>>
+                                            <a href="app/index/laporan_skpd_pendidikan" class="menu-link ">
+                                                <span class="menu-text">Pendidikan</span>
+                                            </a>
+                                        </li>
+                                        <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover" <?if($pg=='laporan_skpd_bezetting'){?>style="background-color: #EE9D01;"<?}?>>
+                                            <a href="app/index/laporan_skpd_bezetting" class="menu-link ">
+                                                <span class="menu-text">Bezetting</span>
+                                            </a>
+                                        </li>
+
                                         <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover" <?if($pg=='laporan_bkpp_rekap_fungsional_staf'){?>style="background-color: #EE9D01;"<?}?>>
                                             <a href="app/index/laporan_bkpp_rekap_fungsional_staf" class="menu-link ">
                                                 <span class="menu-text">Rekap Fungsional Dan Pelaksana</span>
