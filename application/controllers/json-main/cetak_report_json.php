@@ -1305,7 +1305,7 @@ class cetak_report_json extends CI_Controller {
 		$field= array("NO","NAMA","TOT_11","TOT_12","TOT_13", "TOT_14", "TOT_GOL1", 
 		"TOT_21","TOT_22","TOT_23", "TOT_24", "TOT_GOL2",
 		"TOT_31","TOT_32","TOT_33", "TOT_34", "TOT_GOL3",
-		"TOT_41","TOT_42","TOT_43", "TOT_44", "TOT_GOL4");
+		"TOT_41","TOT_42","TOT_43", "TOT_44", "TOT_GOL4","JUMLAH_23","TOT_L", "TOT_P","TOT","TOT_KW", "TOT_BL", "TOT_JD", "TOT_DD");
 
 
 		if($reqFilter == ""){
@@ -1324,7 +1324,7 @@ class cetak_report_json extends CI_Controller {
 		// $urut=1;
 		$nomor=1;
 		$kolomawal=1;
-		$row = 12;
+		$row = 10;
 		// echo $set->query; exit; 
 		while($set->nextRow()){	
 
@@ -1350,6 +1350,10 @@ class cetak_report_json extends CI_Controller {
 					$objWorksheet->setCellValue($kolom.$row,$set->getField($field[$i])+$set->getField("TOT_STAF"));
 					$objWorksheet->getStyle($kolom.$row)->applyFromArray($styleT);
 				}
+				else if($field[$i] == "JUMLAH_23" )
+				{
+					// $objWorksheet->setCellValue($kolom.$row,"=SUM(G".$row.";L".$row.";Q".$row.";V".$row.")");
+				}
 				else
 				{
 					$objWorksheet->setCellValue($kolom.$row,$set->getField($field[$i]));
@@ -1363,6 +1367,8 @@ class cetak_report_json extends CI_Controller {
 			$nomor++;
 			$row++;
 		} 
+
+		// exit();
 		// print_r($index_kolom);exit;
 
 		$objWorksheet->mergeCells('A'.$row.':'.'B'.$row);
