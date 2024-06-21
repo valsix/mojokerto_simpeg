@@ -12,7 +12,7 @@ $reqId= $this->input->get('reqId');
 $cekquery= $this->input->get('c');
 
 $arrtabledata= array(
-    array("label"=>"Pangkat", "field"=> "NMPANGKAT", "display"=>"",  "width"=>"")
+    array("label"=>"Pangkat", "field"=> "PANGKAT_ID", "display"=>"",  "width"=>"")
     , array("label"=>"TMT Pangkat", "field"=> "TMT_PANGKAT", "display"=>"",  "width"=>"")
     , array("label"=>"No. Nota", "field"=> "NO_NOTA", "display"=>"",  "width"=>"")
     , array("label"=>"Tgl. Nota", "field"=> "TANGGAL_NOTA", "display"=>"",  "width"=>"")
@@ -24,7 +24,7 @@ $arrtabledata= array(
     , array("label"=>"Masa Kerja", "field"=> "MASA_KERJA", "display"=>"",  "width"=>"")
     , array("label"=>"Keterangan", "field"=> "KETERANGAN", "display"=>"",  "width"=>"")
 
-    , array("label"=>"Warna", "field"=> "WARNA", "display"=>"1",  "width"=>"")
+    , array("label"=>"vperubahandata", "field"=> "PERUBAHAN_DATA", "display"=>"1",  "width"=>"")
     , array("label"=>"validasihapusid", "field"=> "TEMP_VALIDASI_HAPUS_ID", "display"=>"1", "width"=>"")
     , array("label"=>"validasiid", "field"=> "TEMP_VALIDASI_ID", "display"=>"1", "width"=>"")
     , array("label"=>"sorderdefault", "field"=> "SORDERDEFAULT", "display"=>"1", "width"=>"")
@@ -33,10 +33,8 @@ $arrtabledata= array(
 ?>
 
 <!-- SELECT2 -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet">
 <link href="lib/select2totreemaster/src/select2totree.css" rel="stylesheet">
-<!-- <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script> -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+<script src="lib/select2/select2.min.js"></script>
 <script src="lib/select2totreemaster/src/select2totree.js"></script>
 
 <div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
@@ -166,6 +164,9 @@ var indexvalidasihapusid= arrdata.length - 4;
 var valinfoid = '';
 var valinfovalidasiid = '';
 var valinfovalidasihapusid = '';
+
+infocolormode= 'validasi';
+indexperubahandata= arrdata.length - 5;
 
 jQuery(document).ready(function() {
     var jsonurl= "json-validasi/riwayat_pangkat_json/json?reqId=<?=$reqId?>&c=<?=$cekquery?>";

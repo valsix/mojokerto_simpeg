@@ -1252,6 +1252,9 @@ ul.breadcrumb li a.text-muted {
 .EselonV { background-color:#FF9; }
 .tugastambahan { background-color:#ebeb19; }
 
+.warnavalidasi { background-color:#FF0000; color: white !important }
+
+
 /*loading bar*/
 .loading {
   position: fixed;

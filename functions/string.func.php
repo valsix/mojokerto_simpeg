@@ -322,6 +322,14 @@ function ValToNullDB($varId)
 		return "'".$varId."'";
 }
 
+function idValidasiDb($varId)
+{
+	if($varId == '-1')
+		return 'NULL';
+	else
+		return $varId;
+}
+
 function setQuote($var, $status='')
 {	
 	if($status == 1)

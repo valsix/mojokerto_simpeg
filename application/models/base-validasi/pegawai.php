@@ -252,5 +252,34 @@ class Pegawai extends Entity{
 		return $this->selectLimit($str,$limit,$from); 
 		
     }
+
+    function selectByValidasi($paramsArray=array(),$limit=-1,$from=-1, $statement='', $statementdetil="", $order=' ORDER BY A.P_ID ASC')
+	{
+		$str = "
+		SELECT 
+		V.*, A.*
+		FROM
+		(
+			SELECT
+			A.PEGAWAI_ID P_ID, NIP_LAMA, A.FORMAT_NIP_BARU NIP_BARU, A.VNAMA_LENGKAP NAMA
+			, E.VSATKER_NAMA_DETIL SATUAN_KERJA_DETIL
+			FROM pegawai A
+			INNER JOIN satker E ON A.SATKER_ID = E.SATKER_ID
+			WHERE 1 = 1
+		"; 
+		
+		foreach ($paramsArray as $key => $val)
+		{
+			$str .= " AND $key = '$val' ";
+		}
+		
+		$str .= $statement." 
+		) A
+		INNER JOIN validasi.validasi_perubahandatavalidasi('') V ON A.P_ID = V.PEGAWAI_ID
+		WHERE 1=1 ".$statementdetil.$order;
+		$this->query = $str;
+		// echo $str;exit;
+		return $this->selectLimit($str,$limit,$from); 
+    }
 } 
 ?>

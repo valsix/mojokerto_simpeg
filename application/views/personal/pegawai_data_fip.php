@@ -85,16 +85,14 @@ $data_npwp= $set->getField('DOSIR_NPWP');$valdata_npwp= checkwarna($reqPerubahan
 $reqGambar= $set->getField('FOTO_BLOB');
 $reqGambarSetengah= $set->getField('FOTO_BLOB_OTHER');
 
-$arrJenisKelamin= [];
 $arrComboJenisKelamin= [];
 $arrComboJenisKelamin= array(
 	array("id"=>"L", "text"=>"Laki laki")
 	, array("id"=>"P", "text"=>"Perempuan")
 );
 $reqJenisKelamin= $set->getField("JENIS_KELAMIN");
-$valJenisKelamin= checkwarna($reqPerubahanData, 'JENIS_KELAMIN', $arrJenisKelamin, array("id", "text"));
+$valJenisKelamin= checkwarna($reqPerubahanData, 'JENIS_KELAMIN', $arrComboJenisKelamin, array("id", "text"));
 
-$arrAgama= [];
 $arrComboAgama= [];
 $agama= new Core();
 $agama->selectByParamsAgama(); 
@@ -102,9 +100,8 @@ while ($agama->nextRow()){
 	array_push($arrComboAgama,array("id"=>$agama->getField('AGAMA_ID') , "text"=>$agama->getField('NAMA')));
 }
 $reqAgama= $set->getField('AGAMA_ID');
-$valAgama= checkwarna($reqPerubahanData, 'AGAMA_ID', $arrAgama, array("id", "text"));
+$valAgama= checkwarna($reqPerubahanData, 'AGAMA_ID', $arrComboAgama, array("id", "text"));
 
-$arrStatusPernikahan= [];
 $arrComboStatusPernikahan= [];
 $arrComboStatusPernikahan= array(
 	array("id"=>"1", "text"=>"Belum Kawin")
@@ -113,9 +110,8 @@ $arrComboStatusPernikahan= array(
 	, array("id"=>"4", "text"=>"Duda")
 );
 $reqStatusPernikahan= $set->getField("STATUS_KAWIN");
-$valStatusPernikahan= checkwarna($reqPerubahanData, 'STATUS_KAWIN', $arrStatusPernikahan, array("id", "text"));
+$valStatusPernikahan= checkwarna($reqPerubahanData, 'STATUS_KAWIN', $arrComboStatusPernikahan, array("id", "text"));
 
-$arrgoldarah= [];
 $arrComboGoldar= [];
 $arrComboGoldar= array(
 	array("id"=>"A", "text"=>"A")
@@ -125,9 +121,8 @@ $arrComboGoldar= array(
 
 );
 $reqGolDarah= str_replace(" ","",$set->getField('GOLONGAN_DARAH'));
-$valGolonganDarah= checkwarna($reqPerubahanData, 'GOLONGAN_DARAH', $arrgoldarah, array("id", "text"));
+$valGolonganDarah= checkwarna($reqPerubahanData, 'GOLONGAN_DARAH', $arrComboGoldar, array("id", "text"));
 
-$arrPropinsi= [];
 $arrComboPropinsi= [];
 $propinsi= new Core();
 $propinsi->selectByParamsPropinsi(); 
@@ -135,9 +130,8 @@ while ($propinsi->nextRow()){
 	array_push($arrComboPropinsi,array("id"=>$propinsi->getField('PROPINSI_ID') , "text"=>$propinsi->getField('NAMA')));
 }
 $reqPropinsi= $set->getField('PROPINSI_ID');
-$valPropinsi= checkwarna($reqPerubahanData, 'PROPINSI_ID', $arrPropinsi, array("id", "text"));
+$valPropinsi= checkwarna($reqPerubahanData, 'PROPINSI_ID', $arrComboPropinsi, array("id", "text"));
 
-$arrKabupaten= [];
 $arrComboKabupaten= [];
 $kabupaten= new Core();
 $kabupaten->selectByParamsKabupaten(array('PROPINSI_ID'=>$reqPropinsi)); 
@@ -145,9 +139,8 @@ while ($kabupaten->nextRow()){
 	array_push($arrComboKabupaten,array("id"=>$kabupaten->getField('KABUPATEN_ID') , "text"=>$kabupaten->getField('NAMA')));
 }
 $reqKabupaten= $set->getField('KABUPATEN_ID');
-$valKabupaten= checkwarna($reqPerubahanData, 'KABUPATEN_ID', $arrKabupaten, array("id", "text"));
+$valKabupaten= checkwarna($reqPerubahanData, 'KABUPATEN_ID', $arrComboKabupaten, array("id", "text"));
 
-$arrKecamatan= [];
 $arrComboKecamatan= [];
 $kecamatan= new Core();
 $kecamatan->selectByParamsKecamatan(array('PROPINSI_ID'=>$reqPropinsi, 'KABUPATEN_ID'=>$reqKabupaten)); 
@@ -155,9 +148,8 @@ while ($kecamatan->nextRow()){
 	array_push($arrComboKecamatan,array("id"=>$kecamatan->getField('KECAMATAN_ID') , "text"=>$kecamatan->getField('NAMA')));
 }
 $reqKecamatan= $set->getField('KECAMATAN_ID');
-$valKecamatan= checkwarna($reqPerubahanData, 'KECAMATAN_ID', $arrKecamatan, array("id", "text"));
+$valKecamatan= checkwarna($reqPerubahanData, 'KECAMATAN_ID', $arrComboKecamatan, array("id", "text"));
 
-$arrDesa= [];
 $arrComboDesa= [];
 $desa= new Core();
 $desa->selectByParamsKelurahan(array('PROPINSI_ID'=>$reqPropinsi, 'KABUPATEN_ID'=>$reqKabupaten,'KECAMATAN_ID'=>$reqKecamatan)); 
@@ -165,9 +157,8 @@ while ($desa->nextRow()){
 	array_push($arrComboDesa,array("id"=>$desa->getField('KELURAHAN_ID') , "text"=>$desa->getField('NAMA')));
 }
 $reqDesa= $set->getField('KELURAHAN_ID');
-$valDesa= checkwarna($reqPerubahanData, 'KELURAHAN_ID', $arrDesa, array("id", "text"));
+$valDesa= checkwarna($reqPerubahanData, 'KELURAHAN_ID', $arrComboDesa, array("id", "text"));
 
-$arrBank= [];
 $arrComboBank= [];
 $bank= new Core();
 $bank->selectByParamsBank(); 
@@ -175,9 +166,8 @@ while ($bank->nextRow()){
 	array_push($arrComboBank,array("id"=>$bank->getField('BANK_ID') , "text"=>$bank->getField('NAMA')));
 }
 $reqBank= $set->getField('BANK_ID');
-$valBank= checkwarna($reqPerubahanData, 'BANK_ID', $arrDesa, array("id", "text"));
+$valBank= checkwarna($reqPerubahanData, 'BANK_ID', $arrComboBank, array("id", "text"));
 
-$arrTipePegawai= [];
 $arrComboTipePegawai= [];
 $tipepegawai= new Core();
 $tipepegawai->selectByParamsTipePegawai(); 
@@ -185,9 +175,8 @@ while ($tipepegawai->nextRow()){
 	array_push($arrComboTipePegawai,array("id"=>$tipepegawai->getField('TIPE_PEGAWAI_ID') , "text"=>$tipepegawai->getField('NAMA'), "parentid"=>$tipepegawai->getField('TIPE_PEGAWAI_ID_PARENT')));
 }
 $reqTipePegawai= $set->getField('TIPE_PEGAWAI_ID');
-$valTipePegawai= checkwarna($reqPerubahanData, 'TIPE_PEGAWAI_ID', $arrDesa, array("id", "text"));
+$valTipePegawai= checkwarna($reqPerubahanData, 'TIPE_PEGAWAI_ID', $arrComboTipePegawai, array("id", "text"));
 
-$arrTugasTambahan= [];
 $arrComboTugasTambahan= [];
 $arrComboTugasTambahan= array(
 	array("id"=>"1", "text"=>"Kepala Sekolah")
@@ -195,9 +184,8 @@ $arrComboTugasTambahan= array(
 	, array("id"=>"3", "text"=>"Sub Koordinator")
 );
 $reqTugasTambahan= $set->getField('TUGAS_TAMBAHAN_NEW');
-$valTugasTambahan= checkwarna($reqPerubahanData, 'TUGAS_TAMBAHAN_NEW', $arrTugasTambahan, array("id", "text"));
+$valTugasTambahan= checkwarna($reqPerubahanData, 'TUGAS_TAMBAHAN_NEW', $arrComboTugasTambahan, array("id", "text"));
 
-$arrStatusPegawai= [];
 $arrComboStatusPegawai= [];
 $status_pegawai= new Core();
 $status_pegawai->selectByParamsStatusPegawai(); 
@@ -205,9 +193,8 @@ while ($status_pegawai->nextRow()){
 	array_push($arrComboStatusPegawai,array("id"=>$status_pegawai->getField('STATUS_PEGAWAI_ID') , "text"=>$status_pegawai->getField('NAMA')));
 }
 $reqStatusPegawai= $set->getField('STATUS_PEGAWAI');
-$valStatusPegawai= checkwarna($reqPerubahanData, 'STATUS_PEGAWAI_ID', $arrStatusPegawai, array("id", "text"));
+$valStatusPegawai= checkwarna($reqPerubahanData, 'STATUS_PEGAWAI_ID', $arrComboStatusPegawai, array("id", "text"));
 
-$arrJenisPegawai= [];
 $arrComboJenisPegawai= [];
 $jenis_pegawai= new Core();
 $jenis_pegawai->selectByParamsJenisPegawai();  
@@ -215,9 +202,8 @@ while ($jenis_pegawai->nextRow()){
 	array_push($arrComboJenisPegawai,array("id"=>$jenis_pegawai->getField('JENIS_PEGAWAI_ID') , "text"=>$jenis_pegawai->getField('NAMA')));
 }
 $reqJenisPegawai= $set->getField('JENIS_PEGAWAI_ID');
-$valJenisPegawai= checkwarna($reqPerubahanData, 'JENIS_PEGAWAI_ID', $arrJenisPegawai, array("id", "text"));
+$valJenisPegawai= checkwarna($reqPerubahanData, 'JENIS_PEGAWAI_ID', $arrComboJenisPegawai, array("id", "text"));
 
-$arrKedudukan= [];
 $arrComboKedudukan= [];
 $kedudukan= new Core();
 $kedudukan->selectByParamsKedudukan();  
@@ -225,7 +211,7 @@ while ($kedudukan->nextRow()){
 	array_push($arrComboKedudukan,array("id"=>$kedudukan->getField('KEDUDUKAN_ID') , "text"=>$kedudukan->getField('NAMA')));
 }
 $reqKedudukanId= $set->getField('KEDUDUKAN_ID');
-$valKedudukanId= checkwarna($reqPerubahanData, 'KEDUDUKAN_ID', $arrJenisPegawai, array("id", "text"));
+$valKedudukanId= checkwarna($reqPerubahanData, 'KEDUDUKAN_ID', $arrComboKedudukan, array("id", "text"));
 
 
 

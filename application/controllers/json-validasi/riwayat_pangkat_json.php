@@ -77,6 +77,10 @@ class riwayat_pangkat_json extends CI_Controller {
 				{
 					$row[$valkey]= $set->getField('MASA_KERJA_TAHUN').'-'.$set->getField('MASA_KERJA_BULAN');
 				}
+				else if ($valkey == "PANGKAT_ID")
+				{
+					$row[$valkey]= $set->getField("NMPANGKAT");
+				}
 				else
 				{
 					$row[$valkey]= $set->getField($valkey);
@@ -165,15 +169,18 @@ class riwayat_pangkat_json extends CI_Controller {
 		$this->load->library('globalfilepegawai');
 		$reqLinkFile= $_FILES['reqLinkFile'];
 
-		$this->load->model("base-validasi/RiwayatPangkat");
 		$this->load->model("base/PejabatPenetap");
 
+		// start tambahan untuk validasi
+		$this->load->model("base-validasi/RiwayatPangkat");
 		$reqId= $this->input->post("reqId");
 		$reqRowId= $this->input->post("reqRowId");
 		$reqTempValidasiHapusId= $this->input->post("reqTempValidasiHapusId");
 		$reqTempValidasiId= $this->input->post("reqTempValidasiId");
 		$reqStatusValidasi= $this->input->post("reqStatusValidasi");
 		$reqFileRowId= $this->input->post("reqFileRowId");
+		$cekquery= $this->input->post("cekquery");
+		// end tambahan untuk validasi
 
 		$reqGolRuang= $this->input->post("reqGolRuang");
 		$reqPjPenetap= $this->input->post("reqPjPenetap");
@@ -240,7 +247,6 @@ class riwayat_pangkat_json extends CI_Controller {
 		$set->setField('JENIS_KP', ValToNullDB($reqJenisKP));
 		$set->setField('KETERANGAN', $reqKeterangan);
 		$set->setField('GAJI_POKOK', ValToNullDB(dotToNo($reqGajiPokok)));
-		$set->setField('PANGKAT_RIWAYAT_ID', $reqRowId);		
 		$set->setField('TANGGAL_STLUD', dateToDBCheck($reqTglSTLUD));
 		$set->setField('TANGGAL_NOTA', dateToDBCheck($reqTglNota));
 		$set->setField('TANGGAL_SK', dateToDBCheck($reqTglSK));
@@ -249,6 +255,8 @@ class riwayat_pangkat_json extends CI_Controller {
 		$adminusernama= $this->adminuserloginnama;
 		$userSatkerId= $this->adminsatkerid;
 
+		// start tambahan untuk validasi
+		$set->setField('PANGKAT_RIWAYAT_ID', idValidasiDb($reqRowId));
 		$set->setField('VALIDASI', ValToNullDB($reqStatusValidasi));
 		$set->setField('TEMP_VALIDASI_ID', $reqTempValidasiId);
 		$set->setField("LAST_CREATE_USER", $adminusernama);
@@ -274,6 +282,12 @@ class riwayat_pangkat_json extends CI_Controller {
 				$reqSimpan= 1;
 			}
 		}
+
+		if($cekquery == "1")
+		{
+			echo $set->query;exit;
+		}
+		// end tambahan untuk validasi
 
 		if($reqSimpan == 1)
 		{

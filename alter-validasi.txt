@@ -1,6 +1,50 @@
 drop schema if exists validasi;
 create schema validasi authorization postgres;
 
+create or replace function validasi.tipejenisinfo(infojenis character varying, infolabel character varying)
+  returns character varying as
+$body$
+declare 
+    inforeturn character varying;
+begin
+	if infojenis = 'jenis' then
+		if coalesce(nullif(infolabel, ''), null) is null then
+			inforeturn:= 'Tambah Data';
+		elsif infolabel = 'xxx' then
+			inforeturn:= 'Hapus';
+		else
+			inforeturn:= 'Ubah Data';
+		end if;
+	elsif infojenis = 'status' then
+		if coalesce(nullif(infolabel, ''), null) is null then
+			inforeturn:= 'Belum Validasi';
+		elsif infolabel = '1' then
+			inforeturn:= 'Validasi';
+		else
+			inforeturn:= 'Ditolak';
+		end if;
+	elsif infojenis = 'hak' then
+		if infolabel = '1' then
+			inforeturn:= 'Sesuai Unit Kerja';
+		elsif infolabel = '20' then
+			inforeturn:= 'Unit Kerja / Induk Unit Kerja';
+		elsif infolabel = '30' then
+			inforeturn:= 'BKDPP';
+		else
+			inforeturn:= 'Belum ditentukan';
+		end if;
+	elsif infojenis = 'riwayat' then
+		inforeturn:= infolabel;
+		--select nama into inforeturn from validasi.riwayat_update where riwayat_update_id = infolabel::numeric;
+	end if;
+
+	return inforeturn;
+end;
+
+$body$
+language plpgsql volatile cost 100;
+alter function validasi.tipejenisinfo(character varying, character varying) owner to postgres;
+
 create or replace function validasi.vupdateinfo(vtable character varying, vinfoid numeric, vinforowid numeric, vlastuser character varying, vlastlevel numeric)
   returns character varying as
 $body$
@@ -1598,3 +1642,85 @@ create table validasi.kinerja
 	, temp_validasi_id integer NOT NULL
 	, constraint vkinerja_pkey primary key (temp_validasi_id)
 );
+
+---============================================ untuk data validasi ini pastikan terakhir
+drop type if exists validasi.perubahandatavalidasi_type;
+create type validasi.perubahandatavalidasi_type as
+(
+	temp_validasi_id integer
+	, row_id numeric
+	, row_hapus_id numeric
+	, info_link character varying
+	, info_table character varying
+	, pegawai_id numeric
+	, info_riwayat character varying
+	, info_jenis character varying
+	, info_keterangan character varying
+	, info_tanggal date
+	, info_jenis_update character varying
+	, info_status character varying
+	, info_level numeric
+	, info_level_nama character varying
+	, info_validasi numeric
+	, info_create_date timestamp without time zone
+);
+
+create or replace function validasi.validasi_perubahandatavalidasi(vstatement character varying)
+  returns setof validasi.perubahandatavalidasi_type as
+$body$
+declare
+	cur refcursor;
+	query text;
+	rec validasi.perubahandatavalidasi_type%rowtype;
+begin
+	query:= '
+		select
+			temp_validasi_id, row_id, row_hapus_id, info_link, info_table, pegawai_id
+			, validasi.tipejenisinfo(''riwayat'', info_riwayat::character varying) info_riwayat
+			, info_jenis, info_keterangan, info_tanggal
+			,
+			case
+			when row_hapus_id is null then
+				validasi.tipejenisinfo(''jenis'', row_id::character varying)
+			else
+				validasi.tipejenisinfo(''jenis'', ''xxx''::character varying)
+			end info_jenis_update
+			, validasi.tipejenisinfo(''status'', validasi::character varying) info_status
+			, info_level, validasi.tipejenisinfo(''hak'', info_level::character varying) info_level_nama
+			, info_validasi, info_create_date
+		from
+		(
+			select
+			temp_validasi_id, pangkat_riwayat_id row_id, null::numeric row_hapus_id, ''pegawai_add_pangkat_data'' info_link, ''pangkat_riwayat'' info_table, pegawai_id
+			, ''FIP - 02. Riwayat Pangkat'' info_riwayat, ''Reguler'' info_jenis,  no_sk info_keterangan
+			, tmt_pangkat info_tanggal, validasi, 30 info_level
+			, validasi info_validasi
+			, last_create_date info_create_date
+			from validasi.pangkat_riwayat where 1=1
+			union all
+			select
+			temp_validasi_id, pangkat_riwayat_id row_id, c.temp_validasi_id row_hapus_id, ''pegawai_add_pangkat_data'' info_link, ''pangkat_riwayat'' info_table, a.pegawai_id
+			, ''FIP - 02. Riwayat Pangkat'' info_riwayat, ''Reguler'' info_jenis, no_sk info_keterangan
+			, tmt_pangkat info_tanggal, validasi, 30 info_level
+			, validasi info_validasi
+			, A.last_create_date info_create_date
+			from pangkat_riwayat a
+			inner join validasi.hapus_data c on upper(c.hapus_nama::text) = upper(''PANGKAT_RIWAYAT''::text) and a.pangkat_riwayat_id = c.temp_validasi_id::numeric AND c.validasi is null
+			where 1=1
+		) a
+	';
+	--raise notice 'sql %', query;
+	
+	open cur for execute query;
+		fetch cur into rec;
+		while found loop
+			return next rec;
+			fetch cur into rec;
+		end loop;
+	close cur;
+end;
+$body$
+language plpgsql volatile strict
+cost 100
+rows 1000;
+alter function validasi.validasi_perubahandatavalidasi(character varying) owner to postgres;

@@ -53,7 +53,7 @@ class RiwayatPangkat extends Entity{
 			, ".$this->getField("TEMP_VALIDASI_ID")."
 		)
 		"; 	
-		echo $str;exit();
+		// echo $str;exit();
 		$this->id = $this->getField("PEGAWAI_ID");
 		$this->query = $str;
 		// $this->setlogdata("pegawai", "INSERT", $str);
@@ -90,7 +90,7 @@ class RiwayatPangkat extends Entity{
 		WHERE TEMP_VALIDASI_ID= '".$this->getField("TEMP_VALIDASI_ID")."'
 		";
 		$this->query = $str;
-		echo $str;exit();
+		// echo $str;exit();
 		// $this->setlogdata("pegawai", "UPDATE", $str);
 		return $this->execQuery($str);
     }

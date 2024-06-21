@@ -2,7 +2,7 @@
 include_once("functions/string.func.php");
 include_once("functions/date.func.php");
 
-function checkwarna($value, $id, $arrdata="", $arrdetil="")
+function checkwarna($value, $id, $arrdata="", $arrdetil="", $tempvalidasihapusid= "")
 {
 	$str = $value;
 	$obj = json_decode( preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $str), true );
@@ -18,22 +18,47 @@ function checkwarna($value, $id, $arrdata="", $arrdetil="")
 				$infodata= dateToPageCheck($infodata);
 				$infowarna= "bg-danger text-white";
 			}
+			elseif($arrdata == "numberformat")
+			{
+				$infodata= numberToIna($infodata);
+				$infowarna= "new-bg-danger text-white";
+			}
+			elseif($arrdata == "comaformat")
+			{
+				$infodata= dotToComma($infodata);
+				$infowarna= "new-bg-danger text-white";
+			}
 			else
 			{
-				$infodetil= in_array_column($infodata, $arrdetil[0], $arrdata);
-				$infodata= $arrdata[$infodetil[0]][$arrdetil[1]];
-				$infowarna= "wrap-ds-danger";
+				if(empty($infodata))
+				{
+					$infodata= "Data kosong";
+				}
+				else
+				{
+					$infodetil= in_array_column($infodata, $arrdetil[0], $arrdata);
+					$infodata= $arrdata[$infodetil[0]][$arrdetil[1]];
+				}
+				$infowarna= "new-bg-danger text-white";
 			}
 		}
 		else
 		{
 			$infodata= $obj[$id][0];
-			if(empty($infodata))
+			if($infodata == "0")
+			{
+				$infodata= " 0";
+			}
+			else if(empty($infodata))
 			{
 				$infodata= "Data kosong";
 			}
 			$infowarna= "bg-danger text-white";
 		}
+	}
+	elseif(!empty($tempvalidasihapusid))
+	{
+		$infowarna= "new-bg-danger text-white";
 	}
 	else
 	{

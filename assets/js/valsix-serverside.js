@@ -319,6 +319,33 @@ var ajaxserverselectsingle = function() {
                                 $($(nRow).children()).addClass('tugastambahan');
                             }
                         }
+
+                        // kondisikan sesuai kebutuhan mode
+                        else if(infocolormode == "validasi")
+                        {
+                            vcheckid= aData[valarrdata[indexfieldid]["field"].toUpperCase()];
+                            if(vcheckid == null)
+                            {
+                                $($(nRow).children()).addClass('warnavalidasi');
+                            }
+                            else
+                            {
+                                jobj= JSON.parse(aData[valarrdata[indexperubahandata]["field"].toUpperCase()]);
+                                if(jobj !== null)
+                                {
+                                    valarrdata.forEach(function (item, index) {
+                                        infofield= item["field"];
+
+                                        if(Array.isArray(jobj[infofield]))
+                                        {
+                                            $('td:eq('+index+')', nRow).addClass("warnavalidasi");
+                                        }
+
+                                    });
+                                }
+                            }
+                            
+                        }
                     }
 
                     /*var valueStyle= loopIndex= maxLoop= "";
