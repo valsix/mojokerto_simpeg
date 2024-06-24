@@ -330,6 +330,16 @@ function idValidasiDb($varId)
 		return $varId;
 }
 
+function tglvalidasiDb($varId)
+{
+	$vreturn= "NULL";
+	if($varId == "1")
+	{
+		$vreturn= "NOW()";
+	}
+	return $vreturn;
+}
+
 function setQuote($var, $status='')
 {	
 	if($status == 1)

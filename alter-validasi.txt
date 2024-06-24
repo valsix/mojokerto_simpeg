@@ -88,7 +88,8 @@ begin
 		end if;
 		*/
 		
-		vupdateheaderdetil:= vupdateheaderdetil || ', last_user = ''' || vlastuser || ''' , last_level = ''' || vlastlevel || ''', last_date = now()';
+		--vupdateheaderdetil:= vupdateheaderdetil || ', last_user = ''' || vlastuser || ''' , last_level = ''' || vlastlevel || ''', last_date = now()';
+		vupdateheaderdetil:= vupdateheaderdetil || ', last_update_user = ''' || vlastuser || ''' , last_update_date = now()';
 		inforeturn:= vupdateheader || vupdateheaderdetil || ' where '|| vtable ||'_id = ' || vinfoid;
 	end if;
 
@@ -178,6 +179,63 @@ create table validasi.hapus_data
 	, tanggal_validasi timestamp without time zone
 );
 
+drop table if exists validasi.hapus_log;
+create table validasi.hapus_log
+(
+	temp_validasi_id integer
+	, row_id numeric
+	, row_hapus_id numeric
+	, info_link character varying
+	, info_table character varying
+	, pegawai_id numeric
+	, info_riwayat character varying
+	, info_jenis character varying
+	, info_keterangan character varying
+	, info_tanggal date
+	, info_jenis_update character varying
+	, info_status character varying
+	, info_level numeric
+	, info_level_nama character varying
+	, info_validasi numeric
+	, info_create_date timestamp without time zone
+	, perubahan_data character varying
+);
+
+create or replace function validasi.validasi_hapus_data_hapus()
+  returns trigger as
+$body$
+declare
+    thequery character varying;
+    begin
+	insert into validasi.hapus_log
+	(
+		temp_validasi_id, row_id, row_hapus_id, info_link, info_table, pegawai_id
+		, info_riwayat, info_jenis, info_keterangan
+		, info_tanggal, info_jenis_update, info_status, info_level, info_level_nama
+		, info_validasi
+		, info_create_date, perubahan_data
+	)
+	select 	
+	temp_validasi_id, row_id, row_hapus_id, info_link, info_table, pegawai_id
+	, info_riwayat, info_jenis, info_keterangan
+	, info_tanggal, info_jenis_update, 'batal' info_status, info_level, info_level_nama
+	, -1 info_validasi
+	, now() info_create_date, ''
+	from validasi.validasi_perubahandatavalidasi(old.pegawai_id::text) a
+	where 1 = 1 and row_hapus_id = old.temp_validasi_id and info_table = lower(old.hapus_nama);
+
+	return old;
+    end;
+$body$
+language plpgsql volatile cost 100;
+alter function validasi.validasi_hapus_data_hapus() owner to postgres;
+  
+drop trigger if exists validasi_hapus_data_trigger_hapus on validasi.hapus_data;
+create trigger validasi_hapus_data_trigger_hapus
+before delete
+on validasi.hapus_data
+for each row
+execute procedure validasi.validasi_hapus_data_hapus();
 --========================================================================================================================
 drop type if exists validasi.pegawai_type;
 create type validasi.pegawai_type as
@@ -1121,7 +1179,7 @@ declare
 			if new.tanggal_validasi is null then
 				new.perubahan_verifikator_data= pinfoperubahan;
 			else
-				select validasi.vupdateinfo('pegawai', new.pegawai_id, new.temp_validasi_id, new.last_user, new.last_level) into thequery;
+				select validasi.vupdateinfo('pegawai', new.pegawai_id, new.temp_validasi_id, new.last_update_user, 99) into thequery;
 
 				if thequery is not null then
 					--new.last_level:= old.last_level;
@@ -1303,7 +1361,7 @@ begin
 			, b.temp_validasi_id, c.temp_validasi_id temp_validasi_hapus_id, b.validasi, b.validator, b.perubahan_data, b.tipe_perubahan_data, b.tanggal_validasi
 			from pangkat_riwayat a
 			left join validasi.pangkat_riwayat b on a.pangkat_riwayat_id = b.pangkat_riwayat_id and b.validasi is null
-			left join validasi.hapus_data c on upper(c.hapus_nama)::text = upper(''pangkat_riwayat'')::text and a.pegawai_id = c.temp_validasi_id::numeric and c.validasi is null
+			left join validasi.hapus_data c on upper(c.hapus_nama)::text = upper(''pangkat_riwayat'')::text and a.pangkat_riwayat_id = c.temp_validasi_id::numeric and c.validasi is null
 			where a.pegawai_id = '|| pegawaiid ||'
 			union all
 			select
@@ -1323,7 +1381,7 @@ begin
 		if coalesce(nullif(id, ''), null) is not null then
 			query := query || ' and a.pangkat_riwayat_id = ' || id;
 		end if;
-		raise notice 'sql %', query;
+		--raise notice 'sql %', query;
 		
 	end if;
 		
@@ -1462,7 +1520,7 @@ declare
 			if new.tanggal_validasi is null then
 				new.perubahan_verifikator_data= pinfoperubahan;
 			else
-				select validasi.vupdateinfo('pegawai', new.pangkat_riwayat_id, new.temp_validasi_id, new.last_user, new.last_level) into thequery;
+				select validasi.vupdateinfo('pangkat_riwayat', new.pangkat_riwayat_id, new.temp_validasi_id, new.last_update_user, 99) into thequery;
 
 				if thequery is not null then
 					--new.last_level:= old.last_level;
@@ -1665,7 +1723,7 @@ create type validasi.perubahandatavalidasi_type as
 	, info_create_date timestamp without time zone
 );
 
-create or replace function validasi.validasi_perubahandatavalidasi(vstatement character varying)
+create or replace function validasi.validasi_perubahandatavalidasi(vpid character varying)
   returns setof validasi.perubahandatavalidasi_type as
 $body$
 declare
@@ -1691,7 +1749,7 @@ begin
 		from
 		(
 			select
-			temp_validasi_id, pangkat_riwayat_id row_id, null::numeric row_hapus_id, ''pegawai_add_pangkat_data'' info_link, ''pangkat_riwayat'' info_table, pegawai_id
+			temp_validasi_id, pangkat_riwayat_id row_id, null::numeric row_hapus_id, ''riwayat_pangkat_add'' info_link, ''pangkat_riwayat'' info_table, pegawai_id
 			, ''FIP - 02. Riwayat Pangkat'' info_riwayat, ''Reguler'' info_jenis,  no_sk info_keterangan
 			, tmt_pangkat info_tanggal, validasi, 30 info_level
 			, validasi info_validasi
@@ -1699,7 +1757,7 @@ begin
 			from validasi.pangkat_riwayat where 1=1
 			union all
 			select
-			temp_validasi_id, pangkat_riwayat_id row_id, c.temp_validasi_id row_hapus_id, ''pegawai_add_pangkat_data'' info_link, ''pangkat_riwayat'' info_table, a.pegawai_id
+			temp_validasi_id, pangkat_riwayat_id row_id, c.temp_validasi_id row_hapus_id, ''riwayat_pangkat_add'' info_link, ''pangkat_riwayat'' info_table, a.pegawai_id
 			, ''FIP - 02. Riwayat Pangkat'' info_riwayat, ''Reguler'' info_jenis, no_sk info_keterangan
 			, tmt_pangkat info_tanggal, validasi, 30 info_level
 			, validasi info_validasi
@@ -1708,7 +1766,12 @@ begin
 			inner join validasi.hapus_data c on upper(c.hapus_nama::text) = upper(''PANGKAT_RIWAYAT''::text) and a.pangkat_riwayat_id = c.temp_validasi_id::numeric AND c.validasi is null
 			where 1=1
 		) a
+		where 1=1
 	';
+
+	if coalesce(nullif(vpid, ''), null) is not null then
+		query:= query || ' and a.pegawai_id = ' || vpid;
+	end if;
 	--raise notice 'sql %', query;
 	
 	open cur for execute query;

@@ -257,6 +257,8 @@ class riwayat_pangkat_json extends CI_Controller {
 
 		// start tambahan untuk validasi
 		$set->setField('PANGKAT_RIWAYAT_ID', idValidasiDb($reqRowId));
+		$set->setField('TANGGAL_VALIDASI', tglvalidasiDb($reqStatusValidasi));
+
 		$set->setField('VALIDASI', ValToNullDB($reqStatusValidasi));
 		$set->setField('TEMP_VALIDASI_ID', $reqTempValidasiId);
 		$set->setField("LAST_CREATE_USER", $adminusernama);
@@ -291,6 +293,11 @@ class riwayat_pangkat_json extends CI_Controller {
 
 		if($reqSimpan == 1)
 		{
+			if($reqStatusValidasi == "1")
+			{
+				$set->updatetanggalvalidasi();
+			}
+
 			// untuk simpan file
 			/*$vpost= $this->input->post();
 			$vsimpanfilepegawai= new globalfilepegawai();

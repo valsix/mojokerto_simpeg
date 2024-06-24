@@ -5,12 +5,34 @@ $this->load->model("base-validasi/RiwayatPangkat");
 $this->load->model("base/Core");
 $this->load->library('globalfilepegawai');
 
+$adminusergroupid= $this->adminusergroupid;
+$adminuserpegawaiid= $this->adminuserpegawaiid;
+
+$menukhususadmin= "";
+if($adminusergroupid == 1 && empty($adminuserpegawaiid))
+{
+    $menukhususadmin= "1";
+}
+
 $reqId= $this->input->get('reqId');
 $reqRowId= $this->input->get('reqRowId');
+$hakvalidasi= $this->input->get('v');
 $reqValId= $this->input->get('reqValId');
 $cekquery= $this->input->get('c');
 
+if(empty($menukhususadmin)) $hakvalidasi= "";
+
 $vreturn= "personal/index/riwayat_pangkat?reqId=".$reqId;
+$hakstatusvalidasi= ""; $arrstatusvalidasi= [];
+if(!empty($hakvalidasi))
+{
+	$vreturn.= "&v=".$hakvalidasi;
+	$arrstatusvalidasi= globalfilepegawai::vstatusvalidasi();
+	if(!empty($hakvalidasi) && !empty($menukhususadmin))
+	{
+		$hakstatusvalidasi= "1";
+	}
+}
 
 if($reqRowId == "baru") $reqRowId= -1;
 
@@ -24,7 +46,7 @@ while ($pangkat->nextRow()){
 $arrpejabatpenetap= [];
 $pejabatpenetap= new Core();
 $pejabatpenetap->selectByParamsPejabatPenetap(array());
-while ($pangkat->nextRow()){
+while ($pejabatpenetap->nextRow()){
 	array_push($arrpejabatpenetap,array("id"=>$pejabatpenetap->getField('PEJABAT_PENETAP_ID') , "text"=>$pejabatpenetap->getField('JABATAN')));
 }
 
@@ -35,6 +57,12 @@ $arrjeniskp= array(
 	, array("id"=>"4", "text"=>"Pengabdian")
 	, array("id"=>"5", "text"=>"SK lain-lain")
 	, array("id"=>"6", "text"=>"Pilihan (Fungsional)")
+);
+
+$arrstlud= array(
+	array("id"=>"1", "text"=>"Tingkat I")
+	, array("id"=>"2", "text"=>"Tingkat II")
+	, array("id"=>"3", "text"=>"Tingkat III")
 );
 
 // start tambahan untuk validasi
@@ -49,6 +77,11 @@ $reqValidasi= $set->getField('VALIDASI');
 $reqPerubahanData= $set->getField('PERUBAHAN_DATA');
 $reqValRowId= $set->getField('PANGKAT_RIWAYAT_ID');
 
+if(!empty($reqValidasi))
+{
+	redirect($vreturn);
+}
+
 $buttonsimpan= "1";
 if( (empty($reqCheckPegawaiId) || !empty($reqValidasi) || !empty($reqTempValidasiHapusId)) && $reqId !== "baru")
 {
@@ -60,7 +93,7 @@ $reqPANGKAT_RIWAYAT_ID= $set->getField('PANGKAT_RIWAYAT_ID');
 $reqGolRuang= $set->getField('PANGKAT_ID'); $valGolRuang= checkwarna($reqPerubahanData, 'PANGKAT_ID', $arrpangkat, array("id", "text"), $reqTempValidasiHapusId);
 $reqPjPenetap= $set->getField('PEJABAT_PENETAP_ID'); $valPjPenetap= checkwarna($reqPerubahanData, 'PEJABAT_PENETAP_ID', $arrpejabatpenetap, array("id", "text"), $reqTempValidasiHapusId);
 $reqTglSTLUD= dateToPageCheck($set->getField('TANGGAL_STLUD')); $valTglSTLUD= checkwarna($reqPerubahanData, 'TANGGAL_STLUD', "date", array(), $reqTempValidasiHapusId);
-$reqSTLUD= $set->getField('STLUD'); $valSTLUD= checkwarna($reqPerubahanData, 'STLUD', "", array(), $reqTempValidasiHapusId);
+$reqSTLUD= $set->getField('STLUD'); $valSTLUD= checkwarna($reqPerubahanData, 'STLUD', $arrstlud, array("id", "text"), $reqTempValidasiHapusId);
 $reqNoSTLUD= $set->getField('NO_STLUD'); $valNoSTLUD= checkwarna($reqPerubahanData, 'NO_STLUD', "", array(), $reqTempValidasiHapusId);
 $reqNoNota= $set->getField('NO_NOTA'); $valNoNota= checkwarna($reqPerubahanData, 'NO_NOTA', "", array(), $reqTempValidasiHapusId);
 $reqNoSK = $set->getField('NO_SK'); $valNoSK= checkwarna($reqPerubahanData, 'NO_SK', "", array(), $reqTempValidasiHapusId);
@@ -119,7 +152,7 @@ if(!empty($arrambilfile))
 						<a class="" href="app/index/pegawai">Data Pegawai</a>
 					</li>
 					<li class="breadcrumb-item text-muted">
-						<a class="" href="app/index/riwayat_pangkat?reqId=<?=$reqId?>">Riwayat Pangkat</a>
+						<a class="" href="<?=$vreturn?>">Riwayat Pangkat</a>
 					</li>
 					<li class="breadcrumb-item text-muted">
 						<a class="text-muted">Halaman Input</a>
@@ -588,6 +621,35 @@ if(!empty($arrambilfile))
 		        			</div>
 		        		</div>
 
+		        		<?
+		        		if(!empty($hakstatusvalidasi))
+		        		{
+		        		?>
+		        		<div class="form-group row">
+		        			<label class="col-form-label text-right col-lg-2 col-sm-12">
+			        			Status Validasi
+			        		</label>
+		        			<div class="col-lg-4 col-sm-12">
+		        				<select class="form-control" name="reqStatusValidasi" id='reqStatusValidasi'>
+		        					<option></option>
+		        					<?
+		        					foreach($arrstatusvalidasi as $item) 
+		        					{
+		        						$selectvalid= $item["id"];
+		        						$selectvaltext= $item["text"];
+		        					?>
+		        						<option value="<?=$selectvalid?>" <? if($reqStatusValidasi == $selectvalid) echo "selected";?>><?=$selectvaltext?></option>
+		        					<?
+		        					}
+		        					?>
+		        				</select>
+		        			</div>
+		        		</div>
+		        		<!--  -->
+		        		<?
+		        		}
+		        		?>
+
 		        		<div class="form-group row">
 		        			<label class="col-form-label text-right col-lg-2 col-sm-12"></label>
 		        			<?
@@ -642,13 +704,24 @@ if(!empty($arrambilfile))
 			        				<input type="hidden" name="reqFileRowId" value="<?=$reqFileRowId?>" />
 			        				<input type="hidden" name="reqId" value="<?=$reqId?>" />
 			        				<input type="hidden" name="cekquery" value="<?=$cekquery?>" />
-			        				<button type="submit" id="ktloginformsubmitbutton" class="btn btn-light-success"><i class="fa fa-save" aria-hidden="true"></i> Simpan</button>
 
 			        				<?
-			        				if(!empty($reqTempValidasiId))
+			        				if(empty($reqTempValidasiHapusId))
+			        				{
+			        				?>
+			        					<button type="submit" id="ktloginformsubmitbutton" class="btn btn-light-success"><i class="fa fa-save" aria-hidden="true"></i> Simpan</button>
+			        				<?
+			        				}
+			        				if(!empty($reqTempValidasiId) && empty($hakstatusvalidasi))
 			        				{
 			        				?>
 			        					<button class="btn btn-danger" type="button" onclick="hapusdata('<?=$reqTempValidasiId?>', 'pangkat_riwayat', '', '<?=$vreturn?>')"><i class="fa fa-close" aria-hidden="true"></i> Batal</button>
+			        				<?
+			        				}
+			        				if(!empty($reqTempValidasiHapusId) && empty($hakstatusvalidasi))
+			        				{
+			        				?>
+			        					<button class="btn btn-danger" type="button" onclick="hapusdata('<?=$reqTempValidasiHapusId?>', 'pangkat_riwayat', '2', '<?=$vreturn?>')"><i class="fa fa-close" aria-hidden="true"></i> Batal</button>
 			        				<?
 			        				}
 			        				?>
@@ -741,6 +814,20 @@ if(!empty($arrambilfile))
 							},
 						}
 					},
+					<?
+					if(!empty($hakstatusvalidasi))
+					{
+					?>
+					reqStatusValidasi: {
+						validators: {
+							notEmpty: {
+								message: 'Statu Validasi ini harus diisi'
+							},
+						}
+					},
+					<?
+					}
+					?>
 				},
 				plugins: {
 					trigger: new FormValidation.plugins.Trigger(),

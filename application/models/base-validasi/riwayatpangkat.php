@@ -97,7 +97,7 @@ class RiwayatPangkat extends Entity{
 
     function updatetanggalvalidasi()
 	{
-		$str = "		
+		$str = "
 		UPDATE validasi.PANGKAT_RIWAYAT 
 		SET
 			TANGGAL_VALIDASI= NOW()
@@ -108,56 +108,7 @@ class RiwayatPangkat extends Entity{
 		return $this->execQuery($str);
     }
 
-    function updatevalidasi()
-	{
-		$str = "		
-		UPDATE validasi.PANGKAT_RIWAYAT 
-		SET
-			VALIDASI= ".$this->getField("VALIDASI").",
-			LAST_USER= '".$this->getField("LAST_USER")."',
-			LAST_DATE= ".$this->getField("LAST_DATE").",
-			USER_LOGIN_ID= ".$this->getField("USER_LOGIN_ID").",
-			USER_LOGIN_PEGAWAI_ID= ".$this->getField("USER_LOGIN_PEGAWAI_ID").",
-			LAST_LEVEL= ".$this->getField("LAST_LEVEL")."
-		WHERE TEMP_VALIDASI_ID = ".$this->getField("TEMP_VALIDASI_ID")."
-		"; 
-		$this->query = $str;
-		// echo $str;exit;
-		return $this->execQuery($str);
-    }
-
-    function updatevalidasihapusdata()
-	{
-        $str = "
-        UPDATE validasi.HAPUS_DATA
-        SET
-	        VALIDASI= ".$this->getField("VALIDASI").",
-	        TANGGAL_VALIDASI= NOW()
-        WHERE 
-        TEMP_VALIDASI_ID= ".$this->getField("TEMP_VALIDASI_ID")."
-        AND HAPUS_NAMA= 'PEGAWAI' AND VALIDASI IS NULL
-        ";
-				  
-		$this->query = $str;
-		// echo $str;exit;
-        return $this->execQuery($str);
-    }
-
-    function deletehapusdata()
-	{
-        $str = "
-        DELETE FROM validasi.HAPUS_DATA
-        WHERE 
-        TEMP_VALIDASI_ID= ".$this->getField("TEMP_VALIDASI_ID")."
-        AND HAPUS_NAMA= 'PANGKAT_RIWAYAT' AND VALIDASI IS NULL
-        ";
-				  
-		$this->query = $str;
-		// echo $str;exit;
-        return $this->execQuery($str);
-    }
-
-	function selectByPersonal($paramsArray=array(),$limit=-1,$from=-1, $pegawaiid, $id="", $rowid="", $statement='', $order='ORDER BY A.TMT_PANGKAT ASC')
+    function selectByPersonal($paramsArray=array(),$limit=-1,$from=-1, $pegawaiid, $id="", $rowid="", $statement='', $order='ORDER BY A.TMT_PANGKAT ASC')
 	{
 		$str = "
 		SELECT

@@ -324,7 +324,8 @@ var ajaxserverselectsingle = function() {
                         else if(infocolormode == "validasi")
                         {
                             vcheckid= aData[valarrdata[indexfieldid]["field"].toUpperCase()];
-                            if(vcheckid == null)
+                            vcheckhapusid= aData[valarrdata[indexvalidasihapusid]["field"].toUpperCase()];
+                            if(vcheckid == null || (vcheckhapusid !== "" && vcheckhapusid !== null))
                             {
                                 $($(nRow).children()).addClass('warnavalidasi');
                             }

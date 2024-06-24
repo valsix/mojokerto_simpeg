@@ -34,6 +34,54 @@ class general extends CI_Controller {
 
 	function hapusdata()
 	{
+		$this->load->model("base-validasi/DataHapus");
 
+		$reqRowId= $this->input->get("reqRowId");
+		$reqPegawaiId= $this->input->get("reqPegawaiId");
+		$reqTable= $this->input->get("reqTable");
+		$reqStatus= $this->input->get("reqStatus");
+		$cekquery= $this->input->get("c");
+
+		$set= new DataHapus();
+		if($reqStatus == "1")
+        {
+            $set->setField("HAPUS_NAMA", strtoupper($reqTable));
+            $set->setField("PEGAWAI_ID", $reqPegawaiId);
+            $set->setField("TEMP_VALIDASI_ID", $reqRowId);
+            $set->setField("LAST_CREATE_USER", $lastuser);
+            if($set->inserthapusdata())
+            {
+                $inforeturn= 1;
+                echo json_response(200, 'Data berhasil dihapus');exit;
+            }
+        }
+        elseif($reqStatus == "2")
+        {
+            $set->setField("HAPUS_NAMA", strtoupper($reqTable));
+            $set->setField("TEMP_VALIDASI_ID", $reqRowId);
+            if($set->deletehapusdata())
+            {
+                $inforeturn= 1;
+                echo json_response(200, 'Data berhasil di batalkan');exit;
+            }
+        }
+        else
+        {
+            $set->setField("TABLE", $reqTable);
+            $set->setField("TEMP_VALIDASI_ID", $reqRowId);
+
+            if($set->hapusdata())
+            {
+                $inforeturn= 1;
+                echo json_response(200, 'Data berhasil di batalkan');exit;
+            }
+        }
+
+        if(!empty($cekquery))
+        {
+        	echo $set->query;exit;
+        }
+
+        echo $inforeturn;
 	}
 }

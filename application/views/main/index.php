@@ -11,6 +11,14 @@ $userpegawaimode= $this->userpegawaimode;
 $adminuserid= $this->adminuserid;
 $reqId= $this->input->get('reqId');
 
+$adminusergroupid= $this->adminusergroupid;
+$adminuserpegawaiid= $this->adminuserpegawaiid;
+
+$menukhususadmin= "";
+if($adminusergroupid == 1 && empty($adminuserpegawaiid))
+{
+    $menukhususadmin= "1";
+}
 // if(!empty($userpegawaimode))
 //     $reqPegawaiId= $this->userpegawaimode;
 // else
@@ -468,7 +476,7 @@ $arrcarimenuparent= $vfpeg->cariparentmenu($arrparam);
                     }
                     else if(in_array($pg, $arrmenuMaster))
                     {
-                        if($this->adminuserMasterProses == 1 && $this->adminuserpegawaiid == "") 
+                        if($this->adminuserMasterProses == 1 && empty($adminuserpegawaiid)) 
                         {?>
                             <div class="aside-menu-wrapper flex-column-fluid" id="kt_aside_menu_wrapper">
                                 <!--begin::Menu Container-->
@@ -706,6 +714,10 @@ $arrcarimenuparent= $vfpeg->cariparentmenu($arrparam);
                                             <i class="menu-arrow"></i>
                                         </a>
                                     </li>
+                                    <?
+                                    if(!empty($menukhususadmin))
+                                    {
+                                    ?>
                                     <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover">
                                         <a href="app/index/verifikasi_validasi" class="menu-link menu-toggle">
                                             <span class="menu-text">Validator</span>
@@ -718,6 +730,9 @@ $arrcarimenuparent= $vfpeg->cariparentmenu($arrparam);
                                             <i class="menu-arrow"></i>
                                         </a>
                                     </li>
+                                    <?
+                                    }
+                                    ?>
                                     <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover">
                                         <a href="javascript:void(0);" class="menu-link menu-toggle">
                                             <span class="menu-text">Rekap Pensiun</span>
@@ -730,30 +745,55 @@ $arrcarimenuparent= $vfpeg->cariparentmenu($arrparam);
                                             <i class="menu-arrow"></i>
                                         </a>
                                     </li>
+                                    <?
+                                    if($this->adminuserPensiunProses == 1 && empty($adminuserpegawaiid))
+                                    {
+                                    ?>
                                     <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover">
                                         <a href="app/index/pensiun" class="menu-link menu-toggle">
                                             <span class="menu-text">Pensiun</span>
                                             <i class="menu-arrow"></i>
                                         </a>
                                     </li>
+                                    <?
+                                    }
+
+                                    if($this->adminuserKPProses == 1 && empty($adminuserpegawaiid))
+                                    {
+                                    ?>
                                     <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover">
                                         <a href="app/index/kenaikan_pangkat" class="menu-link menu-toggle">
                                             <span class="menu-text">KP</span>
                                             <i class="menu-arrow"></i>
                                         </a>
                                     </li>
+                                    <?
+                                    }
+                                    
+                                    if($this->adminuserKGBProses == 1 && empty($adminuserpegawaiid))
+                                    {
+                                    ?>
                                     <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover">
                                         <a href="app/index/kenaikan_gaji_berkala" class="menu-link menu-toggle">
                                             <span class="menu-text">KGB</span>
                                             <i class="menu-arrow"></i>
                                         </a>
                                     </li>
+                                    <?
+                                    }
+                                    
+                                    if($this->adminuserDUKProses == 1 && empty($adminuserpegawaiid))
+                                    {
+                                    ?>
                                     <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover">
                                         <a href="app/index/daftar_urutan_pegawai" class="menu-link menu-toggle">
                                             <span class="menu-text">DUK</span>
                                             <i class="menu-arrow"></i>
                                         </a>
                                     </li>
+                                    <?
+                                    }
+                                    ?>
                                     <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover">
                                         <a href="app/index/statistik" class="menu-link menu-toggle">
                                             <span class="menu-text">Statistik</span>
@@ -766,12 +806,19 @@ $arrcarimenuparent= $vfpeg->cariparentmenu($arrparam);
                                             <i class="menu-arrow"></i>
                                         </a>
                                     </li>
+                                    <?
+                                    if($this->adminuserAnjabProses == 1 && empty($adminuserpegawaiid))
+                                    {
+                                    ?>
                                     <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover">
                                         <a href="javascript:void(0);" class="menu-link menu-toggle">
                                             <span class="menu-text">Anjab</span>
                                             <i class="menu-arrow"></i>
                                         </a>
                                     </li>
+                                    <?
+                                    }
+                                    ?>
                                     <li class="menu-item menu-item-submenu  menu-item-here" aria-haspopup="true" data-menu-toggle="hover">
                                         <a href="javascript:void(0);" class="menu-link menu-toggle">
                                             <span class="menu-text">Profil Kompetensi</span>
@@ -786,7 +833,7 @@ $arrcarimenuparent= $vfpeg->cariparentmenu($arrparam);
                                     </li>
 
                                     <?
-                                    if($this->adminuserMasterProses == 1 && $this->adminuserpegawaiid == "") 
+                                    if($this->adminuserMasterProses == 1 && empty($adminuserpegawaiid)) 
                                     {
                                         ?>
 

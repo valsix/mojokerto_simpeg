@@ -8,7 +8,7 @@ else
     $reqPegawaiId= $this->pegawaiId;
 
 $arrtabledata= array(
-    array("label"=>"Group", "field"=> "INFO_GROUP", "display"=>"", "width"=>"", "class"=>"dt-control", "orderable"=>"1")
+    array("label"=>"Group", "field"=> "INFO_GROUP", "display"=>"1", "width"=>"", "class"=>"dt-control", "orderable"=>"1")
     , array("label"=>"Satker", "field"=> "SATUAN_KERJA_DETIL", "display"=>"", "width"=>"")
     , array("label"=>"Perubahan", "field"=> "INFO_RIWAYAT", "display"=>"", "width"=>"")
     , array("label"=>"Status Proses", "field"=> "INFO_JENIS_UPDATE", "display"=>"", "width"=>"")
@@ -17,6 +17,7 @@ $arrtabledata= array(
     , array("label"=>"Tanggal Validasi", "field"=> "INFO_CREATE_DATE", "display"=>"", "width"=>"")
 
     , array("label"=>"sorderdefault", "field"=> "SORDERDEFAULT", "display"=>"1", "width"=>"")
+    , array("label"=>"newlink", "field"=> "NEW_INFO_LINK", "display"=>"1", "width"=>"")
     , array("label"=>"fieldid", "field"=> "PEGAWAI_ID", "display"=>"1", "width"=>"")
 );
 
@@ -251,7 +252,7 @@ var arrdata= <?php echo json_encode($arrtabledata); ?>;
 // console.log(arrdata);
 var indexfieldid= arrdata.length - 1;
 var valinfoid = '';
-var valinfovalidasiid = '';
+var valinfolink = '';
 
 var datainforesponsive= "1";
 var valgroup= "1";
@@ -274,6 +275,8 @@ jQuery(document).ready(function() {
         // console.log(Object.keys(dataselected).length);
         fieldinfoid= arrdata[indexfieldid]["field"];
         valinfoid= dataselected[fieldinfoid];
+        valinfolink= dataselected[arrdata[indexfieldid-1]["field"]];
+        // console.log(valinfolink);
     });
 
     $('#'+infotableid+' tbody').on( 'dblclick', 'tr', function () {
@@ -302,7 +305,7 @@ jQuery(document).ready(function() {
         else
             vpilihid= "";
 
-        varurl= "app/index/pegawai_data_fip?reqId="+vpilihid;
+        varurl= "personal/index/"+valinfolink+"&v=1";
         document.location.href = varurl;
     });
 

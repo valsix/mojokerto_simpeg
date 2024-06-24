@@ -2,23 +2,19 @@
 $reqId= $this->input->get('reqId');
 
 $arrtabledata= array(
-    array("label"=>"Pangkat", "field"=> "NMPANGKAT", "display"=>"",  "width"=>"")
-    , array("label"=>"TMT Pangkat", "field"=> "TMT_PANGKAT", "display"=>"",  "width"=>"")
-    , array("label"=>"No. Nota", "field"=> "NO_NOTA", "display"=>"",  "width"=>"")
-    , array("label"=>"Tgl. Nota", "field"=> "TANGGAL_NOTA", "display"=>"",  "width"=>"")
-    , array("label"=>"No. SK", "field"=> "NO_SK", "display"=>"",  "width"=>"")
+    array("label"=>"No. SK", "field"=> "NO_SK", "display"=>"",  "width"=>"")
     , array("label"=>"Tgl. SK", "field"=> "TANGGAL_SK", "display"=>"",  "width"=>"")
-    , array("label"=>"Pejabat Penetap", "field"=> "PEJABAT_PENETAP", "display"=>"",  "width"=>"")
-    , array("label"=>"Jenis KP", "field"=> "NMJENIS", "display"=>"",  "width"=>"")
-    , array("label"=>"Kredit", "field"=> "KREDIT", "display"=>"",  "width"=>"")
+    , array("label"=>"TMT SK", "field"=> "TMT_SK", "display"=>"",  "width"=>"")
+    , array("label"=>"Pangkat", "field"=> "NMPANGKAT", "display"=>"",  "width"=>"")
+    , array("label"=>"Gaji Pokok", "field"=> "GAJI_POKOK", "display"=>"",  "width"=>"")
     , array("label"=>"Masa Kerja", "field"=> "MASA_KERJA", "display"=>"",  "width"=>"")
-    , array("label"=>"Keterangan", "field"=> "KETERANGAN", "display"=>"",  "width"=>"")
+    , array("label"=>"Pejabat Penetap", "field"=> "PEJABAT_PENETAP", "display"=>"",  "width"=>"")
 
     , array("label"=>"Warna", "field"=> "WARNA", "display"=>"1",  "width"=>"")
     , array("label"=>"validasiid", "field"=> "TEMP_VALIDASI_HAPUS_ID", "display"=>"1", "width"=>"")
     , array("label"=>"validasihapusid", "field"=> "TEMP_VALIDASI_ID", "display"=>"1", "width"=>"")
     , array("label"=>"sorderdefault", "field"=> "SORDERDEFAULT", "display"=>"1", "width"=>"")
-    , array("label"=>"fieldid", "field"=> "PANGKAT_RIWAYAT_ID", "display"=>"1", "width"=>"")
+    , array("label"=>"fieldid", "field"=> "GAJI_RIWAYAT_ID", "display"=>"1", "width"=>"")
 );
 ?>
 
@@ -36,7 +32,7 @@ $arrtabledata= array(
                         <a class="text-muted">Data Pegawai</a>
                     </li>
                     <li class="breadcrumb-item text-muted">
-                        <a class="text-muted">Riwayat Pangkat</a>
+                        <a class="text-muted">Riwayat Gaji</a>
                     </li>
                 </ul>
             </div>
@@ -54,7 +50,7 @@ $arrtabledata= array(
                     <span class="card-icon">
                         <i class="flaticon2-notepad text-primary"></i>
                     </span>
-                    <h3 class="card-label">Riwayat Pangkat</h3>
+                    <h3 class="card-label">Riwayat Gaji</h3>
                 </div>
                 <div class="card-toolbar">
                     <!--begin::Dropdown-->
@@ -169,9 +165,8 @@ var valinfovalidasiid = '';
 var valinfovalidasihapusid = '';
 
 jQuery(document).ready(function() {
-    var jsonurl= "json-main/riwayat_pangkat_json/json?reqId=<?=$reqId?>";
+    var jsonurl= "json-main/riwayat_gaji_json/json?reqId=<?=$reqId?>";
     ajaxserverselectsingle.init(infotableid, jsonurl, arrdata);
-        $('#vlsxloading').hide();
 
     var infoid= [];
     $('#'+infotableid+' tbody').on( 'click', 'tr', function () {
@@ -211,7 +206,7 @@ jQuery(document).ready(function() {
         }
         else
         {
-            urlAjax= "json-main/riwayat_pangkat_json/delete?reqRowId="+valinfoid;
+            urlAjax= "json-main/riwayat_gaji_json/delete?reqRowId="+valinfoid;
             swal.fire({
                 title: 'Apakah anda yakin untuk hapus data?',
                 type: 'warning',
@@ -234,14 +229,14 @@ jQuery(document).ready(function() {
                         },
                         success : function(data) { 
                             swal.fire({
-                                position: 'top-right',
+                                // position: 'top-right',
                                 icon: "success",
                                 type: 'success',
                                 title: data.message,
                                 showConfirmButton: false,
                                 timer: 2000
                             }).then(function() {
-                                document.location.href = "app/index/riwayat_pangkat?reqId=<?=$reqId?>";
+                                document.location.href = "app/index/riwayat_gaji?reqId=<?=$reqId?>";
                             });
                         },
                         complete: function() {
@@ -284,8 +279,7 @@ jQuery(document).ready(function() {
         else
             vpilihid= "";
 
-        // varurl= "app/index/pegawai_diklat_teknis_add?formulaid=<?=$formulaid?>&reqRowId="+vpilihid;
-        varurl= "app/index/riwayat_pangkat_add?reqRowId="+vpilihid+"&reqId=<?=$reqId?>";
+        varurl= "app/index/riwayat_gaji_add?reqRowId="+vpilihid+"&reqId=<?=$reqId?>";
         
         document.location.href = varurl;
     });
@@ -454,133 +448,4 @@ function setCariInfo(){
     datanewtable.DataTable().ajax.url(jsonurl).load();
     $('#vlsxloading').hide();
 }
-
-    
 </script>
-                
-
-<!-- loading -->
-<style type="text/css">
-    .loading {
-      position: fixed;
-      z-index: 999;
-      height: 2em;
-      width: 2em;
-      overflow: show;
-      margin: auto;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      right: 0;
-    }
-
-    /* Transparent Overlay */
-    .loading:before {
-      content: '';
-      display: block;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(rgba(20, 20, 20,.8), rgba(0, 0, 0, .8));
-
-      background: -webkit-radial-gradient(rgba(20, 20, 20,.8), rgba(0, 0, 0,.8));
-    }
-
-    /* :not(:required) hides these rules from IE9 and below */
-    .loading:not(:required) {
-      /* hide "loading..." text */
-      font: 0/0 a;
-      color: transparent;
-      text-shadow: none;
-      background-color: transparent;
-      border: 0;
-    }
-
-    .loading:not(:required):after {
-      content: '';
-      display: block;
-      font-size: 10px;
-      width: 1em;
-      height: 1em;
-      margin-top: -0.5em;
-      -webkit-animation: spinner 150ms infinite linear;
-      -moz-animation: spinner 150ms infinite linear;
-      -ms-animation: spinner 150ms infinite linear;
-      -o-animation: spinner 150ms infinite linear;
-      animation: spinner 150ms infinite linear;
-      border-radius: 0.5em;
-      -webkit-box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1.1em 0 0, rgba(255,255,255, 0.75) 0 1.5em 0 0, rgba(255,255,255, 0.75) -1.1em 1.1em 0 0, rgba(255,255,255, 0.75) -1.5em 0 0 0, rgba(255,255,255, 0.75) -1.1em -1.1em 0 0, rgba(255,255,255, 0.75) 0 -1.5em 0 0, rgba(255,255,255, 0.75) 1.1em -1.1em 0 0;
-      box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1.1em 0 0, rgba(255,255,255, 0.75) 0 1.5em 0 0, rgba(255,255,255, 0.75) -1.1em 1.1em 0 0, rgba(255,255,255, 0.75) -1.5em 0 0 0, rgba(255,255,255, 0.75) -1.1em -1.1em 0 0, rgba(255,255,255, 0.75) 0 -1.5em 0 0, rgba(255,255,255, 0.75) 1.1em -1.1em 0 0;
-    }
-
-    /* Animation */
-
-    @-webkit-keyframes spinner {
-      0% {
-        -webkit-transform: rotate(0deg);
-        -moz-transform: rotate(0deg);
-        -ms-transform: rotate(0deg);
-        -o-transform: rotate(0deg);
-        transform: rotate(0deg);
-      }
-      100% {
-        -webkit-transform: rotate(360deg);
-        -moz-transform: rotate(360deg);
-        -ms-transform: rotate(360deg);
-        -o-transform: rotate(360deg);
-        transform: rotate(360deg);
-      }
-    }
-    @-moz-keyframes spinner {
-      0% {
-        -webkit-transform: rotate(0deg);
-        -moz-transform: rotate(0deg);
-        -ms-transform: rotate(0deg);
-        -o-transform: rotate(0deg);
-        transform: rotate(0deg);
-      }
-      100% {
-        -webkit-transform: rotate(360deg);
-        -moz-transform: rotate(360deg);
-        -ms-transform: rotate(360deg);
-        -o-transform: rotate(360deg);
-        transform: rotate(360deg);
-      }
-    }
-    @-o-keyframes spinner {
-      0% {
-        -webkit-transform: rotate(0deg);
-        -moz-transform: rotate(0deg);
-        -ms-transform: rotate(0deg);
-        -o-transform: rotate(0deg);
-        transform: rotate(0deg);
-      }
-      100% {
-        -webkit-transform: rotate(360deg);
-        -moz-transform: rotate(360deg);
-        -ms-transform: rotate(360deg);
-        -o-transform: rotate(360deg);
-        transform: rotate(360deg);
-      }
-    }
-    @keyframes spinner {
-      0% {
-        -webkit-transform: rotate(0deg);
-        -moz-transform: rotate(0deg);
-        -ms-transform: rotate(0deg);
-        -o-transform: rotate(0deg);
-        transform: rotate(0deg);
-      }
-      100% {
-        -webkit-transform: rotate(360deg);
-        -moz-transform: rotate(360deg);
-        -ms-transform: rotate(360deg);
-        -o-transform: rotate(360deg);
-        transform: rotate(360deg);
-      }
-    }
-  </style>
-
-  <div class="loading" id='vlsxloading'>Loading&#8230;</div>

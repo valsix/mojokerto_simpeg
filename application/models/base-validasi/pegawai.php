@@ -257,7 +257,8 @@ class Pegawai extends Entity{
 	{
 		$str = "
 		SELECT 
-		V.*, A.*
+		V.INFO_LINK || '?reqId=' || pegawai_id ||'&reqValId=' || TEMP_VALIDASI_ID NEW_INFO_LINK
+		, V.*, A.*
 		FROM
 		(
 			SELECT
@@ -280,6 +281,23 @@ class Pegawai extends Entity{
 		$this->query = $str;
 		// echo $str;exit;
 		return $this->selectLimit($str,$limit,$from); 
+    }
+
+    function selectById($pid='')
+	{
+		$str = "
+		select
+			info_link
+		from
+		(
+			select replace(info_link, '_add', '') info_link
+			from validasi.validasi_perubahandatavalidasi('".$pid."')
+		) a
+		group by info_link
+    	";
+    	$this->query = $str;
+		// echo $str;exit;
+		return $this->selectLimit($str,-1,-1); 
     }
 } 
 ?>

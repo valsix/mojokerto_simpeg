@@ -4,6 +4,16 @@ include_once("functions/encrypt.func.php");
 
 class globalfilepegawai
 {
+	function vstatusvalidasi()
+	{
+		$vreturn= array(
+			array("id"=>"1", "text"=>"Valid")
+			, array("id"=>"2", "text"=>"Ditolak")
+		);
+
+		return $vreturn;
+	}
+
 	function setriwayatfield($riwayattable, $kategorifileid="")
 	{
 		$vreturn= [];

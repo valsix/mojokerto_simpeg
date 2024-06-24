@@ -1,15 +1,20 @@
-
 <?php
-$userpegawaimode= $this->userpegawaimode;
-$adminuserid= $this->adminuserid;
+$adminusergroupid= $this->adminusergroupid;
+$adminuserpegawaiid= $this->adminuserpegawaiid;
 
-if(!empty($userpegawaimode) && !empty($adminuserid))
-    $reqPegawaiId= $userpegawaimode;
-else
-    $reqPegawaiId= $this->pegawaiId;
+$menukhususadmin= "";
+if($adminusergroupid == 1 && empty($adminuserpegawaiid))
+{
+    $menukhususadmin= "1";
+}
 
 $reqId= $this->input->get('reqId');
+$hakvalidasi= $this->input->get('v');
 $cekquery= $this->input->get('c');
+
+if(empty($reqId)) $reqId= -1;
+if(empty($menukhususadmin)) $hakvalidasi= "";
+$reqTable= "PANGKAT_RIWAYAT";
 
 $arrtabledata= array(
     array("label"=>"Pangkat", "field"=> "PANGKAT_ID", "display"=>"",  "width"=>"")
@@ -67,68 +72,25 @@ $arrtabledata= array(
                     <h3 class="card-label">Riwayat Pangkat</h3>
                 </div>
                 <div class="card-toolbar">
-                    <!--begin::Dropdown-->
                     <div class="dropdown dropdown-inline mr-2">
-                        <!-- <button type="button" class="btn btn-light-primary font-weight-bolder dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="svg-icon svg-icon-md"></span>Aksi
-                        </button>
 
-                        <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
-                            <ul class="navi flex-column navi-hover py-2">
-                                <li class="navi-item">
-                                    <a id="btnAdd" class="navi-link">
-                                        <span class="navi-icon"><i class="la la-plus"></i></span>
-                                        <span class="navi-text">Tambah</span>
-                                    </a>
-                                </li>
-                                <li class="navi-item">
-                                    <a id="btnUbahData" class="navi-link">
-                                        <span class="navi-icon"><i class="la la-edit"></i></span>
-                                        <span class="navi-text">Ubah</span>
-                                    </a>
-                                </li>
-                                <li class="navi-item">
-                                    <a id="btnUbahData" class="navi-link">
-                                        <span class="navi-icon"><i class="la la-edit"></i></span>
-                                        <span class="navi-text">Log</span>
-                                    </a>
-                                </li>
-                                <li class="navi-item">
-                                    <a  id="btnDelete" class="navi-link">
-                                        <span class="navi-icon"><i class="la la-trash"></i></span>
-                                        <span class="navi-text">Hapus</span>
-                                    </a>
-                                </li>
-                                <li class="navi-item">
-                                    <a id="btnUbahData" class="navi-link">
-                                        <span class="navi-icon"><i class="la la-edit"></i></span>
-                                        <span class="navi-text">Mutasi</span>
-                                    </a>
-                                </li>
-                                <li class="navi-item">
-                                    <a id="btnUbahData" class="navi-link">
-                                        <span class="navi-icon"><i class="la la-edit"></i></span>
-                                        <span class="navi-text">Cetak</span>
-                                    </a>
-                                </li>
-                                <li class="navi-item">
-                                    <a id="btnUbahData" class="navi-link">
-                                        <span class="navi-icon"><i class="la la-edit"></i></span>
-                                        <span class="navi-text">Cari</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div> -->
-
-                    	<button class="btn btn-light-primary" id="btnAdd"><i class="fa fa-plus" aria-hidden="true"></i> Tambah</button>
-	            		<button class="btn btn-light-warning" id="btnUbahData"><i class="fa fa-pen" aria-hidden="true"></i> Edit</button>
-	            		<button class="btn btn-light-danger" id="btnDelete"><i class="fa fa-trash" aria-hidden="true"></i> Hapus</button>
-	            		<!-- <button class="btn btn-light-success" id="btnAdd"><i class="fa fa-save" aria-hidden="true"></i> Simpan</button> -->
-	            		<!-- <button class="btn btn-light-danger" id="btnAdd"><i class="fa fa-undo" aria-hidden="true"></i> Batal</button> -->
-	            	
+                        <?
+                        if(!empty($hakvalidasi))
+                        {
+                        ?>
+                            <button class="btn btn-light-warning" id="btnUbahData"><i class="fa fa-pen" aria-hidden="true"></i> Validasi</button>
+                        <?
+                        }
+                        else
+                        {
+                        ?>
+                        	<button class="btn btn-light-primary" id="btnAdd"><i class="fa fa-plus" aria-hidden="true"></i> Tambah</button>
+    	            		<button class="btn btn-light-warning" id="btnUbahData"><i class="fa fa-pen" aria-hidden="true"></i> Edit</button>
+    	            		<button class="btn btn-light-danger" id="btnDelete"><i class="fa fa-trash" aria-hidden="true"></i> Hapus</button>
+                        <?
+                        }
+                        ?>
                     </div>
-
-                    <!-- <button class="btn btn-light-primary" onclick="myFunction()"><i class="fa fa-sitemap" aria-hidden="true"></i> Satker</button> -->
                 </div>
             </div>
 
@@ -193,8 +155,18 @@ jQuery(document).ready(function() {
         {
             valinfovalidasiid = '';
         }
+
+        if (valinfovalidasihapusid == null)
+        {
+            valinfovalidasihapusid = '';
+        }
+        
     });
 
+    <?
+    if(empty($hakvalidasi))
+    {
+    ?>
     $('#btnDelete').on('click', function (e) {
         if(valinfoid == "")
         {
@@ -210,7 +182,16 @@ jQuery(document).ready(function() {
         }
         else
         {
-            urlAjax= "json-validasi/riwayat_pangkat_json/delete?reqRowId="+valinfoid;
+
+            reqStatus= 1;
+            if(valinfovalidasiid !== "") reqStatus= "";
+            else if(valinfovalidasihapusid !== "") reqStatus= 2;
+
+            vrowid= valinfovalidasiid;
+            if(reqStatus == 1 || reqStatus == 2) vrowid= valinfoid;
+
+            urlAjax= "json-validasi/general/hapusdata?reqRowId="+vrowid+"&reqTable=<?=$reqTable?>&reqPegawaiId=<?=$reqId?>&reqStatus="+reqStatus;
+            // console.log(urlAjax);return false;
             swal.fire({
                 title: 'Apakah anda yakin untuk hapus data?',
                 type: 'warning',
@@ -233,14 +214,14 @@ jQuery(document).ready(function() {
                         },
                         success : function(data) { 
                             swal.fire({
-                                position: 'top-right',
+                                // position: 'top-right',
                                 icon: "success",
                                 type: 'success',
                                 title: data.message,
                                 showConfirmButton: false,
                                 timer: 2000
                             }).then(function() {
-                                document.location.href = "app/index/riwayat_pangkat?reqId=<?=$reqId?>";
+                                document.location.href = "personal/index/riwayat_pangkat?reqId=<?=$reqId?>";
                             });
                         },
                         complete: function() {
@@ -256,6 +237,9 @@ jQuery(document).ready(function() {
             });
         }
     });
+    <?
+    }
+    ?>
 
     $('#'+infotableid+' tbody').on( 'dblclick', 'tr', function () {
       $("#btnUbahData").click();    
@@ -290,6 +274,34 @@ jQuery(document).ready(function() {
         {
             varurl+= "&reqRowId=baru";
         }
+
+        <?
+        if(!empty($hakvalidasi))
+        {
+        ?>
+            reqStatus= 1;
+            if(valinfovalidasiid !== "") reqStatus= "";
+            else if(valinfovalidasihapusid !== "") reqStatus= 2;
+
+            // console.log(valinfovalidasiid+"&&"+valinfovalidasihapusid+";"+reqStatus);return false;
+            varurl+= "&v=<?=$hakvalidasi?>";
+            if(reqStatus == "1")
+            {
+                Swal.fire({
+                    text: "Pilih salah satu data riwayat, yang perlu di validasi terlebih dahulu.",
+                    icon: "error",
+                    buttonsStyling: false,
+                    confirmButtonText: "Ok",
+                    customClass: {
+                        confirmButton: "btn font-weight-bold btn-light-primary"
+                    }
+                });
+                return false;
+            }
+        <?
+        }
+        ?>
+
         document.location.href = varurl;
     });
 
