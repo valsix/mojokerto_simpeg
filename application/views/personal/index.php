@@ -118,7 +118,8 @@ if(!empty($hakvalidasi))
                 $.each(arrcheckvalidasi, function( index, value ) {
                     // console.log( index + ": " + value["vid"] );
                     vid= value["vid"];
-                    if(vid == null || vid == "" || vid == vpg){}
+                    vpgadd= vid+"_add";
+                    if(vid == null || vid == "" || vid == vpg || vpg == vpgadd){}
                     else
                     {
                         $('#'+vid).css("background-color", "inherit");

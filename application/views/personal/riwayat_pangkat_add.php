@@ -76,6 +76,7 @@ $reqTempValidasiHapusId= $set->getField('TEMP_VALIDASI_HAPUS_ID');
 $reqValidasi= $set->getField('VALIDASI');
 $reqPerubahanData= $set->getField('PERUBAHAN_DATA');
 $reqValRowId= $set->getField('PANGKAT_RIWAYAT_ID');
+$reqTable= "PANGKAT_RIWAYAT";
 
 if(!empty($reqValidasi))
 {
@@ -699,6 +700,8 @@ if(!empty($arrambilfile))
 			        				<input type="hidden" name="reqMode" value="<?=$reqMode?>" />
 			        				<input type="hidden" name="reqPegawaiId" value="<?=$reqId?>">
 			        				<input type="hidden" name="reqTempValidasiId" value="<?=$reqTempValidasiId?>" />
+			        				<input type="hidden" name="reqTempValidasiHapusId" value="<?=$reqTempValidasiHapusId?>" />
+			        				<input type="hidden" name="reqTable" value="<?=$reqTable?>" />
 			        				<input type="hidden" name="reqRowId" value="<?=$reqRowId?>" />
 			        				<input type="hidden" name="p" value="<?=$p?>" />
 			        				<input type="hidden" name="reqFileRowId" value="<?=$reqFileRowId?>" />
@@ -706,7 +709,7 @@ if(!empty($arrambilfile))
 			        				<input type="hidden" name="cekquery" value="<?=$cekquery?>" />
 
 			        				<?
-			        				if(empty($reqTempValidasiHapusId))
+			        				if( empty($reqTempValidasiHapusId) || (empty($reqTempValidasiId) && !empty($reqTempValidasiHapusId)) )
 			        				{
 			        				?>
 			        					<button type="submit" id="ktloginformsubmitbutton" class="btn btn-light-success"><i class="fa fa-save" aria-hidden="true"></i> Simpan</button>

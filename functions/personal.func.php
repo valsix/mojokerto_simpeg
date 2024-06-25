@@ -21,6 +21,14 @@ function checkwarna($value, $id, $arrdata="", $arrdetil="", $tempvalidasihapusid
 			elseif($arrdata == "numberformat")
 			{
 				$infodata= numberToIna($infodata);
+				if($infodata == "0")
+				{
+					$infodata= " 0";
+				}
+				else if(empty($infodata))
+				{
+					$infodata= "Data kosong";
+				}
 				$infowarna= "new-bg-danger text-white";
 			}
 			elseif($arrdata == "comaformat")

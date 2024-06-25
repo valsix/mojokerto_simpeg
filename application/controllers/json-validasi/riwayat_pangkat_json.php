@@ -176,10 +176,46 @@ class riwayat_pangkat_json extends CI_Controller {
 		$reqId= $this->input->post("reqId");
 		$reqRowId= $this->input->post("reqRowId");
 		$reqTempValidasiHapusId= $this->input->post("reqTempValidasiHapusId");
+		$reqTable= $this->input->post("reqTable");
 		$reqTempValidasiId= $this->input->post("reqTempValidasiId");
 		$reqStatusValidasi= $this->input->post("reqStatusValidasi");
 		$reqFileRowId= $this->input->post("reqFileRowId");
 		$cekquery= $this->input->post("cekquery");
+
+		if(empty($reqTempValidasiId) && !empty($reqTempValidasiHapusId))
+		{
+			$this->load->model("base-validasi/DataHapus");
+			$setdetil= new DataHapus();
+			$setdetil->setField('TEMP_VALIDASI_ID', $reqTempValidasiHapusId);
+			$setdetil->setField('HAPUS_NAMA', $reqTable);
+			$setdetil->setField('VALIDASI', $reqStatusValidasi);
+
+			$reqsimpan= "";
+			if($reqStatusValidasi == "2")
+			{
+				if($setdetil->deletehapusdata())
+				{
+					$reqsimpan= "1";
+				}
+			}
+			else if($reqStatusValidasi == "1")
+			{
+				if($setdetil->updatevalidasihapusdata())
+				{
+					$reqsimpan= "1";
+				}
+			}
+
+			if($reqsimpan == "1")
+			{
+				echo json_response(200, $reqRowId."-Data berhasil disimpan.");
+			}
+			else
+			{
+				echo json_response(400, "Data gagal disimpan");
+			}
+			exit;
+		}
 		// end tambahan untuk validasi
 
 		$reqGolRuang= $this->input->post("reqGolRuang");
@@ -293,10 +329,12 @@ class riwayat_pangkat_json extends CI_Controller {
 
 		if($reqSimpan == 1)
 		{
+			// start tambahan untuk validasi
 			if($reqStatusValidasi == "1")
 			{
 				$set->updatetanggalvalidasi();
 			}
+			// end tambahan untuk validasi
 
 			// untuk simpan file
 			/*$vpost= $this->input->post();

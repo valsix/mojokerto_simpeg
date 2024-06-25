@@ -49,6 +49,23 @@ class DataHapus extends Entity{
         return $this->execQuery($str);
     }
 
+    function updatevalidasihapusdata()
+	{
+        $str = "
+        UPDATE validasi.HAPUS_DATA
+        SET
+	        VALIDASI= ".$this->getField("VALIDASI").",
+	        TANGGAL_VALIDASI= NOW()
+        WHERE 
+        TEMP_VALIDASI_ID= ".$this->getField("TEMP_VALIDASI_ID")."
+        AND HAPUS_NAMA= '".$this->getField("HAPUS_NAMA")."' AND VALIDASI IS NULL
+        ";
+				  
+		$this->query = $str;
+		// echo $str;exit;
+        return $this->execQuery($str);
+    }
+
 	function hapusdata()
 	{
 		$str = "

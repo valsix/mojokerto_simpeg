@@ -89,6 +89,9 @@ begin
 		*/
 		
 		--vupdateheaderdetil:= vupdateheaderdetil || ', last_user = ''' || vlastuser || ''' , last_level = ''' || vlastlevel || ''', last_date = now()';
+		if coalesce(nullif(vlastuser, ''), null) is null then
+			vlastuser:= '';
+		end if;
 		vupdateheaderdetil:= vupdateheaderdetil || ', last_update_user = ''' || vlastuser || ''' , last_update_date = now()';
 		inforeturn:= vupdateheader || vupdateheaderdetil || ' where '|| vtable ||'_id = ' || vinfoid;
 	end if;
@@ -236,6 +239,49 @@ before delete
 on validasi.hapus_data
 for each row
 execute procedure validasi.validasi_hapus_data_hapus();
+
+create or replace function validasi.validasi_hapus_data_update()
+returns trigger as
+$body$
+declare
+thequery character varying;
+begin
+	if new.validasi = 1 then
+		insert into validasi.hapus_log
+		(
+			temp_validasi_id, row_id, row_hapus_id, info_link, info_table, pegawai_id
+			, info_riwayat, info_jenis, info_keterangan
+			, info_tanggal, info_jenis_update, info_status, info_level, info_level_nama
+			, info_validasi
+			, info_create_date, perubahan_data
+		)
+		select 	
+		temp_validasi_id, row_id, row_hapus_id, info_link, info_table, pegawai_id
+		, info_riwayat, info_jenis, info_keterangan
+		, info_tanggal, info_jenis_update, 'Hapus' info_status, info_level, info_level_nama
+		, -1 info_validasi
+		, now() info_create_date, ''
+		from validasi.validasi_perubahandatavalidasi(new.pegawai_id::text) a
+		where 1 = 1 and row_hapus_id = new.temp_validasi_id and info_table = lower(new.hapus_nama);
+		
+		thequery:= 'delete from '|| lower(new.hapus_nama) || ' where '|| lower(new.hapus_nama) || '_id = ' || new.temp_validasi_id;
+		execute thequery;
+		--raise notice 'sql %', thequery;
+	end if;
+
+	return new;
+end;
+$body$
+language plpgsql volatile cost 100;
+alter function validasi.validasi_hapus_data_update() owner to postgres;
+
+drop trigger if exists validasi_hapus_data_trigger_update on validasi.hapus_data;
+create trigger validasi_hapus_data_trigger_update
+before update
+on validasi.hapus_data
+for each row
+execute procedure validasi.validasi_hapus_data_update();
+
 --========================================================================================================================
 drop type if exists validasi.pegawai_type;
 create type validasi.pegawai_type as
