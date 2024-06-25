@@ -54,7 +54,9 @@ class verifikasi_validasi_json extends CI_Controller {
 		$reqId = $this->input->get("reqId");
 		$reqCari = $this->input->get("reqCari");
 		$reqSearch = $this->input->get("reqSearch");
-		$reqStatusHukuman= $this->input->get("reqStatusHukuman");
+		$reqValidasi= $this->input->get("reqValidasi");
+		$reqBulan= $this->input->get("reqBulan");
+		$reqTahun= $this->input->get("reqTahun");
 		$cekquery= $this->input->get("c");
 		// print_r($columnsDefault);exit;
 
@@ -95,12 +97,30 @@ class verifikasi_validasi_json extends CI_Controller {
 		else
 			$statement.= " AND A.SATKER_ID LIKE '".$reqId."%' ".$reqSearch;*/
 
+		if(!empty($reqValidasi))
+		{
+			$statementdetil.= " AND V.INFO_VALIDASI = ".$reqValidasi;
+		}
+		else
+		{
+			$statementdetil.= " AND V.INFO_VALIDASI IS NULL";
+		}
+
+		if($reqBulan == "" || $reqBulan == "-1")
+		{
+			$statementdetil.= " AND TO_CHAR(V.INFO_CREATE_DATE, 'YYYY') = '".$reqTahun."'";	
+		}
+		else
+		{
+			$statementdetil.= " AND TO_CHAR(V.INFO_CREATE_DATE, 'MMYYYY') = '".$reqBulan.$reqTahun."'";	
+		}
+
 		// $statement.= " AND A.PEGAWAI_ID IN (235162200007, 235160100843)";
 		// $sOrder= "ORDER BY C.ESELON_ID ASC, A.TUGAS_TAMBAHAN_NEW ASC, B.PANGKAT_ID DESC, B.TMT_PANGKAT ASC";
 
 		/*$searhjson= " AND (UPPER(B.GOL_RUANG) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(TEMPAT_LAHIR) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(NAMA) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(A.NAMA) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(A.NIP_LAMA) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(A.NIP_BARU) LIKE '%".strtoupper($_GET['sSearch'])."%' OR UPPER(AMBIL_FORMAT_NIP_BARU(NIP_BARU)) LIKE '%".strtoupper($_GET['sSearch'])."%' ) ";*/
 
-		$set->selectByValidasi(array(), $dsplyRange, $dsplyStart, $statement, $sOrder);
+		$set->selectByValidasi(array(), $dsplyRange, $dsplyStart, $statement, $statementdetil, $sOrder);
 		
 		if(!empty($cekquery)){
 			echo $set->query;exit;

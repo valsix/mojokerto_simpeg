@@ -21,6 +21,12 @@ $arrtabledata= array(
     , array("label"=>"fieldid", "field"=> "PEGAWAI_ID", "display"=>"1", "width"=>"")
 );
 
+$arrBulan= setBulanLoop();
+$arrTahun= setTahunLoop(1,1);
+
+if($reqBulan == "") $reqBulan= date("m");
+if($reqTahun == "") $reqTahun= date("Y");
+
 $arrsatkertree= $this->sesstree;
 $arrsatkerdata= $this->sessdatatree;
 ?>
@@ -196,29 +202,43 @@ html.dark table.dataTable tr.dt-hasChild td.dt-control:before,
                 <div class="area-filter">
                     <div class="row mb-8">
                         <div class="col-md-6" style="margin-top: 10px">
-                            <label>Status Pegawai:</label>
-                            <select id='filter' class="form-control datatable-input">
-                                <option value='AND STATUS_PEGAWAI = 0'>Usulan</option>
-                                <option value='AND (STATUS_PEGAWAI = 1 OR STATUS_PEGAWAI = 2)' selected='selected'>CPNS / PNS</option>
-                                <option value='AND STATUS_PEGAWAI = 1'>CPNS</option>
-                                <option value='AND STATUS_PEGAWAI = 2'>PNS</option>
-                                <option value='AND STATUS_PEGAWAI = 12'>PPPK</option>
-                                <option value='AND STATUS_PEGAWAI = 3'>Pensiun</option>
-                                <option value='AND STATUS_PEGAWAI = 4'>TNI</option>
-                                <option value='AND (STATUS_PEGAWAI = 5 OR STATUS_PEGAWAI = 6)'>Tewas / Wafat</option>
-                                <option value='AND STATUS_PEGAWAI = 7'>Pindah</option>
-                                <option value='AND STATUS_PEGAWAI = 8'>Diberhentikan dengan hormat</option>
-                                <option value='AND STATUS_PEGAWAI = 9'>Diberhentikan tidak dengan hormat</option>
-                                <option value='AND STATUS_PEGAWAI = 10'>Pensiun BUP</option>
-                                <option value='AND STATUS_PEGAWAI = 11'>Pensiun Dini</option>
+                            <label>Status : </label>
+                            <select name="reqValidasi" id="reqValidasi" class="form-control datatable-input">
+                                <option value="" <? if($reqValidasi == "") echo "selected";?>>Belum divalidasi</option>
+                                <option value="2" <? if($reqValidasi == "2") echo "selected";?>>Ditolak</option>
+                                <option value="1" <? if($reqValidasi == "1") echo "selected";?>>Validasi</option>        
                             </select>
                         </div>
                         <div class="col-md-6" style="margin-top: 10px">
-                            <label>Hukuman:</label>
-                            <select id='reqStatusHukuman' class="form-control datatable-input">
-                                <option></option>
-                                <option value='1'>Masih Berlaku</option>
-                            </select>
+
+                            <label>Bulan : </label>
+                            <div class="row">
+                                <div class="col-lg-3 col-sm-12">
+                                    <select name="reqBulan" id="reqBulan" class="form-control datatable-input">
+                                        <option value="-1">Semua</option>
+                                        <?
+                                        for($i=0;$i<count($arrBulan);$i++)
+                                        {
+                                        ?>
+                                            <option value="<?=$arrBulan[$i]?>" <? if(generateZeroDate($reqBulan, 2) == $arrBulan[$i]) { ?> selected <? } ?>><?=getNameMonth($arrBulan[$i])?></option>
+                                        <?    
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+                                <div class="col-lg-3 col-sm-12">
+                                    <select name="reqTahun" id="reqTahun" class="form-control datatable-input">
+                                        <?
+                                        for($tahun=0;$tahun < count($arrTahun);$tahun++)
+                                        {
+                                        ?>
+                                            <option value="<?=$arrTahun[$tahun]?>" <? if($reqTahun == $arrTahun[$tahun]) echo "selected";?>><?=$arrTahun[$tahun]?></option>
+                                        <?
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -258,7 +278,7 @@ var datainforesponsive= "1";
 var valgroup= "1";
 
 jQuery(document).ready(function() {
-    var jsonurl= "json-validasi/verifikasi_validasi_json/json";
+    var jsonurl= "json-validasi/verifikasi_validasi_json/json?reqBulan=<?=$reqBulan?>&reqTahun=<?=$reqTahun?>&reqValidasi=<?=$reqValidasi?>";
     ajaxserverselectsingle.init(infotableid, jsonurl, arrdata, valgroup);
         $('#vlsxloading').hide();
 
@@ -317,16 +337,17 @@ jQuery(document).ready(function() {
         }
         else
         {
-            reqStatusHukuman= $("#reqStatusHukuman").val();
-            reqSearch= encodeURIComponent($("#filter").val());
             reqId= $("#reqSatkerId").val();
+            reqValidasi= $("#reqValidasi").val();
+            reqBulan= $("#reqBulan").val();
+            reqTahun= $("#reqTahun").val();
 
-            jsonurl= "json-validasi/verifikasi_validasi_json/json?reqStatusHukuman="+reqStatusHukuman+"&reqSearch="+reqSearch+"&reqId="+reqId;
+            jsonurl= "json-validasi/verifikasi_validasi_json/json?reqValidasi="+reqValidasi+"&reqBulan="+reqBulan+"&reqTahun="+reqTahun+"&reqId="+reqId;
             datanewtable.DataTable().ajax.url(jsonurl).load();
         }
     });
 
-    $("#filter, #reqStatusHukuman, #reqSatkerId").change(function() { 
+    $("#reqValidasi, #reqBulan, #reqTahun, #reqSatkerId").change(function() { 
         btnid= $(this).attr('id');
 
         carijenis= "2";

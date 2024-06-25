@@ -174,7 +174,7 @@ if(!empty($hakvalidasi))
         <?if($pg != "login"){?>
             <div id="kt_header_mobile" class="header-mobile align-items-center header-mobile-fixed">
 
-                <a href="app">
+                <a href="app/index/verifikasi_validasi">
                     <img alt="Logo" src="images/logo.png" />
                 </a>
 
@@ -214,7 +214,7 @@ if(!empty($hakvalidasi))
 
                     <div class="brand flex-column-auto" id="kt_brand">
 
-                        <a href="app" class="brand-logo">
+                        <a href="app/index/verifikasi_validasi" class="brand-logo">
                             <img alt="Logo" src="images/logo-aplikasi.png" />
                         </a>
 
@@ -247,7 +247,7 @@ if(!empty($hakvalidasi))
                                 <!--begin::Menu Nav-->
                                 <ul class="menu-nav">
                                     <li style="background-color: inherit;" class="menu-item menu-item-submenu menu-item-here" aria-haspopup="true" data-menu-toggle="hover">
-                                        <a href="personal/index/pegawai" class="menu-link menu-toggle">
+                                        <a href="app/index/verifikasi_validasi" class="menu-link menu-toggle">
                                             <span class="menu-text"><i class="fa fa-arrow-left" aria-hidden="true" style="color: #FFFFFF; margin-right: 10px;"></i>Kembali</span>
                                             <i class="menu-arrow"></i>
                                         </a>
