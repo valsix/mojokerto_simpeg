@@ -528,36 +528,36 @@ if(!empty($arrambilfile))
 	        			<div class="row">
 	        				<div class="col-lg-9">
 	        					<input type="hidden" name="reqMode" value="<?=$reqMode?>" />
-			        				<input type="hidden" name="reqPegawaiId" value="<?=$reqId?>">
-			        				<input type="hidden" name="reqTempValidasiId" value="<?=$reqTempValidasiId?>" />
-			        				<input type="hidden" name="reqTempValidasiHapusId" value="<?=$reqTempValidasiHapusId?>" />
-			        				<input type="hidden" name="reqTable" value="<?=$reqTable?>" />
-			        				<input type="hidden" name="reqRowId" value="<?=$reqRowId?>" />
-			        				<input type="hidden" name="p" value="<?=$p?>" />
-			        				<input type="hidden" name="reqFileRowId" value="<?=$reqFileRowId?>" />
-			        				<input type="hidden" name="reqId" value="<?=$reqId?>" />
-			        				<input type="hidden" name="cekquery" value="<?=$cekquery?>" />
+		        				<input type="hidden" name="reqPegawaiId" value="<?=$reqId?>">
+		        				<input type="hidden" name="reqTempValidasiId" value="<?=$reqTempValidasiId?>" />
+		        				<input type="hidden" name="reqTempValidasiHapusId" value="<?=$reqTempValidasiHapusId?>" />
+		        				<input type="hidden" name="reqTable" value="<?=$reqTable?>" />
+		        				<input type="hidden" name="reqRowId" value="<?=$reqRowId?>" />
+		        				<input type="hidden" name="p" value="<?=$p?>" />
+		        				<input type="hidden" name="reqFileRowId" value="<?=$reqFileRowId?>" />
+		        				<input type="hidden" name="reqId" value="<?=$reqId?>" />
+		        				<input type="hidden" name="cekquery" value="<?=$cekquery?>" />
 
-			        				<?
-			        				if( empty($reqTempValidasiHapusId) || (empty($reqTempValidasiId) && !empty($reqTempValidasiHapusId)) )
-			        				{
-			        				?>
-			        					<button type="submit" id="ktloginformsubmitbutton" class="btn btn-light-success"><i class="fa fa-save" aria-hidden="true"></i> Simpan</button>
-			        				<?
-			        				}
-			        				if(!empty($reqTempValidasiId) && empty($hakstatusvalidasi))
-			        				{
-			        				?>
-			        					<button class="btn btn-danger" type="button" onclick="hapusdata('<?=$reqTempValidasiId?>', 'pangkat_riwayat', '', '<?=$vreturn?>')"><i class="fa fa-close" aria-hidden="true"></i> Batal</button>
-			        				<?
-			        				}
-			        				if(!empty($reqTempValidasiHapusId) && empty($hakstatusvalidasi))
-			        				{
-			        				?>
-			        					<button class="btn btn-danger" type="button" onclick="hapusdata('<?=$reqTempValidasiHapusId?>', 'pangkat_riwayat', '2', '<?=$vreturn?>')"><i class="fa fa-close" aria-hidden="true"></i> Batal</button>
-			        				<?
-			        				}
-			        				?>
+		        				<?
+		        				if( empty($reqTempValidasiHapusId) || (empty($reqTempValidasiId) && !empty($reqTempValidasiHapusId)) )
+		        				{
+		        				?>
+		        					<button type="submit" id="ktloginformsubmitbutton" class="btn btn-light-success"><i class="fa fa-save" aria-hidden="true"></i> Simpan</button>
+		        				<?
+		        				}
+		        				if(!empty($reqTempValidasiId) && empty($hakstatusvalidasi))
+		        				{
+		        				?>
+		        					<button class="btn btn-danger" type="button" onclick="hapusdata('<?=$reqTempValidasiId?>', 'pangkat_riwayat', '', '<?=$vreturn?>')"><i class="fa fa-close" aria-hidden="true"></i> Batal</button>
+		        				<?
+		        				}
+		        				if(!empty($reqTempValidasiHapusId) && empty($hakstatusvalidasi))
+		        				{
+		        				?>
+		        					<button class="btn btn-danger" type="button" onclick="hapusdata('<?=$reqTempValidasiHapusId?>', 'pangkat_riwayat', '2', '<?=$vreturn?>')"><i class="fa fa-close" aria-hidden="true"></i> Batal</button>
+		        				<?
+		        				}
+		        				?>
 	        				</div>
 	        			</div>
 	        		</div>

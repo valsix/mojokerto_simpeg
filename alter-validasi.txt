@@ -1949,6 +1949,249 @@ for each row
 execute procedure validasi.p_gaji_riwayat();
 
 --========================================================================================================================
+drop function if exists validasi.validasi_pegawai_pendidikan_riwayat(numeric, character varying, character varying);
+drop type if exists validasi.pendidikan_riwayat_type;
+create type validasi.pendidikan_riwayat_type as
+(
+	pendidikan_riwayat_id integer
+	, pegawai_id bigint
+	, pendidikan_id integer
+	, jurusan_pendidikan_id integer
+	, nama character varying(100)
+	, tempat character varying(100)
+	, kepala character varying(100)
+	, no_sttb character varying(50)
+	, tanggal_sttb date
+	, jurusan character varying(255)
+	, temp_validasi_id integer
+	, temp_validasi_hapus_id integer
+	, validasi integer
+	, validator character varying
+	, perubahan_data character varying
+	, tipe_perubahan_data character(1)
+	, tanggal_validasi timestamp without time zone
+);
+
+drop table if exists validasi.pendidikan_riwayat;
+create table validasi.pendidikan_riwayat
+(
+	pendidikan_riwayat_id integer
+	, pegawai_id bigint
+	, pendidikan_id integer
+	, jurusan_pendidikan_id integer
+	, nama character varying(100)
+	, tempat character varying(100)
+	, kepala character varying(100)
+	, no_sttb character varying(50)
+	, tanggal_sttb date
+	, jurusan character varying(255)
+	, last_create_user character varying(100)
+	, last_create_date date
+	, last_update_user character varying(100)
+	, last_update_date date
+	, last_create_satker character varying(25)
+	, last_update_satker character varying(25)
+	, validasi integer
+	, validator character varying
+	, perubahan_data character varying
+	, perubahan_verifikator_data character varying
+	, tipe_perubahan_data character(1)
+	, tanggal_validasi timestamp without time zone
+	, temp_validasi_id integer NOT NULL
+	, constraint vpendidikan_riwayat_pkey primary key (temp_validasi_id)
+);
+
+create or replace function validasi.validasi_pegawai_pendidikan_riwayat(pegawaiid numeric, id character varying, rowid character varying)
+returns setof validasi.pendidikan_riwayat_type as
+$body$
+declare
+	cur refcursor;
+	query text;
+	rec validasi.pendidikan_riwayat_type%rowtype;
+begin
+	if coalesce(nullif(rowid, ''), null) is not null then
+		query := '
+		select
+		a.pendidikan_riwayat_id, a.pegawai_id
+		, a.pendidikan_id, a.jurusan_pendidikan_id, a.nama, a.tempat, a.kepala, a.no_sttb, a.tanggal_sttb, a.jurusan
+		, a.temp_validasi_id, a.temp_validasi_hapus_id, a.validasi, a.validator, a.perubahan_data, a.tipe_perubahan_data, a.tanggal_validasi
+		from
+		(
+			select
+			a.pendidikan_riwayat_id, a.pegawai_id
+			, a.pendidikan_id, a.jurusan_pendidikan_id, a.nama, a.tempat, a.kepala, a.no_sttb, a.tanggal_sttb, a.jurusan
+			, a.temp_validasi_id, null temp_validasi_hapus_id, a.validasi, a.validator, a.perubahan_data, a.tipe_perubahan_data, a.tanggal_validasi
+			from validasi.pendidikan_riwayat a
+			where a.temp_validasi_id = '|| rowid ||'
+			and a.pegawai_id = '|| pegawaiid ||'
+		) a
+		';
+	  else
+		query := '
+		select
+		a.pendidikan_riwayat_id, a.pegawai_id
+		, a.pendidikan_id, a.jurusan_pendidikan_id, a.nama, a.tempat, a.kepala, a.no_sttb, a.tanggal_sttb, a.jurusan
+		, a.temp_validasi_id, a.temp_validasi_hapus_id, a.validasi, a.validator, a.perubahan_data, a.tipe_perubahan_data, a.tanggal_validasi
+		from
+		(
+			select
+			a.pendidikan_riwayat_id, a.pegawai_id
+			, coalesce(b.pendidikan_id, a.pendidikan_id) pendidikan_id
+			, coalesce(b.jurusan_pendidikan_id, a.jurusan_pendidikan_id) jurusan_pendidikan_id
+			, coalesce(b.nama, a.nama) nama
+			, coalesce(b.tempat, a.tempat) tempat
+			, coalesce(b.kepala, a.kepala) kepala
+			, coalesce(b.no_sttb, a.no_sttb) no_sttb
+			, coalesce(b.tanggal_sttb, a.tanggal_sttb) tanggal_sttb
+			, coalesce(b.jurusan, a.jurusan) jurusan
+			, b.temp_validasi_id, c.temp_validasi_id temp_validasi_hapus_id, b.validasi, b.validator, b.perubahan_data, b.tipe_perubahan_data, b.tanggal_validasi
+			from pendidikan_riwayat a
+			left join validasi.pendidikan_riwayat b on a.pendidikan_riwayat_id = b.pendidikan_riwayat_id and b.validasi is null
+			left join validasi.hapus_data c on upper(c.hapus_nama)::text = upper(''pendidikan_riwayat'')::text and a.pendidikan_riwayat_id = c.temp_validasi_id::numeric and c.validasi is null
+			where a.pegawai_id = '|| pegawaiid ||'
+			union all
+			select
+			a.pendidikan_riwayat_id, a.pegawai_id
+			, a.pendidikan_id, a.jurusan_pendidikan_id, a.nama, a.tempat, a.kepala, a.no_sttb, a.tanggal_sttb, a.jurusan
+			, a.temp_validasi_id, null temp_validasi_hapus_id, a.validasi, a.validator, a.perubahan_data, a.tipe_perubahan_data, a.tanggal_validasi
+			from validasi.pendidikan_riwayat a
+			where a.validasi is null and a.pendidikan_riwayat_id is null
+			and a.pegawai_id = '|| pegawaiid ||'
+		) a
+		where 1=1
+		';
+
+		if coalesce(nullif(id, ''), null) is not null then
+			query := query || ' and a.pendidikan_riwayat_id = ' || id;
+		end if;
+		--raise notice 'sql %', query;
+		
+	end if;
+		
+	open cur for execute query;
+		fetch cur into rec;
+		while found loop
+			return next rec;
+		fetch cur into rec;
+			end loop;
+	close cur;
+end;
+$body$
+language plpgsql volatile strict cost 100 rows 1000;
+alter function validasi.validasi_pegawai_pendidikan_riwayat(numeric, character varying, character varying) owner to postgres;
+
+create or replace function validasi.p_pendidikan_riwayat()
+  returns trigger as
+$body$
+declare
+
+    rec record;
+    pinfoperubahan character varying;
+    thequery character varying;
+    
+    begin
+
+	if new.validasi = 1 or new.validasi is null then
+		pinfoperubahan := '{ "0" : "0" ';
+		if new.pendidikan_riwayat_id is null then
+
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('pendidikan_id'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('jurusan_pendidikan_id'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('nama'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('tempat'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('kepala'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('no_sttb'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('tanggal_sttb'), ''::character varying, 'valsixdatabaru'::character varying);
+			pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('jurusan'), ''::character varying, 'valsixdatabaru'::character varying);
+
+		else
+			for rec in select * from pendidikan_riwayat a where a.pegawai_id = new.pegawai_id and a.pendidikan_riwayat_id = new.pendidikan_riwayat_id
+			loop
+				if new.validasi is null then
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('pendidikan_id'), new.pendidikan_id::character varying, rec.pendidikan_id::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('jurusan_pendidikan_id'), new.jurusan_pendidikan_id::character varying, rec.jurusan_pendidikan_id::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('nama'), new.nama::character varying, rec.nama::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('tempat'), new.tempat::character varying, rec.tempat::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('kepala'), new.kepala::character varying, rec.kepala::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('no_sttb'), new.no_sttb::character varying, rec.no_sttb::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('tanggal_sttb'), new.tanggal_sttb::character varying, rec.tanggal_sttb::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('jurusan'), new.jurusan::character varying, rec.jurusan::character varying);
+					
+				else
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('pendidikan_id'), rec.pendidikan_id::character varying, new.pendidikan_id::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('jurusan_pendidikan_id'), rec.jurusan_pendidikan_id::character varying, new.jurusan_pendidikan_id::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('nama'), rec.nama::character varying, new.nama::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('tempat'), rec.tempat::character varying, new.tempat::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('kepala'), rec.kepala::character varying, new.kepala::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('no_sttb'), rec.no_sttb::character varying, new.no_sttb::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('tanggal_sttb'), rec.tanggal_sttb::character varying, new.tanggal_sttb::character varying);
+					pinfoperubahan:= validasi.collectinfo(pinfoperubahan, upper('jurusan'), rec.jurusan::character varying, new.jurusan::character varying);
+
+				end if;
+				
+			end loop;
+		end if;
+		
+		pinfoperubahan:= pinfoperubahan || ' }';
+		--raise notice 'sql %', pinfoperubahan;
+	end if;
+	
+	if new.validasi = 1 then 
+		if new.pendidikan_riwayat_id is null then
+			if new.tanggal_validasi is null then
+				new.perubahan_verifikator_data= pinfoperubahan;
+			else
+				insert into pendidikan_riwayat 
+				(
+					pendidikan_riwayat_id, pegawai_id
+					, pendidikan_id, jurusan_pendidikan_id, nama, tempat, kepala, no_sttb, tanggal_sttb, jurusan
+					, last_create_user, last_create_date, last_create_satker
+					, last_update_user, last_update_date, last_update_satker
+				)
+				values 
+				(
+					(select coalesce(max(pendidikan_riwayat_id), 0) + 1 from pendidikan_riwayat), new.pegawai_id
+					, new.pendidikan_id, new.jurusan_pendidikan_id, new.nama, new.tempat, new.kepala
+					, new.no_sttb, new.tanggal_sttb, new.jurusan
+					, new.last_create_user, new.last_create_date, new.last_create_satker
+					, new.last_update_user, new.last_update_date, new.last_update_satker
+				);
+				--raise notice 'sql %', '';
+			end if;
+		else
+			if new.tanggal_validasi is null then
+				new.perubahan_verifikator_data= pinfoperubahan;
+			else
+				select validasi.vupdateinfo('pendidikan_riwayat', new.pendidikan_riwayat_id, new.temp_validasi_id, new.last_update_user, 99) into thequery;
+
+				if thequery is not null then
+					--new.last_level:= old.last_level;
+					execute thequery;
+				end if;
+			end if;
+			--raise notice 'sql %', thequery;
+			--return null;
+		end if;
+	elsif new.validasi = 2 then 
+		--raise notice 'sql %', '';
+	else
+		new.perubahan_data := pinfoperubahan;
+	end if;
+
+	return new;
+    end;
+$body$
+language plpgsql volatile cost 100;
+alter function validasi.p_pendidikan_riwayat() owner to postgres;
+
+drop trigger if exists t_pendidikan_riwayat on validasi.pendidikan_riwayat;
+create trigger t_pendidikan_riwayat
+before insert or update
+on validasi.pendidikan_riwayat
+for each row
+execute procedure validasi.p_pendidikan_riwayat();
+
+--========================================================================================================================
 drop table if exists validasi.pak;
 create table validasi.pak
 (
